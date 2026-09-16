@@ -1,0 +1,39 @@
+{
+  "participants": [
+    {
+      "name": "Sharanu Kallanagoudra"
+    },
+    {
+      "name": "The Shine Fitness and Yoga"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Sharanu Kallanagoudra",
+      "timestamp_ms": 1786687642349,
+      "content": "Hi sir, ma\u00e2\u0080\u0099am   I am a yoga teacher. Please let me know if there are any yoga group classes available for me to teach at your center.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1786687641671,
+      "content": "The Shine Fitness xin ch\u00c3\u00a0o anh/ch\u00e1\u00bb\u008b Sharanu Kallanagoudra, trung t\u00c3\u00a2m \u00c4\u0091ang c\u00c3\u00b3 ch\u00c6\u00b0\u00c6\u00a1ng tr\u00c3\u00acnh d\u00c3\u00a0nh ri\u00c3\u00aang h\u00e1\u00bb\u0099i vi\u00c3\u00aan m\u00e1\u00bb\u009bi CH\u00e1\u00bb\u0088 T\u00e1\u00bb\u00aa 349K/TH\u00c3\u0081NG v\u00c3\u00a0 7 NG\u00c3\u0080Y t\u00e1\u00ba\u00adp th\u00e1\u00bb\u00ad mi\u00e1\u00bb\u0085n ph\u00c3\u00ad!\n\n[ Slot \u00c6\u00b0u \u00c4\u0091\u00c3\u00a3i gi\u00e1\u00bb\u009bi h\u00e1\u00ba\u00a1n ] Vui l\u00c3\u00b2ng \u00c4\u0091\u00e1\u00bb\u0083 l\u00e1\u00ba\u00a1i S\u00c4\u0090T \u00c4\u0091\u00e1\u00bb\u0083 b\u00c3\u00aan em l\u00c6\u00b0u th\u00c3\u00b4ng tin nh\u00e1\u00ba\u00adn \u00c6\u00b0u \u00c4\u0091\u00c3\u00a3i t\u00e1\u00bb\u0091t nh\u00e1\u00ba\u00a5t \u00e1\u00ba\u00a1 \u00f0\u009f\u0098\u008d\n\u00f0\u009f\u0094\u00a5Hi\u00e1\u00bb\u0087n t\u00e1\u00ba\u00a1i m\u00c3\u00acnh \u00c4\u0091ang quan t\u00c3\u00a2m \u00c4\u0091\u00e1\u00ba\u00bfn b\u00e1\u00bb\u0099 m\u00c3\u00b4n n\u00c3\u00a0o \u00e1\u00ba\u00a1?",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1786687641191,
+      "content": "Sharanu Kallanagoudra \u00c4\u0091\u00c3\u00a3 tr\u00e1\u00ba\u00a3 l\u00e1\u00bb\u009di m\u00e1\u00bb\u0099t qu\u00e1\u00ba\u00a3ng c\u00c3\u00a1o.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Sharanu Kallanagoudra",
+  "is_still_participant": false,
+  "thread_path": "filtered_threads/sharanukallanagoudra_2248508412618611",
+  "magic_words": [
+    
+  ]
+}

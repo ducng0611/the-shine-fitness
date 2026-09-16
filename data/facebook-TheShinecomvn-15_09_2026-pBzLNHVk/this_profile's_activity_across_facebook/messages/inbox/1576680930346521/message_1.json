@@ -1,0 +1,46 @@
+{
+  "participants": [
+    {
+      "name": ""
+    },
+    {
+      "name": "The Shine Fitness and Yoga"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1768297896288,
+      "content": "Ch\u00c3\u00a0o b\u00e1\u00ba\u00a1n! M\u00c3\u00acnh \u00c4\u0091ang quan t\u00c3\u00a2m v\u00e1\u00bb\u0081 b\u00e1\u00bb\u0099 m\u00c3\u00b4n n\u00c3\u00a0o \u00e1\u00ba\u00a1! B\u00c3\u00aan m\u00c3\u00acnh c\u00c3\u00b3 gym, yoga v\u00c3\u00a0 boxing \u00e1\u00ba\u00a1!",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1768297893083,
+      "content": "D\u00e1\u00ba\u00a1 \u00c4\u0091\u00e1\u00bb\u008ba ch\u00e1\u00bb\u0089 154 Ho\u00c3\u00a0ng Hoa Th\u00c3\u00a1m, ph\u00c6\u00b0\u00e1\u00bb\u009dng 12, qu\u00e1\u00ba\u00adn T\u00c3\u00a2n B\u00c3\u00acnh \u00e1\u00ba\u00a1!",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "",
+      "timestamp_ms": 1768297873036,
+      "content": "B\u00c3\u00aan m\u00c3\u00acnh m\u00e1\u00bb\u009f c\u00e1\u00bb\u00ada m\u00e1\u00ba\u00a5y h v\u00e1\u00ba\u00ady em",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1768297872728,
+      "content": "Trang Vu \u00c4\u0091\u00c3\u00a3 tr\u00e1\u00ba\u00a3 l\u00e1\u00bb\u009di v\u00e1\u00bb\u0081 m\u00e1\u00bb\u0099t b\u00c3\u00a0i vi\u00e1\u00ba\u00bft. ",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "",
+  "is_still_participant": false,
+  "thread_path": "inbox/1576680930346521",
+  "magic_words": [
+    
+  ]
+}

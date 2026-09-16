@@ -1,0 +1,8 @@
+{
+  "name": "The Shine Fitness",
+  "description": "SHINE ON, SWEAT ON. A modern website for a gym with an integrated AI chatbot to support customers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

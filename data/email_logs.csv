@@ -1,0 +1,4 @@
+id,sentAt,recipientEmail,recipientName,campaignStep,campaignName,subject,status
+"EML-3001","2026-09-12 09:31:00","an.nguyen@gmail.com","Nguyễn Văn An","1","Welcome Flow","[The Shine Fitness] Chào mừng bạn! Nhận Voucher 3 ngày tập thử & Đo InBody","Delivered"
+"EML-3002","2026-09-14 14:16:00","mai.tran@gmail.com","Trần Thị Mai","1","Welcome Flow","[The Shine Fitness] Chào mừng bạn! Nhận Voucher 3 ngày tập thử & Đo InBody","Delivered"
+"EML-960274","2026-09-15 03:46:00","hung.le@gmail.com","Lê Tuấn Hưng","1","Welcome Lead Flow","[The Shine Fitness] Chào mừng Lê Tuấn Hưng! Nhận Voucher 3 ngày tập thử & Buổi đo InBody miễn phí","Delivered"

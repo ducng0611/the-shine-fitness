@@ -1,0 +1,4 @@
+id,createdAt,fullName,phone,email,packageType,goal,preferredTime,notes,status
+"REG-1001","2026-09-12 09:30:00","Nguyễn Văn An","0912345678","an.nguyen@gmail.com","Premium (800k)","Tăng cơ & Giảm mỡ","Chiều 17:30 - 19:30","Muốn được đo InBody và tập thử 3 ngày","Đã liên hệ"
+"REG-1002","2026-09-14 14:15:00","Trần Thị Mai","0987654321","mai.tran@gmail.com","VIP (1.5M)","Tập Yoga & Thư giãn","Sáng 06:00 - 07:30","Quan tâm lớp Yoga sáng và xông hơi","Mới đăng ký"
+"REG-960274","2026-09-15 03:46:00","Lê Tuấn Hưng","0977889900","hung.le@gmail.com","Premium (800k/tháng)","Giảm cân cấp tốc","Tối 19:00","Cần PT tư vấn dinh dưỡng","Mới đăng ký"

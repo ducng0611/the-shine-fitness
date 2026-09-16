@@ -1,0 +1,32 @@
+{
+  "participants": [
+    {
+      "name": "B\u00e1\u00ba\u00a1ch Pam"
+    },
+    {
+      "name": "The Shine Fitness and Yoga"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "B\u00e1\u00ba\u00a1ch Pam",
+      "timestamp_ms": 1763872568818,
+      "content": "No me elseings",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1763872568591,
+      "content": "Hi B\u00e1\u00ba\u00a1ch! We wanted to follow up. Do you have any questions?",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "B\u00e1\u00ba\u00a1ch Pam",
+  "is_still_participant": false,
+  "thread_path": "filtered_threads/bachpam_122149175492878494",
+  "magic_words": [
+    
+  ]
+}

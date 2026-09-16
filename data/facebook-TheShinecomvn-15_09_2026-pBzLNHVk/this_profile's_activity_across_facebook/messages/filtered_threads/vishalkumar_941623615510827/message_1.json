@@ -1,0 +1,87 @@
+{
+  "participants": [
+    {
+      "name": "Vishal Kumar"
+    },
+    {
+      "name": "The Shine Fitness and Yoga"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Vishal Kumar",
+      "timestamp_ms": 1789469775700,
+      "content": "Is there any to assist",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Vishal Kumar",
+      "timestamp_ms": 1789469764199,
+      "content": "Hiii",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Vishal Kumar",
+      "timestamp_ms": 1784475691612,
+      "content": "Hii",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Vishal Kumar",
+      "timestamp_ms": 1780386352365,
+      "content": "CH\u00c3\u0080O",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1780052417522,
+      "content": "\u00c4\u0090\u00c3\u00a3 t\u00e1\u00bb\u00b1 \u00c4\u0091\u00e1\u00bb\u0099ng chuy\u00e1\u00bb\u0083n tin nh\u00e1\u00ba\u00afn n\u00c3\u00a0y v\u00c3\u00a0o th\u00c6\u00b0 m\u00e1\u00bb\u00a5c spam.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Vishal Kumar",
+      "timestamp_ms": 1780052414802,
+      "content": "Hiii",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Vishal Kumar",
+      "timestamp_ms": 1779495860453,
+      "content": "T\u00c3\u00b4i \u00c4\u0091ang t\u00c3\u00acm vi\u00e1\u00bb\u0087c l\u00c3\u00a0m gi\u00c3\u00a1o vi\u00c3\u00aan yoga \u00e1\u00bb\u009f khu v\u00e1\u00bb\u00b1c c\u00e1\u00bb\u00a7a b\u00e1\u00ba\u00a1n.",
+      "reactions": [
+        {
+          "reaction": "\u00e2\u009d\u00a4",
+          "actor": "The Shine Fitness and Yoga"
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1779495829477,
+      "content": "Ch\u00c3\u00a0o m\u00e1\u00bb\u00abng b\u00e1\u00ba\u00a1n Vishal Kumar \u00c4\u0091\u00e1\u00ba\u00bfn v\u00e1\u00bb\u009bi The Shine Fitness and Yoga. Hi\u00e1\u00bb\u0087n t\u00e1\u00ba\u00a1i trung t\u00c3\u00a2m \u00c4\u0091ang c\u00c3\u00b3 \u00c6\u00b0u \u00c4\u0091\u00c3\u00a3i 549K/th\u00c3\u00a1ng cho b\u00e1\u00bb\u0099 m\u00c3\u00b4n Gym v\u00c3\u00a0 699k/th\u00c3\u00a1ng cho b\u00e1\u00bb\u0099 m\u00c3\u00b4n Yoga.\nTh\u00e1\u00bb\u009di gian ho\u00e1\u00ba\u00a1t \u00c4\u0091\u00e1\u00bb\u0099ng: \n+ Th\u00e1\u00bb\u00a9 2 - Th\u00e1\u00bb\u00a9 7: 06h00 - 21h00\n+ Ch\u00e1\u00bb\u00a7 Nh\u00e1\u00ba\u00adt: 06h00 - 22h00\nM\u00c3\u00acnh quan t\u00c3\u00a2m \u00c4\u0091\u00e1\u00ba\u00bfn b\u00e1\u00bb\u0099 m\u00c3\u00b4n n\u00c3\u00a0o vui l\u00c3\u00b2ng \u00c4\u0091\u00e1\u00bb\u0083 l\u00e1\u00ba\u00a1i tin nh\u00e1\u00ba\u00afn \u00c4\u0091\u00e1\u00bb\u0083 The Shine h\u00e1\u00bb\u0097 tr\u00e1\u00bb\u00a3 nh\u00c3\u00a9 \u00f0\u009f\u0098\u0098",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Vishal Kumar",
+      "timestamp_ms": 1779495826984,
+      "content": "Hi",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Vishal Kumar",
+  "is_still_participant": false,
+  "thread_path": "filtered_threads/vishalkumar_941623615510827",
+  "magic_words": [
+    
+  ]
+}

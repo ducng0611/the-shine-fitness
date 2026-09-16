@@ -1,0 +1,39 @@
+{
+  "participants": [
+    {
+      "name": "Ngocthaivu Vu"
+    },
+    {
+      "name": "The Shine Fitness and Yoga"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1783531185515,
+      "content": "Ngocthaivu Vu \u00c4\u0091\u00c3\u00a3 tr\u00e1\u00ba\u00a3 l\u00e1\u00bb\u009di m\u00e1\u00bb\u0099t qu\u00e1\u00ba\u00a3ng c\u00c3\u00a1o.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1783531185058,
+      "content": "Ngocthaivu Vu \u00c4\u0091\u00c3\u00a3 tr\u00e1\u00ba\u00a3 l\u00e1\u00bb\u009di m\u00e1\u00bb\u0099t qu\u00e1\u00ba\u00a3ng c\u00c3\u00a1o.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Ngocthaivu Vu",
+      "timestamp_ms": 1783531183149,
+      "content": "Ngocthaivu Vu \u00c4\u0091\u00c3\u00a3 tr\u00e1\u00ba\u00a3 l\u00e1\u00bb\u009di v\u00e1\u00bb\u0081 m\u00e1\u00bb\u0099t b\u00c3\u00a0i vi\u00e1\u00ba\u00bft. Xem b\u00c3\u00a0i vi\u00e1\u00ba\u00bft(https://www.facebook.com/story.php?story_fbid=pfbid02AxeNHGAfneUoNSZZHjiPW6HWP4Vpc59TDNokm3Z5d1NFu9jdVRPUzWrtJfDWvoWHl&id=61558146043050&post_id=61558146043050_pfbid02AxeNHGAfneUoNSZZHjiPW6HWP4Vpc59TDNokm3Z5d1NFu9jdVRPUzWrtJfDWvoWHl)",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Ngocthaivu Vu",
+  "is_still_participant": false,
+  "thread_path": "filtered_threads/ngocthaivuvu_831014699948081",
+  "magic_words": [
+    
+  ]
+}

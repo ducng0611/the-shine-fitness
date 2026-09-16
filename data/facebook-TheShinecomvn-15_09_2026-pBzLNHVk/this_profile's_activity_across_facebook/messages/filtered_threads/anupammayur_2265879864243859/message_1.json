@@ -1,0 +1,53 @@
+{
+  "participants": [
+    {
+      "name": "Anupam Mayur"
+    },
+    {
+      "name": "The Shine Fitness and Yoga"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Anupam Mayur",
+      "timestamp_ms": 1779186852911,
+      "content": "Ok. thank you",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1779186683148,
+      "content": "Hi\u00e1\u00bb\u0087n \u00c4\u0091\u00c3\u00a3 \u00c4\u0091\u00e1\u00bb\u00a7 s\u00e1\u00bb\u0091 l\u00c6\u00b0\u00e1\u00bb\u00a3ng r\u00e1\u00bb\u0093i \u00e1\u00ba\u00a1! C\u00c3\u00a1m \u00c6\u00a1n b\u00e1\u00ba\u00a1n",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Anupam Mayur",
+      "timestamp_ms": 1779184044425,
+      "content": "T\u00c3\u00b4i l\u00c3\u00a0 gi\u00c3\u00a1o vi\u00c3\u00aan yoga ng\u00c6\u00b0\u00e1\u00bb\u009di \u00e1\u00ba\u00a4n \u00c4\u0090\u00e1\u00bb\u0099. T\u00c3\u00b4i \u00c4\u0091\u00c3\u00a3 d\u00e1\u00ba\u00a1y \u00e1\u00bb\u009f Vi\u00e1\u00bb\u0087t Nam \u00c4\u0091\u00c6\u00b0\u00e1\u00bb\u00a3c 6 n\u00c4\u0083m. T\u00c3\u00b4i c\u00e1\u00ba\u00a7n t\u00c3\u00acm l\u00e1\u00bb\u009bp h\u00e1\u00bb\u008dc, n\u00e1\u00ba\u00bfu b\u00e1\u00ba\u00a1n c\u00c3\u00b3 l\u00e1\u00bb\u009bp n\u00c3\u00a0o ph\u00c3\u00b9 h\u00e1\u00bb\u00a3p, vui l\u00c3\u00b2ng cho t\u00c3\u00b4i bi\u00e1\u00ba\u00bft. C\u00e1\u00ba\u00a3m \u00c6\u00a1n!",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1779183981006,
+      "content": "Ch\u00c3\u00a0o m\u00e1\u00bb\u00abng b\u00e1\u00ba\u00a1n Anupam Mayur \u00c4\u0091\u00e1\u00ba\u00bfn v\u00e1\u00bb\u009bi The Shine Fitness and Yoga. Hi\u00e1\u00bb\u0087n t\u00e1\u00ba\u00a1i trung t\u00c3\u00a2m \u00c4\u0091ang c\u00c3\u00b3 \u00c6\u00b0u \u00c4\u0091\u00c3\u00a3i 549K/th\u00c3\u00a1ng cho b\u00e1\u00bb\u0099 m\u00c3\u00b4n Gym v\u00c3\u00a0 699k/th\u00c3\u00a1ng cho b\u00e1\u00bb\u0099 m\u00c3\u00b4n Yoga.\nTh\u00e1\u00bb\u009di gian ho\u00e1\u00ba\u00a1t \u00c4\u0091\u00e1\u00bb\u0099ng: \n+ Th\u00e1\u00bb\u00a9 2 - Th\u00e1\u00bb\u00a9 7: 06h00 - 21h00\n+ Ch\u00e1\u00bb\u00a7 Nh\u00e1\u00ba\u00adt: 06h00 - 22h00\nM\u00c3\u00acnh quan t\u00c3\u00a2m \u00c4\u0091\u00e1\u00ba\u00bfn b\u00e1\u00bb\u0099 m\u00c3\u00b4n n\u00c3\u00a0o vui l\u00c3\u00b2ng \u00c4\u0091\u00e1\u00bb\u0083 l\u00e1\u00ba\u00a1i tin nh\u00e1\u00ba\u00afn \u00c4\u0091\u00e1\u00bb\u0083 The Shine h\u00e1\u00bb\u0097 tr\u00e1\u00bb\u00a3 nh\u00c3\u00a9 \u00f0\u009f\u0098\u0098",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Anupam Mayur",
+      "timestamp_ms": 1779183977861,
+      "content": "Hi",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Anupam Mayur",
+  "is_still_participant": false,
+  "thread_path": "filtered_threads/anupammayur_2265879864243859",
+  "magic_words": [
+    
+  ]
+}

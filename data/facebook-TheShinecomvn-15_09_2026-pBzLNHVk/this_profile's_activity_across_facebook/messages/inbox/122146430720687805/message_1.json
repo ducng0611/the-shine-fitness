@@ -1,0 +1,46 @@
+{
+  "participants": [
+    {
+      "name": ""
+    },
+    {
+      "name": "The Shine Fitness and Yoga"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1760355583411,
+      "content": "D\u00e1\u00ba\u00a1 hi\u00e1\u00bb\u0087n b\u00c3\u00aan m\u00c3\u00acnh ch\u00c6\u00b0a \u00e1\u00ba\u00a1",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "",
+      "timestamp_ms": 1760354184731,
+      "content": "B\u00c3\u00aan m\u00c3\u00acnh c\u00c3\u00b2n tuy\u00e1\u00bb\u0083n nv ko ad",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1760354184202,
+      "content": "Xin ch\u00c3\u00a0o anh/ch\u00e1\u00bb\u008b T\u00e1\u00ba\u00a7n M\u00e1\u00bb\u00a5c , r\u00e1\u00ba\u00a5t vui \u00c4\u0091\u00c6\u00b0\u00e1\u00bb\u00a3c h\u00e1\u00bb\u0097 tr\u00e1\u00bb\u00a3 anh ch\u00e1\u00bb\u008b, The Shine Fitness cung c\u00e1\u00ba\u00a5p c\u00c3\u00a1c d\u00e1\u00bb\u008bch v\u00e1\u00bb\u00a5: Gym, Boxing v\u00c3\u00a0 Yoga v\u00e1\u00bb\u009bi \u00c4\u0091a d\u00e1\u00ba\u00a1ng c\u00c3\u00a1c g\u00c3\u00b3i t\u00e1\u00ba\u00adp v\u00c3\u00a0 gi\u00c3\u00a1 c\u00e1\u00ba\u00a3 si\u00c3\u00aau \u00c6\u00b0u \u00c4\u0091\u00c3\u00a3i.  \n\nHi\u00e1\u00bb\u0087n t\u00e1\u00ba\u00a1i m\u00c3\u00acnh \u00c4\u0091ang quan t\u00c3\u00a2m \u00c4\u0091\u00e1\u00ba\u00bfn d\u00e1\u00bb\u008bch v\u00e1\u00bb\u00a5 n\u00c3\u00a0o vui l\u00c3\u00b2ng \u00c4\u0091\u00e1\u00bb\u0083 l\u00e1\u00ba\u00a1i tin nh\u00e1\u00ba\u00afn \u00c4\u0091\u00e1\u00bb\u0083 nh\u00e1\u00ba\u00adn t\u00c6\u00b0 v\u00e1\u00ba\u00a5n v\u00c3\u00a0 \u00c6\u00b0u \u00c4\u0091\u00c3\u00a3i t\u00e1\u00bb\u0091t nh\u00e1\u00ba\u00a5t nh\u00c3\u00a9 \u00f0\u009f\u0092\u009b",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1760354183363,
+      "content": "Customer \u00c4\u0091\u00c3\u00a3 tr\u00e1\u00ba\u00a3 l\u00e1\u00bb\u009di m\u00e1\u00bb\u0099t qu\u00e1\u00ba\u00a3ng c\u00c3\u00a1o.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "",
+  "is_still_participant": false,
+  "thread_path": "inbox/122146430720687805",
+  "magic_words": [
+    
+  ]
+}

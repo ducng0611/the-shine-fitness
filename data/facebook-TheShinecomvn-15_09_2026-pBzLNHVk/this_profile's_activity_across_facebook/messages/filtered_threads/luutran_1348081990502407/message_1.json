@@ -1,0 +1,53 @@
+{
+  "participants": [
+    {
+      "name": "Luu Tran"
+    },
+    {
+      "name": "The Shine Fitness and Yoga"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1779357927877,
+      "content": "Ch\u00c3\u00a0o b\u00e1\u00ba\u00a1n! M\u00c3\u00acnh \u00c4\u0091ang quan t\u00c3\u00a2m v\u00e1\u00bb\u0081 b\u00e1\u00bb\u0099 m\u00c3\u00b4n n\u00c3\u00a0o \u00e1\u00ba\u00a1! B\u00c3\u00aan m\u00c3\u00acnh c\u00c3\u00b3 gym, yoga v\u00c3\u00a0 boxing \u00e1\u00ba\u00a1!",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1779357925838,
+      "content": "D\u00e1\u00ba\u00a1 hi\u00e1\u00bb\u0087n b\u00c3\u00aan m\u00c3\u00acnh \u00c4\u0091ang c\u00c3\u00b3 ch\u00c6\u00b0\u00c6\u00a1ng tr\u00c3\u00acnh \u00c6\u00b0u \u00c4\u0091\u00c3\u00a3i v\u00e1\u00bb\u009bi m\u00e1\u00bb\u00a9c gi\u00c3\u00a1 ch\u00e1\u00bb\u0089 t\u00e1\u00bb\u00ab 549k/Th\u00c3\u00a1ng \u00e1\u00ba\u00a1!",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Luu Tran",
+      "timestamp_ms": 1779356966864,
+      "content": "Gi\u00c3\u00a1 t\u00e1\u00ba\u00adp gym bao nhi\u00c3\u00aau?",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1779356966144,
+      "content": "Ch\u00c3\u00a0o m\u00e1\u00bb\u00abng Luu Tran  \u00c4\u0091\u00e1\u00ba\u00bfn v\u00e1\u00bb\u009bi The Shine Fitness. Hi\u00e1\u00bb\u0087n t\u00e1\u00ba\u00a1i b\u00c3\u00aan em \u00c4\u0091ang c\u00c3\u00b3 \u00c6\u00b0u \u00c4\u0091\u00c3\u00a3i 549K/th\u00c3\u00a1ng cho b\u00e1\u00bb\u0099 m\u00c3\u00b4n Gym v\u00c3\u00a0 Boxing, 699K/th\u00c3\u00a1ng cho Yoga.\nTh\u00e1\u00bb\u009di gian ho\u00e1\u00ba\u00a1t \u00c4\u0091\u00e1\u00bb\u0099ng: \n+ Th\u00e1\u00bb\u00a9 2 - Th\u00e1\u00bb\u00a9 7: 6h - 21h\n+ Ch\u00e1\u00bb\u00a7 Nh\u00e1\u00ba\u00adt: 6h - 22h\nM\u00c3\u00acnh quan t\u00c3\u00a2m \u00c4\u0091\u00e1\u00ba\u00bfn b\u00e1\u00bb\u0099 m\u00c3\u00b4n n\u00c3\u00a0o vui l\u00c3\u00b2ng \u00c4\u0091\u00e1\u00bb\u0083 l\u00e1\u00ba\u00a1i tin nh\u00e1\u00ba\u00afn \u00c4\u0091\u00e1\u00bb\u0083 The Shine h\u00e1\u00bb\u0097 tr\u00e1\u00bb\u00a3 nh\u00c3\u00a9 \u00f0\u009f\u0098\u0098",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1779356965593,
+      "content": "Luu Tran \u00c4\u0091\u00c3\u00a3 tr\u00e1\u00ba\u00a3 l\u00e1\u00bb\u009di m\u00e1\u00bb\u0099t qu\u00e1\u00ba\u00a3ng c\u00c3\u00a1o.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Luu Tran",
+  "is_still_participant": false,
+  "thread_path": "filtered_threads/luutran_1348081990502407",
+  "magic_words": [
+    
+  ]
+}

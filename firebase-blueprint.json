@@ -1,0 +1,205 @@
+{
+  "entities": {
+    "Registration": {
+      "title": "Registration",
+      "description": "Free trial pass and appointment registrations",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "packageType": { "type": "string" },
+        "goal": { "type": "string" },
+        "preferredTime": { "type": "string" },
+        "notes": { "type": "string" },
+        "voucherCode": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["fullName", "phone", "email", "createdAt"]
+    },
+    "HealthAssessment": {
+      "title": "HealthAssessment",
+      "description": "User BMI, TDEE, and fitness assessment submissions",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "gender": { "type": "string" },
+        "age": { "type": "number" },
+        "heightCm": { "type": "number" },
+        "weightKg": { "type": "number" },
+        "waistCm": { "type": "number" },
+        "neckCm": { "type": "number" },
+        "activityLevel": { "type": "string" },
+        "bmi": { "type": "number" },
+        "bmiCategory": { "type": "string" },
+        "tdee": { "type": "number" },
+        "bmr": { "type": "number" },
+        "bodyFatPct": { "type": "number" },
+        "recommendedCalories": { "type": "number" },
+        "goal": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["fullName", "phone", "email", "bmi", "tdee", "createdAt"]
+    },
+    "Member": {
+      "title": "Member",
+      "description": "Member profiles authenticated via OTP or Gmail",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "membershipTier": { "type": "string" },
+        "membershipCode": { "type": "string" },
+        "authProvider": { "type": "string" },
+        "joinedDate": { "type": "string" },
+        "expiryDate": { "type": "string" }
+      },
+      "required": ["uid", "fullName", "membershipCode"]
+    },
+    "CheckIn": {
+      "title": "CheckIn",
+      "description": "Reception check-in log records for gym members",
+      "type": "object",
+      "properties": {
+        "memberCode": { "type": "string" },
+        "fullName": { "type": "string" },
+        "membershipTier": { "type": "string" },
+        "branch": { "type": "string" },
+        "checkInTime": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["memberCode", "fullName", "checkInTime"]
+    },
+    "WorkoutLog": {
+      "title": "WorkoutLog",
+      "description": "Daily workout logs with sets, reps, and weights recorded by members",
+      "type": "object",
+      "properties": {
+        "memberCode": { "type": "string" },
+        "uid": { "type": "string" },
+        "date": { "type": "string" },
+        "exerciseName": { "type": "string" },
+        "category": { "type": "string" },
+        "sets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "setNumber": { "type": "number" },
+              "reps": { "type": "number" },
+              "weightKg": { "type": "number" },
+              "completed": { "type": "boolean" }
+            }
+          }
+        },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["memberCode", "date", "exerciseName", "sets", "createdAt"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Authorized admin users with role-based access control",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "fullName": { "type": "string" },
+        "role": { "type": "string" },
+        "permissions": { "type": "array" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "GymPackage": {
+      "title": "GymPackage",
+      "description": "Membership and training package offerings",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "price": { "type": "number" },
+        "durationMonths": { "type": "number" },
+        "benefits": { "type": "array" },
+        "isActive": { "type": "boolean" },
+        "isPopular": { "type": "boolean" }
+      },
+      "required": ["code", "name", "price", "durationMonths"]
+    },
+    "PromotionCampaign": {
+      "title": "PromotionCampaign",
+      "description": "Vouchers and promotional discount campaigns",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string" },
+        "title": { "type": "string" },
+        "discountType": { "type": "string" },
+        "discountValue": { "type": "number" },
+        "startDate": { "type": "string" },
+        "endDate": { "type": "string" },
+        "usageLimit": { "type": "number" },
+        "usageCount": { "type": "number" },
+        "isActive": { "type": "boolean" }
+      },
+      "required": ["code", "title", "discountValue", "isActive"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Cleaned customer records with demographic, membership, and segmentation attributes",
+      "type": "object",
+      "properties": {
+        "memberCode": { "type": "string" },
+        "fullName": { "type": "string" },
+        "birthYear": { "type": "number" },
+        "gender": { "type": "string" },
+        "occupation": { "type": "string" },
+        "district": { "type": "string" },
+        "incomeRange": { "type": "string" },
+        "leadSource": { "type": "string" },
+        "registeredDate": { "type": "string" },
+        "trainingGoal": { "type": "string" },
+        "packageCode": { "type": "string" },
+        "packagePrice": { "type": "number" },
+        "paymentStatus": { "type": "string" },
+        "ptSessions": { "type": "number" },
+        "totalSpent": { "type": "number" },
+        "renewalCount": { "type": "number" },
+        "expiryDate": { "type": "string" },
+        "membershipStatus": { "type": "string" },
+        "customerSegment": { "type": "string" }
+      },
+      "required": ["memberCode", "fullName", "packageCode"]
+    },
+    "EmailMarketingFlow": {
+      "title": "EmailMarketingFlow",
+      "description": "Automated email workflows and marketing sequences",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "trigger": { "type": "string" },
+        "status": { "type": "string" },
+        "steps": { "type": "array" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "trigger", "status", "steps"]
+    }
+  },
+  "firestore": {
+    "registrations": { "entity": "Registration" },
+    "health_assessments": { "entity": "HealthAssessment" },
+    "members": { "entity": "Member" },
+    "check_ins": { "entity": "CheckIn" },
+    "workout_logs": { "entity": "WorkoutLog" },
+    "admins": { "entity": "Admin" },
+    "packages": { "entity": "GymPackage" },
+    "promotions": { "entity": "PromotionCampaign" },
+    "email_campaigns": { "entity": "EmailMarketingFlow" },
+    "customers": { "entity": "Customer" }
+  }
+}

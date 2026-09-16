@@ -1,0 +1,51 @@
+{
+  "participants": [
+    {
+      "name": "V\u00c3\u00b5 V\u00c4\u0083n Ti\u00e1\u00ba\u00bfn"
+    },
+    {
+      "name": "The Shine Fitness and Yoga"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1765894072798,
+      "content": "The Shine Fitness & Yoga xin ch\u00c3\u00a0o!\n\nC\u00c3\u00a1m \u00c6\u00a1n b\u00e1\u00ba\u00a1n \u00c4\u0091\u00c3\u00a3 \u00c4\u0091\u00e1\u00bb\u0083 l\u00e1\u00ba\u00a1i tin nh\u00e1\u00ba\u00afn. Ch\u00c3\u00bang t\u00c3\u00b4i \u00c4\u0091\u00c3\u00a3 nh\u00e1\u00ba\u00adn \u00c4\u0091\u00c6\u00b0\u00e1\u00bb\u00a3c tin nh\u00e1\u00ba\u00afn c\u00e1\u00bb\u00a7a b\u00e1\u00ba\u00a1n, ch\u00c3\u00bang t\u00c3\u00b4i s\u00e1\u00ba\u00bd ph\u00e1\u00ba\u00a3n h\u00e1\u00bb\u0093i s\u00e1\u00bb\u009bm nh\u00e1\u00ba\u00a5t trong v\u00c3\u00a0i ph\u00c3\u00bat!",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "V\u00c3\u00b5 V\u00c4\u0083n Ti\u00e1\u00ba\u00bfn",
+      "timestamp_ms": 1765894066326,
+      "photos": [
+        {
+          "uri": "this_profile's_activity_across_facebook/messages/filtered_threads/vovantien_880957201117706/photos/731790749970619.jpg",
+          "creation_timestamp": 1765894061
+        }
+      ],
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1765894065439,
+      "content": "Xin ch\u00c3\u00a0o anh/ch\u00e1\u00bb\u008b V\u00c3\u00b5 V\u00c4\u0083n Ti\u00e1\u00ba\u00bfn  , The Shine Fitness cung c\u00e1\u00ba\u00a5p c\u00c3\u00a1c d\u00e1\u00bb\u008bch v\u00e1\u00bb\u00a5: Gym, Boxing, Yoga v\u00e1\u00bb\u009bi \u00c4\u0091a d\u00e1\u00ba\u00a1ng c\u00c3\u00a1c g\u00c3\u00b3i t\u00e1\u00ba\u00adp v\u00c3\u00a0 gi\u00c3\u00a1 c\u00e1\u00ba\u00a3 si\u00c3\u00aau \u00c6\u00b0u \u00c4\u0091\u00c3\u00a3i.  \n\nHi\u00e1\u00bb\u0087n t\u00e1\u00ba\u00a1i m\u00c3\u00acnh \u00c4\u0091ang quan t\u00c3\u00a2m \u00c4\u0091\u00e1\u00ba\u00bfn b\u00e1\u00bb\u0099 m\u00c3\u00b4n n\u00c3\u00a0o \u00e1\u00ba\u00a1? Vui l\u00c3\u00b2ng cho Ad bi\u00e1\u00ba\u00bft \u00c4\u0091\u00e1\u00bb\u0083 g\u00e1\u00bb\u00adi \u00c6\u00b0u \u00c4\u0091\u00c3\u00a3i t\u00e1\u00bb\u0091t nh\u00e1\u00ba\u00a5t nh\u00c3\u00a9\u00f0\u009f\u0092\u009b",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1765894064277,
+      "content": "V\u00c3\u00b5 V\u00c4\u0083n Ti\u00e1\u00ba\u00bfn \u00c4\u0091\u00c3\u00a3 tr\u00e1\u00ba\u00a3 l\u00e1\u00bb\u009di m\u00e1\u00bb\u0099t qu\u00e1\u00ba\u00a3ng c\u00c3\u00a1o.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "V\u00c3\u00b5 V\u00c4\u0083n Ti\u00e1\u00ba\u00bfn",
+  "is_still_participant": false,
+  "thread_path": "filtered_threads/vovantien_880957201117706",
+  "magic_words": [
+    
+  ]
+}

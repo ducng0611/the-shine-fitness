@@ -1,0 +1,53 @@
+{
+  "participants": [
+    {
+      "name": "Anh Kim"
+    },
+    {
+      "name": "The Shine Fitness and Yoga"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1779340201745,
+      "content": "Ch\u00c3\u00a0o b\u00e1\u00ba\u00a1n! M\u00c3\u00acnh \u00c4\u0091ang quan t\u00c3\u00a2m v\u00e1\u00bb\u0081 b\u00e1\u00bb\u0099 m\u00c3\u00b4n n\u00c3\u00a0o \u00e1\u00ba\u00a1! B\u00c3\u00aan m\u00c3\u00acnh c\u00c3\u00b3 gym, yoga v\u00c3\u00a0 boxing \u00e1\u00ba\u00a1!",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1779340199571,
+      "content": "D\u00e1\u00ba\u00a1 hi\u00e1\u00bb\u0087n \u00c4\u0091\u00e1\u00bb\u008ba ch\u00e1\u00bb\u0089 ph\u00c3\u00b2ng t\u00e1\u00ba\u00adp n\u00e1\u00ba\u00b1m \u00e1\u00bb\u009f 154 Ho\u00c3\u00a0ng Hoa Th\u00c3\u00a1m, ph\u00c6\u00b0\u00e1\u00bb\u009dng 12, qu\u00e1\u00ba\u00adn T\u00c3\u00a2n B\u00c3\u00acnh \u00e1\u00ba\u00a1!",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Anh Kim",
+      "timestamp_ms": 1779340159372,
+      "content": "\u00c4\u0090\u00e1\u00bb\u008ba ch\u00e1\u00bb\u0089 ph\u00c3\u00b2ng t\u00e1\u00ba\u00adp \u00e1\u00bb\u009f \u00c4\u0091\u00c3\u00a2u?",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1779340158564,
+      "content": "Ch\u00c3\u00a0o m\u00e1\u00bb\u00abng Anh Kim  \u00c4\u0091\u00e1\u00ba\u00bfn v\u00e1\u00bb\u009bi The Shine Fitness. Hi\u00e1\u00bb\u0087n t\u00e1\u00ba\u00a1i b\u00c3\u00aan em \u00c4\u0091ang c\u00c3\u00b3 \u00c6\u00b0u \u00c4\u0091\u00c3\u00a3i 549K/th\u00c3\u00a1ng cho b\u00e1\u00bb\u0099 m\u00c3\u00b4n Gym v\u00c3\u00a0 Boxing, 699K/th\u00c3\u00a1ng cho Yoga.\nTh\u00e1\u00bb\u009di gian ho\u00e1\u00ba\u00a1t \u00c4\u0091\u00e1\u00bb\u0099ng: \n+ Th\u00e1\u00bb\u00a9 2 - Th\u00e1\u00bb\u00a9 7: 6h - 21h\n+ Ch\u00e1\u00bb\u00a7 Nh\u00e1\u00ba\u00adt: 6h - 22h\nM\u00c3\u00acnh quan t\u00c3\u00a2m \u00c4\u0091\u00e1\u00ba\u00bfn b\u00e1\u00bb\u0099 m\u00c3\u00b4n n\u00c3\u00a0o vui l\u00c3\u00b2ng \u00c4\u0091\u00e1\u00bb\u0083 l\u00e1\u00ba\u00a1i tin nh\u00e1\u00ba\u00afn \u00c4\u0091\u00e1\u00bb\u0083 The Shine h\u00e1\u00bb\u0097 tr\u00e1\u00bb\u00a3 nh\u00c3\u00a9 \u00f0\u009f\u0098\u0098",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1779340157903,
+      "content": "Anh Kim \u00c4\u0091\u00c3\u00a3 tr\u00e1\u00ba\u00a3 l\u00e1\u00bb\u009di m\u00e1\u00bb\u0099t qu\u00e1\u00ba\u00a3ng c\u00c3\u00a1o.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Anh Kim",
+  "is_still_participant": false,
+  "thread_path": "filtered_threads/anhkim_1535394878294236",
+  "magic_words": [
+    
+  ]
+}

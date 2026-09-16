@@ -1,0 +1,60 @@
+{
+  "participants": [
+    {
+      "name": "Na Ngo\u00e1\u00ba\u00a1i"
+    },
+    {
+      "name": "The Shine Fitness and Yoga"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1766221542405,
+      "content": "The Shine Fitness & Yoga xin ch\u00c3\u00a0o!\n\nC\u00c3\u00a1m \u00c6\u00a1n b\u00e1\u00ba\u00a1n \u00c4\u0091\u00c3\u00a3 \u00c4\u0091\u00e1\u00bb\u0083 l\u00e1\u00ba\u00a1i tin nh\u00e1\u00ba\u00afn. Ch\u00c3\u00bang t\u00c3\u00b4i \u00c4\u0091\u00c3\u00a3 nh\u00e1\u00ba\u00adn \u00c4\u0091\u00c6\u00b0\u00e1\u00bb\u00a3c tin nh\u00e1\u00ba\u00afn c\u00e1\u00bb\u00a7a b\u00e1\u00ba\u00a1n, ch\u00c3\u00bang t\u00c3\u00b4i s\u00e1\u00ba\u00bd ph\u00e1\u00ba\u00a3n h\u00e1\u00bb\u0093i s\u00e1\u00bb\u009bm nh\u00e1\u00ba\u00a5t trong v\u00c3\u00a0i ph\u00c3\u00bat!",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Na Ngo\u00e1\u00ba\u00a1i",
+      "timestamp_ms": 1766221540179,
+      "content": "\u00c4\u0090k 0 20tr v\u00e1\u00bb\u00a5 v\u00c3\u00ac cf. C ck ko9",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1764929519394,
+      "content": "Ch\u00c3\u00a0o b\u00e1\u00ba\u00a1n! M\u00c3\u00acnh \u00c4\u0091ang quan t\u00c3\u00a2m v\u00e1\u00bb\u0081 b\u00e1\u00bb\u0099 m\u00c3\u00b4n n\u00c3\u00a0o \u00e1\u00ba\u00a1! B\u00c3\u00aan m\u00c3\u00acnh c\u00c3\u00b3 gym, yoga v\u00c3\u00a0 boxing \u00e1\u00ba\u00a1!",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Na Ngo\u00e1\u00ba\u00a1i",
+      "timestamp_ms": 1764929237217,
+      "content": "C\u00c3\u00b3 nh\u00e1\u00bb\u00afng b\u00e1\u00bb\u0099 m\u00c3\u00b4n n\u00c3\u00a0o t\u00e1\u00ba\u00a1i The Shine Fitness?",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1764929236410,
+      "content": "Hi Ngo\u00e1\u00ba\u00a1i! Please let us know how we can help you.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1764929235629,
+      "content": "Na Ngo\u00e1\u00ba\u00a1i \u00c4\u0091\u00c3\u00a3 tr\u00e1\u00ba\u00a3 l\u00e1\u00bb\u009di m\u00e1\u00bb\u0099t qu\u00e1\u00ba\u00a3ng c\u00c3\u00a1o.",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Na Ngo\u00e1\u00ba\u00a1i",
+  "is_still_participant": false,
+  "thread_path": "filtered_threads/nangoai_1441604661299348",
+  "magic_words": [
+    
+  ]
+}

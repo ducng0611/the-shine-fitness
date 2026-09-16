@@ -1,0 +1,39 @@
+{
+  "participants": [
+    {
+      "name": "Nguy\u00e1\u00bb\u0085n T\u00c3\u00a2n H\u00c3\u00b9ng"
+    },
+    {
+      "name": "The Shine Fitness and Yoga"
+    }
+  ],
+  "messages": [
+    {
+      "sender_name": "Nguy\u00e1\u00bb\u0085n T\u00c3\u00a2n H\u00c3\u00b9ng",
+      "timestamp_ms": 1763877988093,
+      "content": "Sao l\u00c3\u00a0 sao",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "Nguy\u00e1\u00bb\u0085n T\u00c3\u00a2n H\u00c3\u00b9ng",
+      "timestamp_ms": 1763876821231,
+      "content": "Ai h\u00e1\u00bb\u008fi",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    },
+    {
+      "sender_name": "The Shine Fitness and Yoga",
+      "timestamp_ms": 1763876820844,
+      "content": "Hi T\u00c3\u00a2n H\u00c3\u00b9ng! We wanted to follow up. Do you have any questions?",
+      "is_geoblocked_for_viewer": false,
+      "is_unsent_image_by_messenger_kid_parent": false
+    }
+  ],
+  "title": "Nguy\u00e1\u00bb\u0085n T\u00c3\u00a2n H\u00c3\u00b9ng",
+  "is_still_participant": false,
+  "thread_path": "filtered_threads/nguyentanhung_866195175969588",
+  "magic_words": [
+    
+  ]
+}
