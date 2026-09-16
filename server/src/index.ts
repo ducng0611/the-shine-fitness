@@ -10,18 +10,17 @@ import {
   addRegistration,
   addMember,
   loginMember,
-} from "./server/csvStorage";
-import { parseExcelData } from "./server/excelDataService";
-import { resolveMemberPronoun } from "./server/genderHelper";
+} from "./csvStorage";
+import { parseExcelData } from "./excelDataService";
+import { resolveMemberPronoun } from "./genderHelper";
 import {
   buildConsultantSystemInstruction,
   sanitizeConsultantOutput,
   generateSmartConsultantFallback,
   ConsultantContext,
   TRIAL_VOUCHER_CODE,
-} from "./server/chatConsultantKnowledge";
-import { requireAuth, AuthRequest } from "./src/middleware/auth.ts";
-import { getOrCreateUser, getUsers } from "./src/db/users.ts";
+} from "./chatConsultantKnowledge";
+import { requireAuth, AuthRequest } from "./middleware/auth.ts";
 
 async function startServer() {
   const app = express();
@@ -48,32 +47,7 @@ async function startServer() {
     res.json({ status: "ok" });
   });
 
-  // Cloud SQL & Auth sync endpoints
-  app.post("/api/auth/sync", requireAuth, async (req: AuthRequest, res) => {
-    try {
-      const uid = req.user?.uid;
-      const email = req.user?.email || "";
-      const displayName = req.body?.displayName;
-      if (!uid) {
-        return res.status(400).json({ error: "Missing user identity" });
-      }
-      const user = await getOrCreateUser(uid, email, displayName);
-      res.json({ success: true, user });
-    } catch (error: any) {
-      console.error("Failed to sync user with database:", error);
-      res.status(500).json({ error: "Failed to sync user" });
-    }
-  });
 
-  app.get("/api/users", requireAuth, async (req: AuthRequest, res) => {
-    try {
-      const users = await getUsers();
-      res.json({ users });
-    } catch (error: any) {
-      console.error("Failed to fetch users:", error);
-      res.status(500).json({ error: "Failed to fetch users" });
-    }
-  });
 
   // Serve static thumbnails from project root and public folder
   app.use('/thumbnails', express.static(path.join(process.cwd(), 'thumbnails')));
@@ -103,7 +77,7 @@ async function startServer() {
         skip_empty_lines: true
       });
 
-      const { getGoogleReviewText, getGoogleReviewTime } = await import('./src/data/bilingualReviews');
+      const { getGoogleReviewText, getGoogleReviewTime } = await import('../../src/data/bilingualReviews');
 
       const reviews = records.map((record: any) => {
         const match = record.rating?.match(/(\d+)/);
@@ -142,7 +116,7 @@ async function startServer() {
 
   app.get("/api/reviews/facebook", async (req, res) => {
     try {
-      const { FACEBOOK_REVIEWS_BILINGUAL } = await import('./src/data/bilingualReviews');
+      const { FACEBOOK_REVIEWS_BILINGUAL } = await import('../../src/data/bilingualReviews');
       
       const reviews = FACEBOOK_REVIEWS_BILINGUAL.map((item) => ({
         author: item.author,

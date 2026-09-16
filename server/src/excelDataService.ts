@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 import * as XLSXModule from "xlsx";
 const XLSX = (XLSXModule as any).default || XLSXModule;
-import { GymPackage, CustomerRecord, CustomerStatus } from "../src/types";
+import { GymPackage, CustomerRecord, CustomerStatus } from "../../src/types";
 
 export interface ExcelDataResult {
   distinctPackages: GymPackage[];
