@@ -4,12 +4,12 @@ export const translations = {
   vi: {
     nav: {
       services: 'Dịch vụ',
-      specials: 'Ưu đãi & Bảng giá',
+      specials: 'Ưu đãi',
       whyUs: 'Vì sao chọn chúng tôi',
-      reviews: 'Đánh giá',
+      reviews: 'Trải nghiệm',
       tiktok: 'TikTok Clips',
-      bmiCalc: 'Đo Chỉ Số BMI',
-      blogs: 'Blog Thể Hình',
+      bmiCalc: 'Đo BMI',
+      blogs: 'Tin tức',
       contact: 'Liên hệ',
       bookNow: 'Đặt lịch tập',
       memberLogin: 'Hội viên',
@@ -19,7 +19,7 @@ export const translations = {
     },
     hero: {
       location: '154 Hoàng Hoa Thám, P. Bảy Hiền, Tân Bình, TP.HCM',
-      title1: 'NÂNG TẦM SỨC KHỎE',
+      title1: 'NÂNG TẦM SỨC KHỎE - ',
       title2: 'TỎA SÁNG CÙNG THE SHINE',
       subtitle: 'Tổ hợp Gym & Yoga chuẩn 5 sao tại Tân Bình. Trải nghiệm không gian tập luyện hiện đại, huấn luyện viên 1-kèm-1 tận tâm, lớp học tràn đầy năng lượng và tiện ích cao cấp.',
       bookNowFast: 'Đặt Lịch Tập Ngay',
@@ -178,8 +178,8 @@ export const translations = {
       hoursValue: 'Thứ 2 - Thứ 7: 06:00 - 21:00 | Chủ Nhật: 06:00 - 20:30',
       hotlineTitle: 'Điện thoại đặt lịch / Tư vấn:',
       callNow: 'Gọi hotline: 0946 293 593',
-      bookAppointment: 'Đặt Lịch Trực Tuyến',
-      directions: 'Xem chỉ đường trên Google Maps',
+      bookAppointment: 'Đặt Lịch',
+      directions: 'Xem Chỉ Đường',
     },
     bookingModal: {
       badge: 'Đặt Lịch & Đăng Ký Tập Thử',
@@ -195,7 +195,7 @@ export const translations = {
       preferredTime: 'Khung giờ bạn muốn đến tập',
       goal: 'Mục tiêu thể hình chính',
       notes: 'Ghi chú thêm (nếu có)',
-      notesPlaceholder: 'Ví dụ: Tôi muốn hỏi thêm về lớp Yoga sáng, hoặc có người hướng dẫn...',
+      notesPlaceholder: 'Ví dụ: Cần tư vấn Yoga, PT kèm riêng...',
       submitBtn: 'Xác Nhận Đăng Ký',
       submitting: 'Đang xử lý đăng ký...',
       successTitle: 'Đăng Ký Thành Công!',
@@ -260,6 +260,23 @@ export const translations = {
       logout: 'Đăng xuất tài khoản',
       close: 'Đóng'
     },
+    
+        floorPlan: {
+      title: 'Sơ Đồ Phòng Tập',
+      subtitle: 'Khám phá không gian tập luyện hiện đại 5 sao theo từng tầng',
+      groundFloor: 'Tầng 1 (Bãi Xe & Lễ Tân)',
+      firstFloor: 'Tầng 2 (Khu Tập Luyện)',
+      zones: {
+        reception: { name: 'Lễ Tân & Sảnh Chờ', desc: 'Khu vực đón tiếp, check-in hội viên, tư vấn dịch vụ và khu vực nghỉ ngơi.', equipment: ['Quầy lễ tân', 'Ghế sofa', 'Tủ khóa thông minh', 'Nước uống'] },
+        inbody: { name: 'Khu Vực Đo InBody', desc: 'Phòng kiểm tra phân tích chỉ số cơ thể với thiết bị chuẩn y khoa.', equipment: ['Máy đo InBody 270', 'Bàn tư vấn', 'Bảng theo dõi tiến độ'] },
+        cardio: { name: 'Khu Vực Cardio', desc: 'Trang bị máy chạy bộ, máy eliptical hiện đại giúp đốt mỡ và rèn luyện tim mạch.', equipment: ['Máy chạy bộ', 'Máy đạp xe', 'Máy trượt tuyết', 'Máy leo cầu thang'] },
+        freeweights: { name: 'Khu Tạ Tự Do', desc: 'Không gian rộng rãi với đầy đủ các loại tạ đơn, tạ đòn, rack tập.', equipment: ['Tạ đơn (Dumbbells)', 'Ghế đẩy tạ', 'Rack Squat', 'Tạ đòn chuẩn Olympic'] },
+        boxing: { name: 'Khu Vực Boxing', desc: 'Sàn đấu chuẩn và bao cát chuyên dụng dành riêng cho Boxing, Kickboxing, Muay Thái.', equipment: ['Sàn Boxing', 'Bao cát', 'Găng tay', 'Đích đấm'] },
+        machines: { name: 'Khu Máy Kháng Lực', desc: 'Hệ thống máy tập đa năng, an toàn, hỗ trợ tập trung từng nhóm cơ cụ thể.', equipment: ['Máy ép ngực', 'Máy kéo xô', 'Máy ép chân', 'Máy kéo cáp đa năng'] },
+        yoga: { name: 'Phòng Tập Yoga', desc: 'Studio tĩnh lặng, rộng rãi với thảm tập chuẩn, thích hợp cho Yoga, Zumba, Aerobic.', equipment: ['Thảm Yoga', 'Gạch tập', 'Bóng cao su', 'Hệ thống âm thanh'] },
+        locker: { name: 'Phòng Thay Đồ', desc: 'Locker nam/nữ riêng biệt, sạch sẽ, trang bị tủ khóa bảo mật, phòng xông hơi.', equipment: ['Tủ locker', 'Phòng xông hơi', 'Phòng tắm đứng', 'Máy sấy tóc'] }
+      }
+    },
     footer: {
       about: 'The Shine Fitness & Yoga - Điểm đến thể hình và chăm sóc sức khỏe hàng đầu tại Tân Bình, TP. Hồ Chí Minh. SHINE ON, SWEAT ON.',
       quickLinks: 'Liên kết nhanh',
@@ -283,12 +300,12 @@ export const translations = {
   en: {
     nav: {
       services: 'Services',
-      specials: 'Specials & Pricing',
+      specials: 'Offers',
       whyUs: 'Why Choose Us',
-      reviews: 'Reviews',
+      reviews: 'Experience',
       tiktok: 'TikTok Clips',
-      bmiCalc: 'BMI Calculator',
-      blogs: 'Fitness Blog',
+      bmiCalc: 'BMI',
+      blogs: 'News',
       contact: 'Contact',
       bookNow: 'Book Now',
       memberLogin: 'Member',
@@ -298,7 +315,7 @@ export const translations = {
     },
     hero: {
       location: '154 Hoang Hoa Tham, Bay Hien, Tan Binh, HCMC',
-      title1: 'ELEVATE YOUR HEALTH',
+      title1: 'ELEVATE YOUR HEALTH - ',
       title2: 'SHINE WITH THE SHINE',
       subtitle: 'A premier 5-star Gym & Yoga sanctuary in Tan Binh. Enjoy modern equipment, dedicated 1-on-1 personal trainers, energetic group classes, and a rejuvenating wellness atmosphere.',
       bookNowFast: 'Book Your Session',
@@ -457,8 +474,8 @@ export const translations = {
       hoursValue: 'Mon - Sat: 06:00 AM - 10:00 PM | Sun: 07:00 AM - 08:00 PM',
       hotlineTitle: 'Booking & Consultation Line:',
       callNow: 'Call Hotline: 0946 293 593',
-      bookAppointment: 'Book Online Appointment',
-      directions: 'Open in Google Maps',
+      bookAppointment: 'Book Now',
+      directions: 'Get Directions',
     },
     bookingModal: {
       badge: 'Booking & Trial Registration',
@@ -474,7 +491,7 @@ export const translations = {
       preferredTime: 'Preferred Time to Visit',
       goal: 'Primary Fitness Goal',
       notes: 'Additional Notes (Optional)',
-      notesPlaceholder: 'e.g. I want to ask about morning Yoga or personal trainer availability...',
+      notesPlaceholder: 'e.g. Need morning Yoga info, PT requests...',
       submitBtn: 'Confirm Registration',
       submitting: 'Processing registration...',
       successTitle: 'Registration Confirmed!',
@@ -538,6 +555,23 @@ export const translations = {
       privileges: 'Membership Privileges',
       logout: 'Sign Out',
       close: 'Close'
+    },
+    
+        floorPlan: {
+      title: 'Gym Floor Plan',
+      subtitle: 'Explore our modern 5-star workout space across two floors',
+      groundFloor: 'Floor 1 (Parking & Reception)',
+      firstFloor: 'Floor 2 (Workout Zones)',
+      zones: {
+        reception: { name: 'Reception & Lounge', desc: 'Welcome area, member check-in, service consultation, and relaxation zone.', equipment: ['Reception desk', 'Sofas', 'Smart lockers', 'Water station'] },
+        inbody: { name: 'InBody Assessment', desc: 'Body composition analysis room with medical-grade equipment.', equipment: ['InBody 270 machine', 'Consultation desk', 'Progress charts'] },
+        cardio: { name: 'Cardio Zone', desc: 'Equipped with modern treadmills and ellipticals for fat burning and cardio health.', equipment: ['Treadmills', 'Stationary bikes', 'Ellipticals', 'Stair climbers'] },
+        freeweights: { name: 'Free Weights Area', desc: 'Spacious area fully equipped with dumbbells, barbells, and racks.', equipment: ['Dumbbells', 'Benches', 'Squat Racks', 'Olympic barbells'] },
+        boxing: { name: 'Boxing Zone', desc: 'Standard boxing ring and heavy bags for Boxing, Kickboxing, and Muay Thai.', equipment: ['Boxing Ring', 'Heavy Bags', 'Gloves', 'Focus Mitts'] },
+        machines: { name: 'Resistance Machines', desc: 'Versatile and safe machine system targeting specific muscle groups.', equipment: ['Chest press', 'Lat pulldown', 'Leg press', 'Cable crossover'] },
+        yoga: { name: 'Yoga Studio', desc: 'Spacious, tranquil studio with quality mats, perfect for Yoga, Zumba, and Aerobic.', equipment: ['Yoga mats', 'Blocks', 'Swiss balls', 'Sound system'] },
+        locker: { name: 'Locker Rooms', desc: 'Separate, clean lockers for men/women with secure storage and sauna facilities.', equipment: ['Secure lockers', 'Sauna', 'Showers', 'Hair dryers'] }
+      }
     },
     footer: {
       about: 'The Shine Fitness & Yoga - Premier fitness and wellness club in Tan Binh, Ho Chi Minh City. SHINE ON, SWEAT ON.',

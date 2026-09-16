@@ -93,7 +93,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs overflow-y-auto animate-fadeIn">
-      <div className="relative w-full max-w-xl bg-white dark:bg-[#1a1a1a] rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden my-6 transition-all">
+      <div className="relative w-full max-w-2xl max-h-[95vh] bg-white dark:bg-[#1a1a1a] rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-y-auto my-auto transition-all">
         
         {/* Header Banner */}
         <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/80 p-6 sm:p-7 text-white border-b-2 border-brand-orange relative">
@@ -306,12 +306,12 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                 {t.notes}
               </label>
-              <textarea
+              <input
+                type="text"
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                 placeholder={t.notesPlaceholder}
-                rows={2}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-black/30 text-slate-900 dark:text-white text-sm focus:outline-hidden focus:border-brand-orange transition-colors resize-none"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-white/10 bg-slate-50 dark:bg-black/30 text-slate-900 dark:text-white text-sm focus:outline-hidden focus:border-brand-orange transition-colors"
               />
             </div>
 

@@ -264,7 +264,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs overflow-y-auto animate-fadeIn">
-      <div className="relative w-full max-w-md bg-white dark:bg-[#1a1a1a] rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden my-6 transition-all">
+      <div className="relative w-full max-w-md max-h-[95vh] bg-white dark:bg-[#1a1a1a] rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-y-auto my-auto transition-all">
         
         {/* Header */}
         <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/80 p-6 text-white border-b-2 border-brand-orange relative">

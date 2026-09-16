@@ -139,6 +139,14 @@ export function getPersonalizedGreeting(lang: Language, user?: MemberUser | null
 export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal }: ChatbotProps) {
   const t = translations[lang].chatbot;
   const [isOpen, setIsOpen] = useState(false);
+
+  // Auto-open chatbot after 1.5s to suggest helping the customer
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsOpen(true);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
   const [effectiveUser, setEffectiveUser] = useState<MemberUser | null>(currentUser || null);
   const [copiedVoucher, setCopiedVoucher] = useState(false);
 
@@ -160,13 +168,36 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal }: 
     }
   }, [currentUser]);
 
-  const [messages, setMessages] = useState<Message[]>(() => [
-    { 
-      id: 'initial', 
-      role: 'model', 
-      text: getPersonalizedGreeting(lang, currentUser)
+  const [messages, setMessages] = useState<Message[]>(() => {
+    try {
+      const saved = localStorage.getItem('shine_chatbot_messages');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch (e) {
+      console.error('Error loading chatbot messages from localStorage', e);
     }
-  ]);
+    return [
+      { 
+        id: 'initial', 
+        role: 'model', 
+        text: getPersonalizedGreeting(lang, currentUser)
+      }
+    ];
+  });
+
+  // Persist the last 3 messages to localStorage
+  useEffect(() => {
+    try {
+      const messagesToSave = messages.slice(-3);
+      localStorage.setItem('shine_chatbot_messages', JSON.stringify(messagesToSave));
+    } catch (e) {
+      console.error('Error saving chatbot messages to localStorage', e);
+    }
+  }, [messages]);
   const [input, setInput] = useState('');
   const [isConsultantTyping, setIsConsultantTyping] = useState(false);
   const ackIndexRef = useRef(0);

@@ -38,6 +38,7 @@ import { AuthModal, MemberUser } from './components/AuthModal';
 import { MemberPortalModal } from './components/MemberPortalModal';
 import { HealthCalculator } from './components/HealthCalculator';
 import { BlogSection } from './components/BlogSection';
+import { GymFloorPlan } from './components/GymFloorPlan';
 import { VideoModal } from './components/VideoModal';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { AdminLoginPage } from './components/admin/AdminLoginPage';
@@ -53,6 +54,7 @@ import {
   getFacebookAuthor 
 } from './data/bilingualReviews';
 import defaultTiktokVideos from './data/tiktokVideos.json';
+import { ScrollToTop } from './components/ScrollToTop';
 
 type Review = {
   authorName: string;
@@ -108,13 +110,26 @@ export default function App() {
     localStorage.setItem('the_shine_lang', lang);
   }, [lang]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setIsServicesLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Data states
   const [reviews, setReviews] = useState<Review[]>([]);
   const [fbReviews, setFbReviews] = useState<FBReview[]>([]);
   const [tiktokVideos, setTiktokVideos] = useState<TikTokVideo[]>([]);
   const [loadingReviews, setLoadingReviews] = useState(true);
+  const [isServicesLoading, setIsServicesLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAllClips, setShowAllClips] = useState(false);
+  const [isAutoPlayEnabled, setIsAutoPlayEnabled] = useState(() => {
+    return localStorage.getItem('the_shine_autoplay') === 'true';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('the_shine_autoplay', String(isAutoPlayEnabled));
+  }, [isAutoPlayEnabled]);
 
   // Modals
   const [isRegModalOpen, setIsRegModalOpen] = useState(false);
@@ -369,9 +384,6 @@ export default function App() {
                 <BookOpen size={13} className="text-brand-orange shrink-0" />
                 <span className="whitespace-nowrap">{t.nav.blogs}</span>
               </a>
-              <a href="#why-us" className="px-2 py-1 text-slate-700 dark:text-slate-300 hover:text-brand-orange transition-colors whitespace-nowrap">
-                {t.nav.whyUs}
-              </a>
               <a href="#reviews" className="px-2 py-1 text-slate-700 dark:text-slate-300 hover:text-brand-orange transition-colors whitespace-nowrap">
                 {t.nav.reviews}
               </a>
@@ -443,7 +455,7 @@ export default function App() {
               ) : (
                 <button
                   onClick={() => openAuth('login')}
-                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 hover:text-brand-orange hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer border border-slate-200 dark:border-white/10 whitespace-nowrap shrink-0"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-brand-orange/10 text-brand-orange hover:bg-brand-orange/20 transition-colors cursor-pointer border border-brand-orange/20 whitespace-nowrap shrink-0"
                 >
                   <LogIn size={14} className="shrink-0" />
                   <span className="whitespace-nowrap">{t.nav.memberLogin}</span>
@@ -485,7 +497,7 @@ export default function App() {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 font-heading font-bold text-xs uppercase italic">
+            <div className="grid grid-cols-1 gap-1.5 font-heading font-bold text-xs uppercase italic">
               <a 
                 href="#services" 
                 onClick={() => setMobileMenuOpen(false)}
@@ -519,14 +531,6 @@ export default function App() {
                 <span className="whitespace-nowrap">{t.nav.blogs}</span>
               </a>
               <a 
-                href="#why-us" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-slate-800 dark:text-slate-200 hover:text-brand-orange hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap"
-              >
-                <ShieldCheck size={15} className="text-brand-orange shrink-0" />
-                <span className="whitespace-nowrap">{t.nav.whyUs}</span>
-              </a>
-              <a 
                 href="#reviews" 
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-slate-800 dark:text-slate-200 hover:text-brand-orange hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap"
@@ -544,7 +548,7 @@ export default function App() {
               </a>
             </div>
 
-            <div className="pt-4 mt-4 border-t border-slate-200 dark:border-white/10 flex flex-col sm:flex-row gap-3">
+            <div className="pt-4 mt-4 border-t border-slate-200 dark:border-white/10 flex flex-col gap-3">
               {currentUser ? (
                 <button
                   onClick={() => { setMobileMenuOpen(false); setIsMemberPortalOpen(true); }}
@@ -556,7 +560,7 @@ export default function App() {
               ) : (
                 <button
                   onClick={() => { setMobileMenuOpen(false); openAuth('login'); }}
-                  className="flex-1 py-3 px-4 rounded-xl border border-slate-300 dark:border-white/15 text-slate-800 dark:text-white font-heading font-bold text-xs uppercase italic flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer"
+                  className="flex-1 py-3 px-4 rounded-xl bg-brand-orange/10 border border-brand-orange/20 text-brand-orange font-heading font-bold text-xs uppercase italic flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer"
                 >
                   <LogIn size={16} />
                   <span className="whitespace-nowrap">{t.nav.memberLogin} (OTP)</span>
@@ -598,7 +602,7 @@ export default function App() {
 
               {/* Bold Headlines */}
               <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-heading font-black tracking-tight uppercase italic leading-[1.05] text-slate-900 dark:text-white">
-                {t.hero.title1} <br />
+                {t.hero.title1}
                 <span className="text-brand-orange">{t.hero.title2}</span>
               </h1>
 
@@ -672,8 +676,8 @@ export default function App() {
 
       {/* 3. HERO SPECIAL OFFER SECTION (Mirroring lavina-nails.com `hero-offer-new-customer` banner) */}
       <section className="py-12 sm:py-16 bg-white dark:bg-[#171717] border-b border-slate-200 dark:border-white/10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative rounded-3xl p-6 sm:p-10 bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-transparent border-2 border-brand-orange/40 shadow-xl overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative rounded-3xl p-6 sm:p-10 lg:p-12 bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-transparent border-2 border-brand-orange/40 shadow-xl overflow-hidden">
             
             {/* Background Accent */}
             <div className="absolute -right-8 -bottom-8 opacity-10 pointer-events-none text-brand-orange">
@@ -689,11 +693,11 @@ export default function App() {
                   <span>{t.heroOffer.tag}</span>
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-black text-slate-900 dark:text-white uppercase italic leading-tight">
+                <h2 className="text-2xl sm:text-3xl lg:text-[2.1rem] xl:text-4xl font-heading font-black text-slate-900 dark:text-white uppercase italic leading-tight">
                   {t.heroOffer.headline}
                 </h2>
 
-                <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl">
+                <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl">
                   {t.heroOffer.sub}
                 </p>
 
@@ -708,17 +712,17 @@ export default function App() {
               </div>
 
               {/* Offer CTA Button */}
-              <div className="shrink-0 flex flex-col sm:flex-row items-center gap-3">
+              <div className="shrink-0 flex flex-col items-center sm:items-end gap-3 mt-4 lg:mt-0">
                 <button
                   onClick={() => openRegistration('Tập thử miễn phí 3 ngày (Voucher)')}
-                  className="w-full sm:w-auto px-8 py-4 bg-brand-orange hover:bg-orange-600 text-white font-heading font-bold text-base sm:text-lg uppercase italic rounded-2xl shadow-lg transition-transform hover:scale-105 cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full sm:w-[320px] px-8 py-5 bg-brand-orange hover:bg-orange-600 text-white font-heading font-bold text-lg sm:text-xl uppercase italic rounded-2xl shadow-xl transition-all hover:scale-105 hover:shadow-orange-500/25 cursor-pointer flex items-center justify-center gap-3"
                 >
                   <Gift size={20} />
                   {t.heroOffer.bookNow}
                 </button>
                 <a
                   href="tel:0946293593"
-                  className="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-brand-orange transition-colors"
+                  className="text-sm sm:text-base font-bold text-slate-500 dark:text-slate-400 hover:text-brand-orange transition-colors mt-1"
                 >
                   {t.heroOffer.orCall}
                 </a>
@@ -748,8 +752,21 @@ export default function App() {
           </div>
 
           {/* Services Grid (6 cards) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {t.services.items.map((item, index) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
+            {isServicesLoading ? (
+              Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="bg-white dark:bg-[#1a1a1a] p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 shadow-sm flex flex-col justify-between animate-pulse h-full">
+                  <div>
+                    <div className="w-14 h-14 rounded-2xl bg-slate-200 dark:bg-slate-700/50 mb-5 sm:mb-6" />
+                    <div className="w-3/4 h-6 bg-slate-200 dark:bg-slate-700/50 rounded-md mb-4" />
+                    <div className="w-full h-4 bg-slate-200 dark:bg-slate-700/50 rounded-md mb-2" />
+                    <div className="w-5/6 h-4 bg-slate-200 dark:bg-slate-700/50 rounded-md mb-5 sm:mb-6" />
+                  </div>
+                  <div className="w-1/3 h-4 bg-slate-200 dark:bg-slate-700/50 rounded-md" />
+                </div>
+              ))
+            ) : (
+              t.services.items.map((item, index) => {
               const icons = [
                 <Dumbbell key="1" size={28} className="text-brand-orange" />,
                 <HeartPulse key="2" size={28} className="text-brand-orange" />,
@@ -762,16 +779,16 @@ export default function App() {
               return (
                 <div 
                   key={item.id || index}
-                  className="bg-white dark:bg-[#1a1a1a] p-8 rounded-3xl border border-slate-200 dark:border-white/10 hover:border-brand-orange/60 dark:hover:border-brand-orange/50 transition-all duration-300 shadow-sm hover:shadow-xl flex flex-col justify-between group"
+                  className="bg-white dark:bg-[#1a1a1a] p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 hover:border-brand-orange/60 dark:hover:border-brand-orange/50 transition-all duration-300 shadow-sm hover:shadow-xl flex flex-col justify-between group"
                 >
                   <div>
-                    <div className="w-14 h-14 rounded-2xl bg-orange-500/10 dark:bg-orange-500/15 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-orange-500/10 dark:bg-orange-500/15 flex items-center justify-center mb-5 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
                       {icons[index % icons.length]}
                     </div>
                     <h3 className="text-xl sm:text-2xl font-heading font-bold uppercase italic text-slate-900 dark:text-white mb-3">
                       {item.title}
                     </h3>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
+                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-5 sm:mb-6">
                       {item.desc}
                     </p>
                   </div>
@@ -786,7 +803,7 @@ export default function App() {
                   </button>
                 </div>
               );
-            })}
+            }))}
           </div>
 
         </div>
@@ -817,12 +834,12 @@ export default function App() {
                 {t.specials.popularTag}
               </div>
               <div>
-                <div className="flex items-center justify-between mt-2 mb-1">
-                  <h3 className="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase italic">
+                <div className="flex items-start justify-between gap-3 min-h-[56px] mt-2 mb-1">
+                  <h3 className="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase italic leading-tight">
                     {t.specials.basic.name}
                   </h3>
                   {(t.specials.basic as any).badge && (
-                    <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                    <span className="text-[10px] sm:text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20 shrink-0 whitespace-nowrap mt-0.5">
                       {(t.specials.basic as any).badge}
                     </span>
                   )}
@@ -865,12 +882,12 @@ export default function App() {
             {/* 2. Gói Tiêu Chuẩn Tháng (549k) */}
             <div className="bg-white dark:bg-[#141414] rounded-3xl p-7 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm hover:border-brand-orange/40 transition-all flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-1">
-                  <h3 className="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase italic">
+                <div className="flex items-start justify-between gap-3 min-h-[56px] mt-2 mb-1">
+                  <h3 className="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase italic leading-tight">
                     {t.specials.premium.name}
                   </h3>
                   {(t.specials.premium as any).badge && (
-                    <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/10 px-2.5 py-0.5 rounded-full">
+                    <span className="text-[10px] sm:text-[11px] font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/10 px-2.5 py-1 rounded-full shrink-0 whitespace-nowrap mt-0.5">
                       {(t.specials.premium as any).badge}
                     </span>
                   )}
@@ -913,12 +930,12 @@ export default function App() {
             {/* 3. Gói Toàn Diện Yoga & Gym (699k) */}
             <div className="bg-white dark:bg-[#141414] rounded-3xl p-7 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm hover:border-brand-orange/40 transition-all flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-1">
-                  <h3 className="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase italic">
+                <div className="flex items-start justify-between gap-3 min-h-[56px] mt-2 mb-1">
+                  <h3 className="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase italic leading-tight">
                     {t.specials.vip.name}
                   </h3>
                   {(t.specials.vip as any).badge && (
-                    <span className="text-[11px] font-bold text-brand-orange bg-brand-orange/10 px-2.5 py-0.5 rounded-full border border-brand-orange/20">
+                    <span className="text-[10px] sm:text-[11px] font-bold text-brand-orange bg-brand-orange/10 px-2.5 py-1 rounded-full border border-brand-orange/20 shrink-0 whitespace-nowrap mt-0.5">
                       {(t.specials.vip as any).badge}
                     </span>
                   )}
@@ -1184,9 +1201,29 @@ export default function App() {
               {t.tiktok.heading}
             </h2>
             <div className="w-20 h-1 bg-brand-orange mx-auto my-4 rounded-full" />
-            <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
+            <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed mb-6">
               {t.tiktok.sub}
             </p>
+            
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-sm font-bold text-slate-700 dark:text-slate-300">
+                {lang === 'vi' ? 'Tự động phát video' : 'Auto-play videos'}
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsAutoPlayEnabled(!isAutoPlayEnabled)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-orange focus:ring-offset-2 dark:focus:ring-offset-slate-900 ${
+                  isAutoPlayEnabled ? 'bg-brand-orange' : 'bg-slate-300 dark:bg-slate-600'
+                }`}
+                aria-label={lang === 'vi' ? 'Bật/tắt tự động phát' : 'Toggle auto-play'}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    isAutoPlayEnabled ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
           </div>
 
           {tiktokVideos.length > 0 && (
@@ -1210,23 +1247,43 @@ export default function App() {
                           }}
                           className="block relative w-full aspect-9/16 bg-slate-900 rounded-2xl overflow-hidden border border-slate-300 dark:border-white/10 hover:border-brand-orange transition-all group shadow-md text-left cursor-pointer"
                         >
-                          <img 
-                            src={video.thumbnail || fallbackThumbnails[i % fallbackThumbnails.length]} 
-                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                            alt={video.caption} 
-                            onError={(e) => {
-                              e.currentTarget.src = fallbackThumbnails[i % fallbackThumbnails.length];
-                            }} 
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:from-black/70 transition-colors" />
-                          <div className="absolute inset-0 flex flex-col items-center justify-center text-white/90 group-hover:text-brand-orange transition-colors">
-                            <div className="w-12 h-12 rounded-full bg-brand-orange text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                              <Play size={20} className="fill-white translate-x-0.5" />
-                            </div>
-                            <span className="mt-2.5 text-[10px] font-bold uppercase tracking-wider bg-black/80 text-white/90 px-3 py-1 rounded-full border border-white/20 backdrop-blur-xs">
-                              {t.tiktok.viewOnTiktok}
-                            </span>
-                          </div>
+                          {isAutoPlayEnabled ? (
+                            <video
+                              autoPlay
+                              muted
+                              loop
+                              playsInline
+                              poster={video.thumbnail || fallbackThumbnails[i % fallbackThumbnails.length]}
+                              src={[
+                                'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+                                'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyBlazes.mp4',
+                                'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4'
+                              ][Math.abs(video.caption.length) % 3]}
+                              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                          ) : (
+                            <img 
+                              src={video.thumbnail || fallbackThumbnails[i % fallbackThumbnails.length]} 
+                              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                              alt={video.caption} 
+                              onError={(e) => {
+                                e.currentTarget.src = fallbackThumbnails[i % fallbackThumbnails.length];
+                              }} 
+                            />
+                          )}
+                          {!isAutoPlayEnabled && (
+                            <>
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:from-black/70 transition-colors" />
+                              <div className="absolute inset-0 flex flex-col items-center justify-center text-white/90 group-hover:text-brand-orange transition-colors">
+                                <div className="w-12 h-12 rounded-full bg-brand-orange text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                  <Play size={20} className="fill-white translate-x-0.5" />
+                                </div>
+                                <span className="mt-2.5 text-[10px] font-bold uppercase tracking-wider bg-black/80 text-white/90 px-3 py-1 rounded-full border border-white/20 backdrop-blur-xs">
+                                  {t.tiktok.viewOnTiktok}
+                                </span>
+                              </div>
+                            </>
+                          )}
                         </button>
                       ) : (
                         <div className="w-full aspect-9/16 bg-slate-900 rounded-2xl border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-500">
@@ -1323,6 +1380,8 @@ export default function App() {
       </section>
 
       {/* 8.5 FITNESS & NUTRITION BLOG ARTICLES SECTION (Crawl & Blog Updates) */}
+      <GymFloorPlan lang={lang} onOpenRegistration={() => openRegistration()} />
+      {/* 8.5 FITNESS & NUTRITION BLOG ARTICLES SECTION (Crawl & Blog Updates) */}
       <BlogSection lang={lang} />
 
       {/* 9. VISIT US & CONTACT (Mirroring lavina-nails.com `visitUs` & `comeSayHello`) */}
@@ -1354,7 +1413,7 @@ export default function App() {
                     <div className="text-xs uppercase font-bold text-slate-400">
                       {t.visitUs.addressTitle}
                     </div>
-                    <div className="text-sm sm:text-base font-semibold text-slate-900 dark:text-white mt-0.5">
+                    <div className="text-sm sm:text-base font-semibold text-slate-900 dark:text-white mt-0.5 leading-snug md:leading-normal">
                       {t.visitUs.addressValue}
                     </div>
                   </div>
@@ -1367,7 +1426,7 @@ export default function App() {
                     <div className="text-xs uppercase font-bold text-slate-400">
                       {t.visitUs.hoursTitle}
                     </div>
-                    <div className="text-sm sm:text-base font-semibold text-slate-900 dark:text-white mt-0.5">
+                    <div className="text-sm sm:text-base font-semibold text-slate-900 dark:text-white mt-0.5 leading-snug md:leading-normal">
                       {t.visitUs.hoursValue}
                     </div>
                   </div>
@@ -1390,10 +1449,10 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <button
                   onClick={() => openRegistration()}
-                  className="px-8 py-4 bg-brand-orange hover:bg-orange-600 text-white font-heading font-bold text-base uppercase italic rounded-2xl shadow-lg transition-colors cursor-pointer flex items-center gap-2"
+                  className="w-full sm:w-auto px-6 py-4 justify-center bg-brand-orange hover:bg-orange-600 text-white font-heading font-bold text-base uppercase italic rounded-2xl shadow-lg transition-colors cursor-pointer flex items-center gap-2"
                 >
                   <Calendar size={18} />
                   {t.visitUs.bookAppointment}
@@ -1402,7 +1461,7 @@ export default function App() {
                   href="https://maps.app.goo.gl/Hyn5UHxdnvFDETjc6"
                   target="_blank"
                   rel="noreferrer"
-                  className="px-6 py-4 bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-800 dark:text-white border border-slate-300 dark:border-white/10 font-heading font-bold text-sm uppercase italic rounded-2xl transition-colors cursor-pointer flex items-center gap-2"
+                  className="w-full sm:w-auto px-6 py-4 justify-center bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-slate-800 dark:text-white border border-slate-300 dark:border-white/10 font-heading font-bold text-sm uppercase italic rounded-2xl transition-colors cursor-pointer flex items-center gap-2"
                 >
                   <ExternalLink size={16} />
                   {t.visitUs.directions}
@@ -1472,7 +1531,7 @@ export default function App() {
               <ul className="space-y-2 text-xs text-slate-400">
                 <li><a href="#services" className="hover:text-brand-orange transition-colors">{t.nav.services}</a></li>
                 <li><a href="#specials" className="hover:text-brand-orange transition-colors">{t.nav.specials}</a></li>
-                <li><a href="#why-us" className="hover:text-brand-orange transition-colors">{t.nav.whyUs}</a></li>
+                
                 <li><a href="#reviews" className="hover:text-brand-orange transition-colors">{t.nav.reviews}</a></li>
                 <li><a href="#tiktok" className="hover:text-brand-orange transition-colors">{t.nav.tiktok}</a></li>
                 <li><a href="#location" className="hover:text-brand-orange transition-colors">{t.nav.contact}</a></li>
@@ -1586,6 +1645,7 @@ export default function App() {
         lang={lang}
       />
 
+      <ScrollToTop />
     </div>
   );
 }
