@@ -107,12 +107,13 @@ export function getPersonalizedGreeting(lang: Language, user?: MemberUser | null
         return `Chào buổi tối ${callTitle}! 🌙 Sau một ngày làm việc bận rộn, ghé The Shine đốt mỡ và thư giãn tại phòng xông hơi thảo dược là tuyệt nhất đấy ạ! Em có thể giúp gì cho hội viên ${tier || 'The Shine'} tối nay ạ?`;
       }
     } else {
+      const coreMessage = `Em là tư vấn viên tại The Shine Fitness & Yoga (154 Hoàng Hoa Thám, Tân Bình.\nGiờ mở cửa: 06:00 - 21:00 T2-T7, 06:00 - 20:30 CN).\nHôm nay em có thể hỗ trợ Anh/Chị tìm hiểu giá các gói tập, lịch lớp Yoga/Zumba hay đăng ký nhận Voucher 3 ngày tập thử VIP miễn phí ạ?`;
       if (isMorning) {
-        return `Chào buổi sáng Anh/Chị ạ! ☀️ Chúc Anh/Chị một ngày mới ngập tràn năng lượng! Em là tư vấn viên tại The Shine Fitness & Yoga (154 Hoàng Hoa Thám, Tân Bình. Giờ mở cửa: 06:00 - 21:00 T2-T7, 06:00 - 20:30 CN). Hôm nay em có thể hỗ trợ Anh/Chị tìm hiểu giá các gói tập, lịch lớp Yoga/Zumba hay đăng ký nhận Voucher 3 ngày tập thử VIP miễn phí (mã SHINE-TRIAL-FREE) hôm nay ạ?`;
+        return `Chào buổi sáng Anh/Chị ạ! ☀️ Chúc Anh/Chị một ngày mới ngập tràn năng lượng!\n${coreMessage}`;
       } else if (isAfternoon) {
-        return `Chào buổi chiều Anh/Chị ạ! 🌤️ Nghỉ trưa nạp năng lượng chưa Anh/Chị ơi? Em là tư vấn viên của The Shine Fitness & Yoga (154 Hoàng Hoa Thám, Tân Bình). Anh/Chị đang quan tâm đến gói tập gym giảm mỡ, lớp nhảy Zumba giải tỏa căng thẳng hay muốn ghé tham quan phòng tập chiều nay ạ? Bên em đang có voucher 3 ngày tập thử miễn phí mã SHINE-TRIAL-FREE nhé ạ!`;
+        return `Chào buổi chiều Anh/Chị ạ! 🌤️ Chúc Anh/Chị một buổi chiều tràn đầy năng lượng!\n${coreMessage}`;
       } else {
-        return `Chào buổi tối Anh/Chị ạ! 🌙 Sau một ngày dài học tập và làm việc, dành 45 phút xả stress tại The Shine là lựa chọn tuyệt vời đấy ạ! Em là tư vấn viên The Shine, em có thể hỗ trợ Anh/Chị tư vấn gói tập ưu đãi, vé ngày Day Pass 100k hay gửi tặng vé tập thử 3 ngày trải nghiệm miễn phí (mã SHINE-TRIAL-FREE) tối nay nhé ạ?`;
+        return `Chào buổi tối Anh/Chị ạ! 🌙 Chúc Anh/Chị một buổi tối thư giãn!\n${coreMessage}`;
       }
     }
   } else {
@@ -205,24 +206,26 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal }: 
 
   // Quick inquiry suggestions for customers
   const quickSuggestions = [
-    lang === 'vi' ? '🎁 Nhận Voucher tập thử 3 ngày (SHINE-TRIAL-FREE)' : '🎁 Claim Free 3-Day Pass',
+    lang === 'vi' ? '🎁 Nhận Voucher tập thử 3 ngày' : '🎁 Claim Free 3-Day Pass',
     lang === 'vi' ? '⏰ Giờ mở cửa & Địa chỉ 154 Hoàng Hoa Thám' : '⏰ Hours & Location',
     lang === 'vi' ? '💳 Bảng giá thẻ tập & Ưu đãi HSSV giảm 20%' : '💳 Pricing & Student 20% off',
     lang === 'vi' ? '🏋️ Khóa PT 1-kèm-1 theo số buổi' : '🏋️ PT 1-on-1 Packages',
     lang === 'vi' ? '🧘 Lớp Yoga, Zumba & Đo InBody 0đ' : '🧘 Yoga, Zumba & Free InBody'
   ];
 
-  // Update initial greeting when user or language changes (if thread only has greeting)
+  // Update initial greeting when user or language changes
   useEffect(() => {
     setMessages(prev => {
-      if (prev.length <= 1) {
-        return [{ 
-          id: 'initial', 
-          role: 'model', 
-          text: getPersonalizedGreeting(lang, effectiveUser) 
-        }];
+      const newGreeting = getPersonalizedGreeting(lang, effectiveUser);
+      if (prev.length === 0) {
+        return [{ id: 'initial', role: 'model', text: newGreeting }];
       }
-      return prev;
+      
+      const newMessages = [...prev];
+      if (newMessages[0].role === 'model') {
+        newMessages[0].text = newGreeting;
+      }
+      return newMessages;
     });
   }, [lang, effectiveUser]);
 
@@ -462,53 +465,28 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal }: 
                     })}
 
                     {/* Interactive Trial Pass Voucher Card */}
-                    {msg.role === 'model' && msg.text.includes('SHINE-TRIAL-FREE') && (
+                    {msg.role === 'model' && (msg.id === 'initial' || msg.text.includes('SHINE-TRIAL-FREE')) && (
                       <div className="mt-3 p-3 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/20 border border-amber-300 dark:border-amber-700/50 shadow-xs">
-                        <div className="flex items-center justify-between gap-2 mb-2">
-                          <div className="flex items-center gap-1.5 text-amber-800 dark:text-amber-300 font-bold text-xs">
-                            <Gift size={15} className="text-brand-orange" />
-                            <span>Voucher 03 Ngày Tập Thử VIP</span>
+                        <div className="flex flex-col gap-2 mb-3">
+                          <div className="flex items-start gap-1.5 text-amber-800 dark:text-amber-300 font-bold text-[13px] leading-snug">
+                            <Gift size={16} className="text-brand-orange shrink-0 mt-0.5" />
+                            <span>Voucher 03 ngày trải nghiệm phòng tập 5 sao VIP</span>
                           </div>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
-                            0đ (Trị giá 350K)
-                          </span>
+                          <div className="pl-5 mt-0.5">
+                            <span className="inline-block text-sm font-black px-3 py-1.5 rounded-full bg-brand-orange text-white shadow-md whitespace-nowrap uppercase tracking-wide">
+                              Trị giá 350K
+                            </span>
+                          </div>
                         </div>
 
-                        <div className="flex items-center justify-between gap-2 p-2 rounded-lg bg-white dark:bg-[#151515] border border-amber-200 dark:border-amber-800/40">
-                          <div className="flex items-center gap-1.5 font-mono font-black tracking-wider text-xs text-brand-orange">
-                            <span>SHINE-TRIAL-FREE</span>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              navigator.clipboard.writeText('SHINE-TRIAL-FREE');
-                              setCopiedVoucher(true);
-                              setTimeout(() => setCopiedVoucher(false), 2000);
-                            }}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-medium bg-amber-100 hover:bg-amber-200 dark:bg-amber-900/40 dark:hover:bg-amber-800/60 text-amber-900 dark:text-amber-200 transition-colors cursor-pointer"
-                          >
-                            {copiedVoucher ? (
-                              <>
-                                <Check size={12} className="text-emerald-500" />
-                                <span>Đã sao chép!</span>
-                              </>
-                            ) : (
-                              <>
-                                <Copy size={12} />
-                                <span>Sao chép</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-
-                        <div className="mt-2 text-[11px] text-slate-600 dark:text-slate-300 space-y-1">
-                          <p className="flex items-center gap-1">
-                            <CheckCircle2 size={12} className="text-emerald-500 shrink-0" />
-                            <span>Miễn phí gym & cardio, xông hơi thảo dược, bãi xe</span>
+                        <div className="mt-3 text-[11px] text-slate-600 dark:text-slate-300 space-y-2">
+                          <p className="flex items-center gap-1.5">
+                            <CheckCircle2 size={13} className="text-emerald-500 shrink-0" />
+                            <span>Tập Gym 24/7, xông hơi, giữ xe MIỄN PHÍ</span>
                           </p>
-                          <p className="flex items-center gap-1">
-                            <CheckCircle2 size={12} className="text-emerald-500 shrink-0" />
-                            <span>Tặng 01 buổi đo InBody định kỳ cùng Huấn luyện viên</span>
+                          <p className="flex items-center gap-1.5">
+                            <CheckCircle2 size={13} className="text-emerald-500 shrink-0" />
+                            <span>Tặng 01 buổi đo InBody định kỳ cùng HLV.</span>
                           </p>
                         </div>
 
@@ -516,10 +494,10 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal }: 
                           <button
                             type="button"
                             onClick={onOpenTrialModal}
-                            className="mt-2.5 w-full py-2 px-3 rounded-lg bg-brand-orange hover:bg-orange-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer active:scale-98"
+                            className="mt-3 w-full py-2 px-3 rounded-lg bg-brand-orange hover:bg-orange-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer active:scale-98"
                           >
                             <Calendar size={13} />
-                            <span>Đăng ký nhận voucher & Giữ chỗ ngay</span>
+                            <span>Nhận Voucher và Giữ chỗ ngay</span>
                           </button>
                         )}
                       </div>

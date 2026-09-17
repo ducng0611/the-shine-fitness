@@ -1,3 +1,4 @@
+import { FadeIn } from './components/FadeIn';
 import React, { useEffect, useState } from 'react';
 import { 
   Dumbbell, 
@@ -395,34 +396,33 @@ export default function App() {
             {/* Right Controls: Flag Language Selector -> Theme -> Member Portal (right before Book CTA) -> Book CTA -> Mobile Hamburger */}
             <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
               
-              {/* Language Selector By Flag (🇻🇳 / 🇬🇧) */}
-              <div className="flex items-center p-0.5 sm:p-1 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 shrink-0">
+              {/* Language Selector Dropdown */}
+              <div className="relative group">
                 <button
                   type="button"
-                  onClick={() => setLang('vi')}
-                  className={`px-1.5 sm:px-2 py-1 rounded-lg text-sm flex items-center justify-center transition-all cursor-pointer ${
-                    lang === 'vi' 
-                      ? 'bg-white dark:bg-white/20 shadow-xs ring-1 ring-black/5 dark:ring-white/10 scale-105' 
-                      : 'opacity-40 hover:opacity-100'
-                  }`}
-                  title="Tiếng Việt (Việt Nam)"
-                  aria-label="Chọn Tiếng Việt"
+                  className="flex items-center gap-1.5 px-2 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors cursor-pointer shrink-0"
+                  title="Select Language"
                 >
-                  <span className="text-base leading-none">🇻🇳</span>
+                  <span className="text-base leading-none">{lang === 'vi' ? '🇻🇳' : '🇬🇧'}</span>
+                  <ChevronDown size={14} className="text-slate-500" />
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setLang('en')}
-                  className={`px-1.5 sm:px-2 py-1 rounded-lg text-sm flex items-center justify-center transition-all cursor-pointer ${
-                    lang === 'en' 
-                      ? 'bg-white dark:bg-white/20 shadow-xs ring-1 ring-black/5 dark:ring-white/10 scale-105' 
-                      : 'opacity-40 hover:opacity-100'
-                  }`}
-                  title="English (International)"
-                  aria-label="Select English"
-                >
-                  <span className="text-base leading-none">🇬🇧</span>
-                </button>
+                
+                <div className="absolute top-full right-0 mt-2 w-36 py-1.5 rounded-xl bg-white dark:bg-[#1A1A1A] border border-slate-200 dark:border-white/10 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 origin-top-right transform scale-95 group-hover:scale-100">
+                  <button
+                    onClick={() => setLang('vi')}
+                    className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer ${lang === 'vi' ? 'text-brand-orange font-bold bg-orange-50/50 dark:bg-brand-orange/10' : 'text-slate-700 dark:text-slate-300'}`}
+                  >
+                    <span className="text-base leading-none">🇻🇳</span>
+                    <span>Tiếng Việt</span>
+                  </button>
+                  <button
+                    onClick={() => setLang('en')}
+                    className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer ${lang === 'en' ? 'text-brand-orange font-bold bg-orange-50/50 dark:bg-brand-orange/10' : 'text-slate-700 dark:text-slate-300'}`}
+                  >
+                    <span className="text-base leading-none">🇬🇧</span>
+                    <span>English</span>
+                  </button>
+                </div>
               </div>
 
               {/* Theme Toggle Button */}
@@ -676,6 +676,7 @@ export default function App() {
 
       {/* 3. HERO SPECIAL OFFER SECTION (Mirroring lavina-nails.com `hero-offer-new-customer` banner) */}
       <section className="py-12 sm:py-16 bg-white dark:bg-[#171717] border-b border-slate-200 dark:border-white/10">
+        <FadeIn>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-3xl p-6 sm:p-10 lg:p-12 bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-transparent border-2 border-brand-orange/40 shadow-xl overflow-hidden">
             
@@ -731,10 +732,12 @@ export default function App() {
 
           </div>
         </div>
+        </FadeIn>
       </section>
 
       {/* 4. SERVICES SECTION (Mirroring lavina-nails.com `ourServices` / `selfCare`) */}
       <section id="services" className="py-20 sm:py-28 bg-slate-50 dark:bg-[#121212] transition-colors duration-200">
+        <FadeIn>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Section Header */}
@@ -807,10 +810,12 @@ export default function App() {
           </div>
 
         </div>
+        </FadeIn>
       </section>
 
       {/* 5. SPECIALS & MEMBERSHIP PRICING (Mirroring lavina-nails.com `topSpecials`) */}
       <section id="specials" className="py-20 sm:py-28 bg-slate-100 dark:bg-[#181818] border-y border-slate-200 dark:border-white/10 transition-colors duration-200">
+        <FadeIn>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
@@ -1031,6 +1036,7 @@ export default function App() {
           </div>
 
         </div>
+        </FadeIn>
       </section>
 
       {/* 5.5 HEALTH & FITNESS ASSESSMENT (BMI / TDEE / BODY FAT / FIREBASE DATABASE) */}
@@ -1038,6 +1044,7 @@ export default function App() {
 
       {/* 6. WHY CHOOSE THE SHINE (Mirroring lavina-nails.com `whyEyebrow` & `whyHeading`) */}
       <section id="why-us" className="py-20 sm:py-28 bg-slate-50 dark:bg-[#121212] transition-colors duration-200">
+        <FadeIn>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
@@ -1082,10 +1089,12 @@ export default function App() {
           </div>
 
         </div>
+        </FadeIn>
       </section>
 
       {/* 7. REVIEWS & TESTIMONIALS (Mirroring lavina-nails.com `lovedBy` & `clientsSay`) */}
       <section id="reviews" className="py-20 sm:py-28 bg-slate-100 dark:bg-[#171717] transition-colors duration-200">
+        <FadeIn>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
@@ -1187,10 +1196,12 @@ export default function App() {
           )}
 
         </div>
+        </FadeIn>
       </section>
 
       {/* 8. TIKTOK CHANNELS SECTION (Top 3 comments & thumbnails preserved!) */}
       <section id="tiktok" className="py-20 sm:py-28 bg-slate-50 dark:bg-[#121212] transition-colors duration-200">
+        <FadeIn>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
@@ -1377,6 +1388,7 @@ export default function App() {
           )}
 
         </div>
+        </FadeIn>
       </section>
 
       {/* 8.5 FITNESS & NUTRITION BLOG ARTICLES SECTION (Crawl & Blog Updates) */}
@@ -1386,6 +1398,7 @@ export default function App() {
 
       {/* 9. VISIT US & CONTACT (Mirroring lavina-nails.com `visitUs` & `comeSayHello`) */}
       <section id="location" className="py-20 sm:py-28 bg-slate-100 dark:bg-[#181818] border-t border-slate-200 dark:border-white/10 transition-colors duration-200">
+        <FadeIn>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
@@ -1489,6 +1502,7 @@ export default function App() {
           </div>
 
         </div>
+        </FadeIn>
       </section>
 
       {/* 10. FOOTER (Mirroring lavina-nails.com footer structure) */}
