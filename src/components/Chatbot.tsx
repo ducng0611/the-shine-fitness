@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   MessageSquare, 
-  X, 
+  X,
+  Minus, 
   Send, 
   RotateCcw, 
   ShieldCheck, 
@@ -34,6 +35,7 @@ interface ChatbotProps {
   lang?: Language;
   currentUser?: MemberUser | null;
   onOpenTrialModal?: () => void;
+  onToggle?: (isOpen: boolean) => void;
 }
 
 // Clean LaTeX and mathematical formatting from bot outputs
@@ -137,9 +139,16 @@ export function getPersonalizedGreeting(lang: Language, user?: MemberUser | null
   }
 }
 
-export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal }: ChatbotProps) {
+export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, onToggle }: ChatbotProps) {
   const t = translations[lang].chatbot;
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (onToggle) {
+      onToggle(isOpen);
+    }
+  }, [isOpen, onToggle]);
+
 
   // Auto-open chatbot after 1.5s to suggest helping the customer
   useEffect(() => {
@@ -206,11 +215,9 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal }: 
 
   // Quick inquiry suggestions for customers
   const quickSuggestions = [
-    lang === 'vi' ? '🎁 Nhận Voucher tập thử 3 ngày' : '🎁 Claim Free 3-Day Pass',
-    lang === 'vi' ? '⏰ Giờ mở cửa & Địa chỉ 154 Hoàng Hoa Thám' : '⏰ Hours & Location',
-    lang === 'vi' ? '💳 Bảng giá thẻ tập & Ưu đãi HSSV giảm 20%' : '💳 Pricing & Student 20% off',
-    lang === 'vi' ? '🏋️ Khóa PT 1-kèm-1 theo số buổi' : '🏋️ PT 1-on-1 Packages',
-    lang === 'vi' ? '🧘 Lớp Yoga, Zumba & Đo InBody 0đ' : '🧘 Yoga, Zumba & Free InBody'
+    lang === 'vi' ? '🎁 Nhận Voucher 3 ngày' : '🎁 Free 3-Day Pass',
+    lang === 'vi' ? '💳 Bảng giá & Ưu đãi' : '💳 Pricing & Offers',
+    lang === 'vi' ? '🏋️ Thuê PT 1-kèm-1' : '🏋️ PT 1-on-1'
   ];
 
   // Update initial greeting when user or language changes
@@ -407,10 +414,10 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal }: 
                   <button 
                     type="button"
                     onClick={() => setIsOpen(false)}
-                    aria-label="Close Chat"
+                    aria-label="Minimize Chat"
                     className="text-slate-400 hover:text-white transition-colors p-1.5 rounded-xl hover:bg-white/10 cursor-pointer"
                   >
-                    <X size={18} />
+                    <Minus size={20} />
                   </button>
                 </div>
               </div>
@@ -562,24 +569,27 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal }: 
                   </div>
                 </div>
               )}
+              
+              {/* Quick Suggestions (Vertical Stack) */}
+              {messages.length <= 4 && !isConsultantTyping && (
+                <div className="flex flex-col gap-2 mt-1 mb-2 animate-fadeIn self-start items-start px-2">
+                  {quickSuggestions.map((item, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => sendMessageWithText(item)}
+                      className="w-fit text-left text-[13px] sm:text-sm font-semibold bg-white hover:bg-slate-50 dark:bg-[#2A2A2A] dark:hover:bg-[#333333] text-brand-orange dark:text-white py-2.5 px-4 rounded-2xl transition-colors cursor-pointer border border-slate-200 dark:border-white/5 active:scale-95 shadow-sm"
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Quick Suggestions Chips */}
-            {messages.length <= 4 && !isConsultantTyping && (
-              <div className="px-3 pt-2 pb-1.5 bg-white dark:bg-[#151515] border-t border-slate-100 dark:border-white/5 flex flex-wrap gap-1.5 shrink-0">
-                {quickSuggestions.map((item, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => sendMessageWithText(item)}
-                    className="text-[10px] sm:text-[11px] bg-slate-100 hover:bg-brand-orange hover:text-white dark:bg-white/10 dark:hover:bg-brand-orange text-slate-700 dark:text-slate-300 px-2.5 py-1 rounded-full transition-colors cursor-pointer border border-slate-200 dark:border-white/5 whitespace-nowrap active:scale-95"
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            )}
+
 
             {/* Input Form Area */}
             <form onSubmit={handleSendMessage} className="p-3 bg-white dark:bg-[#151515] border-t border-slate-200 dark:border-white/10 shrink-0">

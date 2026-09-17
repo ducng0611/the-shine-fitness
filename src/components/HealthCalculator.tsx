@@ -231,10 +231,10 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({ lang, onOpen
             <span>{isVi ? 'Công Cụ Khoa Học Chuẩn Y Khoa' : 'Scientific Fitness Assessment'}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-black uppercase italic text-slate-900 dark:text-white leading-tight">
-            {isVi ? 'Trạm Đo Chỉ Số BMI & Thể Hình Chuẩn 5 Sao' : 'Smart BMI & Health Assessment Station'}
+            {isVi ? 'ĐO BMI & THỂ HÌNH CHUẨN 5 SAO' : 'Smart BMI & Health Assessment Station'}
           </h2>
           <div className="w-16 h-1 bg-brand-orange mx-auto my-3 rounded-full" />
-          <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm md:text-base leading-relaxed">
+          <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm md:text-base leading-relaxed text-justify text-pretty px-4 sm:px-8 max-w-3xl mx-auto">
             {isVi 
               ? 'Nhập các thông số thể lực cá nhân để tính toán chính xác chỉ số khối cơ thể (BMI), mức tiêu hao năng lượng (TDEE), tỷ lệ mỡ và kế hoạch dinh dưỡng mục tiêu tại The Shine.'
               : 'Calculate your Body Mass Index (BMI), Daily Caloric Burn (TDEE), estimated Body Fat %, and ideal macronutrient distribution customized to your fitness goal.'}

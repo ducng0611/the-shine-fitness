@@ -23,7 +23,7 @@ interface BlogSectionProps {
 
 export const BlogSection: React.FC<BlogSectionProps> = ({ lang }) => {
   const isVi = lang === 'vi';
-  const [posts, setPosts] = useState<BlogPost[]>(initialBlogPosts);
+  const [posts, setPosts] = useState<BlogPost[]>([...initialBlogPosts, ...mockCrawledFeed]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [isCrawling, setIsCrawling] = useState(false);
@@ -80,14 +80,14 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ lang }) => {
         {/* Section Header with Crawl/Refresh Trigger */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16">
           <div className="max-w-2xl">
-            <span className="text-brand-orange font-bold text-xs uppercase tracking-widest block mb-2">
+            <span className="text-brand-orange font-bold text-sm uppercase tracking-widest block mb-2">
               {isVi ? 'KIẾN THỨC & TIN TỨC' : 'INSIGHTS & NEWS'}
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-black uppercase italic text-slate-900 dark:text-white leading-tight">
               {isVi ? 'Blog Thể Hình, Yoga & Dinh Dưỡng Khoa Học' : 'Fitness, Yoga & Evidence-Based Nutrition'}
             </h2>
             <div className="w-20 h-1 bg-brand-orange my-4 rounded-full" />
-            <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
+            <p className="text-slate-600 dark:text-slate-400 text-base sm:text-lg leading-relaxed">
               {isVi 
                 ? 'Tổng hợp bài viết chuyên môn, giáo án tập luyện và bí quyết duy trì lối sống lành mạnh được cập nhật liên tục từ các chuyên gia thể hình The Shine.'
                 : 'Curated workout guides, training blueprints, and nutritional insights from certified coaches and wellness masters.'}
@@ -99,7 +99,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ lang }) => {
             <button
               onClick={handleCrawlNews}
               disabled={isCrawling}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-white/10 hover:border-brand-orange text-slate-800 dark:text-white text-xs font-bold uppercase tracking-wider shadow-xs hover:shadow-md transition-all cursor-pointer disabled:opacity-60"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white dark:bg-[#181818] border border-slate-200 dark:border-white/10 hover:border-brand-orange text-slate-800 dark:text-white text-sm font-bold uppercase tracking-wider shadow-xs hover:shadow-md transition-all cursor-pointer disabled:opacity-60"
               title="Crawl new articles"
             >
               <RefreshCw size={16} className={`text-brand-orange ${isCrawling ? 'animate-spin' : ''}`} />
@@ -110,7 +110,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ lang }) => {
 
         {/* Success toast from crawl */}
         {crawlSuccessMsg && (
-          <div className="mb-6 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-200 text-xs sm:text-sm font-medium flex items-center justify-between animate-fadeIn">
+          <div className="mb-6 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-200 text-sm sm:text-base font-medium flex items-center justify-between animate-fadeIn">
             <span>✨ {crawlSuccessMsg}</span>
             <button onClick={() => setCrawlSuccessMsg('')} className="text-emerald-600 hover:text-emerald-800">
               <X size={16} />
@@ -127,7 +127,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ lang }) => {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                className={`px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-wider transition-all cursor-pointer ${
                   selectedCategory === cat.id
                     ? 'bg-brand-orange text-white shadow-sm'
                     : 'bg-white dark:bg-[#1a1a1a] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/5 hover:border-brand-orange/40'
@@ -146,7 +146,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ lang }) => {
               placeholder={isVi ? 'Tìm kiếm bài viết, chủ đề...' : 'Search articles, tags...'}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/10 text-xs sm:text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-brand-orange"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/10 text-sm sm:text-base text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-brand-orange"
             />
           </div>
         </div>
@@ -169,7 +169,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ lang }) => {
                     loading="lazy"
                   />
                   <div className="absolute top-4 left-4">
-                    <span className="bg-brand-orange text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
+                    <span className="bg-brand-orange text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
                       {post.category}
                     </span>
                   </div>
@@ -177,7 +177,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ lang }) => {
 
                 {/* Content */}
                 <div className="p-6 sm:p-7">
-                  <div className="flex items-center gap-3 text-xs text-slate-400 mb-3">
+                  <div className="flex items-center gap-3 text-sm text-slate-400 mb-3">
                     <span className="flex items-center gap-1">
                       <Clock size={13} />
                       {post.readTime}
@@ -193,7 +193,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ lang }) => {
                     {post.title}
                   </h3>
 
-                  <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm leading-relaxed line-clamp-3 mb-4">
+                  <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed line-clamp-3 mb-4">
                     {post.excerpt}
                   </p>
 
@@ -218,12 +218,12 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ lang }) => {
                     alt={post.author.name}
                     className="w-7 h-7 rounded-full object-cover shrink-0"
                   />
-                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 truncate">
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 truncate">
                     {post.author.name}
                   </span>
                 </div>
 
-                <span className="text-brand-orange text-xs font-bold uppercase tracking-wider flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                <span className="text-brand-orange text-sm font-bold uppercase tracking-wider flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                   <span>{isVi ? 'Đọc tiếp' : 'Read'}</span>
                   <ArrowRight size={13} />
                 </span>
@@ -266,7 +266,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ lang }) => {
               </button>
 
               <div className="absolute bottom-4 left-6 right-6 text-white">
-                <span className="bg-brand-orange text-white text-[10px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider mb-2 inline-block">
+                <span className="bg-brand-orange text-white text-xs font-bold px-3 py-0.5 rounded-full uppercase tracking-wider mb-2 inline-block">
                   {activeArticle.category}
                 </span>
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-heading font-black uppercase italic leading-tight">
@@ -299,7 +299,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ lang }) => {
             </div>
 
             {/* Article Content */}
-            <div className="p-6 sm:p-8 overflow-y-auto space-y-4 text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+            <div className="p-6 sm:p-8 overflow-y-auto space-y-4 text-slate-700 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
               <div className="p-4 rounded-2xl bg-orange-500/10 border-l-4 border-brand-orange italic text-slate-800 dark:text-slate-200 font-medium">
                 "{activeArticle.excerpt}"
               </div>

@@ -19,7 +19,7 @@ export const translations = {
     },
     hero: {
       location: '154 Hoàng Hoa Thám, P. Bảy Hiền, Tân Bình, TP.HCM',
-      title1: 'NÂNG TẦM SỨC KHỎE - ',
+      title1: 'NÂNG TẦM SỨC KHỎE',
       title2: 'TỎA SÁNG CÙNG THE SHINE',
       subtitle: 'Tổ hợp Gym & Yoga chuẩn 5 sao tại Tân Bình. Trải nghiệm không gian tập luyện hiện đại, huấn luyện viên 1-kèm-1 tận tâm, lớp học tràn đầy năng lượng và tiện ích cao cấp.',
       bookNowFast: 'Đặt Lịch Tập Ngay',
@@ -89,7 +89,7 @@ export const translations = {
     },
     services: {
       eyebrow: 'DỊCH VỤ CỦA CHÚNG TÔI',
-      heading: 'Chăm Sóc Sức Khỏe & Vóc Dáng Toàn Diện',
+      heading: 'Chăm Sóc Sức Khỏe Vóc Dáng Toàn Diện',
       sub: 'Mỗi chương trình tập luyện tại The Shine được thiết kế bài bản để giúp bạn đạt kết quả tối ưu trong không gian tràn đầy cảm hứng.',
       learnMore: 'Tìm hiểu thêm',
       items: [
@@ -170,7 +170,7 @@ export const translations = {
     },
     visitUs: {
       eyebrow: 'GHÉ THĂM CHÚNG TÔI',
-      heading: 'Hãy Đến & Cảm Nhận Ngay Hôm Nay',
+      heading: 'Bắt Đầu Hành Trình Thay Đổi Vóc Dáng Ngay Hôm Nay',
       sub: 'Đội ngũ The Shine luôn sẵn sàng chào đón bạn ghé tham quan cơ sở vật chất và trải nghiệm buổi tập thử.',
       addressTitle: 'Địa chỉ phòng tập:',
       addressValue: '154 Hoàng Hoa Thám, Phường Bảy Hiền (P. 12 cũ), Q. Tân Bình, TP. Hồ Chí Minh',
@@ -289,7 +289,7 @@ export const translations = {
       title: 'Tư Vấn Viên The Shine',
       subtitle: 'Trực quầy 154 Hoàng Hoa Thám',
       initialMessage: 'Chào bạn! Em là tư vấn viên của The Shine Fitness & Yoga (154 Hoàng Hoa Thám). Hôm nay em có thể hỗ trợ bạn tìm hiểu gói tập, lịch lớp hay nhận vé tập thử 3 ngày miễn phí không ạ?',
-      placeholder: 'Hỏi em về giá gói, lịch lớp, PT 1-kèm-1, voucher 3 ngày...',
+      placeholder: 'Nhập câu hỏi tại đây...',
       typingText: 'Tư vấn viên The Shine đang soạn câu trả lời...',
       socialChannelsTitle: 'Kênh kết nối chính thức của The Shine:',
       mapsLabel: 'Google Maps (Chỉ đường)',
@@ -585,7 +585,7 @@ export const translations = {
       title: 'The Shine Concierge',
       subtitle: 'Staff at 154 Hoang Hoa Tham',
       initialMessage: 'Hello! I am your fitness consultant at The Shine Fitness & Yoga (154 Hoang Hoa Tham). May I help you with memberships, schedules, or claiming your free 3-day trial pass today?',
-      placeholder: 'Ask about gym pricing, schedules, PT 1-on-1, free pass...',
+      placeholder: 'Ask me here...',
       typingText: 'The Shine consultant is typing...',
       socialChannelsTitle: 'Official The Shine Channels:',
       mapsLabel: 'Google Maps (Directions)',
