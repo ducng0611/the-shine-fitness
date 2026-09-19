@@ -22,11 +22,13 @@ import { inferGenderFromName } from '../utils/gender';
 
 export interface MemberUser {
   id: string;
+  uid?: string;
   createdAt: string;
   fullName: string;
   email: string;
   phone: string;
   memberCode: string;
+  membershipCode?: string;
   membershipTier: string;
   startDate: string;
   expiryDate: string;
@@ -167,7 +169,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         email: memberUser.email,
         membershipTier: memberUser.membershipTier,
         membershipCode: memberUser.memberCode,
-        authProvider: authMethod,
+        authProvider: authMethod === 'gmail_otp' ? 'email_otp' : authMethod,
         joinedDate: memberUser.startDate,
         expiryDate: memberUser.expiryDate
       });

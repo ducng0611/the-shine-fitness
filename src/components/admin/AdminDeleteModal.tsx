@@ -5,8 +5,9 @@ interface AdminDeleteModalProps {
   isOpen: boolean;
   title: string;
   itemName: string;
-  itemTypeLabel: string;
-  isDeleting: boolean;
+  itemTypeLabel?: string;
+  description?: string;
+  isDeleting?: boolean;
   onConfirm: () => void;
   onClose: () => void;
   isDark: boolean;
@@ -17,7 +18,8 @@ export const AdminDeleteModal: React.FC<AdminDeleteModalProps> = ({
   title,
   itemName,
   itemTypeLabel,
-  isDeleting,
+  description,
+  isDeleting = false,
   onConfirm,
   onClose,
   isDark,
@@ -57,13 +59,19 @@ export const AdminDeleteModal: React.FC<AdminDeleteModalProps> = ({
               </button>
             </div>
 
-            <p className={`text-xs mt-2 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-              Bạn có chắc chắn muốn xóa {itemTypeLabel}{' '}
-              <strong className={isDark ? 'text-rose-300' : 'text-rose-700'}>
-                "{itemName}"
-              </strong>{' '}
-              khỏi hệ thống Firebase Firestore? Hành động này sẽ được ghi nhận vào lịch sử quản trị và không thể hoàn tác.
-            </p>
+            {description ? (
+              <p className={`text-xs mt-2 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                {description}
+              </p>
+            ) : (
+              <p className={`text-xs mt-2 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                Bạn có chắc chắn muốn xóa {itemTypeLabel || ''}{' '}
+                <strong className={isDark ? 'text-rose-300' : 'text-rose-700'}>
+                  "{itemName}"
+                </strong>{' '}
+                khỏi hệ thống Firebase Firestore? Hành động này sẽ được ghi nhận vào lịch sử quản trị và không thể hoàn tác.
+              </p>
+            )}
           </div>
         </div>
 

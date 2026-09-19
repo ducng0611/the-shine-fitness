@@ -1,3 +1,4 @@
+import Markdown from 'react-markdown';
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   MessageSquare, 
@@ -22,6 +23,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { Language, translations } from '../translations';
 import { MemberUser } from './AuthModal';
+import { safeStorage } from '../utils/storage';
 import { getCustomerPronoun } from '../utils/gender';
 
 type Message = {
@@ -29,6 +31,7 @@ type Message = {
   role: 'user' | 'model';
   text: string;
   isAck?: boolean;
+  timestamp?: number;
 };
 
 interface ChatbotProps {
@@ -64,25 +67,58 @@ function formatBotResponse(text: string): string {
   formatted = formatted.replace(/\\\(\s*(.*?)\s*\\\)/gs, '$1');
   formatted = formatted.replace(/\$([^\$\n]+)\$/g, '$1');
 
-  // Standardize multiple line breaks
-  formatted = formatted.replace(/\n{3,}/g, '\n\n');
+  // Standardize multiple line breaks to single line break
+  formatted = formatted.replace(/\n{2,}/g, '\n');
 
   return formatted.trim();
+}
+
+/**
+ * Prepares text for Markdown rendering in chat:
+ * - Collapses any double/multiple line breaks down to a single line break
+ * - Adds two trailing spaces to non-list lines so Markdown creates a single <br/>
+ * - Ensures list blocks cleanly exit without absorbing subsequent lines
+ */
+function prepareMarkdownText(raw: string): string {
+  if (!raw) return '';
+  let text = raw.replace(/\r\n/g, '\n');
+  text = text.replace(/【/g, '\n📐 **CÔNG THỨC:** `').replace(/】/g, '`\n');
+  // Collapse 2 or more newlines to 1 single newline in chat
+  text = text.replace(/\n{2,}/g, '\n');
+
+  const lines = text.split('\n');
+  const processed: string[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const nextLine = lines[i + 1] || '';
+    const isList = /^\s*([*\-+]|\d+\.)\s/.test(line);
+    const nextIsList = /^\s*([*\-+]|\d+\.)\s/.test(nextLine);
+
+    if (isList && !nextIsList && nextLine.trim() !== '') {
+      processed.push(line);
+      processed.push(''); // cleanly exit the <ul>
+    } else if (!isList && !nextIsList && i < lines.length - 1) {
+      processed.push(line + '  '); // creates a single <br/> in markdown
+    } else {
+      processed.push(line);
+    }
+  }
+  return processed.join('\n');
 }
 
 // Marketing acknowledgments rotated when customer sends messages with proper honorifics
 function getAckMessagesVi(pronoun: string): string[] {
   return [
-    `Dạ The Shine đã nhận được tin nhắn của ${pronoun} rồi ạ! ${pronoun} đợi em một xíu xiu nhé, em kiểm tra và trả lời ngay cho ${pronoun} đây ạ 🧡\n\n*(Bật mí nhỏ: The Shine đang tặng Voucher 03 ngày tập thử VIP mã SHINE-TRIAL-FREE + đo InBody 0đ tại 154 Hoàng Hoa Thám, ${pronoun} đừng bỏ lỡ nha! Giờ mở cửa: T2-T7 06:00-21:00, CN 06:00-20:30)*`,
-    `Dạ em đã nhận được câu hỏi của ${pronoun} rồi ạ! Em kiểm tra thông tin và phản hồi ${pronoun} ngay đây nha ✨\n\n*(Nhân tiện The Shine đang có ưu đãi giảm 20% thẻ tập cho HSSV, vé ngày Day Pass 100k và tặng 02 buổi PT 1-kèm-1 cho gói Premium nữa đó ạ!)*`,
-    `Dạ em nghe đây ạ! Đợi em vài giây kiểm tra chi tiết gửi ${pronoun} liền nhé 💪\n\n*(Gợi ý: Vé tập thử 3 ngày mã SHINE-TRIAL-FREE bên em được dùng không giới hạn toàn bộ phòng gym 3 tầng 1.500m², studio Yoga/Zumba, xông hơi khô & ướt thảo dược hoàn toàn 0đ nhé!)*`
+    `Dạ The Shine đã nhận được tin nhắn của ${pronoun} rồi ạ! ${pronoun} đợi em một xíu xiu nhé, em kiểm tra và trả lời ngay cho ${pronoun} đây ạ 🧡\n*(Bật mí nhỏ: The Shine đang tặng Voucher 03 ngày tập thử VIP mã SHINE-TRIAL-FREE tại 154 Hoàng Hoa Thám, ${pronoun} đừng bỏ lỡ nha!\nGiờ mở cửa:\n* T2 - T7 (06:00 - 21:00)\n* CN (06:00 - 20:30))*`,
+    `Dạ em đã nhận được câu hỏi của ${pronoun} rồi ạ! Em kiểm tra thông tin và phản hồi ${pronoun} ngay đây nha ✨\n*(Nhân tiện The Shine đang có ưu đãi gói Gym chỉ 349k/tháng, giảm 20% thẻ tập cho HSSV, vé ngày Day Pass 100k và tặng 02 buổi PT 1-kèm-1 cho gói Yoga & Gym nữa đó ạ!)*`,
+    `Dạ em nghe đây ạ! Đợi em vài giây kiểm tra chi tiết gửi ${pronoun} liền nhé 💪\n*(Gợi ý: Vé tập thử 3 ngày mã SHINE-TRIAL-FREE bên em được dùng không giới hạn phòng gym hiện đại, Boxing, studio Yoga/Zumba, phòng tắm nóng lạnh hoàn toàn 0đ nhé!)*`
   ];
 }
 
 const ACK_MARKETING_MESSAGES_EN = [
-  "Thank you for messaging The Shine! Please give me just a few seconds to pull up the details and reply right away 🧡\n\n*(Quick perk: The Shine is offering a complimentary 3-Day VIP Trial Pass (code SHINE-TRIAL-FREE) + InBody assessment at 154 Hoang Hoa Tham — open Mon-Sat 06:00-21:00, Sun 06:00-20:30!)*",
-  "Got your message! I'm checking the details and replying right now ✨\n\n*(By the way, we currently offer 20% off for students, 100k Day Pass, and 2 free 1-on-1 PT sessions with our Premium membership!)*",
-  "Thanks for reaching out! Give me just a moment 💪\n\n*(Did you know? Our 3-day pass includes full access to gym equipment, yoga classes, herbal steam rooms, and free parking!)*"
+  "Thank you for messaging The Shine! Please give me just a few seconds to pull up the details and reply right away 🧡\n*(Quick perk: The Shine is offering a complimentary 3-Day VIP Trial Pass (code SHINE-TRIAL-FREE) at 154 Hoang Hoa Tham.\nOpening hours:\n* Mon - Sat (06:00 - 21:00)\n* Sun (06:00 - 20:30))*",
+  "Got your message! I'm checking the details and replying right now ✨\n*(By the way, Gym membership promo is only 349k/month, 20% off for students, 100k Day Pass, and 2 free 1-on-1 PT sessions with our Yoga & Gym membership!)*",
+  "Thanks for reaching out! Give me just a moment 💪\n*(Did you know? Our 3-day pass includes full access to gym equipment, boxing zone, yoga classes, hot showers, and free parking!)*"
 ];
 
 export function getPersonalizedGreeting(lang: Language, user?: MemberUser | null): string {
@@ -106,10 +142,10 @@ export function getPersonalizedGreeting(lang: Language, user?: MemberUser | null
       } else if (isAfternoon) {
         return `Chào buổi chiều ${callTitle}! 🌤️ Hôm nay ${pronoun} đã lên lịch ghé 154 Hoàng Hoa Thám tập luyện xả stress chưa ạ? Em là tư vấn viên The Shine, em có thể hỗ trợ ${pronoun} kiểm tra lịch lớp chiều tối nay hay hỗ trợ đặt lịch HLV cá nhân không ạ?`;
       } else {
-        return `Chào buổi tối ${callTitle}! 🌙 Sau một ngày làm việc bận rộn, ghé The Shine đốt mỡ và thư giãn tại phòng xông hơi thảo dược là tuyệt nhất đấy ạ! Em có thể giúp gì cho hội viên ${tier || 'The Shine'} tối nay ạ?`;
+        return `Chào buổi tối ${callTitle}! 🌙 Sau một ngày làm việc bận rộn, ghé The Shine đốt mỡ và giải tỏa căng thẳng là tuyệt nhất đấy ạ! Em có thể giúp gì cho hội viên ${tier || 'The Shine'} tối nay ạ?`;
       }
     } else {
-      const coreMessage = `Em là tư vấn viên tại The Shine Fitness & Yoga (154 Hoàng Hoa Thám, Tân Bình.\nGiờ mở cửa: 06:00 - 21:00 T2-T7, 06:00 - 20:30 CN).\nHôm nay em có thể hỗ trợ Anh/Chị tìm hiểu giá các gói tập, lịch lớp Yoga/Zumba hay đăng ký nhận Voucher 3 ngày tập thử VIP miễn phí ạ?`;
+      const coreMessage = `Em là tư vấn viên tại The Shine Fitness & Yoga (154 Hoàng Hoa Thám, Tân Bình).\nGiờ mở cửa:\n* T2 - T7 (06:00 - 21:00)\n* CN (06:00 - 20:30)\nHôm nay em có thể hỗ trợ Anh/Chị tìm hiểu giá các gói tập, lịch lớp Yoga/Zumba hay đăng ký nhận Voucher 3 ngày tập thử VIP miễn phí ạ?`;
       if (isMorning) {
         return `Chào buổi sáng Anh/Chị ạ! ☀️ Chúc Anh/Chị một ngày mới ngập tràn năng lượng!\n${coreMessage}`;
       } else if (isAfternoon) {
@@ -128,12 +164,13 @@ export function getPersonalizedGreeting(lang: Language, user?: MemberUser | null
         return `Good evening, ${userName}! 🌙 Ready to unwind and sweat it out at The Shine tonight? How can I assist our valued ${tier || 'member'} this evening?`;
       }
     } else {
+      const coreMessageEn = `I'm your fitness consultant at The Shine Fitness & Yoga (154 Hoang Hoa Tham).\nOpening hours:\n* Mon - Sat (06:00 - 21:00)\n* Sun (06:00 - 20:30)\nHow can I assist you today with membership pricing, class schedules, or claiming your free 3-day trial pass?`;
       if (isMorning) {
-        return `Good morning! ☀️ Wishing you a wonderful and energetic day ahead. I'm your fitness consultant at The Shine Fitness & Yoga (154 Hoang Hoa Tham, open 06:00 - 21:00 Mon-Sat, 06:00 - 20:30 Sun). How can I assist you today with membership pricing, class schedules, or claiming your free 3-day trial pass (code SHINE-TRIAL-FREE)?`;
+        return `Good morning! ☀️ Wishing you a wonderful and energetic day ahead.\n${coreMessageEn}`;
       } else if (isAfternoon) {
-        return `Good afternoon! 🌤️ Hope your day is going great! I'm your consultant from The Shine Fitness & Yoga. May I help you explore our gym packages, Yoga & Zumba classes, or book a free 3-day trial session today?`;
+        return `Good afternoon! 🌤️ Hope your day is going great!\n${coreMessageEn}`;
       } else {
-        return `Good evening! 🌙 Looking to de-stress with a refreshing workout tonight? I'm your consultant at The Shine Fitness & Yoga. May I guide you through our special memberships or reserve your complimentary 3-day pass (code SHINE-TRIAL-FREE)?`;
+        return `Good evening! 🌙 Looking to de-stress with a refreshing workout tonight?\n${coreMessageEn}`;
       }
     }
   }
@@ -160,12 +197,12 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
   const [effectiveUser, setEffectiveUser] = useState<MemberUser | null>(currentUser || null);
   const [copiedVoucher, setCopiedVoucher] = useState(false);
 
-  // Fallback to localStorage if currentUser not passed directly
+  // Fallback to safeStorage if currentUser not passed directly
   useEffect(() => {
     if (currentUser) {
       setEffectiveUser(currentUser);
-    } else if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('the_shine_member');
+    } else {
+      const saved = safeStorage.getItem('the_shine_member');
       if (saved) {
         try {
           setEffectiveUser(JSON.parse(saved));
@@ -180,15 +217,18 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
 
   const [messages, setMessages] = useState<Message[]>(() => {
     try {
-      const saved = localStorage.getItem('shine_chatbot_messages');
+      const saved = safeStorage.getItem('shine_chatbot_messages');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
+          if (parsed[0].id === 'initial' || parsed.length === 1) {
+            parsed[0].text = getPersonalizedGreeting(lang, currentUser);
+          }
           return parsed;
         }
       }
     } catch (e) {
-      console.error('Error loading chatbot messages from localStorage', e);
+      console.error('Error loading chatbot messages', e);
     }
     return [
       { 
@@ -199,18 +239,19 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
     ];
   });
 
-  // Persist the last 3 messages to localStorage
+  // Persist the last 3 messages
   useEffect(() => {
     try {
       const messagesToSave = messages.slice(-3);
-      localStorage.setItem('shine_chatbot_messages', JSON.stringify(messagesToSave));
+      safeStorage.setItem('shine_chatbot_messages', JSON.stringify(messagesToSave));
     } catch (e) {
-      console.error('Error saving chatbot messages to localStorage', e);
+      console.error('Error saving chatbot messages', e);
     }
   }, [messages]);
   const [input, setInput] = useState('');
   const [isConsultantTyping, setIsConsultantTyping] = useState(false);
   const ackIndexRef = useRef(0);
+  const lastInteractionTimeRef = useRef<number>(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Quick inquiry suggestions for customers
@@ -254,20 +295,29 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
     // Resolve honorific pronoun for customer
     const { pronoun } = getCustomerPronoun(effectiveUser?.gender, effectiveUser?.fullName);
 
-    // Select marketing acknowledgment
-    const ackPool = lang === 'vi' ? getAckMessagesVi(pronoun) : ACK_MARKETING_MESSAGES_EN;
-    const ackText = ackPool[ackIndexRef.current % ackPool.length];
-    ackIndexRef.current += 1;
+    const now = Date.now();
+    const shouldShowAck = lastInteractionTimeRef.current === 0 || (now - lastInteractionTimeRef.current > 15 * 60 * 1000);
+    lastInteractionTimeRef.current = now;
 
-    const ackMessage: Message = {
-      id: `ack_${Date.now() + 1}`,
-      role: 'model',
-      text: ackText,
-      isAck: true
-    };
+    if (shouldShowAck) {
+      // Select marketing acknowledgment
+      const ackPool = lang === 'vi' ? getAckMessagesVi(pronoun) : ACK_MARKETING_MESSAGES_EN;
+      const ackText = ackPool[ackIndexRef.current % ackPool.length];
+      ackIndexRef.current += 1;
 
-    // 1. Immediately post user message + marketing acknowledgment
-    setMessages(prev => [...prev, userMessage, ackMessage]);
+      const ackMessage: Message = {
+        id: `ack_${now + 1}`,
+        role: 'model',
+        text: ackText,
+        isAck: true
+      };
+
+      // 1. Immediately post user message + marketing acknowledgment
+      setMessages(prev => [...prev, userMessage, ackMessage]);
+    } else {
+      // 1. Immediately post user message only
+      setMessages(prev => [...prev, userMessage]);
+    }
     setInput('');
     setIsConsultantTyping(true);
 
@@ -451,25 +501,18 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
                   <div 
                     className={`max-w-[92%] rounded-2xl px-4 py-3 text-xs sm:text-sm leading-relaxed ${
                       msg.role === 'user' 
-                        ? 'bg-brand-orange text-white rounded-tr-xs font-medium shadow-sm' 
-                        : 'bg-white dark:bg-[#1c1c1c] text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-white/10 rounded-tl-xs shadow-xs whitespace-pre-wrap'
+                        ? 'bg-brand-orange text-white rounded-tr-xs font-medium shadow-sm whitespace-pre-wrap' 
+                        : 'bg-white dark:bg-[#1c1c1c] text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-white/10 rounded-tl-xs shadow-xs'
                     }`}
                   >
-                    {/* Render message with clean typography and styled formula boxes */}
-                    {msg.text.split('【').map((part, index) => {
-                      if (index === 0) {
-                        return <span key={index}>{part}</span>;
-                      }
-                      const [formula, ...rest] = part.split('】');
-                      return (
-                        <React.Fragment key={index}>
-                          <div className="my-2 p-2.5 rounded-xl bg-orange-100/60 dark:bg-brand-orange/15 border border-brand-orange/40 text-center font-mono font-bold text-slate-900 dark:text-orange-200 text-xs shadow-xs select-all">
-                            📐 {formula.trim()}
-                          </div>
-                          {rest.join('】')}
-                        </React.Fragment>
-                      );
-                    })}
+                    {/* Render message with Markdown parsing */}
+                    {msg.role === 'model' ? (
+                      <div className="markdown-body text-sm leading-relaxed max-w-none">
+                        <Markdown>{prepareMarkdownText(msg.text)}</Markdown>
+                      </div>
+                    ) : (
+                      <span>{msg.text}</span>
+                    )}
 
                     {/* Interactive Trial Pass Voucher Card */}
                     {msg.role === 'model' && (msg.id === 'initial' || msg.text.includes('SHINE-TRIAL-FREE')) && (
@@ -477,11 +520,11 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
                         <div className="flex flex-col gap-2 mb-3">
                           <div className="flex items-start gap-1.5 text-amber-800 dark:text-amber-300 font-bold text-[13px] leading-snug">
                             <Gift size={16} className="text-brand-orange shrink-0 mt-0.5" />
-                            <span>Voucher 03 ngày trải nghiệm phòng tập 5 sao VIP</span>
+                            <span>{lang === 'vi' ? 'Voucher 03 ngày trải nghiệm phòng tập 5 sao VIP' : '03-Day Trial Pass at 5-Star VIP Gym'}</span>
                           </div>
                           <div className="pl-5 mt-0.5">
                             <span className="inline-block text-sm font-black px-3 py-1.5 rounded-full bg-brand-orange text-white shadow-md whitespace-nowrap uppercase tracking-wide">
-                              Trị giá 350K
+                              {lang === 'vi' ? 'Trị giá 350K' : 'Value 350K'}
                             </span>
                           </div>
                         </div>
@@ -489,11 +532,11 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
                         <div className="mt-3 text-[11px] text-slate-600 dark:text-slate-300 space-y-2">
                           <p className="flex items-center gap-1.5">
                             <CheckCircle2 size={13} className="text-emerald-500 shrink-0" />
-                            <span>Tập Gym 24/7, xông hơi, giữ xe MIỄN PHÍ</span>
+                            <span>{lang === 'vi' ? 'Tập Gym, Boxing, locker & giữ xe MIỄN PHÍ' : 'Gym, Boxing, Locker & FREE Parking'}</span>
                           </p>
                           <p className="flex items-center gap-1.5">
                             <CheckCircle2 size={13} className="text-emerald-500 shrink-0" />
-                            <span>Tặng 01 buổi đo InBody định kỳ cùng HLV.</span>
+                            <span>{lang === 'vi' ? 'HLV hỗ trợ 1:1 kỹ thuật & máy tập ban đầu.' : '1-on-1 Trainer guidance on technique.'}</span>
                           </p>
                         </div>
 
@@ -504,7 +547,7 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
                             className="mt-3 w-full py-2 px-3 rounded-lg bg-brand-orange hover:bg-orange-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer active:scale-98"
                           >
                             <Calendar size={13} />
-                            <span>Nhận Voucher và Giữ chỗ ngay</span>
+                            <span>{lang === 'vi' ? 'Nhận Voucher và Giữ chỗ ngay' : 'Claim Voucher & Reserve Now'}</span>
                           </button>
                         )}
                       </div>

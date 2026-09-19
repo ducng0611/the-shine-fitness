@@ -8,15 +8,15 @@ import {
   Wind, 
   Lock,
   ArrowRight,
-  ClipboardList,
   Car,
   Crosshair,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Camera
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-type ZoneId = 'parking' | 'reception' | 'inbody' | 'cardio' | 'freeweights' | 'machines' | 'boxing' | 'yoga' | 'locker';
+type ZoneId = 'parking' | 'reception' | 'cardio' | 'freeweights' | 'machines' | 'boxing' | 'yoga' | 'locker';
 type FloorId = 'floor1' | 'floor2';
 
 interface GymFloorPlanProps {
@@ -32,19 +32,18 @@ export function GymFloorPlan({ lang, onOpenRegistration }: GymFloorPlanProps) {
 
   const zoneData: Record<ZoneId, { icon: React.ReactNode; color: string; floor: FloorId; images: string[] }> = {
     // Tầng 1
-    parking: { icon: <Car size={32} />, color: 'bg-stone-500/20 text-stone-400 border-stone-500/30', floor: 'floor1', images: ['/img/parking-space.png'] },
-    reception: { icon: <Coffee size={32} />, color: 'bg-blue-500/20 text-blue-400 border-blue-500/30', floor: 'floor1', images: ['/img/reception.jpg'] },
-    inbody: { icon: <ClipboardList size={32} />, color: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30', floor: 'floor1', images: ['/img/inbody.png'] },
+    parking: { icon: <Car size={24} />, color: 'bg-stone-500/20 text-stone-400 border-stone-500/30', floor: 'floor1', images: ['/img/parking-space.png'] },
+    reception: { icon: <Coffee size={24} />, color: 'bg-blue-500/20 text-blue-400 border-blue-500/30', floor: 'floor1', images: ['/img/reception.jpg'] },
     // Tầng 2
-    cardio: { icon: <HeartPulse size={32} />, color: 'bg-rose-500/20 text-rose-400 border-rose-500/30', floor: 'floor2', images: ['/img/cardio-1.png', '/img/cardio-2.png', '/img/cardio-3.png'] },
-    freeweights: { icon: <Dumbbell size={32} />, color: 'bg-brand-orange/20 text-brand-orange border-brand-orange/30', floor: 'floor2', images: ['/img/free-weights.png'] },
-    machines: { icon: <Activity size={32} />, color: 'bg-purple-500/20 text-purple-400 border-purple-500/30', floor: 'floor2', images: ['/img/free-weights.png'] },
-    boxing: { icon: <Crosshair size={32} />, color: 'bg-red-500/20 text-red-400 border-red-500/30', floor: 'floor2', images: ['/img/boxing-1.png', '/img/boxing-2.png'] },
-    yoga: { icon: <Wind size={32} />, color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30', floor: 'floor2', images: ['/img/yoga.png'] },
-    locker: { icon: <Lock size={32} />, color: 'bg-slate-500/20 text-slate-400 border-slate-500/30', floor: 'floor2', images: ['/img/restroom-1.png', '/img/restroom-2.png'] }
+    cardio: { icon: <HeartPulse size={24} />, color: 'bg-rose-500/20 text-rose-400 border-rose-500/30', floor: 'floor2', images: ['/img/cardio-1.png', '/img/cardio-2.png', '/img/cardio-3.png'] },
+    freeweights: { icon: <Dumbbell size={24} />, color: 'bg-brand-orange/20 text-brand-orange border-brand-orange/30', floor: 'floor2', images: ['/img/free-weights.png'] },
+    machines: { icon: <Activity size={24} />, color: 'bg-purple-500/20 text-purple-400 border-purple-500/30', floor: 'floor2', images: ['/img/cardio-3.png', '/img/free-weights.png'] },
+    boxing: { icon: <Crosshair size={24} />, color: 'bg-red-500/20 text-red-400 border-red-500/30', floor: 'floor2', images: ['/img/boxing-1.png', '/img/boxing-2.png'] },
+    yoga: { icon: <Wind size={24} />, color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30', floor: 'floor2', images: ['/img/yoga.png'] },
+    locker: { icon: <Lock size={24} />, color: 'bg-slate-500/20 text-slate-400 border-slate-500/30', floor: 'floor2', images: ['/img/restroom-1.png', '/img/restroom-2.png'] }
   };
 
-  const floor1Zones: ZoneId[] = ['parking', 'reception', 'inbody'];
+  const floor1Zones: ZoneId[] = ['parking', 'reception'];
   const floor2Zones: ZoneId[] = ['cardio', 'freeweights', 'machines', 'boxing', 'yoga', 'locker'];
 
   const currentZones = activeFloor === 'floor1' ? floor1Zones : floor2Zones;
@@ -160,53 +159,126 @@ export function GymFloorPlan({ lang, onOpenRegistration }: GymFloorPlanProps) {
                 <>
                   <button 
                     onClick={prevImage}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-black/80 border border-white/20 text-white rounded-full backdrop-blur-md transition-all shadow-xl"
+                    aria-label="Previous Image"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-black/60 hover:bg-black/90 border border-white/25 text-white rounded-full backdrop-blur-md transition-all shadow-xl z-20 cursor-pointer"
                   >
-                    <ChevronLeft size={28} />
+                    <ChevronLeft size={26} />
                   </button>
                   <button 
                     onClick={nextImage}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/50 hover:bg-black/80 border border-white/20 text-white rounded-full backdrop-blur-md transition-all shadow-xl"
+                    aria-label="Next Image"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-black/60 hover:bg-black/90 border border-white/25 text-white rounded-full backdrop-blur-md transition-all shadow-xl z-20 cursor-pointer"
                   >
-                    <ChevronRight size={28} />
+                    <ChevronRight size={26} />
                   </button>
                   
-                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-                    {currentImages.map((_, idx) => (
+                  {/* Visual Image Thumbnails Strip */}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2.5 p-1.5 bg-black/65 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl z-20 max-w-[92%] overflow-x-auto">
+                    {currentImages.map((imgSrc, idx) => (
                       <button
                         key={idx}
-                        onClick={() => setImageIndex(idx)}
-                        className={`w-3 h-3 rounded-full transition-all ${idx === imageIndex ? 'bg-brand-orange scale-125' : 'bg-white/50 hover:bg-white'}`}
-                      />
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setImageIndex(idx);
+                        }}
+                        className={`relative w-16 h-12 sm:w-20 sm:h-14 rounded-xl overflow-hidden shrink-0 transition-all duration-200 border-2 cursor-pointer ${
+                          idx === imageIndex 
+                            ? 'border-brand-orange ring-2 ring-brand-orange/60 scale-105 shadow-lg' 
+                            : 'border-white/30 opacity-70 hover:opacity-100 hover:border-white'
+                        }`}
+                      >
+                        <img 
+                          src={imgSrc} 
+                          alt={`Thumbnail ${idx + 1}`} 
+                          className="w-full h-full object-cover" 
+                        />
+                        <span className="absolute bottom-1 right-1 text-[9px] font-bold text-white bg-black/70 px-1 rounded">
+                          #{idx + 1}
+                        </span>
+                      </button>
                     ))}
                   </div>
                 </>
               )}
             </div>
 
-            <div className={`grid grid-cols-2 gap-4 mt-6 ${currentZones.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-3 lg:grid-cols-6'}`}>
+            {/* Workout Zone Thumbnails Grid */}
+            <div className={`grid gap-4 mt-6 ${currentZones.length === 2 ? 'grid-cols-2 max-w-xl mx-auto w-full' : 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-6'}`}>
               {currentZones.map((zone) => {
                 const isActive = activeZone === zone;
                 const zoneInfo = getZoneTranslation(zone);
+                const thumbImg = zoneData[zone].images[0];
+                const imageCount = zoneData[zone].images.length;
+
                 return (
                   <button
                     key={zone}
+                    type="button"
                     onClick={() => handleZoneClick(zone)}
                     className={`
-                      relative group transition-all duration-300 rounded-xl border
-                      flex flex-col items-center justify-center p-4 min-h-[110px] shadow-sm
+                      relative group transition-all duration-300 rounded-2xl border overflow-hidden
+                      flex flex-col text-left shadow-md cursor-pointer
                       ${isActive 
-                        ? `${zoneData[zone].color} scale-105 shadow-xl shadow-black/50 z-10` 
-                        : 'bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200'
+                        ? 'ring-2 ring-brand-orange border-brand-orange scale-[1.03] shadow-xl shadow-brand-orange/20 z-10' 
+                        : 'border-slate-200 dark:border-white/10 hover:border-brand-orange/60 hover:shadow-lg bg-slate-900'
                       }
                     `}
                   >
-                    <div className={`mb-3 transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}>
-                      {zoneData[zone].icon}
+                    {/* Thumbnail Image Container */}
+                    <div className="relative w-full aspect-[16/10] overflow-hidden bg-slate-950">
+                      <img
+                        src={thumbImg}
+                        alt={zoneInfo.name}
+                        className={`w-full h-full transition-transform duration-500 group-hover:scale-110 ${
+                          zone === 'parking' ? 'object-contain p-2 bg-slate-950' : 'object-cover'
+                        }`}
+                      />
+                      {/* Gradient overlay for readability */}
+                      <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent transition-opacity ${isActive ? 'opacity-70' : 'opacity-80 group-hover:opacity-60'}`} />
+
+                      {/* Top Badges */}
+                      <div className="absolute top-2 inset-x-2 flex items-center justify-between pointer-events-none">
+                        <span className={`p-1.5 rounded-lg backdrop-blur-md border border-white/20 shadow-xs ${isActive ? 'bg-brand-orange text-white' : 'bg-black/60 text-white'}`}>
+                          <span className="scale-75 origin-center block">
+                            {zoneData[zone].icon}
+                          </span>
+                        </span>
+                        {imageCount > 1 && (
+                          <span className="text-[10px] font-bold bg-black/70 backdrop-blur-md text-white/90 px-1.5 py-0.5 rounded-md border border-white/15 flex items-center gap-1 shadow-xs">
+                            <Camera size={10} />
+                            {imageCount}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Active indicator */}
+                      {isActive && (
+                        <div className="absolute bottom-2 right-2 pointer-events-none">
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-brand-orange text-white text-[9px] font-black uppercase tracking-wider shadow-sm">
+                            <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+                            {lang === 'vi' ? 'Đang xem' : 'Active'}
+                          </span>
+                        </div>
+                      )}
                     </div>
-                    <span className="font-heading font-bold uppercase tracking-wider text-xs md:text-sm text-center leading-tight">
-                      {zoneInfo.name}
-                    </span>
+
+                    {/* Zone Info Footer */}
+                    <div className={`p-3 transition-colors ${
+                      isActive 
+                        ? 'bg-orange-500/10 dark:bg-orange-500/15' 
+                        : 'bg-white dark:bg-slate-900'
+                    }`}>
+                      <h4 className="font-heading font-bold uppercase tracking-wider text-xs md:text-sm leading-tight line-clamp-1 text-slate-900 dark:text-white group-hover:text-brand-orange transition-colors">
+                        {zoneInfo.name}
+                      </h4>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">
+                        {zoneData[zone].floor === 'floor1' 
+                          ? (lang === 'vi' ? 'Tầng 1 - Sảnh & Bãi xe' : 'Floor 1 - Lobby & Parking') 
+                          : (lang === 'vi' ? 'Tầng 2 - Khu Tập Luyện' : 'Floor 2 - Workout Zone')
+                        }
+                      </p>
+                    </div>
                   </button>
                 );
               })}

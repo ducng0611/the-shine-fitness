@@ -240,14 +240,14 @@ export const AdminEmailFlowsTab: React.FC<AdminEmailFlowsTabProps> = ({
                           </span>
                           <span className={`flex items-center space-x-1 ${textSub}`}>
                             <Clock className="w-3 h-3" />
-                            <span>{step.delayDays === 0 ? 'Gửi ngay lập tức' : `Sau ${step.delayDays} ngày`}</span>
+                            <span>{(step.delayDays ?? step.config?.delayDays ?? 0) === 0 ? 'Gửi ngay lập tức' : `Sau ${step.delayDays ?? step.config?.delayDays} ngày`}</span>
                           </span>
                         </div>
-                        <p className={`font-semibold ${textHeading}`}>{step.subject}</p>
-                        {step.voucherCode && (
+                        <p className={`font-semibold ${textHeading}`}>{step.subject || step.config?.emailSubject || step.title}</p>
+                        {(step.voucherCode || step.config?.voucherCode) && (
                           <div className="flex items-center space-x-1 text-amber-600 dark:text-amber-400 font-mono text-[11px] font-bold">
                             <Tag className="w-3 h-3" />
-                            <span>Mã: {step.voucherCode}</span>
+                            <span>Mã: {step.voucherCode || step.config?.voucherCode}</span>
                           </div>
                         )}
                       </div>

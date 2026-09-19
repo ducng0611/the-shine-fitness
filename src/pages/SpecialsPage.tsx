@@ -1,6 +1,5 @@
 import React from 'react';
 import { FadeIn } from '../components/FadeIn';
-import { GymFloorPlan } from '../components/GymFloorPlan';
 import { Gift, Flame, ArrowRight, CheckCircle2, ChevronDown } from 'lucide-react';
 
 export const SpecialsPage = ({ lang, t, openRegistration }) => {
@@ -56,7 +55,7 @@ export const SpecialsPage = ({ lang, t, openRegistration }) => {
                   )}
                 </div>
                 <p className="text-[11px] text-brand-orange font-semibold mb-6">
-                  {lang === 'vi' ? '★ Áp dụng cho cả Gym và Boxing' : '★ Valid for both Gym & Boxing'}
+                  {lang === 'vi' ? '★ Gốc 549k/tháng, đang chạy KM còn 349k/tháng' : '★ Reg 549k/month, promo active at 349k/month'}
                 </p>
 
                 <ul className="space-y-3 mb-8">
@@ -104,7 +103,7 @@ export const SpecialsPage = ({ lang, t, openRegistration }) => {
                   )}
                 </div>
                 <p className="text-[11px] text-slate-500 mb-6">
-                  {lang === 'vi' ? '★ Đóng từng tháng tự do, không cam kết dài hạn' : '★ Month-to-month flexibility, zero contracts'}
+                  {lang === 'vi' ? '★ Gốc 700k/tháng, KM còn 549k (khách inbox mới báo giá)' : '★ Reg 700k/mo, promo 549k (inbox for quote)'}
                 </p>
 
                 <ul className="space-y-3 mb-8">
@@ -152,7 +151,7 @@ export const SpecialsPage = ({ lang, t, openRegistration }) => {
                   )}
                 </div>
                 <p className="text-[11px] text-slate-500 mb-6">
-                  {lang === 'vi' ? '★ Không giới hạn Yoga theo lịch & Full Gym' : '★ Unlimited Yoga timetable & full gym access'}
+                  {lang === 'vi' ? '★ Gốc 950k/tháng, KM còn 699k (khách inbox mới báo giá)' : '★ Reg 950k/mo, promo 699k (inbox for quote)'}
                 </p>
 
                 <ul className="space-y-3 mb-8">
@@ -184,7 +183,7 @@ export const SpecialsPage = ({ lang, t, openRegistration }) => {
                     {lang === 'vi' ? 'Vé Ngày Day Pass: 100k' : 'Day Pass: 100,000 VND'}
                   </h4>
                   <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                    {lang === 'vi' ? 'Trải nghiệm tự do máy Gym, Cardio, Xông hơi & Tủ locker trọn ngày.' : 'Full single-day pass including gym zones, sauna and digital lockers.'}
+                    {lang === 'vi' ? 'Trải nghiệm tự do máy Gym, Cardio, Boxing & Tủ locker trọn ngày.' : 'Full single-day pass including gym zones, cardio, boxing and digital lockers.'}
                   </p>
                 </div>
               </div>

@@ -149,6 +149,28 @@ export async function getMemberFromFirebase(uid: string) {
   }
 }
 
+
+export async function getMemberCheckInsFromFirebase(memberCode: string) {
+  try {
+    const colRef = collection(db, 'check_ins');
+    const q = query(
+      colRef,
+      where('memberCode', '==', memberCode),
+      orderBy('createdAt', 'desc'),
+      limit(100)
+    );
+    const snap = await getDocs(q);
+    const checkIns: any[] = [];
+    snap.forEach(doc => {
+      checkIns.push({ id: doc.id, ...doc.data() });
+    });
+    return checkIns;
+  } catch (error) {
+    console.error('Error querying check-ins from Firestore:', error);
+    return [];
+  }
+}
+
 export async function recordCheckInInFirebase(checkInData: {
   memberCode: string;
   fullName: string;
@@ -450,29 +472,29 @@ export const DEFAULT_PACKAGES: GymPackage[] = [
     extraServices: 'Toàn năng VIP & PT'
   },
   {
-    id: 'pkg_48t',
-    code: '48T',
-    name: 'Thẻ Hội Viên Tri Ân 48 Tháng (Lifetime Elite 4 Năm)',
-    nameEn: '48-Month Lifetime Elite Membership',
-    category: 'special',
-    price: 18000000,
-    originalPrice: 24000000,
-    durationMonths: 48,
-    durationLabel: '48 Tháng',
+    id: 'pkg_pt',
+    code: 'PT',
+    name: 'Gói Tập Huấn Luyện Viên Cá Nhân (PT 1:1)',
+    nameEn: '1-on-1 Personal Training Package',
+    category: 'pt',
+    price: 5000000,
+    originalPrice: 6500000,
+    durationMonths: 1,
+    durationLabel: 'Theo Gói',
     benefits: [
-      'Hội viên danh dự 4 năm trọn gói mọi dịch vụ cao cấp nhất',
-      'Đặc quyền mang theo 01 bạn đồng hành vào cuối tuần',
-      'Ưu tiên đăng ký lịch tập cùng Master Yoga & Huấn luyện viên trưởng',
-      'Bảo lưu thẻ linh hoạt lên tới 120 ngày khi có kế hoạch công tác xa'
+      'Huấn luyện viên cá nhân theo sát 1 kèm 1 trong suốt quá trình tập luyện',
+      'Đánh giá chỉ số InBody và tư vấn lộ trình dinh dưỡng cá nhân hóa',
+      'Cam kết đạt được mục tiêu thay đổi hình thể (tăng cơ, giảm mỡ, cải thiện bệnh lý)',
+      'Thời gian tập luyện linh hoạt theo lịch trình của hội viên'
     ],
-    isPopular: false,
+    isPopular: true,
     isActive: true,
-    badge: 'Siêu Đặc Quyền',
-    notes: 'Gói tập dài hạn cao cấp nhất trong cơ sở dữ liệu The Shine Fitness',
-    memberCount: 1,
-    totalRevenue: 21400000,
-    ptSessionsIncluded: 4,
-    extraServices: 'Toàn quyền Elite'
+    badge: 'HLV Cá Nhân',
+    notes: 'Gói tập HLV cá nhân chuyên sâu (Personal Training)',
+    memberCount: 50,
+    totalRevenue: 250000000,
+    ptSessionsIncluded: 12,
+    extraServices: 'Kèm 1:1 & Dinh dưỡng'
   }
 ];
 

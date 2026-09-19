@@ -22,6 +22,8 @@ import {
 } from "./chatConsultantKnowledge";
 import { requireAuth, AuthRequest } from "./middleware/auth.ts";
 
+const chatCache = new Map<string, string>();
+
 async function startServer() {
   const app = express();
   const PORT = 3000;
@@ -45,6 +47,23 @@ async function startServer() {
   // Health check endpoint
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
+  });
+
+  // Return self-destroying script for any legacy Service Worker registrations to clear cache and unregister
+  const swKillScript = `
+    self.addEventListener('install', () => self.skipWaiting());
+    self.addEventListener('activate', (e) => {
+      e.waitUntil(
+        caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
+          .then(() => self.registration.unregister())
+          .then(() => self.clients.claim())
+      );
+    });
+  `;
+  app.get(["/sw.js", "/registerSW.js", "/dev-dist/sw.js", "/dev-dist/registerSW.js"], (req, res) => {
+    res.setHeader("Content-Type", "application/javascript; charset=utf-8");
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+    res.send(swKillScript);
   });
 
 
@@ -251,6 +270,17 @@ async function startServer() {
       
       if (!message) {
         return res.status(400).json({ error: "Message is required" });
+      }
+      
+      const lang = req.body?.lang || 'vi';
+
+      // Simple caching mechanism
+      // Create a cache key using the history length and the current message
+      // This caches identical conversational states
+      const historyStr = history ? JSON.stringify(history.map((h: any) => h.text)) : "";
+      const cacheKey = `${lang}_${isMember}_${pronoun}_${historyStr}_${message}`;
+      if (chatCache.has(cacheKey)) {
+        return res.json({ text: chatCache.get(cacheKey) });
       }
 
       // Build comprehensive grounded system instruction adhering to all correction rules

@@ -284,7 +284,8 @@ export const EditCustomerModal: React.FC<EditCustomerModalProps> = ({
 interface NewCustomerModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (customer: Partial<CustomerRecord>) => Promise<void>;
+  onSave?: (customer: Partial<CustomerRecord>) => Promise<void>;
+  onCreate?: (customer: Partial<CustomerRecord>) => Promise<void>;
   isDark: boolean;
 }
 
@@ -292,6 +293,7 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
   isOpen,
   onClose,
   onSave,
+  onCreate,
   isDark,
 }) => {
   const [formData, setFormData] = useState({
@@ -315,9 +317,11 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.fullName.trim() || !formData.phone.trim()) return;
+    const handleSave = onSave || onCreate;
+    if (!handleSave) return;
     setSaving(true);
     try {
-      await onSave({
+      await handleSave({
         ...formData,
         memberCode: `TS_${Math.floor(1000 + Math.random() * 9000)}`,
         createdAt: new Date().toISOString(),
@@ -818,6 +822,7 @@ export const PromotionModal: React.FC<PromotionModalProps> = ({
     endDate: new Date(Date.now() + 30 * 24 * 3600 * 1000).toISOString().split('T')[0],
     usageLimit: 100,
     usageCount: 0,
+    applicablePackages: [],
     isActive: true,
   });
   const [saving, setSaving] = useState(false);
@@ -837,6 +842,7 @@ export const PromotionModal: React.FC<PromotionModalProps> = ({
         endDate: new Date(Date.now() + 30 * 24 * 3600 * 1000).toISOString().split('T')[0],
         usageLimit: 200,
         usageCount: 0,
+        applicablePackages: [],
         isActive: true,
       });
     }

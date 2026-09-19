@@ -1,0 +1,233 @@
+[
+  {
+    "Phút": "PHẦN A – BỐI CẢNH & VẤN ĐỀ (0–4 phút) | Khung: Yin (2018), Case Study Protocol"
+  },
+  {
+    "Phút": "0'",
+    "Mã": "F1",
+    "Câu hỏi": "Anh/chị sáng lập Shine từ khi nào? Ý tưởng ban đầu là phục vụ nhóm khách hàng nào?",
+    "Đo cái gì": "Độ tin cậy nguồn tin",
+    "Lưu ý cho người phỏng vấn": "Ghi rõ chức danh và thời gian gắn bó — báo cáo phải nêu 'phỏng vấn ai, tư cách gì'.",
+    "Ghi chép": "Thời điểm tháng 4/2024. Cho nhóm khách hàng độ tuổi từ 22-35 tuổi là học sinh sinh viên, dân văn phòng, có bệnh lý. Những người muốn đi tập nhưng ngại đám đông."
+  },
+  {
+    "Phút": "1'",
+    "Mã": "F2",
+    "Câu hỏi": "Hiện Shine có khoảng bao nhiêu hội viên đang hoạt động? Cơ cấu các gói tập chính là gì?",
+    "Đo cái gì": "Số liệu nền",
+    "Lưu ý cho người phỏng vấn": "Đối chiếu với bộ dữ liệu 851 hội viên nhóm đã có từ bài phân khúc trước.",
+    "Ghi chép": "Khoảng 300 hội viên đang hoạt động. Gói membership ngắn, trung, dài hạn từ 1 Tháng đến 24 tháng, Gói tập HLV (huấn luyện viên) cá nhân"
+  },
+  {
+    "Phút": "2'",
+    "Mã": "F3",
+    "Câu hỏi": "Theo anh/chị, đâu là vấn đề marketing lớn nhất của Shine hiện nay?",
+    "Đo cái gì": "Nhận thức vấn đề của DN",
+    "Lưu ý cho người phỏng vấn": "CÂU MỞ HOÀN TOÀN. Tuyệt đối không gợi ý chatbot hay chuyện trả lời chậm. Nếu founder KHÔNG nhắc đến khâu tư vấn → ghi nguyên văn, đây là bằng chứng cho GAP 1.",
+    "Ghi chép": "Marketing offline + Online (kênh Tiktok)"
+  },
+  {
+    "Phút": "3'",
+    "Mã": "F4",
+    "Câu hỏi": "Vì sao Shine quan tâm đến chatbot? Ý tưởng xuất phát từ nhu cầu nội bộ hay từ nhà cung cấp chào mời?",
+    "Đo cái gì": "Nguồn gốc nhu cầu",
+    "Lưu ý cho người phỏng vấn": "Phân biệt nhu cầu thật với chạy theo xu hướng. Định hình toàn bộ Phần D.",
+    "Ghi chép": "Từ nhu cầu nội bộ giúp giảm công việc cho bộ phận CSKH (chăm sóc khách hàng)"
+  },
+  {
+    "Phút": "PHẦN B – DỰNG SERVICE BLUEPRINT KHÂU TƯ VẤN (4–16 phút) | Khung: Bitner, Ostrom & Morgan (2008)"
+  },
+  {
+    "Phút": "4'",
+    "Mã": "F5",
+    "Câu hỏi": "Khi một khách lạ nhắn tin vào Fanpage hoặc Zalo, chuyện gì diễn ra tiếp theo? Ai nhận, ai trả lời?",
+    "Đo cái gì": "Lớp Onstage – nhân viên tuyến trước",
+    "Lưu ý cho người phỏng vấn": "Yêu cầu kể tuần tự từng bước. VẼ SƠ ĐỒ RA GIẤY trước mặt họ rồi hỏi 'đúng chưa ạ?'.",
+    "Ghi chép": "Sales sẽ trả lời tin nhắn zalo, CSKH là cá nhân mình và 1 bạn nữa sẽ trả lời. Mình sẽ tư vấn sơ và chuyển đổi số điện thoại để gửi cho các bạn sale liên hệ tư vấn"
+  },
+  {
+    "Phút": "6'",
+    "Mã": "F6",
+    "Câu hỏi": "Ngoài giờ hành chính ai xử lý? Cuối tuần và ngày lễ thì sao?",
+    "Đo cái gì": "Lỗ hổng theo thời gian",
+    "Lưu ý cho người phỏng vấn": "Cho ra bằng chứng mạnh nhất cho Phần 1 của báo cáo — chỗ chatbot chèn vào.",
+    "Ghi chép": "Thường sẽ chia theo ca làm việc, lễ thì mình sẽ trả lời"
+  },
+  {
+    "Phút": "8'",
+    "Mã": "F7",
+    "Câu hỏi": "Sau khi trả lời xong, thông tin khách lưu ở đâu? Có ai theo dõi tiếp không? Bao lâu thì nhắc lại?",
+    "Đo cái gì": "Lớp Backstage – hậu trường",
+    "Lưu ý cho người phỏng vấn": "Nếu trả lời 'chỉ nằm trong tin nhắn thôi' → lead thất thoát có hệ thống.",
+    "Ghi chép": "Lưu ở trang tính nội bộ, cả team theo dõi và chăm sóc lượt của mình, data nào không phản hồi cá nhân đó sẽ báo lại"
+  },
+  {
+    "Phút": "10'",
+    "Mã": "F8",
+    "Câu hỏi": "Nhân viên dựa vào đâu để trả lời? Có bảng giá chuẩn, kịch bản mẫu, tài liệu nội bộ không? Ai cập nhật khi giá thay đổi?",
+    "Đo cái gì": "Lớp Support Processes",
+    "Lưu ý cho người phỏng vấn": "GIÁ TRỊ THỰC THI CAO NHẤT: đây chính là nguyên liệu knowledge base cho bot. XIN BẢN MỀM NGAY TẠI CHỖ.",
+    "Ghi chép": "Dựa vào được training từ ban đầu, có bảng giá chuẩn. Mình là người quyết định có cập nhật giá hay không"
+  },
+  {
+    "Phút": "12'",
+    "Mã": "F9",
+    "Câu hỏi": "Có bao nhiêu người tham gia khâu tư vấn? Họ còn kiêm nhiệm việc gì khác?",
+    "Đo cái gì": "Nguồn lực vận hành",
+    "Lưu ý cho người phỏng vấn": "Đầu vào cho bảng chi phí Phần 6. Lễ tân kiêm 3 việc là lý do trả lời chậm.",
+    "Ghi chép": "2 người, kiêm việc lễ tân đa phần các việc nhỏ"
+  },
+  {
+    "Phút": "14'",
+    "Mã": "F10",
+    "Câu hỏi": "Theo quan sát của anh/chị, khâu nào trong chuỗi này hay tắc nhất?",
+    "Đo cái gì": "Điểm thất bại (fail point)",
+    "Lưu ý cho người phỏng vấn": "So sánh với pain point khách hàng nêu ở bảng hỏi khách.",
+    "Ghi chép": "Khi khách không phản hồi nữa, chỉ seen (xem) thôi"
+  },
+  {
+    "Phút": "PHẦN C – ĐO KHOẢNG CÁCH NHẬN THỨC (16–20 phút) | Khung: Parasuraman, Zeithaml & Berry (1985), GAP 1"
+  },
+  {
+    "Phút": "16'",
+    "Mã": "F11",
+    "Câu hỏi": "Theo anh/chị, khách hàng nhắn tin hỏi nhiều nhất về điều gì? Xếp thứ tự 3 nội dung hàng đầu.",
+    "Đo cái gì": "GAP 1 – nội dung",
+    "Lưu ý cho người phỏng vấn": "KHÔNG cho xem dữ liệu trước. Đối chiếu với thống kê 200–300 inbox thật ở Sheet 7.",
+    "Ghi chép": "Thứ nhất là giá, sau đó đến Thời gian và cuối cùng là Hình thức đóng gói hay theo tháng"
+  },
+  {
+    "Phút": "18'",
+    "Mã": "F12",
+    "Câu hỏi": "Anh/chị ước tính Shine phản hồi tin nhắn trung bình sau bao lâu?",
+    "Đo cái gì": "GAP 1 – thời gian",
+    "Lưu ý cho người phỏng vấn": "Quản lý thường ước tính lạc quan hơn thực tế. Ghi nguyên văn con số họ nói.",
+    "Ghi chép": "5-30p"
+  },
+  {
+    "Phút": "19'",
+    "Mã": "F13",
+    "Câu hỏi": "Khoảng bao nhiêu phần trăm người nhắn tin cuối cùng đăng ký? Số còn lại vì sao không?",
+    "Đo cái gì": "GAP 1 – chuyển đổi",
+    "Lưu ý cho người phỏng vấn": "So với lý do khách thật sự nêu ở câu Q15b của bảng hỏi khách.",
+    "Ghi chép": "60% số người đăng ký, còn lại do seen không phản hồi, vị trí xa hoặc có nơi có giá tốt hơn (ways - là so sánh với Ways Station - đối thủ hiện tại)"
+  },
+  {
+    "Phút": "PHẦN D – NĂNG LỰC TRIỂN KHAI AI (20–30 phút) | Khung: Jöhnk, Weißert & Wyrtki (2021) – 18 yếu tố / 5 nhóm. Xem Sheet 5 để biết câu nào ánh xạ yếu tố nào."
+  },
+  {
+    "Phút": "20'",
+    "Mã": "F14",
+    "Câu hỏi": "Shine kỳ vọng chatbot giải quyết điều gì cụ thể? Sau 3 tháng, thế nào thì coi là thành công?",
+    "Đo cái gì": "Nhóm Chiến lược: AI-business potentials",
+    "Lưu ý cho người phỏng vấn": "Ép ra con số nếu được — đây là nguồn đặt mục tiêu KPI ở Phần 6.",
+    "Ghi chép": "Kỳ vọng về cách trả lời và không bị miss data, trả lời đúng trọng tâm và như người thật. Sau 3 tháng, giảm tải việc con người phải tự xem lại cách chatbot xử lý đạt bao nhiêu % và chuyển đổi tin nhắn khách inbox thành sđt như thế nào"
+  },
+  {
+    "Phút": "21'",
+    "Mã": "F15",
+    "Câu hỏi": "Anh/chị có toàn quyền quyết định chi ngân sách cho việc này không, hay cần thông qua ai?",
+    "Đo cái gì": "Nhóm Chiến lược: Top management support",
+    "Lưu ý cho người phỏng vấn": "CÂU CHỈ FOUNDER TRẢ LỜI ĐƯỢC. Quản lý cấp dưới không trả lời thay.",
+    "Ghi chép": "Thông qua các Co-founder cùng thành lập Doanh nghiệp"
+  },
+  {
+    "Phút": "22'",
+    "Mã": "F16",
+    "Câu hỏi": "Ngân sách dự kiến khoảng bao nhiêu mỗi tháng? Ai sẽ vận hành và cập nhật nội dung cho bot?",
+    "Đo cái gì": "Nhóm Nguồn lực: Financial budget + AI personnel",
+    "Lưu ý cho người phỏng vấn": "Không có người phụ trách cập nhật thì bot chết sau 2 tháng — nêu rủi ro này ở Phần 6.",
+    "Ghi chép": "1-3tr/tháng"
+  },
+  {
+    "Phút": "24'",
+    "Mã": "F17",
+    "Câu hỏi": "Quy trình tư vấn hiện nay có chuẩn hoá không, hay mỗi nhân viên làm một kiểu?",
+    "Đo cái gì": "Nhóm Chiến lược: AI-process fit",
+    "Lưu ý cho người phỏng vấn": "Quy trình càng chuẩn hoá, bot càng dễ triển khai. Quy trình tuỳ hứng là rào cản lớn.",
+    "Ghi chép": "Quy trình chuẩn hóa"
+  },
+  {
+    "Phút": "25'",
+    "Mã": "F18",
+    "Câu hỏi": "Trong đội ngũ đã có ai từng dùng công cụ tự động hoá, quản lý fanpage chuyên nghiệp hay phần mềm CRM chưa?",
+    "Đo cái gì": "Nhóm Tri thức: AI awareness + Upskilling",
+    "Lưu ý cho người phỏng vấn": "Quyết định chọn nền tảng kéo-thả hay giải pháp cần code.",
+    "Ghi chép": "Rất ít"
+  },
+  {
+    "Phút": "26'",
+    "Mã": "F19",
+    "Câu hỏi": "Nhân viên tư vấn sẽ phản ứng thế nào nếu có bot? Có lo ngại bị thay thế không?",
+    "Đo cái gì": "Nhóm Văn hoá: Change management",
+    "Lưu ý cho người phỏng vấn": "Yếu tố hay bị bỏ qua nhưng là nguyên nhân thất bại phổ biến. Đưa vào phần rủi ro.",
+    "Ghi chép": "Maybe sẽ cảm thấy chưa quen vì quen tương tác thực tế với khách hàng và dễ liên hệ"
+  },
+  {
+    "Phút": "27'",
+    "Mã": "F20",
+    "Câu hỏi": "Shine lưu dữ liệu khách ở đâu — Excel, CRM, hay phần mềm quản lý phòng tập nào? Có trích xuất được lịch sử hội thoại không?",
+    "Đo cái gì": "Nhóm Dữ liệu: Data availability + accessibility",
+    "Lưu ý cho người phỏng vấn": "CÂU QUYẾT ĐỊNH TÍNH KHẢ THI CỦA CẢ DỰ ÁN. Nếu không trích xuất được → đổi phạm vi giải pháp NGAY HÔM ĐÓ.",
+    "Ghi chép": "Exel và trang tính, có phần mềm quản trị hội viên"
+  },
+  {
+    "Phút": "29'",
+    "Mã": "F21",
+    "Câu hỏi": "Dữ liệu hiện có đầy đủ và chính xác không? Có bị trùng, thiếu, hay mỗi người ghi một kiểu?",
+    "Đo cái gì": "Nhóm Dữ liệu: Data quality",
+    "Lưu ý cho người phỏng vấn": "Nguyên tắc 'dữ liệu vào tệ thì kết quả ra tệ' — cần nêu trong phần rủi ro.",
+    "Ghi chép": "Khá đầy đủ, được thống nhất"
+  },
+  {
+    "Phút": "29'",
+    "Mã": "F22",
+    "Câu hỏi": "Điều gì khiến anh/chị lo ngại nhất nếu triển khai? Trường hợp nào tuyệt đối không được để bot tự xử lý?",
+    "Đo cái gì": "Nhóm Tri thức: AI ethics + ràng buộc DN",
+    "Lưu ý cho người phỏng vấn": "Đầu vào cho quy tắc bàn giao Phần 4. Đối chiếu câu Q20 của khách hàng.",
+    "Ghi chép": "Đặt lịch hẹn với khách và chăm sóc sau đó"
+  },
+  {
+    "Phút": "PHẦN E – CHỐT SỐ LIỆU & BƯỚC TIẾP THEO (30–35 phút)"
+  },
+  {
+    "Phút": "30'",
+    "Mã": "F23",
+    "Câu hỏi": "(đưa Sheet 6 đã in) Những số liệu này Shine có sẵn không? Ai cung cấp được?",
+    "Đo cái gì": "Chốt nguồn dữ liệu",
+    "Lưu ý cho người phỏng vấn": "Tick ngay tại chỗ, đừng hẹn gửi sau. Mục nào không có, hỏi luôn 'ước lượng khoảng bao nhiêu?'.",
+    "Ghi chép": "Có sẵn"
+  },
+  {
+    "Phút": "32'",
+    "Mã": "F24",
+    "Câu hỏi": "Nhóm xin trích xuất 200–300 hội thoại gần nhất, đã ẩn tên và số điện thoại, được không?",
+    "Đo cái gì": "Quyền truy cập dữ liệu",
+    "Lưu ý cho người phỏng vấn": "Nêu rõ cam kết ẩn danh theo Nghị định 13/2023/NĐ-CP.",
+    "Ghi chép": "Được"
+  },
+  {
+    "Phút": "33'",
+    "Mã": "F25",
+    "Câu hỏi": "Trong 12 tháng tới Shine có kế hoạch mở thêm cơ sở hoặc mở rộng dịch vụ không?",
+    "Đo cái gì": "Phạm vi thiết kế giải pháp",
+    "Lưu ý cho người phỏng vấn": "Quyết định bot thiết kế cho 1 hay nhiều chi nhánh.",
+    "Ghi chép": "Hiện tại chưa do tình hình cạnh tranh khá cao"
+  },
+  {
+    "Phút": "34'",
+    "Mã": "F26",
+    "Câu hỏi": "Nếu thử nghiệm cho kết quả tốt, Shine có sẵn sàng triển khai thật không, hay đây là bài tập tham khảo?",
+    "Đo cái gì": "Cam kết thực tế",
+    "Lưu ý cho người phỏng vấn": "HỎI THẲNG. Xác định kỳ vọng ngay từ đầu, tránh hiểu lầm về sau cho cả hai bên.",
+    "Ghi chép": "Sẽ xem xét"
+  },
+  {
+    "Phút": "35'",
+    "Mã": "F27",
+    "Câu hỏi": "Ai là đầu mối liên hệ chính từ nay đến buổi báo cáo? Anh/chị có dự buổi báo cáo cuối kỳ được không?",
+    "Đo cái gì": "Tính liên tục",
+    "Lưu ý cho người phỏng vấn": "Xin số Zalo trực tiếp, đừng qua fanpage.",
+    "Ghi chép": "Chính mình"
+  }
+]

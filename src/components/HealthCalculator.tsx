@@ -419,28 +419,28 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({ lang, onOpen
 
             </div>
 
-            {/* Lower: Docked InBody 270 Hospital-Grade Guarantee with authentic InBody branding & blurred machine backdrop */}
+            {/* Lower: 1-on-1 PT Consultation & Trial Guarantee */}
             <div className="relative p-5 sm:p-6 rounded-b-3xl overflow-hidden border-t border-slate-200 dark:border-white/10 space-y-3">
-              {/* Blurred InBody Machine Background */}
+              {/* Subtle Ambient Background */}
               <div 
-                className="absolute inset-0 bg-cover bg-center filter blur-[2px] opacity-15 dark:opacity-20 scale-105 pointer-events-none transition-transform"
+                className="absolute inset-0 bg-cover bg-center filter blur-[2px] opacity-10 dark:opacity-15 scale-105 pointer-events-none transition-transform"
                 style={{
-                  backgroundImage: `url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80')`
+                  backgroundImage: `url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80')`
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-br from-white/90 via-white/80 to-amber-500/10 dark:from-[#111111]/92 dark:via-[#141414]/88 dark:to-orange-500/10 pointer-events-none" />
 
               <div className="relative z-10 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  {/* Official InBody Logotype */}
+                  {/* The Shine PT Badge */}
                   <div className="flex items-baseline font-black tracking-tight select-none px-2.5 py-1 bg-white/90 dark:bg-black/60 rounded-lg border border-slate-200/80 dark:border-white/10 shadow-xs">
-                    <span className="text-base text-[#971B2F] font-black tracking-tighter" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>In</span>
-                    <span className="text-base text-slate-900 dark:text-white font-bold tracking-tight" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>Body</span>
-                    <span className="ml-1 text-[10px] text-brand-orange font-bold">270</span>
+                    <span className="text-base text-brand-orange font-black tracking-tighter" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>THE</span>
+                    <span className="text-base text-slate-900 dark:text-white font-bold tracking-tight ml-1" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>SHINE</span>
+                    <span className="ml-1 text-[10px] text-emerald-500 font-bold">PT</span>
                   </div>
                   <div>
                     <h4 className="font-heading font-bold text-xs uppercase italic tracking-wider text-slate-900 dark:text-white leading-tight">
-                      {isVi ? 'Đo Chỉ Số Cơ - Mỡ 0đ Tại Club' : 'Free InBody 270 Medical Scan'}
+                      {isVi ? 'Tư Vấn Thể Trạng & Lộ Trình 0đ' : 'Free 1-on-1 PT Consultation'}
                     </h4>
                     <span className="text-[10px] text-slate-500 dark:text-slate-400">
                       154 Hoàng Hoa Thám, P.12, Tân Bình
@@ -454,8 +454,8 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({ lang, onOpen
 
               <p className="relative z-10 text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
                 {isVi 
-                  ? 'Công cụ online tính toán ước lượng. Tại The Shine, máy InBody 270 chính hãng quét phân tích 12 chỉ số chuẩn y khoa: khối lượng cơ xương từng chi, mỡ nội tạng và tốc độ trao đổi chất.'
-                  : 'Online tools provide estimates. At The Shine, our authentic InBody 270 medical analyzer tracks 12 comprehensive clinical metrics with zero sales pressure.'}
+                  ? 'Công cụ online tính toán ước lượng chỉ số cơ thể. Tại The Shine, đội ngũ HLV chuyên nghiệp sẽ trực tiếp kiểm tra thể trạng, hướng dẫn kỹ thuật máy tập và thiết kế lộ trình tập luyện cá nhân hóa hoàn toàn miễn phí.'
+                  : 'Online tools provide estimates. At The Shine, our certified trainers provide personalized physical assessments, machine guidance, and tailored workout plans with zero sales pressure.'}
               </p>
 
               {/* 4 Trust points */}
@@ -484,7 +484,7 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({ lang, onOpen
                 onClick={() => onOpenBooking && onOpenBooking('Tập thử miễn phí 3-7 ngày (Voucher SHINE-TRIAL-FREE)')}
                 className="relative z-10 w-full py-2.5 bg-slate-900 hover:bg-black dark:bg-white/10 dark:hover:bg-white/20 text-white font-heading font-bold text-xs uppercase italic rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer mt-1 shadow-sm"
               >
-                <span>{isVi ? 'Đăng Ký Đo InBody & Nhận Thẻ Tập 0đ' : 'Book Free Scan & 0đ Pass'}</span>
+                <span>{isVi ? 'Đăng Ký Tư Vấn & Nhận Thẻ Tập 0đ' : 'Book Free PT Consultation & 0đ Pass'}</span>
                 <ArrowRight size={13} className="text-brand-orange" />
               </button>
             </div>

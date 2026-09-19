@@ -19,6 +19,7 @@ import { Language, translations } from '../translations';
 import { MemberCheckInQR } from './MemberCheckInQR';
 import { MemberWorkoutLog } from './MemberWorkoutLog';
 import { MemberProgressTracker } from './MemberProgressTracker';
+import { MemberBadges } from './MemberBadges';
 
 interface MemberPortalModalProps {
   isOpen: boolean;
@@ -35,7 +36,7 @@ export const MemberPortalModal: React.FC<MemberPortalModalProps> = ({
   onLogout,
   lang = 'vi'
 }) => {
-  const [activeTab, setActiveTab] = useState<'qr' | 'workout' | 'progress' | 'card'>('qr');
+  const [activeTab, setActiveTab] = useState<'qr' | 'workout' | 'progress' | 'card' | 'badges'>('qr');
 
   if (!isOpen) return null;
 
@@ -77,11 +78,11 @@ export const MemberPortalModal: React.FC<MemberPortalModalProps> = ({
           </p>
 
           {/* Navigation Tabs (QR Check-in vs Workout Log vs Progress vs Digital Card) */}
-          <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 bg-white/10 p-1 rounded-2xl border border-white/10 text-xs">
+          <div className="mt-5 grid grid-cols-3 sm:grid-cols-5 gap-1 sm:gap-2 bg-white/10 p-1 rounded-2xl border border-white/10 text-xs">
             <button
               type="button"
               onClick={() => setActiveTab('qr')}
-              className={`py-2 px-2 rounded-xl font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer text-[11px] sm:text-xs ${
+              className={`py-2 px-1 sm:px-2 rounded-xl font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer text-[10px] sm:text-[11px] md:text-xs ${
                 activeTab === 'qr'
                   ? 'bg-brand-orange text-white shadow-md'
                   : 'text-slate-300 hover:text-white hover:bg-white/5'
@@ -95,7 +96,7 @@ export const MemberPortalModal: React.FC<MemberPortalModalProps> = ({
             <button
               type="button"
               onClick={() => setActiveTab('workout')}
-              className={`py-2 px-2 rounded-xl font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer text-[11px] sm:text-xs ${
+              className={`py-2 px-1 sm:px-2 rounded-xl font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer text-[10px] sm:text-[11px] md:text-xs ${
                 activeTab === 'workout'
                   ? 'bg-brand-orange text-white shadow-md'
                   : 'text-slate-300 hover:text-white hover:bg-white/5'
@@ -108,7 +109,7 @@ export const MemberPortalModal: React.FC<MemberPortalModalProps> = ({
             <button
               type="button"
               onClick={() => setActiveTab('progress')}
-              className={`py-2 px-2 rounded-xl font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer text-[11px] sm:text-xs ${
+              className={`py-2 px-1 sm:px-2 rounded-xl font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer text-[10px] sm:text-[11px] md:text-xs ${
                 activeTab === 'progress'
                   ? 'bg-brand-orange text-white shadow-md'
                   : 'text-slate-300 hover:text-white hover:bg-white/5'
@@ -120,8 +121,20 @@ export const MemberPortalModal: React.FC<MemberPortalModalProps> = ({
 
             <button
               type="button"
+              onClick={() => setActiveTab('badges')}
+              className={`py-2 px-1 sm:px-2 rounded-xl font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer text-[10px] sm:text-[11px] md:text-xs ${
+                activeTab === 'badges'
+                  ? 'bg-brand-orange text-white shadow-md'
+                  : 'text-slate-300 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Award size={14} className="shrink-0 hidden sm:block" />
+              <span className="truncate">{lang === 'vi' ? 'Huy Hiệu' : 'Badges'}</span>
+            </button>
+            <button
+              type="button"
               onClick={() => setActiveTab('card')}
-              className={`py-2 px-2 rounded-xl font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer text-[11px] sm:text-xs ${
+              className={`py-2 px-1 sm:px-2 rounded-xl font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer text-[10px] sm:text-[11px] md:text-xs ${
                 activeTab === 'card'
                   ? 'bg-brand-orange text-white shadow-md'
                   : 'text-slate-300 hover:text-white hover:bg-white/5'
@@ -153,6 +166,13 @@ export const MemberPortalModal: React.FC<MemberPortalModalProps> = ({
           {activeTab === 'progress' && (
             <div className="animate-fadeIn">
               <MemberProgressTracker user={user} lang={lang} />
+            </div>
+          )}
+
+          {/* TAB 5: BADGES */}
+          {activeTab === 'badges' && (
+            <div className="animate-fadeIn">
+              <MemberBadges user={user} lang={lang} />
             </div>
           )}
 

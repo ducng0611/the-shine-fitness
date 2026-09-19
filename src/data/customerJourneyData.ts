@@ -568,7 +568,7 @@ export const MOMENTS_OF_TRUTH = [
 ];
 
 // Helper: Auto-match CustomerRecord to Persona & Journey Stage
-export function enrichCustomerWithJourney(customer: CustomerRecord): {
+export function enrichCustomerWithJourney(customer: CustomerRecord): CustomerRecord & {
   stage: JourneyStage;
   persona: CustomerPersona;
   motAlert?: string;
@@ -658,6 +658,9 @@ export function enrichCustomerWithJourney(customer: CustomerRecord): {
   };
 
   return {
+    ...customer,
+    journeyStage: customer.journeyStage || stage,
+    matchedPersona: customer.matchedPersona || persona,
     stage,
     persona,
     motAlert,

@@ -80,8 +80,11 @@ export const MemberWorkoutLog: React.FC<MemberWorkoutLogProps> = ({
   ]);
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
 
+  const memberIdentifier = user.memberCode || user.membershipCode || user.id || user.uid || '';
+  const userUid = user.uid || user.id || memberIdentifier;
+
   // LocalStorage Key
-  const localCacheKey = `theshine_workouts_${user.membershipCode || user.uid}`;
+  const localCacheKey = `theshine_workouts_${memberIdentifier}`;
 
   // Fetch initial logs (from LocalStorage first, then Firestore)
   useEffect(() => {
@@ -100,7 +103,7 @@ export const MemberWorkoutLog: React.FC<MemberWorkoutLogProps> = ({
 
       // Sync with Firestore
       try {
-        const cloudLogs = await getMemberWorkoutLogsFromFirebase(user.membershipCode || user.uid);
+        const cloudLogs = await getMemberWorkoutLogsFromFirebase(memberIdentifier);
         if (cloudLogs && cloudLogs.length > 0) {
           setLogs(cloudLogs);
           localStorage.setItem(localCacheKey, JSON.stringify(cloudLogs));
@@ -113,7 +116,7 @@ export const MemberWorkoutLog: React.FC<MemberWorkoutLogProps> = ({
     };
 
     loadLogs();
-  }, [user.membershipCode, user.uid]);
+  }, [memberIdentifier, userUid]);
 
   // Set management
   const handleAddSet = () => {
@@ -159,8 +162,8 @@ export const MemberWorkoutLog: React.FC<MemberWorkoutLogProps> = ({
     setIsSaving(true);
     const newEntry: WorkoutLogEntry = {
       id: 'log_' + Date.now(),
-      memberCode: user.membershipCode || user.uid,
-      uid: user.uid,
+      memberCode: memberIdentifier,
+      uid: userUid,
       date: selectedDate,
       exerciseName: exerciseName.trim(),
       category: category,

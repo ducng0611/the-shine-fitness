@@ -1,11 +1,33 @@
 import React from 'react';
 import { FadeIn } from '../components/FadeIn';
+import { GymFloorPlan } from '../components/GymFloorPlan';
 import { Star, Quote, Play, ChevronDown, ChevronUp, Video, MapPin, Facebook, MessageCircle } from 'lucide-react';
 
-export const ReviewsPage = ({ lang, t, reviews, fbReviews, tiktokVideos, showAllClips, setShowAllClips, isAutoPlayEnabled, setIsAutoPlayEnabled, setSelectedVideoModal, loadingReviews, getGoogleReviewText, getGoogleReviewTime, getFacebookAuthor, getFacebookReviewText, fallbackThumbnails }) => {
+export const ReviewsPage = ({ 
+  lang, 
+  t, 
+  openRegistration,
+  reviews, 
+  fbReviews, 
+  tiktokVideos, 
+  showAllClips, 
+  setShowAllClips, 
+  isAutoPlayEnabled, 
+  setIsAutoPlayEnabled, 
+  setSelectedVideoModal, 
+  loadingReviews, 
+  getGoogleReviewText, 
+  getGoogleReviewTime, 
+  getFacebookAuthor, 
+  getFacebookReviewText, 
+  fallbackThumbnails 
+}) => {
   return (
     <div className="pt-20">
-      <section id="reviews" className="py-20 sm:py-28 bg-slate-100 dark:bg-[#171717] transition-colors duration-200">
+      {/* Sơ đồ phòng tập tương tác 2 tầng chuẩn 5 sao */}
+      <GymFloorPlan lang={lang} onOpenRegistration={() => openRegistration?.('Tập thử trải nghiệm')} />
+
+      <section id="reviews" className="py-20 sm:py-28 bg-slate-100 dark:bg-[#171717] transition-colors duration-200 border-t border-slate-200 dark:border-white/10">
         <FadeIn>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
@@ -188,7 +210,7 @@ export const ReviewsPage = ({ lang, t, reviews, fbReviews, tiktokVideos, showAll
                             <img 
                               src={video.thumbnail || fallbackThumbnails[i % fallbackThumbnails.length]} 
                               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                              alt={video.caption} 
+                              alt={lang === 'en' ? (video.captionEn || video.caption) : (video.captionVi || video.caption)} 
                               onError={(e) => {
                                 e.currentTarget.src = fallbackThumbnails[i % fallbackThumbnails.length];
                               }} 
@@ -224,7 +246,7 @@ export const ReviewsPage = ({ lang, t, reviews, fbReviews, tiktokVideos, showAll
                     {/* Caption & Top 3 Comments */}
                     <div className="flex-1 flex flex-col min-w-0">
                       <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 line-clamp-3 mb-4 italic leading-relaxed text-justify text-pretty">
-                        "{video.caption}"
+                        "{lang === 'en' ? (video.captionEn || video.caption) : (video.captionVi || video.caption)}"
                       </p>
 
                       <div className="flex items-center justify-between mb-3 border-b border-slate-100 dark:border-white/5 pb-2">
@@ -260,7 +282,7 @@ export const ReviewsPage = ({ lang, t, reviews, fbReviews, tiktokVideos, showAll
                                 )}
                               </div>
                               <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed pl-5 text-justify text-pretty">
-                                "{comment.comment}"
+                                "{lang === 'en' ? (comment.commentEn || comment.comment) : (comment.commentVi || comment.comment)}"
                               </p>
                             </div>
                           ))

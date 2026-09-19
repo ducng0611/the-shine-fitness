@@ -620,7 +620,7 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                {lang === 'vi' ? '% Mỡ cơ thể (InBody)' : 'Body Fat % (Optional)'}
+                {lang === 'vi' ? '% Mỡ cơ thể (Tùy chọn)' : 'Body Fat % (Optional)'}
               </label>
               <input
                 type="number"

@@ -21,13 +21,15 @@ interface RegistrationModalProps {
   onClose: () => void;
   lang?: Language;
   defaultPackage?: string;
+  onSuccessSubmit?: (message: string) => void;
 }
 
 export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   isOpen,
   onClose,
   lang = 'vi',
-  defaultPackage
+  defaultPackage,
+  onSuccessSubmit
 }) => {
   const t = translations[lang].bookingModal;
   const initialPkg = defaultPackage || t.packageOptions[0];
@@ -78,6 +80,9 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
       await saveRegistrationToFirebase(regRecord);
 
       setSuccessData(regRecord);
+      if (onSuccessSubmit) {
+        onSuccessSubmit(lang === 'vi' ? '🎉 Đăng ký thành công! Mã ưu đãi của bạn đã sẵn sàng.' : '🎉 Registration successful! Your voucher is ready.');
+      }
     } catch (err: any) {
       setErrorMessage(err.message || (lang === 'vi' ? 'Không thể kết nối máy chủ.' : 'Could not submit registration.'));
     } finally {

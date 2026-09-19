@@ -47,8 +47,9 @@ export const ContactPage = ({ lang, t, openRegistration }) => {
                     <div className="text-xs uppercase font-bold text-slate-400">
                       {t.visitUs.hoursTitle}
                     </div>
-                    <div className="text-sm sm:text-base font-semibold text-slate-900 dark:text-white mt-0.5 leading-snug md:leading-normal">
-                      {t.visitUs.hoursValue}
+                    <div className="flex flex-col gap-1 text-sm sm:text-base font-semibold text-slate-900 dark:text-white mt-1">
+                      <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-brand-orange"></span> {lang === 'vi' ? 'T2 - T7 (06:00 - 21:00)' : 'Mon - Sat (06:00 - 21:00)'}</span>
+                      <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-brand-orange"></span> {lang === 'vi' ? 'CN (06:00 - 20:30)' : 'Sun (06:00 - 20:30)'}</span>
                     </div>
                   </div>
                 </div>

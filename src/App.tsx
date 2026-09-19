@@ -1,6 +1,7 @@
 import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { FadeIn } from './components/FadeIn';
 import { Toast } from './components/Toast';
+import { PWAInstallButton } from './components/PWAInstallButton';
 
 import { HomePage } from './pages/HomePage';
 import { ServicesPage } from './pages/ServicesPage';
@@ -49,13 +50,13 @@ import { AuthModal, MemberUser } from './components/AuthModal';
 import { MemberPortalModal } from './components/MemberPortalModal';
 import { HealthCalculator } from './components/HealthCalculator';
 import { BlogSection } from './components/BlogSection';
-import { GymFloorPlan } from './components/GymFloorPlan';
 import { VideoModal } from './components/VideoModal';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { AdminLoginPage } from './components/admin/AdminLoginPage';
 import { AdminUser } from './types';
 import { Language, translations } from './translations';
 import { inferGenderFromName } from './utils/gender';
+import { safeStorage } from './utils/storage';
 import { 
   GOOGLE_REVIEWS_BILINGUAL, 
   FACEBOOK_REVIEWS_BILINGUAL, 
@@ -91,7 +92,9 @@ type FBReview = {
 };
 type TikTokComment = { 
   author: string; 
-  comment: string; 
+  comment: string;
+  commentEn?: string;
+  commentVi?: string; 
   time?: string;
   likes?: number;
   rank?: number;
@@ -100,6 +103,8 @@ type TikTokVideo = {
   url: string; 
   videoId: string;
   caption: string;
+  captionEn?: string;
+  captionVi?: string;
   views: string | number;
   likes: string | number;
   commentCount: string | number;
@@ -112,17 +117,15 @@ export default function App() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [lang, setLang] = useState<Language>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('the_shine_lang');
-      if (saved === 'vi' || saved === 'en') return saved;
-    }
+    const saved = safeStorage.getItem('the_shine_lang');
+    if (saved === 'vi' || saved === 'en') return saved;
     return 'vi';
   });
 
   const t = translations[lang];
 
   useEffect(() => {
-    localStorage.setItem('the_shine_lang', lang);
+    safeStorage.setItem('the_shine_lang', lang);
   }, [lang]);
 
   useEffect(() => {
@@ -139,11 +142,11 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAllClips, setShowAllClips] = useState(false);
   const [isAutoPlayEnabled, setIsAutoPlayEnabled] = useState(() => {
-    return localStorage.getItem('the_shine_autoplay') === 'true';
+    return safeStorage.getItem('the_shine_autoplay') === 'true';
   });
 
   useEffect(() => {
-    localStorage.setItem('the_shine_autoplay', String(isAutoPlayEnabled));
+    safeStorage.setItem('the_shine_autoplay', String(isAutoPlayEnabled));
   }, [isAutoPlayEnabled]);
 
   // Modals
@@ -154,17 +157,15 @@ export default function App() {
   const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('login');
 
   const [currentUser, setCurrentUser] = useState<MemberUser | null>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('the_shine_member');
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          if (parsed && !parsed.gender) {
-            parsed.gender = inferGenderFromName(parsed.fullName) || 'Nam';
-          }
-          return parsed;
-        } catch (e) {}
-      }
+    const saved = safeStorage.getItem('the_shine_member');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed && !parsed.gender) {
+          parsed.gender = inferGenderFromName(parsed.fullName) || 'Nam';
+        }
+        return parsed;
+      } catch (e) {}
     }
     return null;
   });
@@ -188,11 +189,9 @@ export default function App() {
 
   // Admin Dashboard & RBAC States
   const [currentAdmin, setCurrentAdmin] = useState<AdminUser | null>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('theshine_current_admin');
-      if (saved) {
-        try { return JSON.parse(saved); } catch (e) {}
-      }
+    const saved = safeStorage.getItem('theshine_current_admin');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
     }
     return null;
   });
@@ -221,20 +220,20 @@ export default function App() {
       user.gender = inferGenderFromName(user.fullName) || 'Nam';
     }
     setCurrentUser(user);
-    localStorage.setItem('the_shine_member', JSON.stringify(user));
+    safeStorage.setItem('the_shine_member', JSON.stringify(user));
   };
 
   const handleLogout = () => {
     setCurrentUser(null);
-    localStorage.removeItem('the_shine_member');
+    safeStorage.removeItem('the_shine_member');
     setIsMemberPortalOpen(false);
   };
 
   // Theme
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('theme');
-      if (saved === 'light' || saved === 'dark') return saved;
+    const saved = safeStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark') return saved;
+    if (typeof window !== 'undefined' && window.matchMedia) {
       return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
     }
     return 'dark';
@@ -246,7 +245,7 @@ export default function App() {
     } else {
       document.documentElement.classList.remove('dark');
     }
-    localStorage.setItem('theme', theme);
+    safeStorage.setItem('theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
@@ -333,7 +332,7 @@ export default function App() {
           currentAdmin={currentAdmin}
           onLogout={() => {
             setCurrentAdmin(null);
-            localStorage.removeItem('theshine_current_admin');
+            safeStorage.removeItem('theshine_current_admin');
           }}
           onExitAdmin={() => navigateTo('/')}
         />
@@ -393,6 +392,9 @@ export default function App() {
             </div>
 
             {/* Right Controls: Flag Language Selector -> Theme -> Member Portal (right before Book CTA) -> Book CTA -> Mobile Hamburger */}
+            <div className="hidden md:flex items-center shrink-0">
+              <PWAInstallButton lang={lang} />
+            </div>
             <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
               
               {/* Language Selector Dropdown */}
@@ -406,14 +408,14 @@ export default function App() {
                   <ChevronDown size={14} className="text-slate-500" />
                 </button>
                 
-                <div className="absolute top-full right-0 mt-2 w-36 py-1.5 rounded-xl bg-white dark:bg-[#1A1A1A] border border-slate-200 dark:border-white/10 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 origin-top-right transform scale-95 group-hover:scale-100">
+                <div className="absolute top-full right-0 mt-2 w-44 py-1.5 rounded-xl bg-white dark:bg-[#1A1A1A] border border-slate-200 dark:border-white/10 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 origin-top-right transform scale-95 group-hover:scale-100">
                   <button
                     onClick={() => setLang('vi')}
                     className={`w-full text-left px-3 py-2 text-sm flex items-center justify-between hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer ${lang === 'vi' ? 'text-brand-orange font-bold bg-orange-50/50 dark:bg-brand-orange/10 border-l-2 border-brand-orange' : 'text-slate-700 dark:text-slate-300 border-l-2 border-transparent'}`}
                   >
                     <div className="flex items-center gap-2">
                       <span className="flex items-center justify-center w-5 h-4 overflow-hidden rounded-sm"><img src="https://flagcdn.com/w20/vn.png" srcSet="https://flagcdn.com/w40/vn.png 2x" width="20" alt="VN" className="rounded-sm shadow-sm" /></span>
-                      <span>Tiếng Việt</span>
+                      <span className="whitespace-nowrap">Tiếng Việt</span>
                     </div>
                     {lang === 'vi' && <Check size={16} className="text-brand-orange" />}
                   </button>
@@ -423,7 +425,7 @@ export default function App() {
                   >
                     <div className="flex items-center gap-2">
                       <span className="flex items-center justify-center w-5 h-4 overflow-hidden rounded-sm"><img src="https://flagcdn.com/w20/us.png" srcSet="https://flagcdn.com/w40/us.png 2x" width="20" alt="US" className="rounded-sm shadow-sm" /></span>
-                      <span>English</span>
+                      <span className="whitespace-nowrap">English</span>
                     </div>
                     {lang === 'en' && <Check size={16} className="text-brand-orange" />}
                   </button>
@@ -583,10 +585,10 @@ export default function App() {
 
       <main className="flex-1 w-full">
         <Routes>
-          <Route path="/" element={<HomePage openRegistration={openRegistration} />} />
+          <Route path="/" element={<HomePage openRegistration={openRegistration} lang={lang} t={t} />} />
           <Route path="/dich-vu" element={<ServicesPage lang={lang} t={t} openRegistration={openRegistration} isServicesLoading={isServicesLoading} icons={[<Dumbbell size={32} className="text-brand-orange" />, <Calendar size={32} className="text-brand-orange" />, <Users size={32} className="text-brand-orange" />]} />} />
           <Route path="/khuyen-mai" element={<SpecialsPage lang={lang} t={t} openRegistration={openRegistration} />} />
-          <Route path="/khach-hang" element={<ReviewsPage lang={lang} t={t} reviews={reviews} fbReviews={fbReviews} tiktokVideos={tiktokVideos} showAllClips={showAllClips} setShowAllClips={setShowAllClips} isAutoPlayEnabled={isAutoPlayEnabled} setIsAutoPlayEnabled={setIsAutoPlayEnabled} setSelectedVideoModal={setSelectedVideoModal} loadingReviews={loadingReviews} getGoogleReviewText={getGoogleReviewText} getGoogleReviewTime={getGoogleReviewTime} getFacebookAuthor={getFacebookAuthor} getFacebookReviewText={getFacebookReviewText} fallbackThumbnails={fallbackThumbnails} />} />
+          <Route path="/khach-hang" element={<ReviewsPage lang={lang} t={t} openRegistration={openRegistration} reviews={reviews} fbReviews={fbReviews} tiktokVideos={tiktokVideos} showAllClips={showAllClips} setShowAllClips={setShowAllClips} isAutoPlayEnabled={isAutoPlayEnabled} setIsAutoPlayEnabled={setIsAutoPlayEnabled} setSelectedVideoModal={setSelectedVideoModal} loadingReviews={loadingReviews} getGoogleReviewText={getGoogleReviewText} getGoogleReviewTime={getGoogleReviewTime} getFacebookAuthor={getFacebookAuthor} getFacebookReviewText={getFacebookReviewText} fallbackThumbnails={fallbackThumbnails} />} />
           <Route path="/tin-tuc" element={<NewsPage lang={lang} />} />
           <Route path="/lien-he" element={<ContactPage lang={lang} t={t} openRegistration={openRegistration} />} />
         </Routes>
@@ -659,14 +661,32 @@ export default function App() {
                 <MapPin size={16} className="text-brand-orange shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                 <span>{t.footer.address}</span>
               </a>
-              <p className="flex items-start gap-2">
+              <div className="flex items-start gap-2">
                 <Clock size={16} className="text-brand-orange shrink-0 mt-0.5" />
-                <span>{t.footer.hours}</span>
-              </p>
+                <div className="flex flex-col gap-0.5">
+                  <span className="font-semibold">{lang === 'vi' ? 'Giờ mở cửa:' : 'Opening Hours:'}</span>
+                  <span className="text-slate-300 flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-brand-orange"></span> {lang === 'vi' ? 'T2 - T7 (06:00 - 21:00)' : 'Mon - Sat (06:00 - 21:00)'}</span>
+                  <span className="text-slate-300 flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-brand-orange"></span> {lang === 'vi' ? 'CN (06:00 - 20:30)' : 'Sun (06:00 - 20:30)'}</span>
+                </div>
+              </div>
               <p className="flex items-start gap-2">
                 <Phone size={16} className="text-brand-orange shrink-0 mt-0.5" />
                 <span>{t.footer.hotline}</span>
               </p>
+              
+              <div className="w-full h-40 mt-5 rounded-xl overflow-hidden border border-slate-700/50 opacity-70 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+                <iframe
+                  title="The Shine Fitness and Yoga Map Location"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.0596813417123!2d106.64544821116557!3d10.806741089299381!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529001b03dc27%3A0xb330cd3c87756a6e!2sThe%20Shine%20Fitness%20and%20Yoga!5e0!3m2!1sen!2s!4v1789467523408!5m2!1sen!2s"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={false}
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  className="w-full h-full filter contrast-105"
+                />
+              </div>
             </div>
 
           </div>

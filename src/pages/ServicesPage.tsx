@@ -89,27 +89,46 @@ export const ServicesPage = ({ lang, t, openRegistration, isServicesLoading, ico
             ) : (
               t.services.items.map((item, index) => {
               const icons = [
-                <Dumbbell key="1" size={28} className="text-brand-orange" />,
-                <HeartPulse key="2" size={28} className="text-brand-orange" />,
-                <Activity key="3" size={28} className="text-brand-orange" />,
-                <Users key="4" size={28} className="text-brand-orange" />,
-                <Sparkles key="5" size={28} className="text-brand-orange" />,
-                <Target key="6" size={28} className="text-brand-orange" />
+                <Dumbbell key="1" size={20} className="text-brand-orange" />,
+                <HeartPulse key="2" size={20} className="text-brand-orange" />,
+                <Activity key="3" size={20} className="text-brand-orange" />,
+                <Users key="4" size={20} className="text-brand-orange" />,
+                <Sparkles key="5" size={20} className="text-brand-orange" />,
+                <Target key="6" size={20} className="text-brand-orange" />
               ];
+
+              const serviceImages: Record<string, string> = {
+                gym: '/img/free-weights.png',
+                yoga: '/img/yoga.png',
+                groupx: '/img/cardio-2.png',
+                pt: '/img/cardio-1.png',
+                boxing: '/img/boxing-1.png',
+                inbody: '/img/reception.jpg'
+              };
 
               return (
                 <div 
                   key={item.id || index}
-                  className="bg-white dark:bg-[#1a1a1a] p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-white/10 hover:border-brand-orange/60 dark:hover:border-brand-orange/50 transition-all duration-300 shadow-sm hover:shadow-xl flex flex-col justify-between group"
+                  className="bg-white dark:bg-[#1a1a1a] p-5 sm:p-6 rounded-3xl border border-slate-200 dark:border-white/10 hover:border-brand-orange/60 dark:hover:border-brand-orange/50 transition-all duration-300 shadow-sm hover:shadow-xl flex flex-col justify-between group overflow-hidden"
                 >
                   <div>
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-orange-500/10 dark:bg-orange-500/15 flex items-center justify-center mb-5 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
-                      {icons[index % icons.length]}
+                    {/* Thumbnail Image from public/img */}
+                    <div className="relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden mb-5 bg-slate-900 shadow-xs">
+                      <img 
+                        src={serviceImages[item.id] || '/img/free-weights.png'} 
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                      <div className="absolute top-3 left-3 w-10 h-10 rounded-xl bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-brand-orange shadow-md">
+                        {icons[index % icons.length]}
+                      </div>
                     </div>
+
                     <h3 className="text-xl sm:text-2xl font-heading font-bold uppercase italic text-slate-900 dark:text-white mb-3 text-balance">
                       {item.title}
                     </h3>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-5 sm:mb-6 text-justify text-pretty">
+                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-5 text-justify text-pretty">
                       {item.desc}
                     </p>
                   </div>

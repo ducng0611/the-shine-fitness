@@ -73,7 +73,8 @@ export interface GymPackage {
   category: PackageCategory;
   price: number;
   originalPrice?: number;
-  durationMonths: number;
+  durationMonths?: number;
+  durationDays?: number;
   durationLabel: string;
   benefits: string[];
   isPopular?: boolean;
@@ -102,7 +103,7 @@ export interface PromotionCampaign {
   endDate: string;
   usageLimit: number;
   usageCount: number;
-  applicablePackages: string[];
+  applicablePackages?: string[];
   isActive: boolean;
   createdAt?: string;
 }
@@ -122,6 +123,9 @@ export interface FlowStep {
   type: FlowStepType;
   title: string;
   subtitle?: string;
+  delayDays?: number;
+  subject?: string;
+  voucherCode?: string;
   config: {
     delayHours?: number;
     delayDays?: number;
