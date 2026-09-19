@@ -37,7 +37,7 @@ export function GymFloorPlan({ lang, onOpenRegistration }: GymFloorPlanProps) {
     // Tầng 2
     cardio: { icon: <HeartPulse size={24} />, color: 'bg-rose-500/20 text-rose-400 border-rose-500/30', floor: 'floor2', images: ['/img/cardio-1.png', '/img/cardio-2.png', '/img/cardio-3.png'] },
     freeweights: { icon: <Dumbbell size={24} />, color: 'bg-brand-orange/20 text-brand-orange border-brand-orange/30', floor: 'floor2', images: ['/img/free-weights.png'] },
-    machines: { icon: <Activity size={24} />, color: 'bg-purple-500/20 text-purple-400 border-purple-500/30', floor: 'floor2', images: ['/img/cardio-3.png', '/img/free-weights.png'] },
+    machines: { icon: <Activity size={24} />, color: 'bg-purple-500/20 text-purple-400 border-purple-500/30', floor: 'floor2', images: ['/img/machine.png'] },
     boxing: { icon: <Crosshair size={24} />, color: 'bg-red-500/20 text-red-400 border-red-500/30', floor: 'floor2', images: ['/img/boxing-1.png', '/img/boxing-2.png'] },
     yoga: { icon: <Wind size={24} />, color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30', floor: 'floor2', images: ['/img/yoga.png'] },
     locker: { icon: <Lock size={24} />, color: 'bg-slate-500/20 text-slate-400 border-slate-500/30', floor: 'floor2', images: ['/img/restroom-1.png', '/img/restroom-2.png'] }
@@ -66,6 +66,32 @@ export function GymFloorPlan({ lang, onOpenRegistration }: GymFloorPlanProps) {
       };
     }
     return t.zones[zone as keyof typeof t.zones];
+  };
+
+  const getZoneShortName = (zone: ZoneId) => {
+    if (lang === 'vi') {
+      switch (zone) {
+        case 'parking': return 'Bãi Giữ Xe';
+        case 'reception': return 'Lễ Tân';
+        case 'cardio': return 'Cardio';
+        case 'freeweights': return 'Tạ Tự Do';
+        case 'machines': return 'Máy Kháng Lực';
+        case 'boxing': return 'Boxing';
+        case 'yoga': return 'Yoga';
+        case 'locker': return 'Thay Đồ';
+      }
+    } else {
+      switch (zone) {
+        case 'parking': return 'Parking';
+        case 'reception': return 'Reception';
+        case 'cardio': return 'Cardio';
+        case 'freeweights': return 'Free Weights';
+        case 'machines': return 'Machines';
+        case 'boxing': return 'Boxing';
+        case 'yoga': return 'Yoga';
+        case 'locker': return 'Locker';
+      }
+    }
   };
 
   const currentImages = activeZone ? zoneData[activeZone].images : [];
@@ -263,21 +289,15 @@ export function GymFloorPlan({ lang, onOpenRegistration }: GymFloorPlanProps) {
                       )}
                     </div>
 
-                    {/* Zone Info Footer */}
-                    <div className={`p-3 transition-colors ${
+                    {/* Zone Info Footer - Only name, no subtitle */}
+                    <div className={`py-2.5 px-2 text-center transition-colors flex items-center justify-center min-h-[44px] ${
                       isActive 
-                        ? 'bg-orange-500/10 dark:bg-orange-500/15' 
+                        ? 'bg-orange-500/15 dark:bg-orange-500/20' 
                         : 'bg-white dark:bg-slate-900'
                     }`}>
-                      <h4 className="font-heading font-bold uppercase tracking-wider text-xs md:text-sm leading-tight line-clamp-1 text-slate-900 dark:text-white group-hover:text-brand-orange transition-colors">
-                        {zoneInfo.name}
+                      <h4 className="font-heading font-bold uppercase tracking-wider text-xs sm:text-[13px] leading-snug text-slate-900 dark:text-white group-hover:text-brand-orange transition-colors line-clamp-2">
+                        {getZoneShortName(zone)}
                       </h4>
-                      <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">
-                        {zoneData[zone].floor === 'floor1' 
-                          ? (lang === 'vi' ? 'Tầng 1 - Sảnh & Bãi xe' : 'Floor 1 - Lobby & Parking') 
-                          : (lang === 'vi' ? 'Tầng 2 - Khu Tập Luyện' : 'Floor 2 - Workout Zone')
-                        }
-                      </p>
                     </div>
                   </button>
                 );
