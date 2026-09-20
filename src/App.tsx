@@ -68,6 +68,7 @@ import {
 import defaultTiktokVideos from './data/tiktokVideos.json';
 import { ScrollToTop } from './components/ScrollToTop';
 import { ScrollProgress } from './components/ScrollProgress';
+import { findMemberInFirebase } from './lib/firebase';
 
 
 type Review = {
@@ -223,6 +224,49 @@ export default function App() {
     safeStorage.setItem('the_shine_member', JSON.stringify(user));
   };
 
+  // Auto-sync currentUser with Firebase Firestore to ensure accurate real email & phone data
+  useEffect(() => {
+    if (!currentUser) return;
+    let isMounted = true;
+    const syncMemberWithFirestore = async () => {
+      try {
+        const found = await findMemberInFirebase({
+          uid: currentUser.id || currentUser.uid,
+          email: currentUser.email === 'hoi-vien@gmail.com' ? undefined : currentUser.email,
+          phone: currentUser.phone === '0946293593' ? undefined : currentUser.phone,
+          memberCode: currentUser.memberCode
+        });
+        if (found && isMounted) {
+          const updated: MemberUser = {
+            ...currentUser,
+            fullName: found.fullName || currentUser.fullName,
+            email: found.email || (currentUser.email === 'hoi-vien@gmail.com' ? '' : currentUser.email),
+            phone: found.phone || (currentUser.phone === '0946293593' ? '' : currentUser.phone),
+            gender: found.gender || currentUser.gender,
+            status: found.status || currentUser.status,
+            membershipTier: found.membershipTier || currentUser.membershipTier,
+            memberCode: found.membershipCode || currentUser.memberCode,
+            startDate: found.joinedDate || currentUser.startDate,
+            expiryDate: found.expiryDate || currentUser.expiryDate,
+          };
+          if (
+            updated.email !== currentUser.email || 
+            updated.phone !== currentUser.phone || 
+            updated.fullName !== currentUser.fullName ||
+            updated.status !== currentUser.status
+          ) {
+            setCurrentUser(updated);
+            safeStorage.setItem('the_shine_member', JSON.stringify(updated));
+          }
+        }
+      } catch (e) {
+        console.warn('Silent sync with Firebase member doc:', e);
+      }
+    };
+    syncMemberWithFirestore();
+    return () => { isMounted = false; };
+  }, [currentUser?.id, currentUser?.memberCode]);
+
   const handleLogout = () => {
     setCurrentUser(null);
     safeStorage.removeItem('the_shine_member');
@@ -375,7 +419,7 @@ export default function App() {
               <a href="/dich-vu" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/dich-vu"); }} className="px-2 py-1 text-slate-700 dark:text-slate-300 hover:text-brand-orange transition-colors whitespace-nowrap">
                 {t.nav.services}
               </a>
-              <a href="/khuyen-mai" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/khuyen-mai"); }} className="px-2 py-1 text-slate-700 dark:text-slate-300 hover:text-brand-orange transition-colors whitespace-nowrap">
+              <a href="/uu-dai" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/uu-dai"); }} className="px-2 py-1 text-slate-700 dark:text-slate-300 hover:text-brand-orange transition-colors whitespace-nowrap">
                 {t.nav.specials}
               </a>
               
@@ -383,7 +427,7 @@ export default function App() {
                 <BookOpen size={13} className="text-brand-orange shrink-0" />
                 <span className="whitespace-nowrap">{t.nav.blogs}</span>
               </a>
-              <a href="/khach-hang" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/khach-hang"); }} className="px-2 py-1 text-slate-700 dark:text-slate-300 hover:text-brand-orange transition-colors whitespace-nowrap">
+              <a href="/trai-nghiem" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/trai-nghiem"); }} className="px-2 py-1 text-slate-700 dark:text-slate-300 hover:text-brand-orange transition-colors whitespace-nowrap">
                 {t.nav.reviews}
               </a>
               <a href="/lien-he" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/lien-he"); }} className="px-2 py-1 text-slate-700 dark:text-slate-300 hover:text-brand-orange transition-colors whitespace-nowrap">
@@ -514,7 +558,7 @@ export default function App() {
                 <span className="whitespace-nowrap">{t.nav.services}</span>
               </a>
               <a 
-                href="/khuyen-mai" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/khuyen-mai"); }} 
+                href="/uu-dai" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/uu-dai"); }} 
                 
                 className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-slate-800 dark:text-slate-200 hover:text-brand-orange hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap"
               >
@@ -531,7 +575,7 @@ export default function App() {
                 <span className="whitespace-nowrap">{t.nav.blogs}</span>
               </a>
               <a 
-                href="/khach-hang" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/khach-hang"); }} 
+                href="/trai-nghiem" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/trai-nghiem"); }} 
                 
                 className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-slate-800 dark:text-slate-200 hover:text-brand-orange hover:bg-slate-100 dark:hover:bg-white/5 transition-colors whitespace-nowrap"
               >
@@ -586,10 +630,13 @@ export default function App() {
       <main className="flex-1 w-full">
         <Routes>
           <Route path="/" element={<HomePage openRegistration={openRegistration} lang={lang} t={t} />} />
+          <Route path="/trang-chu" element={<HomePage openRegistration={openRegistration} lang={lang} t={t} />} />
           <Route path="/dich-vu" element={<ServicesPage lang={lang} t={t} openRegistration={openRegistration} isServicesLoading={isServicesLoading} icons={[<Dumbbell size={32} className="text-brand-orange" />, <Calendar size={32} className="text-brand-orange" />, <Users size={32} className="text-brand-orange" />]} />} />
+          <Route path="/uu-dai" element={<SpecialsPage lang={lang} t={t} openRegistration={openRegistration} />} />
           <Route path="/khuyen-mai" element={<SpecialsPage lang={lang} t={t} openRegistration={openRegistration} />} />
-          <Route path="/khach-hang" element={<ReviewsPage lang={lang} t={t} openRegistration={openRegistration} reviews={reviews} fbReviews={fbReviews} tiktokVideos={tiktokVideos} showAllClips={showAllClips} setShowAllClips={setShowAllClips} isAutoPlayEnabled={isAutoPlayEnabled} setIsAutoPlayEnabled={setIsAutoPlayEnabled} setSelectedVideoModal={setSelectedVideoModal} loadingReviews={loadingReviews} getGoogleReviewText={getGoogleReviewText} getGoogleReviewTime={getGoogleReviewTime} getFacebookAuthor={getFacebookAuthor} getFacebookReviewText={getFacebookReviewText} fallbackThumbnails={fallbackThumbnails} />} />
           <Route path="/tin-tuc" element={<NewsPage lang={lang} />} />
+          <Route path="/trai-nghiem" element={<ReviewsPage lang={lang} t={t} openRegistration={openRegistration} reviews={reviews} fbReviews={fbReviews} tiktokVideos={tiktokVideos} showAllClips={showAllClips} setShowAllClips={setShowAllClips} isAutoPlayEnabled={isAutoPlayEnabled} setIsAutoPlayEnabled={setIsAutoPlayEnabled} setSelectedVideoModal={setSelectedVideoModal} loadingReviews={loadingReviews} getGoogleReviewText={getGoogleReviewText} getGoogleReviewTime={getGoogleReviewTime} getFacebookAuthor={getFacebookAuthor} getFacebookReviewText={getFacebookReviewText} fallbackThumbnails={fallbackThumbnails} />} />
+          <Route path="/khach-hang" element={<ReviewsPage lang={lang} t={t} openRegistration={openRegistration} reviews={reviews} fbReviews={fbReviews} tiktokVideos={tiktokVideos} showAllClips={showAllClips} setShowAllClips={setShowAllClips} isAutoPlayEnabled={isAutoPlayEnabled} setIsAutoPlayEnabled={setIsAutoPlayEnabled} setSelectedVideoModal={setSelectedVideoModal} loadingReviews={loadingReviews} getGoogleReviewText={getGoogleReviewText} getGoogleReviewTime={getGoogleReviewTime} getFacebookAuthor={getFacebookAuthor} getFacebookReviewText={getFacebookReviewText} fallbackThumbnails={fallbackThumbnails} />} />
           <Route path="/lien-he" element={<ContactPage lang={lang} t={t} openRegistration={openRegistration} />} />
         </Routes>
       </main>
@@ -639,9 +686,9 @@ export default function App() {
               </h4>
               <ul className="space-y-2 text-xs text-slate-400">
                 <li><a href="/dich-vu" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/dich-vu"); }} className="hover:text-brand-orange transition-colors">{t.nav.services}</a></li>
-                <li><a href="/khuyen-mai" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/khuyen-mai"); }} className="hover:text-brand-orange transition-colors">{t.nav.specials}</a></li>
-                
-                <li><a href="/khach-hang" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/khach-hang"); }} className="hover:text-brand-orange transition-colors">{t.nav.reviews}</a></li>
+                <li><a href="/uu-dai" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/uu-dai"); }} className="hover:text-brand-orange transition-colors">{t.nav.specials}</a></li>
+                <li><a href="/tin-tuc" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/tin-tuc"); }} className="hover:text-brand-orange transition-colors">{t.nav.blogs}</a></li>
+                <li><a href="/trai-nghiem" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/trai-nghiem"); }} className="hover:text-brand-orange transition-colors">{t.nav.reviews}</a></li>
                 <li><a href="#tiktok" className="hover:text-brand-orange transition-colors">{t.nav.tiktok}</a></li>
                 <li><a href="/lien-he" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); navigateTo("/lien-he"); }} className="hover:text-brand-orange transition-colors">{t.nav.contact}</a></li>
               </ul>
@@ -762,6 +809,10 @@ export default function App() {
           onClose={() => setIsMemberPortalOpen(false)}
           user={currentUser}
           onLogout={handleLogout}
+          onUpdateUser={(updated) => {
+            setCurrentUser(updated);
+            safeStorage.setItem('the_shine_member', JSON.stringify(updated));
+          }}
           lang={lang}
         />
       )}
@@ -776,7 +827,7 @@ export default function App() {
 
       
       {/* Floating Social Bar */}
-      <div className={`fixed right-0 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3 p-2 transition-opacity duration-300 ${isChatbotOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+      <div className={`fixed right-0 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-3 p-2 transition-opacity duration-300 ${(isChatbotOpen || isAuthModalOpen || isRegModalOpen || isMemberPortalOpen || !!selectedVideoModal) ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
         <a href="https://www.facebook.com/theshinefitness" target="_blank" rel="noreferrer" className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
           <Facebook size={20} />
         </a>
@@ -790,7 +841,7 @@ export default function App() {
 
 
       {/* Mobile Floating Action Button (FAB) */}
-      <div className={`md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-fit min-w-[220px] transition-opacity duration-300 ${isChatbotOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+      <div className={`md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-30 w-fit min-w-[220px] transition-opacity duration-300 ${(isChatbotOpen || isAuthModalOpen || isRegModalOpen || isMemberPortalOpen || !!selectedVideoModal) ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
         <button
           onClick={() => openRegistration()}
           className="w-full h-[56px] bg-brand-orange hover:bg-orange-600 text-white px-6 rounded-full font-heading font-bold text-base uppercase italic shadow-[0_4px_15px_rgba(249,115,22,0.5)] flex items-center justify-center gap-2 transition-transform active:scale-95 whitespace-nowrap"

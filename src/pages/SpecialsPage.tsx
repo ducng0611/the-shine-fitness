@@ -3,6 +3,29 @@ import { FadeIn } from '../components/FadeIn';
 import { Gift, Flame, ArrowRight, CheckCircle2, ChevronDown } from 'lucide-react';
 
 export const SpecialsPage = ({ lang, t, openRegistration }) => {
+  const renderPlanTitle = (rawName: string) => {
+    const match = rawName.match(/^(.*?)\s*(\([^\)]+\))$/);
+    if (match) {
+      return (
+        <div className="mt-1 mb-1.5">
+          <h3 className="text-xl sm:text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase italic leading-tight">
+            {match[1]}
+          </h3>
+          <p className="text-lg sm:text-xl font-heading font-black text-brand-orange uppercase italic tracking-wide mt-1">
+            {match[2]}
+          </p>
+        </div>
+      );
+    }
+    return (
+      <div className="mt-1 mb-1.5">
+        <h3 className="text-xl sm:text-2xl font-heading font-bold text-slate-900 dark:text-white uppercase italic leading-tight">
+          {rawName}
+        </h3>
+      </div>
+    );
+  };
+
   return (
     <div className="pt-20">
 <section id="specials" className="py-20 sm:py-28 bg-slate-100 dark:bg-[#181818] border-y border-slate-200 dark:border-white/10 transition-colors duration-200">
@@ -30,18 +53,10 @@ export const SpecialsPage = ({ lang, t, openRegistration }) => {
                 {t.specials.popularTag}
               </div>
               <div>
-                <div className="flex items-start justify-between gap-3 min-h-[56px] mt-2 mb-1">
-                  <h3 className="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase italic leading-tight text-balance">
-                    {t.specials.basic.name}
-                  </h3>
-                  {(t.specials.basic as any).badge && (
-                    <span className="text-[10px] sm:text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20 shrink-0 whitespace-nowrap mt-0.5">
-                      {(t.specials.basic as any).badge}
-                    </span>
-                  )}
-                </div>
+                {renderPlanTitle(t.specials.basic.name)}
 
-                <div className="flex items-baseline gap-2 mb-1">
+                {/* Price Display */}
+                <div className="flex items-baseline gap-2 mb-2">
                   <span className="text-4xl sm:text-5xl font-heading font-bold text-brand-orange">
                     {t.specials.basic.price}
                   </span>
@@ -54,9 +69,16 @@ export const SpecialsPage = ({ lang, t, openRegistration }) => {
                     </span>
                   )}
                 </div>
-                <p className="text-[11px] text-brand-orange font-semibold mb-6">
-                  {lang === 'vi' ? '★ Gốc 549k/tháng, đang chạy KM còn 349k/tháng' : '★ Reg 549k/month, promo active at 349k/month'}
-                </p>
+
+                {/* Badge placed below current price with large font-size highlighting savings */}
+                {(t.specials.basic as any).badge && (
+                  <div className="w-full mb-6 flex justify-center">
+                    <div className="w-full py-3 px-4 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-heading font-black text-base sm:text-lg uppercase italic tracking-wider flex items-center justify-center gap-2 shadow-xs">
+                      <Flame size={20} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      <span className="text-base sm:text-lg">{(t.specials.basic as any).badge}</span>
+                    </div>
+                  </div>
+                )}
 
                 <ul className="space-y-3 mb-8">
                   {t.specials.basic.features.map((feat, i) => (
@@ -69,27 +91,20 @@ export const SpecialsPage = ({ lang, t, openRegistration }) => {
               </div>
               <button
                 onClick={() => openRegistration(t.specials.basic.name)}
-                className="w-full py-4 bg-brand-orange hover:bg-orange-600 text-white font-heading font-bold text-base uppercase italic rounded-2xl shadow-lg transition-all cursor-pointer"
+                className="w-full py-4 sm:py-4.5 bg-brand-orange hover:bg-orange-600 active:scale-[0.99] text-white font-heading font-bold text-lg sm:text-xl uppercase italic tracking-wide rounded-2xl shadow-xl hover:shadow-orange-500/30 transition-all cursor-pointer flex items-center justify-center gap-2"
               >
-                {t.specials.selectPlan}
+                <span>{t.specials.selectPlan}</span>
+                <ArrowRight size={22} className="shrink-0" />
               </button>
             </div>
 
             {/* 2. Gói Tiêu Chuẩn Tháng (549k) */}
             <div className="bg-white dark:bg-[#141414] rounded-3xl p-7 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm hover:border-brand-orange/40 transition-all flex flex-col justify-between">
               <div>
-                <div className="flex items-start justify-between gap-3 min-h-[56px] mt-2 mb-1">
-                  <h3 className="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase italic leading-tight text-balance">
-                    {t.specials.premium.name}
-                  </h3>
-                  {(t.specials.premium as any).badge && (
-                    <span className="text-[10px] sm:text-[11px] font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/10 px-2.5 py-1 rounded-full shrink-0 whitespace-nowrap mt-0.5">
-                      {(t.specials.premium as any).badge}
-                    </span>
-                  )}
-                </div>
+                {renderPlanTitle(t.specials.premium.name)}
 
-                <div className="flex items-baseline gap-2 mb-1">
+                {/* Price Display */}
+                <div className="flex items-baseline gap-2 mb-2">
                   <span className="text-4xl sm:text-5xl font-heading font-bold text-slate-900 dark:text-white">
                     {t.specials.premium.price}
                   </span>
@@ -102,9 +117,16 @@ export const SpecialsPage = ({ lang, t, openRegistration }) => {
                     </span>
                   )}
                 </div>
-                <p className="text-[11px] text-slate-500 mb-6">
-                  {lang === 'vi' ? '★ Gốc 700k/tháng, KM còn 549k (khách inbox mới báo giá)' : '★ Reg 700k/mo, promo 549k (inbox for quote)'}
-                </p>
+
+                {/* Badge placed below current price with large font-size highlighting savings */}
+                {(t.specials.premium as any).badge && (
+                  <div className="w-full mb-6 flex justify-center">
+                    <div className="w-full py-3 px-4 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-heading font-black text-base sm:text-lg uppercase italic tracking-wider flex items-center justify-center gap-2 shadow-xs">
+                      <Flame size={20} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      <span className="text-base sm:text-lg">{(t.specials.premium as any).badge}</span>
+                    </div>
+                  </div>
+                )}
 
                 <ul className="space-y-3 mb-8">
                   {t.specials.premium.features.map((feat, i) => (
@@ -117,27 +139,20 @@ export const SpecialsPage = ({ lang, t, openRegistration }) => {
               </div>
               <button
                 onClick={() => openRegistration(t.specials.premium.name)}
-                className="w-full py-4 bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-900 dark:text-white font-heading font-bold text-base uppercase italic rounded-2xl transition-colors cursor-pointer"
+                className="w-full py-4 sm:py-4.5 bg-slate-900 hover:bg-slate-800 text-white dark:bg-white/10 dark:hover:bg-white/15 active:scale-[0.99] font-heading font-bold text-lg sm:text-xl uppercase italic tracking-wide rounded-2xl transition-all cursor-pointer flex items-center justify-center gap-2"
               >
-                {t.specials.selectPlan}
+                <span>{t.specials.selectPlan}</span>
+                <ArrowRight size={22} className="shrink-0 text-slate-400" />
               </button>
             </div>
 
             {/* 3. Gói Toàn Diện Yoga & Gym (699k) */}
             <div className="bg-white dark:bg-[#141414] rounded-3xl p-7 sm:p-8 border border-slate-200 dark:border-white/10 shadow-sm hover:border-brand-orange/40 transition-all flex flex-col justify-between">
               <div>
-                <div className="flex items-start justify-between gap-3 min-h-[56px] mt-2 mb-1">
-                  <h3 className="text-xl font-heading font-bold text-slate-900 dark:text-white uppercase italic leading-tight text-balance">
-                    {t.specials.vip.name}
-                  </h3>
-                  {(t.specials.vip as any).badge && (
-                    <span className="text-[10px] sm:text-[11px] font-bold text-brand-orange bg-brand-orange/10 px-2.5 py-1 rounded-full border border-brand-orange/20 shrink-0 whitespace-nowrap mt-0.5">
-                      {(t.specials.vip as any).badge}
-                    </span>
-                  )}
-                </div>
+                {renderPlanTitle(t.specials.vip.name)}
 
-                <div className="flex items-baseline gap-2 mb-1">
+                {/* Price Display */}
+                <div className="flex items-baseline gap-2 mb-2">
                   <span className="text-4xl sm:text-5xl font-heading font-bold text-slate-900 dark:text-white">
                     {t.specials.vip.price}
                   </span>
@@ -150,9 +165,16 @@ export const SpecialsPage = ({ lang, t, openRegistration }) => {
                     </span>
                   )}
                 </div>
-                <p className="text-[11px] text-slate-500 mb-6">
-                  {lang === 'vi' ? '★ Gốc 950k/tháng, KM còn 699k (khách inbox mới báo giá)' : '★ Reg 950k/mo, promo 699k (inbox for quote)'}
-                </p>
+
+                {/* Badge placed below current price with large font-size highlighting savings */}
+                {(t.specials.vip as any).badge && (
+                  <div className="w-full mb-6 flex justify-center">
+                    <div className="w-full py-3 px-4 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 font-heading font-black text-base sm:text-lg uppercase italic tracking-wider flex items-center justify-center gap-2 shadow-xs">
+                      <Flame size={20} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      <span className="text-base sm:text-lg">{(t.specials.vip as any).badge}</span>
+                    </div>
+                  </div>
+                )}
 
                 <ul className="space-y-3 mb-8">
                   {t.specials.vip.features.map((feat, i) => (
@@ -165,9 +187,10 @@ export const SpecialsPage = ({ lang, t, openRegistration }) => {
               </div>
               <button
                 onClick={() => openRegistration(t.specials.vip.name)}
-                className="w-full py-4 bg-slate-100 hover:bg-slate-200 dark:bg-white/10 dark:hover:bg-white/15 text-slate-900 dark:text-white font-heading font-bold text-base uppercase italic rounded-2xl transition-colors cursor-pointer"
+                className="w-full py-4 sm:py-4.5 bg-slate-900 hover:bg-slate-800 text-white dark:bg-white/10 dark:hover:bg-white/15 active:scale-[0.99] font-heading font-bold text-lg sm:text-xl uppercase italic tracking-wide rounded-2xl transition-all cursor-pointer flex items-center justify-center gap-2"
               >
-                {t.specials.selectPlan}
+                <span>{t.specials.selectPlan}</span>
+                <ArrowRight size={22} className="shrink-0 text-slate-400" />
               </button>
             </div>
 
@@ -207,7 +230,7 @@ export const SpecialsPage = ({ lang, t, openRegistration }) => {
                     {lang === 'vi' ? 'Voucher 3-7 Ngày 0đ' : '3-7 Day Free Pass'}
                   </h4>
                   <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                    {lang === 'vi' ? 'Tặng thẻ trải nghiệm 0đ & miễn phí đo InBody 270 cùng Huấn luyện viên.' : 'Complimentary trial days with full InBody body analysis.'}
+                    {lang === 'vi' ? 'Tặng thẻ trải nghiệm 0đ & miễn phí tư vấn lộ trình cùng Huấn luyện viên.' : 'Complimentary trial days with personal trainer consultation.'}
                   </p>
                 </div>
               </div>

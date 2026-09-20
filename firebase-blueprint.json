@@ -1,0 +1,180 @@
+{
+  "entities": {
+    "MemberProgress": {
+      "title": "MemberProgress",
+      "description": "Progress entries tracked by gym members including weight, measurements, and reflections",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "memberCode": { "type": "string" },
+        "date": { "type": "string" },
+        "weightKg": { "type": "number" },
+        "bodyFatPct": { "type": "number" },
+        "muscleMassKg": { "type": "number" },
+        "waistCm": { "type": "number" },
+        "notes": { "type": "string" },
+        "energyLevel": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "date", "weightKg"]
+    },
+    "Registration": {
+      "title": "Registration",
+      "description": "Customer registration for gym package trial or consultation",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "packageType": { "type": "string" }
+      },
+      "required": ["fullName", "phone"]
+    },
+    "HealthAssessment": {
+      "title": "HealthAssessment",
+      "description": "Health and fitness assessment for gym visitors",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "bmi": { "type": "number" },
+        "tdee": { "type": "number" }
+      },
+      "required": ["fullName", "phone"]
+    },
+    "WorkoutLog": {
+      "title": "WorkoutLog",
+      "description": "Member workout and exercise session logs",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "workoutType": { "type": "string" },
+        "durationMinutes": { "type": "number" }
+      },
+      "required": ["userId", "workoutType"]
+    },
+    "CheckIn": {
+      "title": "CheckIn",
+      "description": "QR and reception check-in records",
+      "type": "object",
+      "properties": {
+        "memberCode": { "type": "string" },
+        "memberName": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["memberCode"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Customer and lead records for CRM",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "memberCode": { "type": "string" }
+      },
+      "required": ["fullName"]
+    },
+    "Package": {
+      "title": "Package",
+      "description": "Gym membership package options",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "price": { "type": "number" }
+      },
+      "required": ["name", "price"]
+    },
+    "Promotion": {
+      "title": "Promotion",
+      "description": "Promotions and discount vouchers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "discountPercent": { "type": "number" }
+      },
+      "required": ["title"]
+    },
+    "EmailCampaign": {
+      "title": "EmailCampaign",
+      "description": "Email automation flows and marketing campaigns",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "Member": {
+      "title": "Member",
+      "description": "Registered member profile and credentials",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "fullName": { "type": "string" },
+        "memberCode": { "type": "string" }
+      },
+      "required": ["uid", "fullName"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Administrator account credentials and roles",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    }
+  },
+  "firestore": {
+    "/member_progress/{progressId}": {
+      "schema": "#/entities/MemberProgress",
+      "description": "Member fitness progress tracking records"
+    },
+    "/registrations/{regId}": {
+      "schema": "#/entities/Registration",
+      "description": "Public trial registrations"
+    },
+    "/health_assessments/{assessmentId}": {
+      "schema": "#/entities/HealthAssessment",
+      "description": "Health assessments"
+    },
+    "/workout_logs/{logId}": {
+      "schema": "#/entities/WorkoutLog",
+      "description": "Workout logs"
+    },
+    "/check_ins/{checkInId}": {
+      "schema": "#/entities/CheckIn",
+      "description": "Member check-in records"
+    },
+    "/customers/{customerId}": {
+      "schema": "#/entities/Customer",
+      "description": "CRM customer records"
+    },
+    "/packages/{packageId}": {
+      "schema": "#/entities/Package",
+      "description": "Gym membership packages"
+    },
+    "/promotions/{promoId}": {
+      "schema": "#/entities/Promotion",
+      "description": "Promotions and vouchers"
+    },
+    "/email_campaigns/{campaignId}": {
+      "schema": "#/entities/EmailCampaign",
+      "description": "Email marketing campaigns"
+    },
+    "/members/{memberId}": {
+      "schema": "#/entities/Member",
+      "description": "Member user profiles"
+    },
+    "/admins/{adminId}": {
+      "schema": "#/entities/Admin",
+      "description": "Admin accounts"
+    }
+  }
+}

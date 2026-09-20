@@ -109,17 +109,99 @@ function prepareMarkdownText(raw: string): string {
 // Marketing acknowledgments rotated when customer sends messages with proper honorifics
 function getAckMessagesVi(pronoun: string): string[] {
   return [
-    `Dạ The Shine đã nhận được tin nhắn của ${pronoun} rồi ạ! ${pronoun} đợi em một xíu xiu nhé, em kiểm tra và trả lời ngay cho ${pronoun} đây ạ 🧡\n*(Bật mí nhỏ: The Shine đang tặng Voucher 03 ngày tập thử VIP mã SHINE-TRIAL-FREE tại 154 Hoàng Hoa Thám, ${pronoun} đừng bỏ lỡ nha!\nGiờ mở cửa:\n* T2 - T7 (06:00 - 21:00)\n* CN (06:00 - 20:30))*`,
+    `Dạ The Shine đã nhận được tin nhắn của ${pronoun} rồi ạ! ${pronoun} đợi em một xíu xiu nhé, em kiểm tra và trả lời ngay cho ${pronoun} đây ạ 🧡\n(Bật mí nhỏ: The Shine đang tặng Voucher tập thử miễn phí 100% tại 154 Hoàng Hoa Thám, ${pronoun} đừng bỏ lỡ nha!\nGiờ mở cửa:\n* T2 - T7 (06:00 - 21:00)\n* CN (06:00 - 20:30))*`,
     `Dạ em đã nhận được câu hỏi của ${pronoun} rồi ạ! Em kiểm tra thông tin và phản hồi ${pronoun} ngay đây nha ✨\n*(Nhân tiện The Shine đang có ưu đãi gói Gym chỉ 349k/tháng, giảm 20% thẻ tập cho HSSV, vé ngày Day Pass 100k và tặng 02 buổi PT 1-kèm-1 cho gói Yoga & Gym nữa đó ạ!)*`,
-    `Dạ em nghe đây ạ! Đợi em vài giây kiểm tra chi tiết gửi ${pronoun} liền nhé 💪\n*(Gợi ý: Vé tập thử 3 ngày mã SHINE-TRIAL-FREE bên em được dùng không giới hạn phòng gym hiện đại, Boxing, studio Yoga/Zumba, phòng tắm nóng lạnh hoàn toàn 0đ nhé!)*`
+    `Dạ em nghe đây ạ! Đợi em vài giây kiểm tra chi tiết gửi ${pronoun} liền nhé 💪\n*(Gợi ý: Vé tập thử miễn phí bên em được dùng không giới hạn phòng gym hiện đại, Boxing, studio Yoga/Zumba, phòng tắm nóng lạnh hoàn toàn 0đ nhé!)*`
   ];
 }
 
 const ACK_MARKETING_MESSAGES_EN = [
-  "Thank you for messaging The Shine! Please give me just a few seconds to pull up the details and reply right away 🧡\n*(Quick perk: The Shine is offering a complimentary 3-Day VIP Trial Pass (code SHINE-TRIAL-FREE) at 154 Hoang Hoa Tham.\nOpening hours:\n* Mon - Sat (06:00 - 21:00)\n* Sun (06:00 - 20:30))*",
+  "Thank you for messaging The Shine! Please give me just a few seconds to pull up the details and reply right away 🧡\n(Quick perk: The Shine is offering a complimentary 3-Day VIP Trial Pass at 154 Hoang Hoa Tham.\nOpening hours:\n* Mon - Sat (06:00 - 21:00)\n* Sun (06:00 - 20:30))*",
   "Got your message! I'm checking the details and replying right now ✨\n*(By the way, Gym membership promo is only 349k/month, 20% off for students, 100k Day Pass, and 2 free 1-on-1 PT sessions with our Yoga & Gym membership!)*",
-  "Thanks for reaching out! Give me just a moment 💪\n*(Did you know? Our 3-day pass includes full access to gym equipment, boxing zone, yoga classes, hot showers, and free parking!)*"
+  "Thanks for reaching out! Give me just a moment 💪\n*(Did you know? Our free 3-day pass includes full access to gym equipment, boxing zone, yoga classes, hot showers, and free parking!)*"
 ];
+
+function getInitialSuggestions(lang: Language): string[] {
+  return [
+    lang === 'vi' ? '🎁 Nhận Voucher 3 ngày' : '🎁 Free 3-Day Pass',
+    lang === 'vi' ? '💳 Bảng giá & Ưu đãi' : '💳 Pricing & Offers',
+    lang === 'vi' ? '🏋️ Thuê PT 1-kèm-1' : '🏋️ PT 1-on-1'
+  ];
+}
+
+function getDynamicSuggestions(userMsgText: string, botResponseText: string, lang: Language): string[] {
+  const combined = (userMsgText + ' ' + botResponseText).toLowerCase();
+
+  if (lang === 'vi') {
+    if (combined.includes('giá') || combined.includes('phí') || combined.includes('bao nhiêu') || combined.includes('gói') || combined.includes('ưu đãi') || combined.includes('tiền')) {
+      return [
+        '🔥 Thẻ HSSV giảm 20% như thế nào?',
+        '🎁 Đăng ký Voucher tập thử 3 ngày 0đ',
+        '🏋️ Đăng ký gói Gym 349k/tháng'
+      ];
+    }
+    if (combined.includes('pt') || combined.includes('huấn luyện viên') || combined.includes('1 kèm 1') || combined.includes('kèm') || combined.includes('tập riêng')) {
+      return [
+        '💪 Thuê PT 1-kèm-1 giá bao nhiêu?',
+        '🎁 Tặng 2 buổi PT khi ký hợp đồng',
+        '📅 Đặt lịch tập thử 0đ cùng HLV'
+      ];
+    }
+    if (combined.includes('yoga') || combined.includes('zumba') || combined.includes('boxing') || combined.includes('lớp') || combined.includes('groupx') || combined.includes('nhảy')) {
+      return [
+        '🧘 Lịch lớp Yoga & Zumba tuần này',
+        '🥊 Lớp Boxing có HLV hướng dẫn không?',
+        '🎁 Đăng ký tập thử 3 ngày 0đ'
+      ];
+    }
+    if (combined.includes('địa chỉ') || combined.includes('ở đâu') || combined.includes('giờ') || combined.includes('mở cửa') || combined.includes('xông hơi') || combined.includes('hồ bơi') || combined.includes('vị trí')) {
+      return [
+        '📍 Chỉ đường đến 154 Hoàng Hoa Thám',
+        '🕒 Khung giờ mở cửa phòng tập',
+        '🎁 Đăng ký nhận Voucher 3 ngày ngay'
+      ];
+    }
+    if (combined.includes('voucher') || combined.includes('tập thử') || combined.includes('3 ngày') || combined.includes('đăng ký') || combined.includes('trải nghiệm')) {
+      return [
+        '📅 Đặt lịch đến trải nghiệm ngay',
+        '💳 Chi tiết Bảng giá các gói tập',
+        '📞 Liên hệ Hotline 0946 293 593'
+      ];
+    }
+    return [
+      '💳 Chi tiết Bảng giá gói tập Gym',
+      '🧘 Lịch lớp Yoga & GroupX mới nhất',
+      '🎁 Đăng ký Voucher tập thử 3 ngày 0đ'
+    ];
+  } else {
+    if (combined.includes('price') || combined.includes('cost') || combined.includes('package') || combined.includes('membership') || combined.includes('discount')) {
+      return [
+        '🔥 20% Off Student Discount',
+        '🎁 Claim Free 3-Day Trial Pass',
+        '💳 Gym Membership 349k/Month'
+      ];
+    }
+    if (combined.includes('pt') || combined.includes('trainer') || combined.includes('coach')) {
+      return [
+        '💪 PT 1-on-1 Rates & Packages',
+        '🎁 2 Free PT Sessions Promo',
+        '📅 Book Free Trial with PT'
+      ];
+    }
+    if (combined.includes('yoga') || combined.includes('zumba') || combined.includes('boxing') || combined.includes('class')) {
+      return [
+        '🧘 Class Schedule This Week',
+        '🥊 Boxing Zone & Trainers',
+        '🎁 Free 3-Day Trial Pass'
+      ];
+    }
+    return [
+      '💳 Membership Pricing Details',
+      '🧘 Yoga & GroupX Schedule',
+      '🎁 Claim Free 3-Day Trial Pass'
+    ];
+  }
+}
 
 export function getPersonalizedGreeting(lang: Language, user?: MemberUser | null): string {
   const currentHour = new Date().getHours();
@@ -254,14 +336,10 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
   const lastInteractionTimeRef = useRef<number>(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Quick inquiry suggestions for customers
-  const quickSuggestions = [
-    lang === 'vi' ? '🎁 Nhận Voucher 3 ngày' : '🎁 Free 3-Day Pass',
-    lang === 'vi' ? '💳 Bảng giá & Ưu đãi' : '💳 Pricing & Offers',
-    lang === 'vi' ? '🏋️ Thuê PT 1-kèm-1' : '🏋️ PT 1-on-1'
-  ];
+  // Quick inquiry suggestions state for customers (starts with initial 3, then updates intelligently)
+  const [currentSuggestions, setCurrentSuggestions] = useState<string[]>(() => getInitialSuggestions(lang));
 
-  // Update initial greeting when user or language changes
+  // Update initial greeting & suggestions when user or language changes
   useEffect(() => {
     setMessages(prev => {
       const newGreeting = getPersonalizedGreeting(lang, effectiveUser);
@@ -275,6 +353,10 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
       }
       return newMessages;
     });
+
+    if (messages.length <= 1) {
+      setCurrentSuggestions(getInitialSuggestions(lang));
+    }
   }, [lang, effectiveUser]);
 
   const scrollToBottom = () => {
@@ -367,6 +449,7 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
       };
 
       setMessages((prev) => [...prev, consultantMessage]);
+      setCurrentSuggestions(getDynamicSuggestions(userMessageText, consultantMessage.text, lang));
     } catch (error) {
       console.error(error);
       const errorMessage: Message = { 
@@ -377,6 +460,7 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
           : 'I apologize, the connection was interrupted. Please reach our hotline at 0946 293 593 for immediate assistance!' 
       };
       setMessages((prev) => [...prev, errorMessage]);
+      setCurrentSuggestions(getDynamicSuggestions(userMessageText, errorMessage.text, lang));
     } finally {
       setIsConsultantTyping(false);
     }
@@ -395,6 +479,7 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
         text: getPersonalizedGreeting(lang, effectiveUser)
       }
     ]);
+    setCurrentSuggestions(getInitialSuggestions(lang));
   };
 
   return (
@@ -514,8 +599,8 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
                       <span>{msg.text}</span>
                     )}
 
-                    {/* Interactive Trial Pass Voucher Card */}
-                    {msg.role === 'model' && (msg.id === 'initial' || msg.text.includes('SHINE-TRIAL-FREE')) && (
+                    {/* Interactive Trial Pass Voucher Card - Shown ONLY ONCE in the initial greeting */}
+                    {msg.role === 'model' && msg.id === 'initial' && (
                       <div className="mt-3 p-3 rounded-xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/20 border border-amber-300 dark:border-amber-700/50 shadow-xs">
                         <div className="flex flex-col gap-2 mb-3">
                           <div className="flex items-start gap-1.5 text-amber-800 dark:text-amber-300 font-bold text-[13px] leading-snug">
@@ -613,17 +698,17 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
                 </div>
               )}
               
-              {/* Quick Suggestions (Vertical Stack) */}
-              {messages.length <= 4 && !isConsultantTyping && (
+              {/* Quick Suggestions (Vertical Stack - Vibrant Orange Background & Intelligent Contextual Questions) */}
+              {!isConsultantTyping && currentSuggestions && currentSuggestions.length > 0 && (
                 <div className="flex flex-col gap-2 mt-1 mb-2 animate-fadeIn self-start items-start px-2">
-                  {quickSuggestions.map((item, idx) => (
+                  {currentSuggestions.map((item, idx) => (
                     <button
-                      key={idx}
+                      key={`${idx}-${item}`}
                       type="button"
                       onClick={() => sendMessageWithText(item)}
-                      className="w-fit text-left text-[13px] sm:text-sm font-semibold bg-white hover:bg-slate-50 dark:bg-[#2A2A2A] dark:hover:bg-[#333333] text-brand-orange dark:text-white py-2.5 px-4 rounded-2xl transition-colors cursor-pointer border border-slate-200 dark:border-white/5 active:scale-95 shadow-sm"
+                      className="w-fit text-left text-[12.5px] sm:text-xs font-bold bg-brand-orange hover:bg-orange-600 text-white py-2.5 px-4 rounded-2xl transition-all cursor-pointer border border-orange-400/30 active:scale-95 shadow-sm hover:shadow-md flex items-center gap-1.5"
                     >
-                      {item}
+                      <span>{item}</span>
                     </button>
                   ))}
                 </div>

@@ -13,16 +13,18 @@ import {
   ChevronRight,
   Database,
   Compass,
-  Zap
+  Zap,
+  BarChart3
 } from 'lucide-react';
 import { CustomerRecord, GymPackage, PromotionCampaign } from '../../types';
+import { AdminAnalyticsOverview } from './AdminAnalyticsOverview';
 
 interface AdminOverviewTabProps {
   customers: CustomerRecord[];
   packages: GymPackage[];
   promotions: PromotionCampaign[];
   isDark: boolean;
-  onNavigateTab: (tab: 'customers' | 'packages' | 'promotions' | 'email_flows' | 'rbac' | 'customer_journey') => void;
+  onNavigateTab: (tab: any) => void;
   onOpenNewCustomerModal: () => void;
   onOpenNewPackageModal: () => void;
   onOpenNewPromotionModal: () => void;
@@ -56,7 +58,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
         {/* Card 1: Members */}
         <div className={cardBase}>
           <div className="flex items-center justify-between mb-3">
-            <span className={`text-xs font-semibold uppercase tracking-wider ${textSub}`}>
+            <span className={`text-xs font-semibold uppercase tracking-wider font-sans ${textSub}`}>
               Tổng Hội Viên
             </span>
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
@@ -66,15 +68,15 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
             </div>
           </div>
           <div className="flex items-baseline space-x-2">
-            <span className={`text-2xl sm:text-3xl font-black ${textHeading}`}>
+            <span className={`text-3xl font-heading font-black tracking-tight ${textHeading}`}>
               {customers.length.toLocaleString('vi-VN')}
             </span>
-            <span className="text-xs font-bold text-emerald-500 flex items-center">
+            <span className="text-xs font-bold text-emerald-500 flex items-center font-sans">
               <TrendingUp className="w-3.5 h-3.5 mr-0.5" />
               {activeMembers.length} active
             </span>
           </div>
-          <p className={`text-xs mt-2 ${textSub}`}>
+          <p className={`text-xs mt-2 font-sans ${textSub}`}>
             {vipCount} Hội viên phân khúc VIP
           </p>
         </div>
@@ -82,7 +84,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
         {/* Card 2: Revenue */}
         <div className={cardBase}>
           <div className="flex items-center justify-between mb-3">
-            <span className={`text-xs font-semibold uppercase tracking-wider ${textSub}`}>
+            <span className={`text-xs font-semibold uppercase tracking-wider font-sans ${textSub}`}>
               Doanh Thu Tích Lũy
             </span>
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
@@ -92,12 +94,12 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
             </div>
           </div>
           <div className="flex items-baseline space-x-1.5">
-            <span className={`text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400`}>
+            <span className={`text-3xl font-heading font-black tracking-tight text-emerald-600 dark:text-emerald-400`}>
               {(totalRevenue / 1000000000).toFixed(2)}
             </span>
-            <span className={`text-xs font-bold ${textSub}`}>Tỷ VNĐ</span>
+            <span className={`text-xs font-bold font-sans ${textSub}`}>Tỷ VNĐ</span>
           </div>
-          <p className={`text-xs mt-2 ${textSub}`}>
+          <p className={`text-xs mt-2 font-sans ${textSub}`}>
             Bình quân: {customers.length > 0 ? (totalRevenue / customers.length / 1000000).toFixed(1) : 0} Tr/HV
           </p>
         </div>
@@ -105,7 +107,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
         {/* Card 3: Packages */}
         <div className={cardBase}>
           <div className="flex items-center justify-between mb-3">
-            <span className={`text-xs font-semibold uppercase tracking-wider ${textSub}`}>
+            <span className={`text-xs font-semibold uppercase tracking-wider font-sans ${textSub}`}>
               Gói Tập Hoạt Động
             </span>
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
@@ -115,12 +117,12 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
             </div>
           </div>
           <div className="flex items-baseline space-x-2">
-            <span className={`text-2xl sm:text-3xl font-black ${textHeading}`}>
+            <span className={`text-3xl font-heading font-black tracking-tight ${textHeading}`}>
               {packages.filter(p => p.isActive).length} / {packages.length}
             </span>
-            <span className={`text-xs font-semibold ${textSub}`}>gói niêm yết</span>
+            <span className={`text-xs font-semibold font-sans ${textSub}`}>gói niêm yết</span>
           </div>
-          <p className={`text-xs mt-2 ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`}>
+          <p className={`text-xs mt-2 font-sans ${isDark ? 'text-cyan-400' : 'text-cyan-600'}`}>
             Top 1: Gói 12T & Gói 3T
           </p>
         </div>
@@ -128,7 +130,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
         {/* Card 4: Promos */}
         <div className={cardBase}>
           <div className="flex items-center justify-between mb-3">
-            <span className={`text-xs font-semibold uppercase tracking-wider ${textSub}`}>
+            <span className={`text-xs font-semibold uppercase tracking-wider font-sans ${textSub}`}>
               CTKM & Voucher
             </span>
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
@@ -138,12 +140,12 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
             </div>
           </div>
           <div className="flex items-baseline space-x-2">
-            <span className={`text-2xl sm:text-3xl font-black ${textHeading}`}>
+            <span className={`text-3xl font-heading font-black tracking-tight ${textHeading}`}>
               {promotions.reduce((acc, p) => acc + p.usageCount, 0)}
             </span>
-            <span className={`text-xs font-semibold ${textSub}`}>lượt kích hoạt</span>
+            <span className={`text-xs font-semibold font-sans ${textSub}`}>lượt kích hoạt</span>
           </div>
-          <p className={`text-xs mt-2 ${isDark ? 'text-amber-400' : 'text-amber-600'}`}>
+          <p className={`text-xs mt-2 font-sans ${isDark ? 'text-amber-400' : 'text-amber-600'}`}>
             {promotions.filter(p => p.isActive).length} chương trình đang chạy
           </p>
         </div>
@@ -151,7 +153,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
         {/* Card 5: Email */}
         <div className={cardBase}>
           <div className="flex items-center justify-between mb-3">
-            <span className={`text-xs font-semibold uppercase tracking-wider ${textSub}`}>
+            <span className={`text-xs font-semibold uppercase tracking-wider font-sans ${textSub}`}>
               Tỷ Lệ Mở Email
             </span>
             <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
@@ -161,16 +163,24 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
             </div>
           </div>
           <div className="flex items-baseline space-x-2">
-            <span className={`text-2xl sm:text-3xl font-black ${textHeading}`}>73.8%</span>
-            <span className="text-xs font-semibold text-emerald-500 flex items-center">
+            <span className={`text-3xl font-heading font-black tracking-tight ${textHeading}`}>73.8%</span>
+            <span className="text-xs font-semibold text-emerald-500 flex items-center font-sans">
               <TrendingUp className="w-3.5 h-3.5 mr-0.5" /> Chuẩn cao
             </span>
           </div>
-          <p className={`text-xs mt-2 ${textSub}`}>
+          <p className={`text-xs mt-2 font-sans ${textSub}`}>
             Tự động hóa luồng CRM
           </p>
         </div>
       </div>
+
+      {/* High-Level Analytics Overview (Recharts Registration Trends & Engagement) */}
+      <AdminAnalyticsOverview
+        customers={customers}
+        packages={packages}
+        isDark={isDark}
+        onNavigateTab={onNavigateTab}
+      />
 
       {/* Quick Actions & Funnel */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -180,14 +190,14 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
         }`}>
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className={`text-base font-bold ${textHeading}`}>
+              <h3 className={`text-base font-heading font-bold uppercase tracking-wide ${textHeading}`}>
                 Phễu Chuyển Đổi Hội Viên The Shine (Conversion Funnel)
               </h3>
-              <p className={`text-xs mt-0.5 ${textSub}`}>
+              <p className={`text-xs mt-0.5 font-sans ${textSub}`}>
                 Hành trình từ khách đăng ký trải nghiệm đến hội viên dài hạn
               </p>
             </div>
-            <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+            <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-sans">
               Tỷ lệ chốt: 35.9%
             </span>
           </div>
@@ -249,17 +259,17 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
                 <Compass className="w-4 h-4" />
               </div>
               <div>
-                <h4 className={`text-xs font-black ${textHeading}`}>
+                <h4 className={`text-xs font-heading font-black uppercase tracking-wider ${textHeading}`}>
                   Hành Trình Chuyển Đổi Khách Hàng (Mô hình ACCSR & 3 Persona)
                 </h4>
-                <p className={`text-[11px] ${textSub}`}>
+                <p className={`text-[11px] font-sans ${textSub}`}>
                   Phân tích 5 giai đoạn, 12 điểm chạm và kịch bản chăm sóc cá nhân hóa
                 </p>
               </div>
             </div>
             <button
               onClick={() => onNavigateTab('customer_journey')}
-              className="px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs flex items-center space-x-1.5 transition-all shadow-xs self-start sm:self-auto"
+              className="px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs flex items-center space-x-1.5 transition-all shadow-xs self-start sm:self-auto font-sans"
             >
               <span>Xem Bản Đồ Hành Trình</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -272,13 +282,13 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
           isDark ? 'bg-slate-900/90 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
         }`}>
           <div>
-            <h3 className={`text-base font-bold mb-1 ${textHeading}`}>Thao Tác Quản Trị Nhanh</h3>
-            <p className={`text-xs mb-4 ${textSub}`}>Tác vụ phổ biến trên cơ sở dữ liệu</p>
+            <h3 className={`text-base font-heading font-bold uppercase tracking-wide mb-1 ${textHeading}`}>Thao Tác Quản Trị Nhanh</h3>
+            <p className={`text-xs mb-4 font-sans ${textSub}`}>Tác vụ phổ biến trên cơ sở dữ liệu</p>
 
             <div className="space-y-2.5">
               <button
                 onClick={() => onNavigateTab('customer_journey')}
-                className={`w-full text-left p-3 rounded-xl border text-xs font-semibold flex items-center justify-between transition-colors ${
+                className={`w-full text-left p-3 rounded-xl border text-xs font-semibold flex items-center justify-between transition-colors font-sans ${
                   isDark 
                     ? 'bg-orange-500/10 hover:bg-orange-500/20 border-orange-500/30 text-orange-300' 
                     : 'bg-orange-50 hover:bg-orange-100 border-orange-200 text-orange-800'
@@ -293,7 +303,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
 
               <button
                 onClick={onOpenNewCustomerModal}
-                className={`w-full text-left p-3 rounded-xl border text-xs font-semibold flex items-center justify-between transition-colors ${
+                className={`w-full text-left p-3 rounded-xl border text-xs font-semibold flex items-center justify-between transition-colors font-sans ${
                   isDark 
                     ? 'bg-slate-800/80 hover:bg-slate-700/80 border-slate-700 text-slate-200' 
                     : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-800'
@@ -301,14 +311,14 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
               >
                 <span className="flex items-center space-x-2">
                   <UserPlus className="w-4 h-4 text-orange-500" />
-                  <span>Thêm Khách Hàng (Firestore)</span>
+                  <span>Thêm Khách Hàng Mới</span>
                 </span>
                 <ArrowRight className="w-4 h-4 text-slate-400" />
               </button>
 
               <button
                 onClick={onOpenNewPackageModal}
-                className={`w-full text-left p-3 rounded-xl border text-xs font-semibold flex items-center justify-between transition-colors ${
+                className={`w-full text-left p-3 rounded-xl border text-xs font-semibold flex items-center justify-between transition-colors font-sans ${
                   isDark 
                     ? 'bg-slate-800/80 hover:bg-slate-700/80 border-slate-700 text-slate-200' 
                     : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-800'
@@ -323,7 +333,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
 
               <button
                 onClick={onOpenNewPromotionModal}
-                className={`w-full text-left p-3 rounded-xl border text-xs font-semibold flex items-center justify-between transition-colors ${
+                className={`w-full text-left p-3 rounded-xl border text-xs font-semibold flex items-center justify-between transition-colors font-sans ${
                   isDark 
                     ? 'bg-slate-800/80 hover:bg-slate-700/80 border-slate-700 text-slate-200' 
                     : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-800'
@@ -338,7 +348,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
 
               <button
                 onClick={() => onNavigateTab('email_flows')}
-                className={`w-full text-left p-3 rounded-xl border text-xs font-semibold flex items-center justify-between transition-colors ${
+                className={`w-full text-left p-3 rounded-xl border text-xs font-semibold flex items-center justify-between transition-colors font-sans ${
                   isDark 
                     ? 'bg-orange-500/10 hover:bg-orange-500/20 border-orange-500/30 text-orange-300' 
                     : 'bg-orange-50 hover:bg-orange-100 border-orange-200 text-orange-800'
@@ -353,11 +363,11 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
             </div>
           </div>
 
-          <div className={`mt-4 p-3 rounded-xl border text-[11px] flex items-center space-x-2 ${
+          <div className={`mt-4 p-3 rounded-xl border text-[11px] flex items-center space-x-2 font-sans ${
             isDark ? 'bg-slate-800/50 border-slate-800 text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-600'
           }`}>
             <Database className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-            <span>Đồng bộ Firestore trực tiếp: <span className="font-mono font-semibold">customers & packages</span></span>
+            <span>Đồng bộ dữ liệu thời gian thực: <span className="font-mono font-semibold">Khách hàng & Gói tập</span></span>
           </div>
         </div>
       </div>
@@ -368,12 +378,12 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
       }`}>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className={`text-base font-bold ${textHeading}`}>Khách Hàng Mới Cập Nhật</h3>
-            <p className={`text-xs ${textSub}`}>Lưu trữ trực tiếp trên Firestore</p>
+            <h3 className={`text-base font-heading font-bold uppercase tracking-wide ${textHeading}`}>Khách Hàng Mới Cập Nhật</h3>
+            <p className={`text-xs font-sans ${textSub}`}>Cập nhật tự động trên hệ thống</p>
           </div>
           <button
             onClick={() => onNavigateTab('customers')}
-            className="text-xs font-semibold text-orange-600 hover:text-orange-700 flex items-center space-x-1"
+            className="text-xs font-semibold text-orange-600 hover:text-orange-700 flex items-center space-x-1 font-sans"
           >
             <span>Xem tất cả {customers.length} khách hàng</span>
             <ChevronRight className="w-4 h-4" />

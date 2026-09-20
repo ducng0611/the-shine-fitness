@@ -48,34 +48,34 @@ export const AdminPackagesTab: React.FC<AdminPackagesTabProps> = ({
       }`}>
         <div>
           <div className="flex items-center space-x-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-              ● Firestore Packages
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-sans">
+              ● Bảng Giá Trực Tuyến
             </span>
-            <span className={`text-xs font-semibold ${textSub}`}>
+            <span className={`text-xs font-semibold font-sans ${textSub}`}>
               {packages.length} Gói Đang Quản Lý
             </span>
           </div>
-          <h2 className={`text-xl font-black ${textHeading}`}>
+          <h2 className={`text-xl sm:text-2xl font-heading font-black uppercase tracking-tight ${textHeading}`}>
             Quản Lý Gói Tập & Thẻ Hội Viên
           </h2>
-          <p className={`text-xs mt-0.5 ${textSub}`}>
-            Các gói tập được lưu trữ và cập nhật trực tiếp trên Firebase Firestore. Mọi thay đổi sẽ hiển thị ngay cho khách hàng.
+          <p className={`text-xs mt-0.5 font-sans ${textSub}`}>
+            Các gói tập được lưu trữ và cập nhật trực tiếp trên hệ thống. Mọi thay đổi sẽ hiển thị ngay cho khách hàng.
           </p>
         </div>
 
         <div className="flex items-center space-x-2.5">
           <button
             onClick={onOpenNewModal}
-            className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 transition-all flex items-center space-x-1.5 shadow-md shadow-orange-600/20 active:scale-95"
+            className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 transition-all flex items-center space-x-1.5 shadow-md shadow-orange-600/20 active:scale-95 font-sans"
           >
             <Plus className="w-4 h-4" />
-            <span>Thêm Gói Mới (Firestore)</span>
+            <span>Thêm Gói Mới</span>
           </button>
         </div>
       </div>
 
       {/* Category Pills */}
-      <div className="flex items-center space-x-2 overflow-x-auto pb-1">
+      <div className="flex items-center space-x-2 overflow-x-auto pb-1 font-sans">
         {[
           { id: 'all', label: 'Tất cả các gói' },
           { id: 'gym', label: 'Gym & Cardio' },
@@ -117,7 +117,7 @@ export const AdminPackagesTab: React.FC<AdminPackagesTabProps> = ({
             {/* Badge */}
             {pkg.badge && (
               <div className="absolute top-4 right-4">
-                <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">
+                <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20 font-sans">
                   {pkg.badge}
                 </span>
               </div>
@@ -130,24 +130,24 @@ export const AdminPackagesTab: React.FC<AdminPackagesTabProps> = ({
                 }`}>
                   {pkg.code}
                 </span>
-                <span className={`text-[11px] font-semibold ${textSub}`}>
+                <span className={`text-[11px] font-semibold font-sans ${textSub}`}>
                   {pkg.durationDays} ngày
                 </span>
               </div>
 
-              <h3 className={`text-lg font-bold mt-2.5 ${textHeading}`}>{pkg.name}</h3>
-              {pkg.nameEn && <p className={`text-xs ${textSub}`}>{pkg.nameEn}</p>}
+              <h3 className={`text-lg font-heading font-bold uppercase tracking-wide mt-2.5 ${textHeading}`}>{pkg.name}</h3>
+              {pkg.nameEn && <p className={`text-xs font-sans ${textSub}`}>{pkg.nameEn}</p>}
 
               {/* Price */}
               <div className={`my-4 pb-4 border-b ${isDark ? 'border-slate-800' : 'border-slate-100'}`}>
                 <div className="flex items-baseline space-x-2">
-                  <span className="text-2xl font-black text-orange-600 dark:text-orange-400">
+                  <span className="text-2xl font-heading font-black text-orange-600 dark:text-orange-400">
                     {pkg.price.toLocaleString('vi-VN')} VNĐ
                   </span>
-                  <span className={`text-xs ${textSub}`}>/ {pkg.durationLabel}</span>
+                  <span className={`text-xs font-sans ${textSub}`}>/ {pkg.durationLabel}</span>
                 </div>
                 {pkg.originalPrice && pkg.originalPrice > pkg.price && (
-                  <div className={`text-xs line-through mt-0.5 ${textSub}`}>
+                  <div className={`text-xs line-through mt-0.5 font-sans ${textSub}`}>
                     Giá gốc: {pkg.originalPrice.toLocaleString('vi-VN')} VNĐ
                   </div>
                 )}

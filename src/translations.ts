@@ -65,13 +65,13 @@ export const translations = {
       heading: 'Bảng Giá & Chương Trình Hội Viên',
       sub: 'Số liệu chuẩn hóa trực tiếp từ dữ liệu tư vấn Fanpage The Shine Fitness & Yoga. Đóng phí linh hoạt theo tháng, không ràng buộc, cam kết không chèo kéo.',
       popularTag: 'ƯU ĐÃI FANPAGE 349K',
-      selectPlan: 'Đăng ký gói này',
+      selectPlan: 'Đăng ký gói tập',
       month: '/tháng',
       basic: {
-        name: 'Gói Hội Viên Gym',
+        name: 'Gói Bứt Phá Năng Lượng (Gym & Boxing)',
         price: '349k',
         originalPrice: '549k',
-        badge: 'Đang Chạy KM - Tiết kiệm 36%',
+        badge: 'Tiết kiệm 36%',
         features: [
           'Áp dụng trọn vẹn cho cả 2 bộ môn Gym & Boxing',
           'HLV hỗ trợ 1:1 kỹ thuật và set up máy trong những ngày đầu',
@@ -81,10 +81,10 @@ export const translations = {
         ]
       },
       premium: {
-        name: 'Gói Hội Viên Yoga',
+        name: 'Gói Thân Tâm An Lạc (Yoga Chuyên Sâu)',
         price: '549k',
         originalPrice: '700k',
-        badge: 'Inbox Để Nhận Giá KM',
+        badge: 'Tiết kiệm 21%',
         features: [
           'Tham gia các lớp Yoga chuyên sâu theo lịch tập hàng tuần',
           'Giáo viên hướng dẫn tận tâm, chỉnh sửa tư thế chu đáo',
@@ -94,10 +94,10 @@ export const translations = {
         ]
       },
       vip: {
-        name: 'Gói Toàn Diện Yoga & Gym',
+        name: 'Gói Đỉnh Cao Thể Lực (All-In-One Yoga & Gym)',
         price: '699k',
         originalPrice: '950k',
-        badge: 'Inbox Để Nhận Giá KM',
+        badge: 'Tiết kiệm 26%',
         features: [
           'Không giới hạn các lớp Yoga theo khung giờ cùng Master Yoga',
           'Toàn bộ quyền lợi tập Gym & Boxing không giới hạn khung giờ',
@@ -225,10 +225,10 @@ export const translations = {
       doneBtn: 'Hoàn tất & Đóng',
       bookAnother: 'Đăng ký thêm người thân',
       packageOptions: [
-        'Tập thử miễn phí 3-7 ngày (Voucher SHINE-TRIAL-FREE)',
-        'Gói Hội Viên Gym (KM 349k/tháng - gốc 549k)',
-        'Gói Hội Viên Yoga (KM 549k/tháng - gốc 700k - Inbox nhận báo giá)',
-        'Gói Toàn Diện Yoga & Gym (KM 699k/tháng - gốc 950k - Inbox nhận báo giá)',
+        'Tập thử miễn phí 3-7 ngày (Voucher tập thử 0đ)',
+        'Gói Bứt Phá Năng Lượng - Gym & Boxing (Tiết kiệm 36%)',
+        'Gói Thân Tâm An Lạc - Yoga Chuyên Sâu (Tiết kiệm 21%)',
+        'Gói Đỉnh Cao Thể Lực - All-In-One (Tiết kiệm 26%)',
         'Vé Ngày Day Pass (100k/ngày)',
         'Khóa Huấn Luyện Viên 1-kèm-1 (PT kèm sát)',
         'Lớp Yoga / Zumba chuyên sâu'
@@ -380,13 +380,13 @@ export const translations = {
       heading: 'Memberships & Flexible Plans',
       sub: 'Standardized directly from real Facebook Messenger consultation data. Pay flexibly month-by-month with zero pushy contracts.',
       popularTag: 'FANPAGE SPECIAL 349K',
-      selectPlan: 'Select this plan',
+      selectPlan: 'Register Membership',
       month: '/month',
       basic: {
-        name: 'Gym & Boxing Membership',
+        name: 'Power Boost Pass (Gym & Boxing)',
         price: '349k',
         originalPrice: '549k',
-        badge: 'Promo Active - Save 36%',
+        badge: 'Save 36%',
         features: [
           'Full access to both Gym & Boxing zones',
           '1-on-1 trainer machine onboarding & posture guidance',
@@ -396,10 +396,10 @@ export const translations = {
         ]
       },
       premium: {
-        name: 'Yoga Membership',
+        name: 'Inner Peace Flow (Intensive Yoga)',
         price: '549k',
         originalPrice: '700k',
-        badge: 'Inbox For Promo Rate',
+        badge: 'Save 21%',
         features: [
           'Access to scheduled Yoga sessions with instructor',
           'Dedicated instructors providing attentive alignment adjustments',
@@ -409,10 +409,10 @@ export const translations = {
         ]
       },
       vip: {
-        name: 'All-Inclusive Yoga & Gym',
+        name: 'Ultimate Peak Pass (All-In-One Yoga & Gym)',
         price: '699k',
         originalPrice: '950k',
-        badge: 'Inbox For Promo Rate',
+        badge: 'Save 26%',
         features: [
           'Unlimited Yoga master classes according to weekly timetable',
           'Full unlimited Gym & Boxing club privileges',
@@ -540,10 +540,10 @@ export const translations = {
       doneBtn: 'Done & Close',
       bookAnother: 'Register another guest',
       packageOptions: [
-        '3-7 Day Free Trial (Voucher SHINE-TRIAL-FREE)',
-        'Gym & Boxing Membership (Promo 349k/month - reg 549k)',
-        'Yoga Membership (Promo 549k/month - reg 700k - Inbox for quote)',
-        'All-Inclusive Yoga & Gym (Promo 699k/month - reg 950k - Inbox for quote)',
+        '3-7 Day Free Trial (Complimentary Trial Voucher)',
+        'Power Boost Pass - Gym & Boxing (Save 36%)',
+        'Inner Peace Flow - Intensive Yoga (Save 21%)',
+        'Ultimate Peak Pass - All-In-One (Save 26%)',
         'Day Pass (100k/day)',
         '1-on-1 Personal Training Package',
         'Intensive Yoga / Zumba Classes'

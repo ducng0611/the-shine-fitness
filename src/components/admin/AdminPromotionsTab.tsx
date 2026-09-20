@@ -54,27 +54,27 @@ export const AdminPromotionsTab: React.FC<AdminPromotionsTabProps> = ({
       }`}>
         <div>
           <div className="flex items-center space-x-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-              ● Firestore Promotions
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 font-sans">
+              ● Mã Khuyến Mãi
             </span>
-            <span className={`text-xs font-semibold ${textSub}`}>
+            <span className={`text-xs font-semibold font-sans ${textSub}`}>
               {promotions.length} Chiến Dịch Khuyến Mãi
             </span>
           </div>
-          <h2 className={`text-xl font-black ${textHeading}`}>
+          <h2 className={`text-xl sm:text-2xl font-heading font-black uppercase tracking-tight ${textHeading}`}>
             Quản Lý Chương Trình Khuyến Mãi & Voucher
           </h2>
-          <p className={`text-xs mt-0.5 ${textSub}`}>
-            Tạo mã giảm giá, giới hạn lượt dùng và đồng bộ trực tiếp vào Firestore cho các luồng email marketing.
+          <p className={`text-xs mt-0.5 font-sans ${textSub}`}>
+            Tạo mã giảm giá, giới hạn lượt dùng và đồng bộ trực tiếp cho các luồng email marketing.
           </p>
         </div>
 
         <button
           onClick={onOpenNewModal}
-          className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 transition-all flex items-center space-x-1.5 shadow-md shadow-orange-600/20 active:scale-95"
+          className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 transition-all flex items-center space-x-1.5 shadow-md shadow-orange-600/20 active:scale-95 font-sans"
         >
           <Plus className="w-4 h-4" />
-          <span>Tạo Voucher Mới (Firestore)</span>
+          <span>Tạo Voucher Mới</span>
         </button>
       </div>
 

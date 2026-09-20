@@ -40,8 +40,16 @@ export const VideoModal: React.FC<VideoModalProps> = ({
   const videoSrc = sampleWorkoutVideos[Math.abs(video.caption.length) % sampleWorkoutVideos.length];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-xs overflow-y-auto animate-fadeIn">
-      <div className="relative w-full max-w-4xl bg-slate-950 rounded-3xl shadow-2xl border border-white/10 overflow-hidden my-6 flex flex-col md:flex-row">
+    <div 
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-xs overflow-y-auto animate-fadeIn"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div 
+        className="relative w-full max-w-4xl bg-slate-950 rounded-3xl shadow-2xl border border-white/10 overflow-hidden my-6 flex flex-col md:flex-row z-[10000]"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Close Button */}
         <button

@@ -77,8 +77,8 @@ export const EditCustomerModal: React.FC<EditCustomerModalProps> = ({
       }`}>
         <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
           <div>
-            <h3 className="text-base font-bold">Cập Nhật Hồ Sơ Hội Viên (Firestore)</h3>
-            <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+            <h3 className="text-base sm:text-lg font-heading font-black uppercase tracking-tight">Cập Nhật Hồ Sơ Hội Viên</h3>
+            <p className={`text-xs mt-0.5 font-sans ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
               Mã: <span className="font-mono text-orange-500 font-bold">{formData.memberCode || formData.id}</span>
             </p>
           </div>
@@ -271,7 +271,7 @@ export const EditCustomerModal: React.FC<EditCustomerModalProps> = ({
               disabled={saving}
               className="px-5 py-2 text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 rounded-xl shadow-md transition-all disabled:opacity-50"
             >
-              {saving ? 'Đang lưu vào Firestore...' : 'Lưu Thay Đổi (Firestore)'}
+              {saving ? 'Đang lưu...' : 'Lưu Thay Đổi'}
             </button>
           </div>
         </form>
@@ -351,9 +351,9 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
       }`}>
         <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
           <div>
-            <h3 className="text-base font-bold">Thêm Khách Hàng Mới Trực Tiếp Lên Firestore</h3>
-            <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Hệ thống sẽ tạo mã hội viên tự động và lưu trữ tức thì vào database.
+            <h3 className="text-base sm:text-lg font-heading font-black uppercase tracking-tight">Thêm Khách Hàng Mới</h3>
+            <p className={`text-xs mt-0.5 font-sans ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+              Hệ thống sẽ tạo mã hội viên tự động và lưu trữ tức thì.
             </p>
           </div>
           <button onClick={onClose} className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
@@ -499,7 +499,7 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
               disabled={saving}
               className="px-5 py-2 text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 rounded-xl shadow-md transition-all disabled:opacity-50"
             >
-              {saving ? 'Đang tạo trên Firestore...' : 'Tạo Khách Hàng (Firestore)'}
+              {saving ? 'Đang tạo...' : 'Tạo Khách Hàng'}
             </button>
           </div>
         </form>
@@ -609,11 +609,11 @@ export const GymPackageModal: React.FC<PackageModalProps> = ({
       }`}>
         <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
           <div>
-            <h3 className="text-base font-bold">
-              {packageItem ? 'Chỉnh Sửa Gói Tập (Firestore)' : 'Thêm Gói Tập Mới (Firestore)'}
+            <h3 className="text-base sm:text-lg font-heading font-black uppercase tracking-tight">
+              {packageItem ? 'Chỉnh Sửa Gói Tập' : 'Thêm Gói Tập Mới'}
             </h3>
-            <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Lưu trực tiếp vào bộ sưu tập packages trên Firebase Firestore
+            <p className={`text-xs mt-0.5 font-sans ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+              Lưu trực tiếp vào cơ sở dữ liệu hệ thống
             </p>
           </div>
           <button onClick={onClose} className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
@@ -786,7 +786,7 @@ export const GymPackageModal: React.FC<PackageModalProps> = ({
               disabled={saving}
               className="px-5 py-2 text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 rounded-xl shadow-md transition-all disabled:opacity-50"
             >
-              {saving ? 'Đang lưu Firestore...' : 'Lưu Gói Tập (Firestore)'}
+              {saving ? 'Đang lưu...' : 'Lưu Gói Tập'}
             </button>
           </div>
         </form>
@@ -877,11 +877,11 @@ export const PromotionModal: React.FC<PromotionModalProps> = ({
       }`}>
         <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
           <div>
-            <h3 className="text-base font-bold">
-              {promotion ? 'Chỉnh Sửa Mã Khuyến Mãi (Firestore)' : 'Tạo Mã Khuyến Mãi / Voucher Mới (Firestore)'}
+            <h3 className="text-base sm:text-lg font-heading font-black uppercase tracking-tight">
+              {promotion ? 'Chỉnh Sửa Mã Khuyến Mãi' : 'Tạo Mã Khuyến Mãi / Voucher Mới'}
             </h3>
-            <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Lưu trực tiếp vào bộ sưu tập promotions trên Firebase Firestore
+            <p className={`text-xs mt-0.5 font-sans ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+              Lưu trực tiếp vào cơ sở dữ liệu hệ thống
             </p>
           </div>
           <button onClick={onClose} className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
@@ -1009,7 +1009,7 @@ export const PromotionModal: React.FC<PromotionModalProps> = ({
               disabled={saving}
               className="px-5 py-2 text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 rounded-xl shadow-md transition-all disabled:opacity-50"
             >
-              {saving ? 'Đang lưu Firestore...' : 'Lưu Voucher (Firestore)'}
+              {saving ? 'Đang lưu...' : 'Lưu Voucher'}
             </button>
           </div>
         </form>
@@ -1084,9 +1084,9 @@ export const AdminUserModal: React.FC<AdminUserModalProps> = ({
       }`}>
         <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
           <div>
-            <h3 className="text-base font-bold">Thêm Nhân Sự Quản Trị (RBAC)</h3>
-            <p className={`text-xs mt-0.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-              Cấp tài khoản & quyền truy cập vào Firebase Firestore
+            <h3 className="text-base sm:text-lg font-heading font-black uppercase tracking-tight">Thêm Nhân Sự Quản Trị (RBAC)</h3>
+            <p className={`text-xs mt-0.5 font-sans ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+              Cấp tài khoản & phân quyền truy cập hệ thống
             </p>
           </div>
           <button onClick={onClose} className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
@@ -1165,7 +1165,7 @@ export const AdminUserModal: React.FC<AdminUserModalProps> = ({
               disabled={saving}
               className="px-5 py-2 text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 rounded-xl shadow-md transition-all disabled:opacity-50"
             >
-              {saving ? 'Đang tạo...' : 'Cấp Quyền Tài Khoản (Firestore)'}
+              {saving ? 'Đang tạo...' : 'Cấp Quyền Tài Khoản'}
             </button>
           </div>
         </form>

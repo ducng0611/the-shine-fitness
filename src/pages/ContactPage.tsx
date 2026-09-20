@@ -1,13 +1,15 @@
 import React from 'react';
 import { FadeIn } from '../components/FadeIn';
 import { MapPin, Phone, MessageCircle, Clock, ExternalLink, Calendar } from 'lucide-react';
+import { EmailDispatchForm } from '../components/EmailDispatchForm';
+import { ContactInquiryForm } from '../components/ContactInquiryForm';
 
 export const ContactPage = ({ lang, t, openRegistration }) => {
   return (
     <div className="pt-20">
       <section id="location" className="py-20 sm:py-28 bg-slate-100 dark:bg-[#181818] border-t border-slate-200 dark:border-white/10 transition-colors duration-200">
         <FadeIn>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             
@@ -107,6 +109,16 @@ export const ContactPage = ({ lang, t, openRegistration }) => {
                                 />
               </div>
             </div>
+          </div>
+
+          {/* Contact Inquiry Form & Email Dispatcher */}
+          <div className="pt-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <ContactInquiryForm 
+              title="Form Gửi Thắc Mắc Trực Tiếp"
+            />
+            <EmailDispatchForm 
+              title="Form Kích Hoạt Voucher Tập Thử Tự Động"
+            />
           </div>
         </div>
         </FadeIn>

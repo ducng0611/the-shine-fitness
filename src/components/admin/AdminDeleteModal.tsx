@@ -69,7 +69,7 @@ export const AdminDeleteModal: React.FC<AdminDeleteModalProps> = ({
                 <strong className={isDark ? 'text-rose-300' : 'text-rose-700'}>
                   "{itemName}"
                 </strong>{' '}
-                khỏi hệ thống Firebase Firestore? Hành động này sẽ được ghi nhận vào lịch sử quản trị và không thể hoàn tác.
+                khỏi hệ thống? Hành động này sẽ được ghi nhận vào lịch sử quản trị và không thể hoàn tác.
               </p>
             )}
           </div>

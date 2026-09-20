@@ -213,6 +213,7 @@ export interface CustomerRecord {
   churnRisk?: string;
   churnReason?: string;
   customerSegment?: string; // Winback giá trị cao, Hội viên giá trị cao (VIP), Cam kết dài hạn (Committed)...
+  pkSegment?: 'PK01' | 'PK02' | 'PK03' | 'PK04'; // Sàng lọc và phân loại PK01-PK04
   journeyStage?: JourneyStage; // Hành trình ACCSR
   matchedPersona?: CustomerPersona; // Persona: Minh (Văn phòng), Tuấn (Giảm cân), Hương (Sau sinh)
   lastJourneyIntervention?: string;

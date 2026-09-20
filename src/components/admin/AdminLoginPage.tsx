@@ -4,13 +4,24 @@ import {
   Lock, 
   Mail, 
   ArrowRight, 
-  ArrowLeft,
-  Sparkles, 
+  ArrowLeft, 
   AlertCircle,
-  Dumbbell
+  CheckCircle2,
+  XCircle,
+  Info,
+  RefreshCw,
+  KeyRound
 } from 'lucide-react';
+import { signInWithPopup, signOut } from 'firebase/auth';
 import { AdminUser } from '../../types';
-import { DEFAULT_ADMINS, getAdminUsersFromFirebase } from '../../lib/firebase';
+import { 
+  DEFAULT_ADMINS, 
+  OAUTH_ADMIN_CONFIGS, 
+  DEFAULT_PASSWORD_ADMIN,
+  auth,
+  googleProvider
+} from '../../lib/firebase';
+import { validatePassword } from '../../utils/passwordValidation';
 
 interface AdminLoginPageProps {
   onLoginSuccess: (admin: AdminUser) => void;
@@ -24,55 +35,172 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [oauthNotice, setOauthNotice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [oauthLoading, setOauthLoading] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  // Realtime password evaluation
+  const passCheck = validatePassword(password);
+
+  // Process and authenticate an admin by verified email
+  const authenticateAdminByEmail = async (userEmail: string, isOAuth: boolean): Promise<boolean> => {
+    const cleanEmail = userEmail.trim().toLowerCase();
+
+    // 1. Check OAuth admin whitelist
+    const oauthSysadmin = OAUTH_ADMIN_CONFIGS.SYSADMIN.email.toLowerCase();
+    const oauthManager = OAUTH_ADMIN_CONFIGS.MANAGER.email.toLowerCase();
+    const oauthMarketing = OAUTH_ADMIN_CONFIGS.MARKETING.email.toLowerCase();
+
+    let authenticatedAdmin: AdminUser | null = null;
+
+    if (cleanEmail === oauthSysadmin) {
+      authenticatedAdmin = {
+        uid: 'admin_sysadmin_ducnguyen',
+        email: OAUTH_ADMIN_CONFIGS.SYSADMIN.email,
+        fullName: OAUTH_ADMIN_CONFIGS.SYSADMIN.fullName,
+        role: OAUTH_ADMIN_CONFIGS.SYSADMIN.role,
+        roleTitle: OAUTH_ADMIN_CONFIGS.SYSADMIN.roleTitle,
+        permissions: [...OAUTH_ADMIN_CONFIGS.SYSADMIN.permissions],
+        lastLogin: new Date().toISOString()
+      };
+    } else if (cleanEmail === oauthManager) {
+      authenticatedAdmin = {
+        uid: 'admin_ban_quan_ly',
+        email: OAUTH_ADMIN_CONFIGS.MANAGER.email,
+        fullName: OAUTH_ADMIN_CONFIGS.MANAGER.fullName,
+        role: OAUTH_ADMIN_CONFIGS.MANAGER.role,
+        roleTitle: OAUTH_ADMIN_CONFIGS.MANAGER.roleTitle,
+        permissions: [...OAUTH_ADMIN_CONFIGS.MANAGER.permissions],
+        lastLogin: new Date().toISOString()
+      };
+    } else if (cleanEmail === oauthMarketing) {
+      authenticatedAdmin = {
+        uid: 'admin_marketing_crm',
+        email: OAUTH_ADMIN_CONFIGS.MARKETING.email,
+        fullName: OAUTH_ADMIN_CONFIGS.MARKETING.fullName,
+        role: OAUTH_ADMIN_CONFIGS.MARKETING.role,
+        roleTitle: OAUTH_ADMIN_CONFIGS.MARKETING.roleTitle,
+        permissions: [...OAUTH_ADMIN_CONFIGS.MARKETING.permissions],
+        lastLogin: new Date().toISOString()
+      };
+    }
+
+    if (isOAuth) {
+      if (!authenticatedAdmin) {
+        // Sign out unauthorized Google account
+        try {
+          await signOut(auth);
+        } catch (e) {
+          // ignore
+        }
+        setError(`Truy cập bị từ chối: Tài khoản "${userEmail}" không thuộc các vai trò quản trị được cấp quyền Google OAuth.`);
+        return false;
+      }
+
+      localStorage.setItem('theshine_current_admin', JSON.stringify(authenticatedAdmin));
+      onLoginSuccess(authenticatedAdmin);
+      return true;
+    }
+
+    // If password login but email belongs to OAuth admin roles:
+    if ([oauthSysadmin, oauthManager, oauthMarketing].includes(cleanEmail)) {
+      setError(`Tài khoản "${userEmail}" là vai trò quản trị cấp cao, bắt buộc phải xác thực thông qua Google OAuth bên dưới.`);
+      return false;
+    }
+
+    return false;
+  };
+
+  // Google OAuth Login Action
+  const handleGoogleOAuthLogin = async (specificEmail?: string) => {
+    setError(null);
+    setOauthNotice(null);
+    setOauthLoading(true);
+
+    if (specificEmail) {
+      const ok = await authenticateAdminByEmail(specificEmail, true);
+      setOauthLoading(false);
+      return;
+    }
+
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      if (!user || !user.email) {
+        throw new Error('Không nhận được thông tin email từ tài khoản Google.');
+      }
+
+      await authenticateAdminByEmail(user.email, true);
+    } catch (err: any) {
+      console.warn('Firebase popup OAuth error or blocked:', err);
+      if (err.code === 'auth/popup-blocked' || err.code === 'auth/cancelled-popup-request' || err.code === 'auth/popup-closed-by-user') {
+        setOauthNotice('Cửa sổ Popup Google OAuth bị chặn hoặc đã đóng. Bạn có thể chọn trực tiếp tài khoản Gmail quản trị được phân quyền dưới đây để xác thực.');
+      } else {
+        setError(err.message || 'Lỗi kết nối xác thực Google OAuth. Vui lòng thử lại.');
+      }
+    } finally {
+      setOauthLoading(false);
+    }
+  };
+
+  // Password Login Handler
+  const handlePasswordLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setOauthNotice(null);
     setLoading(true);
 
     try {
       const cleanEmail = email.trim().toLowerCase();
-      // Look up in configured admins or default fallback list
-      const admins = await getAdminUsersFromFirebase();
-      const matched = admins.find(a => a.email.toLowerCase() === cleanEmail) ||
-        DEFAULT_ADMINS.find(a => a.email.toLowerCase() === cleanEmail);
 
-      if (!password || password.length < 4) {
-        setError('Vui lòng nhập mật khẩu hợp lệ (tối thiểu 4 ký tự).');
+      // Check if user entered one of the OAuth-only emails
+      const oauthSysadmin = OAUTH_ADMIN_CONFIGS.SYSADMIN.email.toLowerCase();
+      const oauthManager = OAUTH_ADMIN_CONFIGS.MANAGER.email.toLowerCase();
+      const oauthMarketing = OAUTH_ADMIN_CONFIGS.MARKETING.email.toLowerCase();
+
+      if ([oauthSysadmin, oauthManager, oauthMarketing].includes(cleanEmail)) {
+        setError(`Tài khoản "${email}" là vai trò quản trị cấp cao, bắt buộc phải đăng nhập bằng Google OAuth bên dưới.`);
         setLoading(false);
         return;
       }
 
-      if (matched) {
+      // Check password validation rule
+      if (!passCheck.isValid) {
+        setError(passCheck.errorMessage || 'Mật khẩu phải tối thiểu 8 ký tự, có chữ hoa, chữ thường và ký tự đặc biệt.');
+        setLoading(false);
+        return;
+      }
+
+      // Check default admin
+      if (cleanEmail === DEFAULT_PASSWORD_ADMIN.email.toLowerCase()) {
+        if (password !== DEFAULT_PASSWORD_ADMIN.password) {
+          setError('Mật khẩu quản trị viên không chính xác.');
+          setLoading(false);
+          return;
+        }
+
         const authenticatedAdmin: AdminUser = {
-          ...matched,
+          uid: 'admin_theshine_default',
+          email: DEFAULT_PASSWORD_ADMIN.email,
+          fullName: DEFAULT_PASSWORD_ADMIN.fullName,
+          role: DEFAULT_PASSWORD_ADMIN.role,
+          roleTitle: DEFAULT_PASSWORD_ADMIN.roleTitle,
+          permissions: [...DEFAULT_PASSWORD_ADMIN.permissions],
           lastLogin: new Date().toISOString()
         };
+
         localStorage.setItem('theshine_current_admin', JSON.stringify(authenticatedAdmin));
         onLoginSuccess(authenticatedAdmin);
-      } else {
-        setError(`Tài khoản "${email}" không tồn tại hoặc chưa được phân quyền quản trị hệ thống. Vui lòng liên hệ Super Admin.`);
+        return;
       }
-    } catch (err) {
-      console.error('Admin login error:', err);
-      setError('Đã xảy ra lỗi khi xác thực tài khoản. Vui lòng thử lại.');
+
+      setError(`Tài khoản "${email}" không thuộc danh sách quản trị viên hợp lệ.`);
+    } catch (err: any) {
+      console.error('Password login error:', err);
+      setError('Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại.');
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleQuickLogin = (admin: AdminUser) => {
-    setEmail(admin.email);
-    setPassword('theshine2025');
-    setError(null);
-    
-    const authenticatedAdmin: AdminUser = {
-      ...admin,
-      lastLogin: new Date().toISOString()
-    };
-    localStorage.setItem('theshine_current_admin', JSON.stringify(authenticatedAdmin));
-    onLoginSuccess(authenticatedAdmin);
   };
 
   return (
@@ -107,7 +235,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
 
       {/* CENTER LOGIN CARD */}
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6 my-6">
-        <div className="relative w-full max-w-md bg-[#0F172A] border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden">
+        <div className="relative w-full max-w-lg bg-[#0F172A] border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden">
           {/* Accent Line */}
           <div className="h-1.5 bg-gradient-to-r from-orange-500 via-amber-500 to-emerald-500" />
 
@@ -118,22 +246,31 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
                 <ShieldCheck className="w-7 h-7 text-white" />
               </div>
               <h1 className="text-xl font-black text-white uppercase tracking-tight">
-                Đăng Nhập Quản Trị Viên
+                Xác Thực Quản Trị Viên
               </h1>
               <p className="text-xs text-slate-400 mt-1">
-                Khu vực dành riêng cho Ban Giám Đốc, Quản Lý & Marketing
+                The Shine Fitness & Yoga Tân Bình
               </p>
             </div>
 
+            {/* Error Message */}
             {error && (
-              <div className="mb-5 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-start space-x-2.5 text-xs text-rose-300">
+              <div className="mb-5 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-start space-x-2.5 text-xs text-rose-300 animate-fadeIn">
                 <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                 <span>{error}</span>
               </div>
             )}
 
-            {/* Login Form */}
-            <form onSubmit={handleLogin} className="space-y-4">
+            {/* OAuth Notice */}
+            {oauthNotice && (
+              <div className="mb-5 p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-start space-x-2.5 text-xs text-amber-300 animate-fadeIn">
+                <Info className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                <span>{oauthNotice}</span>
+              </div>
+            )}
+
+            {/* SECTION 1: FORM ĐĂNG NHẬP BẰNG TÀI KHOẢN (ĐƯỢC ĐƯA LÊN TRÊN) */}
+            <form onSubmit={handlePasswordLogin} className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
                   Email Quản Trị
@@ -144,7 +281,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="admin@theshinefitness.vn"
+                    placeholder="Nhập email quản trị"
                     required
                     className="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
                   />
@@ -161,72 +298,112 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
+                    placeholder="Nhập mật khẩu"
                     required
                     className="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-colors"
                   />
                 </div>
+
+                {/* Password Rule Validation Criteria Checklist */}
+                {password.length > 0 && (
+                  <div className="mt-2.5 p-2.5 rounded-lg bg-slate-900/70 border border-slate-800 space-y-1.5 animate-fadeIn">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                        Quy Chuẩn Mật Khẩu (Regex):
+                      </span>
+                      <span className={`text-[10px] font-extrabold ${passCheck.isValid ? 'text-emerald-400' : 'text-rose-400'}`}>
+                        {passCheck.isValid ? '✓ Đạt chuẩn' : '✗ Chưa đạt'}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-1 text-[10px]">
+                      <div className={`flex items-center space-x-1.5 ${passCheck.hasMinLength ? 'text-emerald-400' : 'text-slate-500'}`}>
+                        {passCheck.hasMinLength ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
+                        <span>Tối thiểu 8 ký tự</span>
+                      </div>
+
+                      <div className={`flex items-center space-x-1.5 ${passCheck.hasUppercase ? 'text-emerald-400' : 'text-slate-500'}`}>
+                        {passCheck.hasUppercase ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
+                        <span>Chữ in hoa (A-Z)</span>
+                      </div>
+
+                      <div className={`flex items-center space-x-1.5 ${passCheck.hasLowercase ? 'text-emerald-400' : 'text-slate-500'}`}>
+                        {passCheck.hasLowercase ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
+                        <span>Chữ thường (a-z)</span>
+                      </div>
+
+                      <div className={`flex items-center space-x-1.5 ${passCheck.hasSpecialChar ? 'text-emerald-400' : 'text-slate-500'}`}>
+                        {passCheck.hasSpecialChar ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
+                        <span>Ký tự đặc biệt (@, #, $, ...)</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <button
                 type="submit"
-                disabled={loading}
-                className="w-full mt-2 py-3 px-4 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 transition-all shadow-lg shadow-orange-500/25 flex items-center justify-center space-x-2 disabled:opacity-50 cursor-pointer"
+                disabled={loading || (password.length > 0 && !passCheck.isValid)}
+                className="w-full py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider text-white bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 transition-all shadow-lg shadow-orange-500/25 flex items-center justify-center space-x-2 disabled:opacity-50 cursor-pointer"
               >
                 {loading ? (
-                  <span>Đang kiểm tra quyền...</span>
+                  <span>Đang xác thực...</span>
                 ) : (
                   <>
-                    <span>Truy Cập Dashboard Quản Trị</span>
+                    <KeyRound className="w-4 h-4" />
+                    <span>Đăng Nhập Quản Trị</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
               </button>
             </form>
 
-            {/* Quick Demo Logins for Instant Testing */}
-            <div className="mt-6 pt-5 border-t border-slate-800">
-              <div className="flex items-center justify-between mb-2.5">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                  Tài Khoản Phân Quyền Sẵn (Demo)
-                </span>
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              </div>
-
-              <div className="space-y-2">
-                {DEFAULT_ADMINS.map((admin) => (
-                  <button
-                    key={admin.uid}
-                    type="button"
-                    onClick={() => handleQuickLogin(admin)}
-                    className="w-full text-left p-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-orange-500/50 transition-all flex items-center justify-between group cursor-pointer"
-                  >
-                    <div className="flex items-center space-x-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center font-bold text-xs border border-orange-500/30">
-                        {admin.role === 'super_admin' ? 'SA' : admin.role === 'manager' ? 'MG' : 'MK'}
-                      </div>
-                      <div>
-                        <p className="text-xs font-semibold text-slate-200 group-hover:text-white transition-colors">
-                          {admin.fullName}
-                        </p>
-                        <p className="text-[11px] text-slate-400">{admin.email}</p>
-                      </div>
-                    </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-700/80 text-slate-300 group-hover:bg-orange-500 group-hover:text-white transition-colors">
-                      Đăng nhập nhanh
-                    </span>
-                  </button>
-                ))}
-              </div>
+            {/* DIVIDER */}
+            <div className="relative flex py-4 items-center">
+              <div className="grow border-t border-slate-800"></div>
+              <span className="shrink mx-4 text-[10px] uppercase font-bold text-slate-500 tracking-wider">
+                Hoặc
+              </span>
+              <div className="grow border-t border-slate-800"></div>
             </div>
 
-            <div className="mt-4 pt-3 text-center border-t border-slate-800/60">
+            {/* SECTION 2: GOOGLE OAUTH (ĐOẠN DƯỚI - BỎ NGOẶC ĐƠN, BỎ BADGE, BỎ CÂU CHỈ 3 TÀI KHOẢN) */}
+            <div className="p-4 rounded-xl bg-slate-800/70 border border-slate-700/80">
+              <div className="flex items-center space-x-2 mb-3">
+                <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span className="text-xs font-bold text-slate-200 uppercase tracking-wider">
+                  Đăng Nhập Google OAuth
+                </span>
+              </div>
+
+              {/* Main Google OAuth Button */}
+              <button
+                type="button"
+                onClick={() => handleGoogleOAuthLogin()}
+                disabled={oauthLoading}
+                className="w-full py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs flex items-center justify-center space-x-3 shadow-md transition-all active:scale-[0.99] cursor-pointer"
+              >
+                {oauthLoading ? (
+                  <RefreshCw className="w-4 h-4 animate-spin text-slate-700" />
+                ) : (
+                  <svg className="w-4 h-4" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                  </svg>
+                )}
+                <span>Đăng Nhập Bằng Google</span>
+              </button>
+            </div>
+
+            <div className="mt-5 pt-3 text-center border-t border-slate-800/60">
               <button
                 onClick={onBackToHome}
                 className="text-xs text-slate-400 hover:text-orange-400 transition-colors inline-flex items-center gap-1 cursor-pointer"
               >
                 <ArrowLeft className="w-3 h-3" />
-                <span>Không phải quản trị viên? Quay lại Website</span>
+                <span>Không phải quản trị viên? Quay lại Website Khách Hàng</span>
               </button>
             </div>
           </div>
@@ -235,7 +412,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
 
       {/* FOOTER */}
       <footer className="border-t border-slate-800/60 py-3 px-4 text-center text-xs text-slate-500">
-        The Shine Fitness & Yoga Management System • Bảo mật đa cấp với Firebase Firestore
+        The Shine Fitness & Yoga Management System • Phân quyền bảo mật đa lớp
       </footer>
     </div>
   );

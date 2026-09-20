@@ -231,7 +231,7 @@ export function parseExcelData(): ExcelDataResult {
       benefits: [
         "Áp dụng trọn vẹn cho cả 2 bộ môn Gym và Boxing",
         "HLV hỗ trợ 1:1 kỹ thuật và set up máy trong những ngày đầu",
-        "Tặng kèm 7 ngày tập thử 0đ & miễn phí đo InBody 270 cùng HLV",
+        "Tặng kèm 7 ngày tập thử 0đ & miễn phí tư vấn thể trạng cùng HLV",
         "Đóng theo tháng linh hoạt (lấy 349k nhân số tháng)",
         "Miễn phí phòng xông hơi khô (sauna), phòng tắm nóng lạnh & locker"
       ],
@@ -305,7 +305,7 @@ export function parseExcelData(): ExcelDataResult {
         "Sử dụng không giới hạn dàn máy Cardio & Tạ Technogym chuẩn Olympic",
         "Tham gia toàn bộ lớp Yoga Ấn Độ & GroupX sôi động hàng tuần",
         "Trải nghiệm tiện ích 5 sao: Hồ bơi nước ấm 4 mùa & Xông hơi đá muối Himalaya",
-        "Miễn phí đo chỉ số InBody phân tích cơ mỡ định kỳ hàng tháng",
+        "Miễn phí phân tích chỉ số thể trạng định kỳ hàng tháng",
         "Bao gồm tủ locker thông minh, phòng tắm nóng lạnh & gửi xe miễn phí"
       ],
       notes: "Gói chủ lực chiếm doanh thu cao nhất trên hệ thống dữ liệu khách hàng The Shine Fitness"
@@ -323,7 +323,7 @@ export function parseExcelData(): ExcelDataResult {
       benefits: [
         "Tập luyện không giới hạn khung giờ suốt 180 ngày",
         "Sử dụng khu tập gym hiện đại, khu chức năng Functional Training",
-        "Đo InBody định kỳ phân tích tiến độ thay đổi thể trạng",
+        "Kiểm tra thể trạng định kỳ phân tích tiến độ thay đổi thể hình",
         "Sử dụng phòng xông hơi thảo dược thư giãn cơ bắp sau buổi tập",
         "Tủ đồ cá nhân an toàn & bãi đỗ xe bảo vệ 24/7"
       ],
@@ -360,7 +360,7 @@ export function parseExcelData(): ExcelDataResult {
       benefits: [
         "Tập luyện 30 ngày tự do không ràng buộc hợp đồng dài hạn",
         "Sử dụng đầy đủ trang thiết bị gym và cardio cao cấp",
-        "Đo phân tích chỉ số InBody thể trạng ngày đầu tiên",
+        "Đánh giá phân tích chỉ số thể trạng ngày đầu tiên",
         "Phù hợp cho khách công tác hoặc trải nghiệm môi trường tập luyện"
       ],
       notes: "Gói ngắn hạn cho khách hàng kiểm chứng chất lượng câu lạc bộ"

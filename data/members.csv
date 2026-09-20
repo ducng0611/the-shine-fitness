@@ -1,0 +1,4 @@
+id,createdAt,fullName,email,phone,password,memberCode,membershipTier,startDate,expiryDate,status
+"MEM-2001","2026-09-01 10:00:00","Nguyễn Minh Đức","ducnguyen06112002@gmail.com","0946293593","shine123","SHINE-VIP-88","VIP","2026-09-01","2027-09-01","Active"
+"MEM-2002","2026-09-05 15:20:00","Lê Hoàng Nam","nam.le@theshine.vn","0909123456","123456","SHINE-PRE-12","Premium","2026-09-05","2027-03-05","Active"
+"MEM-881227","2026-09-19 15:48:01","Hội Viên Test","test.member@gmail.com","0901234567","HoiVien@123","SHINE-PRE-6371","Premium","2026-09-19","2027-09-19","Active","Nam"

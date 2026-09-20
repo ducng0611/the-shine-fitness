@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { translations, Language } from '../translations';
 import { saveRegistrationToFirebase } from '../lib/firebase';
+import { EMAIL_REGEX } from './EmailDispatchForm';
 
 interface RegistrationModalProps {
   isOpen: boolean;
@@ -62,8 +63,8 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
       setErrorMessage(lang === 'vi' ? 'Vui lòng nhập Số điện thoại liên hệ.' : 'Please enter your phone number.');
       return;
     }
-    if (!formData.email.trim() || !formData.email.includes('@')) {
-      setErrorMessage(lang === 'vi' ? 'Vui lòng nhập địa chỉ Email hợp lệ.' : 'Please enter a valid email address.');
+    if (!formData.email.trim() || !EMAIL_REGEX.test(formData.email.trim())) {
+      setErrorMessage(lang === 'vi' ? '⚠️ Vui lòng nhập địa chỉ Email hợp lệ (Đúng định dạng Regex: user@domain.com).' : 'Please enter a valid email address.');
       return;
     }
 
@@ -76,12 +77,31 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
         createdAt: new Date().toISOString()
       };
 
-      // Save directly to Firebase Firestore
+      // 1. Save directly to Firebase Firestore
       await saveRegistrationToFirebase(regRecord);
+
+      // 2. Trigger automatic email dispatch from admin email (ducnguyen06112002@gmail.com)
+      try {
+        await fetch('/api/trigger-registration-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: formData.email.trim(),
+            fullName: formData.fullName.trim(),
+            phone: formData.phone.trim(),
+            packageType: formData.packageType,
+            goal: formData.goal,
+            preferredTime: formData.preferredTime,
+            voucherCode
+          })
+        });
+      } catch (e) {
+        console.warn("Could not trigger email API dispatch:", e);
+      }
 
       setSuccessData(regRecord);
       if (onSuccessSubmit) {
-        onSuccessSubmit(lang === 'vi' ? '🎉 Đăng ký thành công! Mã ưu đãi của bạn đã sẵn sàng.' : '🎉 Registration successful! Your voucher is ready.');
+        onSuccessSubmit(lang === 'vi' ? '🎉 Đăng ký thành công! Email chứa mã voucher đã được gửi tự động tới hòm thư của bạn.' : '🎉 Registration successful! Voucher email has been sent.');
       }
     } catch (err: any) {
       setErrorMessage(err.message || (lang === 'vi' ? 'Không thể kết nối máy chủ.' : 'Could not submit registration.'));
@@ -97,14 +117,23 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs overflow-y-auto animate-fadeIn">
-      <div className="relative w-full max-w-2xl max-h-[95vh] bg-white dark:bg-[#1a1a1a] rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-y-auto my-auto transition-all">
+    <div 
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs overflow-y-auto animate-fadeIn"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) handleResetAndClose();
+      }}
+    >
+      <div 
+        className="relative w-full max-w-2xl max-h-[90vh] flex flex-col bg-white dark:bg-[#1a1a1a] rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 my-auto transition-all overflow-hidden z-[10000]"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Header Banner */}
-        <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/80 p-6 sm:p-7 text-white border-b-2 border-brand-orange relative">
+        <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/80 p-6 sm:p-7 text-white border-b-2 border-brand-orange relative shrink-0">
           <button 
+            type="button"
             onClick={handleResetAndClose}
-            className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
             aria-label="Close"
           >
             <X size={20} />
@@ -129,7 +158,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
 
         {/* Success View */}
         {successData ? (
-          <div className="p-6 sm:p-8 space-y-6">
+          <div className="p-6 sm:p-8 space-y-6 grow overflow-y-auto">
             <div className="flex items-center gap-3 p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-2xl">
               <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-md">
                 <CheckCircle2 size={28} />
@@ -190,7 +219,7 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
           </div>
         ) : (
           /* Input Form */
-          <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-4 sm:space-y-5">
+          <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-4 sm:space-y-5 grow overflow-y-auto">
             {errorMessage && (
               <div className="p-3.5 bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs sm:text-sm rounded-xl flex items-center gap-2">
                 <span>⚠️ {errorMessage}</span>

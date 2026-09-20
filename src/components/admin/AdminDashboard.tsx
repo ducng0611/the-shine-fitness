@@ -13,7 +13,19 @@ import {
   BarChart3,
   CheckCircle2,
   AlertCircle,
-  Compass
+  Compass,
+  ChevronDown,
+  ChevronRight,
+  Plus,
+  RefreshCw,
+  Sparkles,
+  SlidersHorizontal,
+  Layers,
+  Activity,
+  FileSpreadsheet,
+  TrendingUp,
+  Menu,
+  X
 } from 'lucide-react';
 import { 
   AdminUser, 
@@ -46,8 +58,10 @@ import {
 } from '../../lib/firebase';
 
 import { AdminOverviewTab } from './AdminOverviewTab';
+import { AdminAnalyticsOverview } from './AdminAnalyticsOverview';
 import { AdminCustomersTab } from './AdminCustomersTab';
 import { AdminCustomerJourneyTab } from './AdminCustomerJourneyTab';
+import { AdminPKSegmentsTab } from './AdminPKSegmentsTab';
 import { AdminPackagesTab } from './AdminPackagesTab';
 import { AdminPromotionsTab } from './AdminPromotionsTab';
 import { AdminEmailFlowsTab } from './AdminEmailFlowsTab';
@@ -67,7 +81,7 @@ interface AdminDashboardProps {
   onExitAdmin: () => void;
 }
 
-type DashboardTab = 'overview' | 'customers' | 'customer_journey' | 'packages' | 'promotions' | 'email_flows' | 'rbac';
+type DashboardTab = 'overview' | 'analytics' | 'customers' | 'customer_journey' | 'pk_segments' | 'packages' | 'promotions' | 'email_flows' | 'rbac';
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   currentAdmin,
@@ -90,6 +104,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   const [activeTab, setActiveTab] = useState<DashboardTab>('overview');
   const [loading, setLoading] = useState<boolean>(true);
+  const [quickActionsOpen, setQuickActionsOpen] = useState(false);
+  const [activeNavGroupDropdown, setActiveNavGroupDropdown] = useState<string | null>(null);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Firestore Data State
   const [customers, setCustomers] = useState<CustomerRecord[]>([]);
@@ -158,7 +175,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       setAdminUsers(fetchedAdmins.length > 0 ? fetchedAdmins : DEFAULT_ADMINS);
     } catch (err) {
       console.error('Error loading Firestore dashboard data:', err);
-      showToast('⚠️ Không thể tải toàn bộ dữ liệu từ Firestore. Vui lòng thử lại.');
+      showToast('⚠️ Không thể tải toàn bộ dữ liệu. Vui lòng thử lại.');
     } finally {
       setLoading(false);
     }
@@ -174,9 +191,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     if (success) {
       setCustomers(prev => prev.map(c => c.id === customer.id ? customer : c));
       setEditingCustomer(null);
-      showToast(`✓ Đã cập nhật thông tin hội viên ${customer.fullName} trên Firestore`);
+      showToast(`✓ Đã cập nhật thông tin hội viên ${customer.fullName}`);
     } else {
-      showToast('❌ Lỗi khi lưu hội viên lên Firestore');
+      showToast('❌ Lỗi khi lưu hội viên');
     }
   };
 
@@ -196,16 +213,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     setDeleteModalState({
       isOpen: true,
       title: 'Xác Nhận Xóa Hội Viên',
-      description: 'Hành động này sẽ xóa vĩnh viễn hồ sơ hội viên khỏi cơ sở dữ liệu Firebase Firestore.',
+      description: 'Hành động này sẽ xóa vĩnh viễn hồ sơ hội viên khỏi cơ sở dữ liệu hệ thống.',
       itemName: `${customer.fullName} (${customer.memberCode || customer.id})`,
       onConfirm: async () => {
         const success = await deleteCustomerFromFirebase(customer.id);
         if (success) {
           setCustomers(prev => prev.filter(c => c.id !== customer.id));
           setDeleteModalState(prev => ({ ...prev, isOpen: false }));
-          showToast(`✓ Đã xóa hội viên ${customer.fullName} khỏi Firestore`);
+          showToast(`✓ Đã xóa hội viên ${customer.fullName}`);
         } else {
-          showToast('❌ Không thể xóa hội viên khỏi Firestore');
+          showToast('❌ Không thể xóa hội viên');
         }
       }
     });
@@ -223,7 +240,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       setCustomers(prev => prev.map(c => c.id === customer.id ? updated : c));
       showToast(`✓ Đã cập nhật hành trình của ${customer.fullName} sang: ${newStage.toUpperCase()}`);
     } else {
-      showToast('❌ Lỗi cập nhật giai đoạn hành trình trên Firestore');
+      showToast('❌ Lỗi cập nhật giai đoạn hành trình');
     }
   };
 
@@ -237,8 +254,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       subject = `[Zalo/SMS] Cảnh báo mật độ The Shine - Gợi ý tập luyện cho ${customer.fullName}`;
       objective = 'Cảnh báo giờ cao điểm 18h-20h (Khu tạ 95%, Cardio 30%, Xông hơi 20%)';
     } else if (type === 'inbody_invite') {
-      subject = `[The Shine] Thư mời đo lại InBody 270 định kỳ - Đánh giá tiến độ của ${customer.fullName}`;
-      objective = 'Mời đo lại InBody sau 60-90 ngày và nhận báo cáo trước - sau';
+      subject = `[The Shine] Thư mời kiểm tra thể trạng định kỳ - Đánh giá tiến độ của ${customer.fullName}`;
+      objective = 'Mời kiểm tra lại thể trạng sau 60-90 ngày và nhận báo cáo tiến độ';
     } else if (type === 'week3_cheer') {
       subject = `[The Shine Coaching] Đồng hành tuần 3 - Bí quyết vượt chững cân cùng ${customer.fullName}`;
       objective = 'Động viên hội viên tuần 3-4, phòng ngừa nguy cơ mất lửa ngủ đông';
@@ -249,7 +266,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
     setComposeInitial({
       audience: customer.email || customer.fullName,
-      voucher: type === 'renewal_gift' ? 'EARLYBIRD15' : 'INBODYFREE',
+      voucher: type === 'renewal_gift' ? 'EARLYBIRD15' : 'FITNESS0D',
       objective: `${subject} - ${objective}`
     });
     setActiveTab('email_flows');
@@ -266,7 +283,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       });
       setEditingPackage(null);
       setIsNewPackageModalOpen(false);
-      showToast(`✓ Đã lưu gói tập "${pkg.name}" trên Firestore`);
+      showToast(`✓ Đã lưu gói tập "${pkg.name}"`);
     } else {
       showToast('❌ Lỗi lưu gói tập');
     }
@@ -306,7 +323,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       });
       setEditingPromotion(null);
       setIsNewPromotionModalOpen(false);
-      showToast(`✓ Đã cập nhật voucher "${promo.code}" trên Firestore`);
+      showToast(`✓ Đã cập nhật voucher "${promo.code}"`);
     } else {
       showToast('❌ Lỗi lưu voucher');
     }
@@ -425,13 +442,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-200 ${
+    <div className={`min-h-screen flex font-sans transition-colors duration-200 ${
       isDark ? 'bg-[#0B0F17] text-slate-100' : 'bg-[#F8FAFC] text-slate-900'
     }`}>
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 animate-bounce">
-          <div className={`px-4 py-3 rounded-2xl shadow-xl border flex items-center space-x-2 text-xs font-bold ${
+          <div className={`px-4 py-3 rounded-2xl shadow-xl border flex items-center space-x-2 text-xs font-bold font-sans ${
             isDark 
               ? 'bg-slate-900 text-white border-slate-700 shadow-black/60' 
               : 'bg-white text-slate-900 border-slate-200 shadow-slate-300/60'
@@ -442,144 +459,364 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
       )}
 
-      {/* Top Navbar */}
-      <header className={`sticky top-0 z-40 border-b backdrop-blur-md transition-colors ${
-        isDark ? 'bg-[#0B0F17]/90 border-slate-800' : 'bg-white/90 border-slate-200 shadow-xs'
-      }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          {/* Brand & Database Status */}
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center font-black text-white text-lg shadow-md shadow-orange-500/20">
-              S
-            </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="font-black text-base tracking-wide uppercase">
-                  The Shine Fitness
-                </span>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider border ${
-                  isDark ? 'bg-slate-800 text-orange-400 border-slate-700' : 'bg-orange-50 text-orange-700 border-orange-200'
-                }`}>
-                  Admin CRM
-                </span>
-              </div>
-              <div className="flex items-center space-x-1.5 text-[11px] text-emerald-500 font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Firestore Live</span>
-              </div>
-            </div>
-          </div>
+      {/* Mobile Backdrop Overlay */}
+      {isMobileSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-xs z-40 lg:hidden"
+          onClick={() => setIsMobileSidebarOpen(false)}
+        />
+      )}
 
-          {/* Controls: Theme toggle, Admin details, Exit, Logout */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* Theme Toggle Button */}
-            <button
-              onClick={toggleTheme}
-              className={`p-2 rounded-xl border transition-all flex items-center space-x-1.5 text-xs font-semibold ${
-                isDark 
-                  ? 'bg-slate-800/80 hover:bg-slate-700 border-slate-700 text-amber-300' 
-                  : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'
-              }`}
-              title={isDark ? 'Chuyển sang giao diện Sáng (Light Mode)' : 'Chuyển sang giao diện Tối (Dark Mode)'}
-            >
-              {isDark ? (
-                <>
-                  <Sun className="w-4 h-4 text-amber-400" />
-                  <span className="hidden md:inline">Light Mode</span>
-                </>
-              ) : (
-                <>
-                  <Moon className="w-4 h-4 text-indigo-600" />
-                  <span className="hidden md:inline">Dark Mode</span>
-                </>
-              )}
-            </button>
+      {/* LEFT VERTICAL SIDEBAR MENU NAV */}
+      {(() => {
+        const navGroups = [
+          {
+            id: 'analytics',
+            name: 'Báo Cáo & Thống Kê',
+            icon: BarChart3,
+            badge: null,
+            items: [
+              { id: 'overview' as DashboardTab, label: 'Tổng quan KPI', sublabel: 'KPIs & doanh thu', icon: BarChart3, badge: null },
+              { id: 'analytics' as DashboardTab, label: 'Xu hướng & Tương tác', sublabel: 'Biểu đồ tăng trưởng & nguồn lead', icon: TrendingUp, badge: null },
+            ]
+          },
+          {
+            id: 'crm',
+            name: 'Khách Hàng & CRM',
+            icon: Users,
+            badge: customers.length,
+            items: [
+              { id: 'customers' as DashboardTab, label: 'Danh sách hội viên', sublabel: 'Hồ sơ, trạng thái & CRM', icon: Users, badge: customers.length },
+              { id: 'customer_journey' as DashboardTab, label: 'Hành trình khách hàng', sublabel: 'Phễu ACCSR & chuyển đổi', icon: Compass, badge: null },
+              { id: 'pk_segments' as DashboardTab, label: 'Phân khúc khách hàng', sublabel: 'Sàng lọc 4 phân khúc PK01–PK04', icon: SlidersHorizontal, badge: null },
+            ]
+          },
+          {
+            id: 'services',
+            name: 'Dịch Vụ & Gói Tập',
+            icon: Package,
+            badge: packages.length + promotions.length,
+            items: [
+              { id: 'packages' as DashboardTab, label: 'Gói tập luyện', sublabel: 'Bảng giá & quyền lợi', icon: Package, badge: packages.length },
+              { id: 'promotions' as DashboardTab, label: 'Khuyến mãi & Voucher', sublabel: 'Mã giảm giá', icon: Tag, badge: promotions.length },
+            ]
+          },
+          {
+            id: 'marketing',
+            name: 'Marketing & AI',
+            icon: Mail,
+            badge: emailFlows.length,
+            items: [
+              { id: 'email_flows' as DashboardTab, label: 'Email tự động', sublabel: 'Kịch bản tự động', icon: Mail, badge: emailFlows.length },
+            ]
+          },
+          {
+            id: 'system',
+            name: 'Hệ Thống & RBAC',
+            icon: ShieldCheck,
+            badge: adminUsers.length,
+            items: [
+              { id: 'rbac' as DashboardTab, label: 'Phân quyền Admin', sublabel: 'Quản trị tài khoản & audit log', icon: ShieldCheck, badge: adminUsers.length },
+            ]
+          },
+        ];
 
-            {/* Admin User Info */}
-            <div className={`hidden sm:flex items-center space-x-2 px-3 py-1.5 rounded-xl border ${
-              isDark ? 'bg-slate-900 border-slate-800' : 'bg-slate-50 border-slate-200'
+        const currentGroup = navGroups.find(g => g.items.some(it => it.id === activeTab)) || navGroups[0];
+        const currentSubItem = currentGroup.items.find(it => it.id === activeTab) || currentGroup.items[0];
+
+        return (
+          <>
+            {/* Sidebar Navigation */}
+            <aside className={`fixed inset-y-0 left-0 z-50 w-64 border-r flex flex-col transition-transform duration-200 lg:static lg:translate-x-0 ${
+              isMobileSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full lg:translate-x-0'
+            } ${
+              isDark ? 'bg-[#0E131F] border-slate-800 text-slate-200' : 'bg-white border-slate-200 text-slate-800 shadow-sm'
             }`}>
-              <div className="w-6 h-6 rounded-lg bg-orange-600/20 text-orange-600 dark:text-orange-400 font-bold text-xs flex items-center justify-center">
-                {currentAdmin.fullName ? currentAdmin.fullName[0].toUpperCase() : 'A'}
+              {/* Sidebar Header: Brand & Title */}
+              <div className="p-4 border-b border-slate-800/60 dark:border-slate-800 flex items-center justify-between shrink-0">
+                <div className="flex items-center space-x-3">
+                  <div className="flex flex-col items-start leading-none italic font-heading transform -skew-x-6 select-none shrink-0">
+                    <span className="bg-orange-500 text-white px-1.5 py-0.5 text-[0.55rem] font-black uppercase tracking-widest mb-0.5 shadow-xs rounded-xs">
+                      The
+                    </span>
+                    <div className="flex items-baseline gap-0.5">
+                      <span className="text-orange-500 font-black text-xl uppercase tracking-tighter">Shine</span>
+                      <span className={`font-black text-xl uppercase tracking-tighter ${isDark ? 'text-white' : 'text-slate-900'}`}>Fitness</span>
+                    </div>
+                  </div>
+                  <div className="border-l border-slate-300 dark:border-slate-800 pl-2">
+                    <div className="font-heading font-black text-xs uppercase tracking-wider text-slate-700 dark:text-slate-200">
+                      Dashboard
+                    </div>
+                    <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider border font-sans ${
+                      isDark ? 'bg-slate-800 text-orange-400 border-slate-700' : 'bg-orange-50 text-orange-700 border-orange-200'
+                    }`}>
+                      CRM & RBAC
+                    </span>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setIsMobileSidebarOpen(false)} 
+                  className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer"
+                >
+                  <X size={18} />
+                </button>
               </div>
-              <div className="text-left leading-tight">
-                <div className="text-xs font-bold">{currentAdmin.fullName}</div>
-                <div className="text-[10px] text-slate-400">{currentAdmin.roleTitle || 'Quản trị viên'}</div>
+
+              {/* Sidebar Vertical Navigation List */}
+              <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
+                {navGroups.map(group => (
+                  <div key={group.id} className="space-y-1">
+                    <div className="px-3 text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5">
+                      {group.name}
+                    </div>
+                    {group.items.map(subItem => {
+                      const Icon = subItem.icon;
+                      const isActive = activeTab === subItem.id;
+                      return (
+                        <button
+                          key={subItem.id}
+                          onClick={() => {
+                            setActiveTab(subItem.id);
+                            setIsMobileSidebarOpen(false);
+                          }}
+                          className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                            isActive
+                              ? 'bg-orange-600 text-white shadow-md shadow-orange-600/25 ring-1 ring-orange-500/30'
+                              : isDark
+                              ? 'text-slate-300 hover:text-white hover:bg-slate-800/80'
+                              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                          }`}
+                        >
+                          <div className="flex items-center space-x-2.5 truncate pr-2">
+                            <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : isDark ? 'text-slate-400' : 'text-slate-500'}`} />
+                            <span className="truncate">{subItem.label}</span>
+                          </div>
+                          {subItem.badge !== null && (
+                            <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full shrink-0 ${
+                              isActive
+                                ? 'bg-white/20 text-white'
+                                : isDark ? 'bg-slate-800 text-slate-300' : 'bg-slate-200 text-slate-700'
+                            }`}>
+                              {subItem.badge}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ))}
               </div>
-            </div>
 
-            {/* Exit to Member Portal */}
-            <button
-              onClick={onExitAdmin}
-              className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all flex items-center space-x-1.5 ${
-                isDark 
-                  ? 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200' 
-                  : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-800'
-              }`}
-              title="Xem trang Hội viên & Khách hàng"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Trang Hội Viên</span>
-            </button>
+              {/* Sidebar Footer: Admin Profile & Controls */}
+              <div className="p-3 border-t border-slate-800/60 dark:border-slate-800 space-y-2 shrink-0">
+                <div className={`flex items-center justify-between p-2 rounded-xl border ${
+                  isDark ? 'bg-slate-900/80 border-slate-800' : 'bg-slate-50 border-slate-200'
+                }`}>
+                  <div className="flex items-center space-x-2 truncate">
+                    <div className="w-7 h-7 rounded-lg bg-orange-600/20 text-orange-600 dark:text-orange-400 font-bold text-xs flex items-center justify-center shrink-0">
+                      {currentAdmin.fullName ? currentAdmin.fullName[0].toUpperCase() : 'A'}
+                    </div>
+                    <div className="text-left leading-tight truncate">
+                      <div className="text-xs font-bold truncate">{currentAdmin.fullName}</div>
+                      <div className="text-[10px] text-slate-400 truncate">{currentAdmin.roleTitle || 'Quản trị viên'}</div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={onLogout}
+                    className="p-1.5 rounded-lg text-rose-500 hover:bg-rose-500/10 transition-colors shrink-0 cursor-pointer"
+                    title="Đăng xuất khỏi Admin"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </button>
+                </div>
 
-            {/* Logout */}
-            <button
-              onClick={onLogout}
-              className={`p-2 rounded-xl border text-rose-500 hover:bg-rose-500/10 transition-colors ${
-                isDark ? 'border-slate-800' : 'border-slate-200'
-              }`}
-              title="Đăng xuất khỏi Admin"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </header>
+                <div className="flex items-center space-x-1.5">
+                  <button
+                    onClick={toggleTheme}
+                    className={`flex-1 p-2 rounded-xl border transition-all flex items-center justify-center space-x-1.5 text-xs font-semibold cursor-pointer ${
+                      isDark 
+                        ? 'bg-slate-800/80 hover:bg-slate-700 border-slate-700 text-amber-300' 
+                        : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'
+                    }`}
+                    title={isDark ? 'Chuyển sang Giao diện Sáng' : 'Chuyển sang Giao diện Tối'}
+                  >
+                    {isDark ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-indigo-600" />}
+                    <span className="text-[11px] font-bold">{isDark ? 'Light' : 'Dark'}</span>
+                  </button>
 
-      {/* Main Container */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-        {/* Navigation Tabs Bar */}
-        <div className={`p-1.5 rounded-2xl border flex items-center space-x-1 overflow-x-auto ${
-          isDark ? 'bg-slate-900/90 border-slate-800' : 'bg-white border-slate-200 shadow-xs'
-        }`}>
-          {[
-            { id: 'overview', label: 'Tổng Quan', icon: BarChart3, badge: null },
-            { id: 'customers', label: 'Hội Viên & Khách Hàng', icon: Users, badge: customers.length },
-            { id: 'customer_journey', label: 'Hành Trình Chuyển Đổi (ACCSR)', icon: Compass, badge: '5 Giai đoạn' },
-            { id: 'packages', label: 'Gói Tập Luyện', icon: Package, badge: packages.length },
-            { id: 'promotions', label: 'Khuyến Mãi & Voucher', icon: Tag, badge: promotions.length },
-            { id: 'email_flows', label: 'Email Automation & AI', icon: Mail, badge: emailFlows.length },
-            { id: 'rbac', label: 'Phân Quyền (RBAC)', icon: ShieldCheck, badge: adminUsers.length },
-          ].map(tab => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as DashboardTab)}
-                className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                  isActive
-                    ? 'bg-orange-600 text-white shadow-md shadow-orange-600/20'
-                    : isDark
-                    ? 'text-slate-400 hover:text-white hover:bg-slate-800/60'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span>{tab.label}</span>
-                {tab.badge !== null && (
-                  <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${
-                    isActive 
-                      ? 'bg-white/20 text-white' 
-                      : isDark ? 'bg-slate-800 text-slate-300' : 'bg-slate-200 text-slate-700'
-                  }`}>
-                    {tab.badge}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
+                  <button
+                    onClick={onExitAdmin}
+                    className={`flex-1 p-2 rounded-xl border text-xs font-bold transition-all flex items-center justify-center space-x-1.5 cursor-pointer ${
+                      isDark 
+                        ? 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200' 
+                        : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-800'
+                    }`}
+                    title="Xem trang Hội viên & Khách hàng"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span className="text-[11px] font-bold">Hội Viên</span>
+                  </button>
+                </div>
+              </div>
+            </aside>
+
+            {/* Main Area Wrapper */}
+            <div className="flex-1 flex flex-col min-w-0 min-h-screen">
+              {/* Top Header Bar */}
+              <header className={`sticky top-0 z-30 border-b backdrop-blur-md transition-colors ${
+                isDark ? 'bg-[#0B0F17]/90 border-slate-800' : 'bg-white/90 border-slate-200 shadow-xs'
+              }`}>
+                <div className="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+                  {/* Left: Mobile Drawer Trigger & Breadcrumb */}
+                  <div className="flex items-center space-x-3">
+                    <button
+                      onClick={() => setIsMobileSidebarOpen(true)}
+                      className="lg:hidden p-2 rounded-xl border text-slate-400 hover:text-white border-slate-700 cursor-pointer"
+                    >
+                      <Menu size={20} />
+                    </button>
+
+                    <div className="flex items-center space-x-1.5 sm:space-x-2 text-xs font-semibold">
+                      <span className="text-orange-500 font-bold hidden sm:inline">The Shine</span>
+                      <ChevronRight size={12} className="text-slate-400 hidden sm:inline" />
+                      <span className={isDark ? 'text-slate-300' : 'text-slate-700'}>{currentGroup.name}</span>
+                      <ChevronRight size={12} className="text-slate-400" />
+                      <span className="font-bold text-orange-600 dark:text-orange-400">{currentSubItem.label}</span>
+                    </div>
+                  </div>
+
+                  {/* Right: Quick Action Buttons & Refresh */}
+                  <div className="flex items-center space-x-2 sm:space-x-3">
+                    {activeTab === 'customers' && (
+                      <button
+                        onClick={() => setIsNewCustomerModalOpen(true)}
+                        className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors flex items-center space-x-1 cursor-pointer shadow-xs"
+                      >
+                        <Plus size={14} />
+                        <span className="hidden sm:inline">+ Thêm Hội Viên</span>
+                      </button>
+                    )}
+                    {activeTab === 'packages' && (
+                      <button
+                        onClick={() => setIsNewPackageModalOpen(true)}
+                        className="px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs transition-colors flex items-center space-x-1 cursor-pointer shadow-xs"
+                      >
+                        <Plus size={14} />
+                        <span className="hidden sm:inline">+ Thêm Gói Tập</span>
+                      </button>
+                    )}
+                    {activeTab === 'promotions' && (
+                      <button
+                        onClick={() => setIsNewPromotionModalOpen(true)}
+                        className="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-colors flex items-center space-x-1 cursor-pointer shadow-xs"
+                      >
+                        <Plus size={14} />
+                        <span className="hidden sm:inline">+ Tạo Voucher</span>
+                      </button>
+                    )}
+                    {activeTab === 'rbac' && currentAdmin.role === 'super_admin' && (
+                      <button
+                        onClick={() => setIsNewAdminModalOpen(true)}
+                        className="px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs transition-colors flex items-center space-x-1 cursor-pointer shadow-xs"
+                      >
+                        <Plus size={14} />
+                        <span className="hidden sm:inline">+ Cấp Quyền Admin</span>
+                      </button>
+                    )}
+
+                    {/* Refresh Button */}
+                    <button
+                      onClick={loadDashboardData}
+                      disabled={loading}
+                      className={`p-2 rounded-xl border transition-colors cursor-pointer ${
+                        isDark ? 'border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800' : 'border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                      }`}
+                      title="Làm mới dữ liệu hệ thống"
+                    >
+                      <RefreshCw size={14} className={loading ? 'animate-spin text-orange-500' : ''} />
+                    </button>
+
+                    {/* Quick Actions Dropdown */}
+                    <div className="relative">
+                      <button
+                        onClick={() => setQuickActionsOpen(!quickActionsOpen)}
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 shadow-md shadow-orange-600/25 flex items-center space-x-1.5 cursor-pointer active:scale-95 transition-all"
+                      >
+                        <Sparkles className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">+ Thao Tác</span>
+                        <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${quickActionsOpen ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      {quickActionsOpen && (
+                        <>
+                          <div className="fixed inset-0 z-40" onClick={() => setQuickActionsOpen(false)} />
+                          <div className={`absolute right-0 top-full mt-2 w-64 rounded-2xl border shadow-2xl z-50 p-2 animate-in fade-in slide-in-from-top-2 duration-150 ${
+                            isDark ? 'bg-slate-900 border-slate-700 text-white shadow-black/80' : 'bg-white border-slate-200 text-slate-900 shadow-slate-300/80'
+                          }`}>
+                            <div className="px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-slate-400">
+                              Tác Vụ Quản Trị Nhanh
+                            </div>
+                            <div className="space-y-1 mt-1">
+                              <button
+                                onClick={() => { setIsNewCustomerModalOpen(true); setQuickActionsOpen(false); }}
+                                className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold flex items-center space-x-2.5 transition-colors cursor-pointer ${
+                                  isDark ? 'hover:bg-slate-800 text-slate-200' : 'hover:bg-slate-100 text-slate-700'
+                                }`}
+                              >
+                                <Users className="w-4 h-4 text-emerald-500" />
+                                <span>Thêm Hội Viên Mới</span>
+                              </button>
+                              <button
+                                onClick={() => { setIsNewPackageModalOpen(true); setQuickActionsOpen(false); }}
+                                className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold flex items-center space-x-2.5 transition-colors cursor-pointer ${
+                                  isDark ? 'hover:bg-slate-800 text-slate-200' : 'hover:bg-slate-100 text-slate-700'
+                                }`}
+                              >
+                                <Package className="w-4 h-4 text-orange-500" />
+                                <span>Thêm Gói Tập Luyện Mới</span>
+                              </button>
+                              <button
+                                onClick={() => { setIsNewPromotionModalOpen(true); setQuickActionsOpen(false); }}
+                                className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold flex items-center space-x-2.5 transition-colors cursor-pointer ${
+                                  isDark ? 'hover:bg-slate-800 text-slate-200' : 'hover:bg-slate-100 text-slate-700'
+                                }`}
+                              >
+                                <Tag className="w-4 h-4 text-purple-500" />
+                                <span>Tạo Voucher Khuyến Mãi</span>
+                              </button>
+                              {currentAdmin.role === 'super_admin' && (
+                                <button
+                                  onClick={() => { setIsNewAdminModalOpen(true); setQuickActionsOpen(false); }}
+                                  className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold flex items-center space-x-2.5 transition-colors cursor-pointer ${
+                                    isDark ? 'hover:bg-slate-800 text-slate-200' : 'hover:bg-slate-100 text-slate-700'
+                                  }`}
+                                >
+                                  <ShieldCheck className="w-4 h-4 text-rose-500" />
+                                  <span>Cấp Quyền Admin Mới</span>
+                                </button>
+                              )}
+                              <div className={`my-1 border-t ${isDark ? 'border-slate-800' : 'border-slate-100'}`} />
+                              <button
+                                onClick={() => { loadDashboardData(); setQuickActionsOpen(false); showToast('✓ Đang đồng bộ toàn bộ dữ liệu...'); }}
+                                className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold flex items-center space-x-2.5 transition-colors cursor-pointer ${
+                                  isDark ? 'hover:bg-slate-800 text-slate-200' : 'hover:bg-slate-100 text-slate-700'
+                                }`}
+                              >
+                                <RefreshCw className="w-4 h-4 text-cyan-500" />
+                                <span>Đồng Bộ Toàn Bộ Dữ Liệu</span>
+                              </button>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </header>
+
+              {/* Main Content Workspace */}
+              <main className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl mx-auto w-full flex-1">
 
         {/* Tab Content */}
         {activeTab === 'overview' && (
@@ -592,6 +829,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             onOpenNewCustomerModal={() => setIsNewCustomerModalOpen(true)}
             onOpenNewPackageModal={() => setIsNewPackageModalOpen(true)}
             onOpenNewPromotionModal={() => setIsNewPromotionModalOpen(true)}
+          />
+        )}
+
+        {activeTab === 'analytics' && (
+          <AdminAnalyticsOverview
+            customers={customers}
+            packages={packages}
+            isDark={isDark}
+            onNavigateTab={(tab) => setActiveTab(tab)}
           />
         )}
 
@@ -615,6 +861,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             onUpdateCustomerStage={handleUpdateCustomerStage}
             onSendZaloIntervention={handleSendZaloIntervention}
             onNavigateToCustomerTab={() => setActiveTab('customers')}
+          />
+        )}
+
+        {activeTab === 'pk_segments' && (
+          <AdminPKSegmentsTab
+            customers={customers}
+            isDark={isDark}
+            onNavigateToCustomers={(pkFilter) => {
+              setActiveTab('customers');
+            }}
+            onToast={showToast}
           />
         )}
 
@@ -664,9 +921,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             isDark={isDark}
             onOpenNewModal={() => setIsNewAdminModalOpen(true)}
             onDeleteAdmin={handleDeleteAdminClick}
+            onSaveAdmin={handleSaveAdmin}
+            onRefreshData={loadDashboardData}
+            onToast={showToast}
+            onNavigateTab={(tab) => setActiveTab(tab as DashboardTab)}
           />
         )}
       </main>
+    </div>
+  </>
+);
+})()}
 
       {/* MODALS */}
       {/* 1. Edit Customer Modal */}

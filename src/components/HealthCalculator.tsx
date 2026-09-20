@@ -481,7 +481,7 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({ lang, onOpen
               {/* Quick direct CTA */}
               <button
                 type="button"
-                onClick={() => onOpenBooking && onOpenBooking('Tập thử miễn phí 3-7 ngày (Voucher SHINE-TRIAL-FREE)')}
+                onClick={() => onOpenBooking && onOpenBooking('Tập thử miễn phí 3-7 ngày (Voucher tập thử 0đ)')}
                 className="relative z-10 w-full py-2.5 bg-slate-900 hover:bg-black dark:bg-white/10 dark:hover:bg-white/20 text-white font-heading font-bold text-xs uppercase italic rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer mt-1 shadow-sm"
               >
                 <span>{isVi ? 'Đăng Ký Tư Vấn & Nhận Thẻ Tập 0đ' : 'Book Free PT Consultation & 0đ Pass'}</span>

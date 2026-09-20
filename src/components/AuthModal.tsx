@@ -17,8 +17,10 @@ import {
   Smartphone
 } from 'lucide-react';
 import { Language, translations } from '../translations';
-import { saveOrUpdateMemberInFirebase } from '../lib/firebase';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider, saveOrUpdateMemberInFirebase, findMemberInFirebase } from '../lib/firebase';
 import { inferGenderFromName } from '../utils/gender';
+import { validatePassword } from '../utils/passwordValidation';
 
 export interface MemberUser {
   id: string;
@@ -58,7 +60,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   const [authMethod, setAuthMethod] = useState<AuthMethod>('phone_otp');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [userEmailInput, setUserEmailInput] = useState('');
   const [gmailAddress, setGmailAddress] = useState('');
+  const [userPhoneInput, setUserPhoneInput] = useState('');
   const [otpCode, setOtpCode] = useState('');
   const [generatedOtp, setGeneratedOtp] = useState<string | null>(null);
   const [otpSent, setOtpSent] = useState(false);
@@ -74,6 +78,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [successNotice, setSuccessNotice] = useState('');
+
+  // Reset modal state whenever isOpen or initialMode changes
+  useEffect(() => {
+    if (isOpen) {
+      setAuthMethod('phone_otp');
+      setOtpSent(false);
+      setOtpCode('');
+      setGeneratedOtp(null);
+      setErrorMsg('');
+      setSuccessNotice('');
+      setLoading(false);
+    }
+  }, [isOpen, initialMode]);
 
   // Countdown timer for OTP
   useEffect(() => {
@@ -140,24 +157,45 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     try {
       const now = new Date();
       const expiry = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000); // 90 days validity
-      const memberCode = `TS-${Math.floor(1000 + Math.random() * 9000)}`;
 
-      const phoneVal = authMethod === 'phone_otp' ? phoneNumber.trim() : '0946293593';
-      const emailVal = authMethod === 'gmail_otp' ? gmailAddress.trim() : `${phoneVal}@theshine.member`;
-      const nameVal = fullNameInput.trim() || (authMethod === 'phone_otp' ? `Hội Viên ${phoneNumber.slice(-4)}` : gmailAddress.split('@')[0]);
-      const resolvedGender = genderInput || (inferGenderFromName(nameVal) || 'Nam');
+      let cleanPhone = '';
+      let cleanEmail = '';
+
+      if (authMethod === 'phone_otp') {
+        cleanPhone = phoneNumber.trim().replace(/\s+/g, '');
+        cleanEmail = userEmailInput.trim().toLowerCase();
+      } else if (authMethod === 'gmail_otp') {
+        cleanEmail = gmailAddress.trim().toLowerCase();
+        cleanPhone = userPhoneInput.trim().replace(/\s+/g, '');
+      }
+
+      // Query Firebase for existing member by phone or email
+      const existing = await findMemberInFirebase({
+        phone: cleanPhone || undefined,
+        email: cleanEmail || undefined
+      });
+
+      const resolvedPhone = cleanPhone || existing?.phone || '';
+      const resolvedEmail = cleanEmail || existing?.email || '';
+      const resolvedName = fullNameInput.trim() || existing?.fullName || (cleanPhone ? `Hội Viên ${cleanPhone.slice(-4)}` : (cleanEmail ? cleanEmail.split('@')[0] : 'Hội Viên'));
+      const resolvedTier = existing?.membershipTier || selectedTier;
+      const memberCode = existing?.membershipCode || `TS-${Math.floor(1000 + Math.random() * 9000)}`;
+      const resolvedGender = genderInput || existing?.gender || (inferGenderFromName(resolvedName) || 'Nam');
+      const uid = existing?.uid || `mem_${Date.now()}`;
 
       const memberUser: MemberUser = {
-        id: 'mem_' + Date.now(),
-        createdAt: now.toISOString(),
-        fullName: nameVal,
-        email: emailVal,
-        phone: phoneVal,
+        id: uid,
+        uid: uid,
+        createdAt: existing?.joinedDate ? new Date(existing.joinedDate).toISOString() : now.toISOString(),
+        fullName: resolvedName,
+        email: resolvedEmail,
+        phone: resolvedPhone,
         memberCode,
-        membershipTier: selectedTier,
-        startDate: now.toISOString().split('T')[0],
-        expiryDate: expiry.toISOString().split('T')[0],
-        status: 'Active',
+        membershipCode: memberCode,
+        membershipTier: resolvedTier,
+        startDate: existing?.joinedDate || now.toISOString().split('T')[0],
+        expiryDate: existing?.expiryDate || expiry.toISOString().split('T')[0],
+        status: existing?.status || 'Active',
         gender: resolvedGender
       };
 
@@ -171,61 +209,96 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         membershipCode: memberUser.memberCode,
         authProvider: authMethod === 'gmail_otp' ? 'email_otp' : authMethod,
         joinedDate: memberUser.startDate,
-        expiryDate: memberUser.expiryDate
+        expiryDate: memberUser.expiryDate,
+        gender: memberUser.gender,
+        status: memberUser.status
       });
 
       onAuthSuccess(memberUser);
       onClose();
     } catch (err: any) {
-      console.error(err);
+      console.error('OTP login error:', err);
       setErrorMsg(isVi ? 'Có lỗi khi xác thực, vui lòng thử lại.' : 'Verification error, please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Google 1-Click Fast Sign-In
+  // Google 1-Click Fast Sign-In with real Firebase Auth & Firestore sync
   const handleGoogleSignIn = async () => {
     setLoading(true);
     setErrorMsg('');
     try {
-      // Simulate/Authenticate Google User
-      setTimeout(async () => {
-        const now = new Date();
-        const expiry = new Date(now.getTime() + 180 * 24 * 60 * 60 * 1000);
-        const memberCode = `TS-${Math.floor(1000 + Math.random() * 9000)}`;
+      const result = await signInWithPopup(auth, googleProvider);
+      const gUser = result.user;
+      const realEmail = (gUser.email || '').trim().toLowerCase();
+      const realName = gUser.displayName || (realEmail ? realEmail.split('@')[0] : 'Hội Viên Google');
+      const realUid = gUser.uid;
+      const realPhone = (gUser.phoneNumber || '').trim();
 
-        const googleUser: MemberUser = {
-          id: 'google_' + Date.now(),
-          createdAt: now.toISOString(),
-          fullName: 'Hội Viên Google',
-          email: 'hoi-vien@gmail.com',
-          phone: '0946293593',
-          memberCode,
-          membershipTier: 'VIP Platinum',
-          startDate: now.toISOString().split('T')[0],
-          expiryDate: expiry.toISOString().split('T')[0],
-          status: 'Active'
-        };
+      // Check if this member already exists in Firebase Firestore
+      const existing = await findMemberInFirebase({
+        uid: realUid,
+        email: realEmail,
+        phone: realPhone
+      });
 
-        await saveOrUpdateMemberInFirebase({
-          uid: googleUser.id,
-          fullName: googleUser.fullName,
-          phone: googleUser.phone,
-          email: googleUser.email,
-          membershipTier: googleUser.membershipTier,
-          membershipCode: googleUser.memberCode,
-          authProvider: 'google',
-          joinedDate: googleUser.startDate,
-          expiryDate: googleUser.expiryDate
-        });
+      const now = new Date();
+      const expiry = new Date(now.getTime() + 180 * 24 * 60 * 60 * 1000);
+      const memberCode = existing?.membershipCode || `TS-${Math.floor(1000 + Math.random() * 9000)}`;
 
-        onAuthSuccess(googleUser);
-        onClose();
-        setLoading(false);
-      }, 700);
+      const resolvedPhone = realPhone || existing?.phone || '';
+      const resolvedEmail = realEmail || existing?.email || '';
+      const resolvedName = existing?.fullName || realName;
+      const resolvedTier = existing?.membershipTier || 'VIP Platinum';
+      const resolvedGender = existing?.gender || (inferGenderFromName(resolvedName) || 'Nam');
+
+      const memberUser: MemberUser = {
+        id: realUid,
+        uid: realUid,
+        createdAt: existing?.joinedDate ? new Date(existing.joinedDate).toISOString() : now.toISOString(),
+        fullName: resolvedName,
+        email: resolvedEmail,
+        phone: resolvedPhone,
+        memberCode: memberCode,
+        membershipCode: memberCode,
+        membershipTier: resolvedTier,
+        startDate: existing?.joinedDate || now.toISOString().split('T')[0],
+        expiryDate: existing?.expiryDate || expiry.toISOString().split('T')[0],
+        status: existing?.status || 'Active',
+        gender: resolvedGender
+      };
+
+      // Save or update directly in Firebase Firestore 'members' collection
+      await saveOrUpdateMemberInFirebase({
+        uid: realUid,
+        fullName: memberUser.fullName,
+        phone: memberUser.phone,
+        email: memberUser.email,
+        membershipTier: memberUser.membershipTier,
+        membershipCode: memberUser.memberCode,
+        authProvider: 'google',
+        joinedDate: memberUser.startDate,
+        expiryDate: memberUser.expiryDate,
+        gender: memberUser.gender,
+        status: memberUser.status
+      });
+
+      onAuthSuccess(memberUser);
+      onClose();
     } catch (err: any) {
-      setErrorMsg(isVi ? 'Đăng nhập Google thất bại.' : 'Google Sign-in failed.');
+      console.error('Google sign-in error:', err);
+      if (err.code === 'auth/popup-closed-by-user') {
+        setErrorMsg(isVi ? 'Bạn đã đóng cửa sổ đăng nhập Google.' : 'Google sign-in popup closed.');
+      } else if (err.code === 'auth/cancelled-popup-request') {
+        setErrorMsg(isVi ? 'Yêu cầu đăng nhập đã bị hủy.' : 'Login request cancelled.');
+      } else if (err.code === 'auth/unauthorized-domain' || err.message?.includes('unauthorized-domain')) {
+        setErrorMsg(isVi ? 'Tên miền chưa được cấp quyền Google Auth. Bạn có thể sử dụng Gmail OTP hoặc Số điện thoại để đăng nhập ngay!' : 'Domain unauthorized for Google Auth. Please use Gmail OTP or Phone OTP to sign in!');
+        setAuthMethod('gmail_otp');
+      } else {
+        setErrorMsg(isVi ? `Đăng nhập Google không thành công: ${err.message || 'Lỗi mạng'}` : `Google Sign-in failed: ${err.message || 'Network error'}`);
+      }
+    } finally {
       setLoading(false);
     }
   };
@@ -235,6 +308,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     e.preventDefault();
     setLoading(true);
     setErrorMsg('');
+
+    const passCheck = validatePassword(loginPassword);
+    if (!passCheck.isValid) {
+      setErrorMsg(passCheck.errorMessage || (isVi ? 'Mật khẩu phải tối thiểu 8 ký tự, có chữ hoa, thường và ký tự đặc biệt.' : 'Password must be at least 8 chars, with uppercase, lowercase, and special characters.'));
+      setLoading(false);
+      return;
+    }
 
     try {
       const res = await fetch('/api/auth/login', {
@@ -250,6 +330,20 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         if (!data.member.gender) {
           data.member.gender = inferGenderFromName(data.member.fullName) || 'Nam';
         }
+        // Also save to Firebase Firestore
+        await saveOrUpdateMemberInFirebase({
+          uid: data.member.id,
+          fullName: data.member.fullName,
+          phone: data.member.phone,
+          email: data.member.email,
+          membershipTier: data.member.membershipTier,
+          membershipCode: data.member.memberCode,
+          authProvider: 'password',
+          joinedDate: data.member.startDate,
+          expiryDate: data.member.expiryDate,
+          gender: data.member.gender,
+          status: data.member.status
+        });
         onAuthSuccess(data.member);
       }
       onClose();
@@ -265,12 +359,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs overflow-y-auto animate-fadeIn">
-      <div className="relative w-full max-w-md max-h-[95vh] bg-white dark:bg-[#1a1a1a] rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-y-auto my-auto transition-all">
+    <div 
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs overflow-y-auto animate-fadeIn"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div 
+        className="relative w-full max-w-md max-h-[90vh] flex flex-col bg-white dark:bg-[#1a1a1a] rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 my-auto transition-all overflow-hidden z-[10000]"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Header */}
-        <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/80 p-6 text-white border-b-2 border-brand-orange relative">
+        <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/80 p-6 text-white border-b-2 border-brand-orange relative shrink-0">
           <button 
+            type="button"
             onClick={onClose}
             className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
             aria-label="Close"
@@ -295,10 +398,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </div>
 
         {/* Method Switcher Tabs */}
-        <div className="flex border-b border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-black/20 text-xs font-bold uppercase tracking-wider">
+        <div className="flex border-b border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-black/20 text-xs font-bold uppercase tracking-wider shrink-0">
           <button
             type="button"
-            onClick={() => { setAuthMethod('phone_otp'); setOtpSent(false); setErrorMsg(''); }}
+            onClick={() => { setAuthMethod('phone_otp'); setOtpSent(false); setErrorMsg(''); setSuccessNotice(''); }}
             className={`flex-1 py-3 px-2 flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
               authMethod === 'phone_otp'
                 ? 'text-brand-orange border-b-2 border-brand-orange bg-white dark:bg-[#1a1a1a]'
@@ -311,7 +414,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           <button
             type="button"
-            onClick={() => { setAuthMethod('gmail_otp'); setOtpSent(false); setErrorMsg(''); }}
+            onClick={() => { setAuthMethod('gmail_otp'); setOtpSent(false); setErrorMsg(''); setSuccessNotice(''); }}
             className={`flex-1 py-3 px-2 flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
               authMethod === 'gmail_otp'
                 ? 'text-brand-orange border-b-2 border-brand-orange bg-white dark:bg-[#1a1a1a]'
@@ -324,7 +427,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           <button
             type="button"
-            onClick={() => { setAuthMethod('password'); setOtpSent(false); setErrorMsg(''); }}
+            onClick={() => { setAuthMethod('password'); setOtpSent(false); setErrorMsg(''); setSuccessNotice(''); }}
             className={`flex-1 py-3 px-2 flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
               authMethod === 'password'
                 ? 'text-brand-orange border-b-2 border-brand-orange bg-white dark:bg-[#1a1a1a]'
@@ -337,7 +440,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </div>
 
         {/* Form Body */}
-        <div className="p-6 space-y-4">
+        <div className="p-6 space-y-4 overflow-y-auto grow">
           
           {errorMsg && (
             <div className="p-3 bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-xs rounded-xl font-medium">
@@ -421,6 +524,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                         placeholder={isVi ? 'Ví dụ: Nguyễn Văn An' : 'e.g. John Doe'}
                         value={fullNameInput}
                         onChange={e => setFullNameInput(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-black/30 border border-slate-300 dark:border-white/10 rounded-xl text-xs focus:ring-2 focus:ring-brand-orange outline-hidden"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      {isVi ? 'Email liên hệ (tùy chọn)' : 'Contact Email (optional)'}
+                    </label>
+                    <div className="relative">
+                      <Mail size={16} className="absolute left-3.5 top-3.5 text-slate-400" />
+                      <input
+                        type="email"
+                        placeholder="vidu@gmail.com"
+                        value={userEmailInput}
+                        onChange={e => setUserEmailInput(e.target.value)}
                         className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-black/30 border border-slate-300 dark:border-white/10 rounded-xl text-xs focus:ring-2 focus:ring-brand-orange outline-hidden"
                       />
                     </div>
@@ -542,6 +661,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      {isVi ? 'Số điện thoại liên hệ (tùy chọn)' : 'Contact Phone (optional)'}
+                    </label>
+                    <div className="relative">
+                      <Phone size={16} className="absolute left-3.5 top-3.5 text-slate-400" />
+                      <input
+                        type="tel"
+                        placeholder="0912 345 678"
+                        value={userPhoneInput}
+                        onChange={e => setUserPhoneInput(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-black/30 border border-slate-300 dark:border-white/10 rounded-xl text-xs focus:ring-2 focus:ring-brand-orange outline-hidden"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                       {isVi ? 'Giới tính (để tư vấn viên xưng hô chu đáo)' : 'Gender (for personalized consulting)'}
                     </label>
                     <div className="grid grid-cols-2 gap-2">
@@ -624,6 +759,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-black/30 border border-slate-300 dark:border-white/10 rounded-xl text-xs focus:ring-2 focus:ring-brand-orange outline-hidden"
                   />
                 </div>
+                <p className="mt-1.5 text-[10px] text-slate-500 dark:text-slate-400">
+                  {isVi 
+                    ? 'Quy chuẩn bảo mật: Tối thiểu 8 ký tự, gồm ít nhất 1 chữ hoa, 1 chữ thường và 1 ký tự đặc biệt.'
+                    : 'Security standard: Min 8 chars, at least 1 uppercase, 1 lowercase and 1 special char.'}
+                </p>
               </div>
 
               <button

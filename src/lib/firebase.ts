@@ -62,6 +62,7 @@ export async function saveRegistrationToFirebase(registrationData: {
   notes?: string;
   voucherCode: string;
 }) {
+  let docId = 'offline_' + Date.now();
   try {
     const colRef = collection(db, 'registrations');
     const docRef = await addDoc(colRef, {
@@ -69,12 +70,23 @@ export async function saveRegistrationToFirebase(registrationData: {
       createdAt: new Date().toISOString(),
       timestamp: serverTimestamp()
     });
-    return { success: true, id: docRef.id };
+    docId = docRef.id;
   } catch (error) {
     console.error('Error saving registration to Firestore:', error);
-    // Return gracefully so UI can still provide member voucher
-    return { success: true, id: 'offline_' + Date.now() };
   }
+
+  // Trigger backend email automation flow (Nodemailer dispatch & logging)
+  try {
+    await fetch('/api/trigger-registration-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(registrationData)
+    });
+  } catch (emailErr) {
+    console.warn('Could not trigger backend email automation endpoint:', emailErr);
+  }
+
+  return { success: true, id: docId };
 }
 
 export async function saveHealthAssessmentToFirebase(assessmentData: {
@@ -110,6 +122,21 @@ export async function saveHealthAssessmentToFirebase(assessmentData: {
   }
 }
 
+export interface FirebaseMemberRecord {
+  uid: string;
+  fullName: string;
+  phone?: string;
+  email?: string;
+  membershipTier: string;
+  membershipCode: string;
+  authProvider: 'phone_otp' | 'email_otp' | 'google' | 'password';
+  joinedDate: string;
+  expiryDate: string;
+  gender?: string;
+  status?: string;
+  updatedAt?: string;
+}
+
 export async function saveOrUpdateMemberInFirebase(memberData: {
   uid: string;
   fullName: string;
@@ -120,31 +147,185 @@ export async function saveOrUpdateMemberInFirebase(memberData: {
   authProvider: 'phone_otp' | 'email_otp' | 'google' | 'password';
   joinedDate: string;
   expiryDate: string;
+  gender?: string;
+  status?: string;
 }) {
   try {
     const docRef = doc(db, 'members', memberData.uid);
+    // Sanitize undefined fields
+    const sanitized: Record<string, any> = {};
+    for (const [k, v] of Object.entries(memberData)) {
+      if (v !== undefined) sanitized[k] = v;
+    }
     await setDoc(docRef, {
-      ...memberData,
+      ...sanitized,
+      status: sanitized.status || 'Active',
       updatedAt: new Date().toISOString(),
       timestamp: serverTimestamp()
     }, { merge: true });
     return { success: true };
   } catch (error) {
     console.error('Error saving member to Firestore:', error);
-    return { success: true };
+    return { success: false, error };
   }
 }
 
-export async function getMemberFromFirebase(uid: string) {
+export async function getMemberFromFirebase(uid: string): Promise<FirebaseMemberRecord | null> {
   try {
     const docRef = doc(db, 'members', uid);
     const snap = await getDoc(docRef);
     if (snap.exists()) {
-      return snap.data();
+      return { uid: snap.id, ...snap.data() } as FirebaseMemberRecord;
     }
     return null;
   } catch (error) {
     console.error('Error getting member from Firestore:', error);
+    return null;
+  }
+}
+
+export async function findMemberInFirebase(identifier: {
+  uid?: string;
+  email?: string;
+  phone?: string;
+  memberCode?: string;
+}): Promise<FirebaseMemberRecord | null> {
+  try {
+    // 1. If UID provided, check members collection directly
+    if (identifier.uid) {
+      const direct = await getMemberFromFirebase(identifier.uid);
+      if (direct) return direct;
+    }
+
+    const membersCol = collection(db, 'members');
+
+    // 2. Query members collection by email
+    if (identifier.email && identifier.email.trim()) {
+      const cleanEmail = identifier.email.trim().toLowerCase();
+      const qEmail = query(membersCol, where('email', '==', cleanEmail), limit(1));
+      const snapEmail = await getDocs(qEmail);
+      if (!snapEmail.empty) {
+        const d = snapEmail.docs[0];
+        return { uid: d.id, ...d.data() } as FirebaseMemberRecord;
+      }
+    }
+
+    // 3. Query members collection by phone
+    if (identifier.phone && identifier.phone.trim()) {
+      const cleanPhone = identifier.phone.trim().replace(/\s+/g, '');
+      const qPhone = query(membersCol, where('phone', '==', cleanPhone), limit(1));
+      const snapPhone = await getDocs(qPhone);
+      if (!snapPhone.empty) {
+        const d = snapPhone.docs[0];
+        return { uid: d.id, ...d.data() } as FirebaseMemberRecord;
+      }
+    }
+
+    // 4. Query members collection by membershipCode
+    if (identifier.memberCode && identifier.memberCode.trim()) {
+      const qCode = query(membersCol, where('membershipCode', '==', identifier.memberCode.trim()), limit(1));
+      const snapCode = await getDocs(qCode);
+      if (!snapCode.empty) {
+        const d = snapCode.docs[0];
+        return { uid: d.id, ...d.data() } as FirebaseMemberRecord;
+      }
+    }
+
+    // 5. Look in customers CRM collection if not in members collection
+    const customersCol = collection(db, 'customers');
+    if (identifier.email && identifier.email.trim()) {
+      const cleanEmail = identifier.email.trim().toLowerCase();
+      const qCust = query(customersCol, where('email', '==', cleanEmail), limit(1));
+      const snapCust = await getDocs(qCust);
+      if (!snapCust.empty) {
+        const c = snapCust.docs[0].data();
+        return {
+          uid: snapCust.docs[0].id,
+          fullName: c.fullName || 'Hội Viên',
+          email: c.email || cleanEmail,
+          phone: c.phone || '',
+          membershipTier: c.packageInterested || 'VIP Platinum',
+          membershipCode: c.memberCode || `TS-${snapCust.docs[0].id.slice(-4)}`,
+          joinedDate: c.createdAt ? c.createdAt.split('T')[0] : new Date().toISOString().split('T')[0],
+          expiryDate: new Date(Date.now() + 180 * 86400000).toISOString().split('T')[0],
+          gender: c.gender || 'Nam',
+          status: 'Active',
+          authProvider: 'google'
+        };
+      }
+    }
+
+    if (identifier.phone && identifier.phone.trim()) {
+      const cleanPhone = identifier.phone.trim().replace(/\s+/g, '');
+      const qCustPhone = query(customersCol, where('phone', '==', cleanPhone), limit(1));
+      const snapCustPhone = await getDocs(qCustPhone);
+      if (!snapCustPhone.empty) {
+        const c = snapCustPhone.docs[0].data();
+        return {
+          uid: snapCustPhone.docs[0].id,
+          fullName: c.fullName || 'Hội Viên',
+          email: c.email || '',
+          phone: c.phone || cleanPhone,
+          membershipTier: c.packageInterested || 'VIP Platinum',
+          membershipCode: c.memberCode || `TS-${snapCustPhone.docs[0].id.slice(-4)}`,
+          joinedDate: c.createdAt ? c.createdAt.split('T')[0] : new Date().toISOString().split('T')[0],
+          expiryDate: new Date(Date.now() + 180 * 86400000).toISOString().split('T')[0],
+          gender: c.gender || 'Nam',
+          status: 'Active',
+          authProvider: 'phone_otp'
+        };
+      }
+    }
+
+    // 6. Look in registrations collection
+    const regsCol = collection(db, 'registrations');
+    if (identifier.email && identifier.email.trim()) {
+      const cleanEmail = identifier.email.trim().toLowerCase();
+      const qReg = query(regsCol, where('email', '==', cleanEmail), limit(1));
+      const snapReg = await getDocs(qReg);
+      if (!snapReg.empty) {
+        const r = snapReg.docs[0].data();
+        return {
+          uid: snapReg.docs[0].id,
+          fullName: r.fullName || 'Hội Viên',
+          email: r.email || cleanEmail,
+          phone: r.phone || '',
+          membershipTier: r.packageType || 'VIP Platinum',
+          membershipCode: r.voucherCode || `TS-${Math.floor(1000 + Math.random() * 9000)}`,
+          joinedDate: r.createdAt ? r.createdAt.split('T')[0] : new Date().toISOString().split('T')[0],
+          expiryDate: new Date(Date.now() + 180 * 86400000).toISOString().split('T')[0],
+          gender: 'Nam',
+          status: 'Active',
+          authProvider: 'email_otp'
+        };
+      }
+    }
+
+    if (identifier.phone && identifier.phone.trim()) {
+      const cleanPhone = identifier.phone.trim().replace(/\s+/g, '');
+      const qRegPhone = query(regsCol, where('phone', '==', cleanPhone), limit(1));
+      const snapRegPhone = await getDocs(qRegPhone);
+      if (!snapRegPhone.empty) {
+        const r = snapRegPhone.docs[0].data();
+        return {
+          uid: snapRegPhone.docs[0].id,
+          fullName: r.fullName || 'Hội Viên',
+          email: r.email || '',
+          phone: r.phone || cleanPhone,
+          membershipTier: r.packageType || 'VIP Platinum',
+          membershipCode: r.voucherCode || `TS-${Math.floor(1000 + Math.random() * 9000)}`,
+          joinedDate: r.createdAt ? r.createdAt.split('T')[0] : new Date().toISOString().split('T')[0],
+          expiryDate: new Date(Date.now() + 180 * 86400000).toISOString().split('T')[0],
+          gender: 'Nam',
+          status: 'Active',
+          authProvider: 'phone_otp'
+        };
+      }
+    }
+
+    return null;
+  } catch (err) {
+    console.warn('Error querying member in Firebase:', err);
     return null;
   }
 }
@@ -264,38 +445,86 @@ export async function deleteWorkoutLogInFirebase(id: string) {
 }
 
 // ================= ADMIN & RBAC SERVICES =================
+export const OAUTH_ADMIN_CONFIGS = {
+  SYSADMIN: {
+    email: 'ducnguyen06112002@gmail.com',
+    role: 'super_admin' as const,
+    roleTitle: 'SysAdmin - Quản trị toàn quyền hệ thống',
+    fullName: 'Đức Nguyễn (SysAdmin)',
+    permissions: ['all', 'manage_members', 'manage_packages', 'manage_promotions', 'manage_email_flows', 'manage_admins', 'view_reports', 'view_revenue'],
+    authType: 'oauth'
+  },
+  MANAGER: {
+    email: 'ducnh.hindu@gmail.com',
+    role: 'manager' as const,
+    roleTitle: 'Ban Quản Lý - Quản lý vận hành chi nhánh',
+    fullName: 'Ban Quản Lý The Shine',
+    permissions: ['manage_members', 'manage_packages', 'manage_promotions', 'manage_email_flows', 'view_reports'],
+    authType: 'oauth'
+  },
+  MARKETING: {
+    email: 'ducnguyen.526102090574@st.ueh.edu.vn',
+    role: 'marketing' as const,
+    roleTitle: 'Trưởng bộ phận Marketing & CRM',
+    fullName: 'Trưởng bộ phận Marketing & CRM',
+    permissions: ['manage_members', 'manage_promotions', 'manage_email_flows'],
+    authType: 'oauth'
+  }
+} as const;
+
+export const DEFAULT_PASSWORD_ADMIN = {
+  email: 'admin@theshinefitness.vn',
+  password: 'Admin@123',
+  role: 'manager' as const,
+  roleTitle: 'Tài khoản Quản lý Mặc định',
+  fullName: 'Ban Quản Lý The Shine (Mặc định)',
+  permissions: ['manage_members', 'manage_packages', 'manage_promotions', 'manage_email_flows'],
+  authType: 'password'
+} as const;
+
 export const DEFAULT_ADMINS: AdminUser[] = [
   {
-    uid: 'admin_ducnguyen',
+    uid: 'admin_sysadmin_ducnguyen',
     email: 'ducnguyen06112002@gmail.com',
-    fullName: 'Đức Nguyễn (Super Admin)',
+    fullName: 'Đức Nguyễn (SysAdmin)',
     role: 'super_admin',
-    roleTitle: 'Chủ cơ sở & Quản trị cấp cao',
+    roleTitle: 'SysAdmin - Quản trị toàn quyền hệ thống',
     phone: '0946 293 593',
-    permissions: ['all', 'manage_members', 'manage_packages', 'manage_promotions', 'manage_email_flows', 'manage_admins'],
+    permissions: ['all', 'manage_members', 'manage_packages', 'manage_promotions', 'manage_email_flows', 'manage_admins', 'view_reports', 'view_revenue'],
     createdAt: '2025-01-01T00:00:00.000Z',
     lastLogin: new Date().toISOString()
   },
   {
-    uid: 'admin_theshine_manager',
-    email: 'admin@theshinefitness.vn',
-    fullName: 'Ban Quản Lý The Shine Tân Bình',
+    uid: 'admin_ban_quan_ly',
+    email: 'ducnh.hindu@gmail.com',
+    fullName: 'Ban Quản Lý The Shine',
     role: 'manager',
-    roleTitle: 'Quản lý vận hành chi nhánh',
+    roleTitle: 'Ban Quản Lý - Quản lý vận hành chi nhánh',
     phone: '0946 293 593',
-    permissions: ['manage_members', 'manage_packages', 'manage_promotions', 'manage_email_flows'],
+    permissions: ['manage_members', 'manage_packages', 'manage_promotions', 'manage_email_flows', 'view_reports'],
     createdAt: '2025-01-15T00:00:00.000Z',
     lastLogin: new Date().toISOString()
   },
   {
-    uid: 'admin_marketing_lead',
-    email: 'marketing@theshinefitness.vn',
-    fullName: 'Trưởng nhóm Marketing & CRM',
+    uid: 'admin_marketing_crm',
+    email: 'ducnguyen.526102090574@st.ueh.edu.vn',
+    fullName: 'Trưởng bộ phận Marketing & CRM',
     role: 'marketing',
-    roleTitle: 'Chuyên viên Tiếp thị số & Email Flow',
+    roleTitle: 'Trưởng bộ phận Marketing & CRM',
     phone: '0946 293 593',
     permissions: ['manage_members', 'manage_promotions', 'manage_email_flows'],
     createdAt: '2025-02-01T00:00:00.000Z',
+    lastLogin: new Date().toISOString()
+  },
+  {
+    uid: 'admin_theshine_default',
+    email: 'admin@theshinefitness.vn',
+    fullName: 'Ban Quản Lý The Shine (Mặc định)',
+    role: 'manager',
+    roleTitle: 'Tài khoản Quản lý Mặc định',
+    phone: '0946 293 593',
+    permissions: ['manage_members', 'manage_packages', 'manage_promotions', 'manage_email_flows'],
+    createdAt: '2025-01-01T00:00:00.000Z',
     lastLogin: new Date().toISOString()
   }
 ];
@@ -314,11 +543,18 @@ export async function getAdminUsersFromFirebase(): Promise<AdminUser[]> {
       }
       return DEFAULT_ADMINS;
     }
-    const admins: AdminUser[] = [];
+    const adminsMap = new Map<string, AdminUser>();
+    // First fill with DEFAULT_ADMINS to guarantee all 4 official accounts exist
+    DEFAULT_ADMINS.forEach(a => adminsMap.set(a.email.toLowerCase(), a));
+    
+    // Merge from Firestore
     snap.forEach(docSnap => {
-      admins.push({ uid: docSnap.id, ...docSnap.data() } as AdminUser);
+      const data = docSnap.data() as AdminUser;
+      if (data && data.email) {
+        adminsMap.set(data.email.toLowerCase(), { uid: docSnap.id, ...data });
+      }
     });
-    return admins;
+    return Array.from(adminsMap.values());
   } catch (error) {
     console.error('Error fetching admins from Firestore:', error);
     return DEFAULT_ADMINS;
@@ -343,6 +579,108 @@ export async function saveAdminUserToFirebase(admin: AdminUser): Promise<boolean
 // ================= GYM PACKAGES SERVICES (SYNCED FROM THESHINEFITNESS EXCEL DATA) =================
 export const DEFAULT_PACKAGES: GymPackage[] = [
   {
+    id: 'pkg_shine349',
+    code: 'SHINE349',
+    name: 'Gói Bứt Phá Năng Lượng (Gym & Boxing)',
+    nameEn: 'Energy Boost Gym & Boxing Pass',
+    category: 'gym',
+    price: 349000,
+    originalPrice: 549000,
+    durationMonths: 1,
+    durationLabel: '1 Tháng',
+    benefits: [
+      'Áp dụng trọn vẹn cho cả 2 bộ môn Gym & Boxing',
+      'HLV hỗ trợ 1:1 kỹ thuật và set up máy trong những ngày đầu',
+      'Hỗ trợ xuyên suốt kỹ thuật tập luyện và cách dùng máy',
+      'Tặng 7 ngày tập thử miễn phí trải nghiệm toàn bộ tiện ích',
+      'Đóng theo tháng linh hoạt (349.000 VNĐ / tháng)'
+    ],
+    isPopular: true,
+    isActive: true,
+    badge: 'Ưu đãi Fanpage (349k/Tháng)',
+    notes: 'Gói ưu đãi từ Fanpage Facebook thu hút lượt đăng ký lớn nhất',
+    memberCount: 312,
+    totalRevenue: 108888000,
+    ptSessionsIncluded: 1,
+    extraServices: 'Gym & Boxing'
+  },
+  {
+    id: 'pkg_yoga549',
+    code: 'YOGA549',
+    name: 'Gói Thân Tâm An Lạc (Yoga Chuyên Sâu)',
+    nameEn: 'Deep Mindful Yoga Pass',
+    category: 'all_inclusive',
+    price: 549000,
+    originalPrice: 700000,
+    durationMonths: 1,
+    durationLabel: '1 Tháng',
+    benefits: [
+      'Tham gia các lớp Yoga chuyên sâu theo lịch tập hàng tuần',
+      'Giáo viên hướng dẫn tận tâm, chỉnh sửa tư thế chu đáo',
+      'Đóng tiền theo từng tháng tự do, không bắt buộc hợp đồng dài hạn',
+      'Phòng studio Yoga thoáng mát, thảm tập và đạo cụ đầy đủ',
+      'Tủ đồ locker an toàn, phòng tắm nóng lạnh & gửi xe miễn phí'
+    ],
+    isPopular: false,
+    isActive: true,
+    badge: 'Yoga Chuyên Sâu (549k)',
+    notes: 'Gói dành cho học viên đam mê Yoga Master và tĩnh tâm',
+    memberCount: 198,
+    totalRevenue: 108702000,
+    ptSessionsIncluded: 0,
+    extraServices: 'Yoga & Locker 5 sao'
+  },
+  {
+    id: 'pkg_allin699',
+    code: 'ALLIN699',
+    name: 'Gói Đỉnh Cao Thể Lực (All-In-One Yoga & Gym)',
+    nameEn: 'All-In-One Ultimate Fitness Membership',
+    category: 'all_inclusive',
+    price: 699000,
+    originalPrice: 950000,
+    durationMonths: 1,
+    durationLabel: '1 Tháng',
+    benefits: [
+      'Không giới hạn các lớp Yoga theo khung giờ cùng Master Yoga',
+      'Toàn bộ quyền lợi tập Gym & Boxing không giới hạn khung giờ',
+      'Tặng 02 buổi tập riêng 1:1 cùng Huấn luyện viên cá nhân (PT)',
+      'Giảm thêm 20% khi xuất trình thẻ Học sinh - Sinh viên (HSSV)',
+      'Hỗ trợ trả góp 0% lãi suất qua thẻ tín dụng'
+    ],
+    isPopular: true,
+    isActive: true,
+    badge: 'All-In-One VIP (699k)',
+    notes: 'Gói VIP toàn năng đầy đủ tiện ích nhất trên website',
+    memberCount: 224,
+    totalRevenue: 156576000,
+    ptSessionsIncluded: 2,
+    extraServices: 'Gym, Yoga & PT 1:1'
+  },
+  {
+    id: 'pkg_daypass',
+    code: 'DAYPASS',
+    name: 'Vé Ngày Day Pass (Trải Nghiệm Tự Do)',
+    nameEn: 'Single Day Pass',
+    category: 'gym',
+    price: 100000,
+    originalPrice: 150000,
+    durationMonths: 0,
+    durationLabel: '1 Ngày',
+    benefits: [
+      'Trải nghiệm tự do máy Gym, Cardio, Boxing & Tủ locker trọn ngày',
+      'Sử dụng phòng tắm nóng lạnh và máy sấy tóc',
+      'Thích hợp cho khách vãng lai hoặc trải nghiệm thử 1 ngày'
+    ],
+    isPopular: false,
+    isActive: true,
+    badge: 'Vé Ngày 100k',
+    notes: 'Vé trải nghiệm 1 ngày dành cho khách vãng lai',
+    memberCount: 420,
+    totalRevenue: 42000000,
+    ptSessionsIncluded: 0,
+    extraServices: 'Gym & Locker Day Pass'
+  },
+  {
     id: 'pkg_12t',
     code: '12T',
     name: 'Thẻ Hội Viên 12 Tháng (1 Năm Toàn Diện)',
@@ -357,7 +695,7 @@ export const DEFAULT_PACKAGES: GymPackage[] = [
       'Sử dụng không giới hạn dàn máy Cardio & Tạ Technogym chuẩn Olympic',
       'Tham gia toàn bộ lớp Yoga Ấn Độ & GroupX sôi động hàng tuần',
       'Trải nghiệm tiện ích 5 sao: Hồ bơi nước ấm 4 mùa & Xông hơi đá muối Himalaya',
-      'Miễn phí đo chỉ số InBody phân tích cơ mỡ định kỳ hàng tháng',
+      'Miễn phí phân tích chỉ số thể trạng định kỳ hàng tháng',
       'Bao gồm tủ locker thông minh, phòng tắm nóng lạnh & gửi xe miễn phí'
     ],
     isPopular: true,
@@ -382,7 +720,7 @@ export const DEFAULT_PACKAGES: GymPackage[] = [
     benefits: [
       'Tập luyện không giới hạn khung giờ suốt 180 ngày',
       'Sử dụng khu tập gym hiện đại, khu chức năng Functional Training',
-      'Đo InBody định kỳ phân tích tiến độ thay đổi thể trạng',
+      'Kiểm tra thể trạng định kỳ phân tích tiến độ thay đổi thể hình',
       'Sử dụng phòng xông hơi thảo dược thư giãn cơ bắp sau buổi tập',
       'Tủ đồ cá nhân an toàn & bãi đỗ xe bảo vệ 24/7'
     ],
@@ -433,7 +771,7 @@ export const DEFAULT_PACKAGES: GymPackage[] = [
     benefits: [
       'Tập luyện 30 ngày tự do không ràng buộc hợp đồng dài hạn',
       'Sử dụng đầy đủ trang thiết bị gym và cardio cao cấp',
-      'Đo phân tích chỉ số InBody thể trạng ngày đầu tiên',
+      'Đánh giá phân tích chỉ số thể trạng ngày đầu tiên',
       'Phù hợp cho khách công tác hoặc trải nghiệm môi trường tập luyện'
     ],
     isPopular: false,
@@ -483,7 +821,7 @@ export const DEFAULT_PACKAGES: GymPackage[] = [
     durationLabel: 'Theo Gói',
     benefits: [
       'Huấn luyện viên cá nhân theo sát 1 kèm 1 trong suốt quá trình tập luyện',
-      'Đánh giá chỉ số InBody và tư vấn lộ trình dinh dưỡng cá nhân hóa',
+      'Đánh giá chỉ số thể trạng và tư vấn lộ trình dinh dưỡng cá nhân hóa',
       'Cam kết đạt được mục tiêu thay đổi hình thể (tăng cơ, giảm mỡ, cải thiện bệnh lý)',
       'Thời gian tập luyện linh hoạt theo lịch trình của hội viên'
     ],
@@ -512,9 +850,23 @@ export async function getPackagesFromFirebase(): Promise<GymPackage[]> {
       return DEFAULT_PACKAGES;
     }
     const packages: GymPackage[] = [];
+    const existingIds = new Set<string>();
     snap.forEach(docSnap => {
+      existingIds.add(docSnap.id);
       packages.push({ id: docSnap.id, ...docSnap.data() } as GymPackage);
     });
+
+    // Ensure any new default packages from landing page are merged/seeded into Firestore
+    for (const pkg of DEFAULT_PACKAGES) {
+      if (!existingIds.has(pkg.id)) {
+        await setDoc(doc(db, 'packages', pkg.id), {
+          ...pkg,
+          timestamp: serverTimestamp()
+        });
+        packages.push(pkg);
+      }
+    }
+
     return packages;
   } catch (error) {
     console.error('Error getting packages from Firestore:', error);
@@ -549,6 +901,86 @@ export async function deletePackageFromFirebase(id: string): Promise<boolean> {
 
 // ================= PROMOTIONS & VOUCHERS SERVICES =================
 export const DEFAULT_PROMOTIONS: PromotionCampaign[] = [
+  {
+    id: 'promo_shine349',
+    code: 'SHINE349',
+    title: 'Gói Ưu Đãi Fanpage Gym & Boxing 349.000 VNĐ/Tháng',
+    description: 'Ưu đãi đặc biệt giảm 36% (từ 549k xuống 349k/tháng) dành cho khách hàng tìm hiểu qua Fanpage.',
+    discountType: 'fixed_amount',
+    discountValue: 200000,
+    minOrderValue: 349000,
+    startDate: '2025-01-01',
+    endDate: '2025-12-31',
+    usageLimit: 500,
+    usageCount: 218,
+    applicablePackages: ['SHINE349', 'GYM_BOXING'],
+    isActive: true,
+    createdAt: '2025-01-01T00:00:00.000Z'
+  },
+  {
+    id: 'promo_yoga549',
+    code: 'YOGA549',
+    title: 'Ưu Đãi Yoga Chuyên Sâu 549.000 VNĐ/Tháng',
+    description: 'Giảm 21% (từ 700k xuống 549k/tháng) tập Yoga không giới hạn lớp cùng Master Yoga.',
+    discountType: 'fixed_amount',
+    discountValue: 151000,
+    minOrderValue: 549000,
+    startDate: '2025-01-01',
+    endDate: '2025-12-31',
+    usageLimit: 300,
+    usageCount: 114,
+    applicablePackages: ['YOGA549'],
+    isActive: true,
+    createdAt: '2025-01-01T00:00:00.000Z'
+  },
+  {
+    id: 'promo_allin699',
+    code: 'ALLIN699',
+    title: 'Ưu Đãi All-In-One Yoga & Gym 699.000 VNĐ/Tháng',
+    description: 'Giảm 26% (từ 950k xuống 699k) trọn gói Gym, Boxing, Yoga & tặng 2 buổi PT 1-kèm-1.',
+    discountType: 'fixed_amount',
+    discountValue: 251000,
+    minOrderValue: 699000,
+    startDate: '2025-01-01',
+    endDate: '2025-12-31',
+    usageLimit: 300,
+    usageCount: 156,
+    applicablePackages: ['ALLIN699'],
+    isActive: true,
+    createdAt: '2025-01-01T00:00:00.000Z'
+  },
+  {
+    id: 'promo_daypass100',
+    code: 'DAYPASS100',
+    title: 'Vé Ngày Day Pass 100.000 VNĐ Trải Nghiệm Tự Do',
+    description: 'Trải nghiệm full dịch vụ 1 ngày tại The Shine Fitness & Yoga Tân Bình.',
+    discountType: 'fixed_amount',
+    discountValue: 50000,
+    minOrderValue: 100000,
+    startDate: '2025-01-01',
+    endDate: '2025-12-31',
+    usageLimit: 1000,
+    usageCount: 420,
+    applicablePackages: ['DAYPASS'],
+    isActive: true,
+    createdAt: '2025-01-01T00:00:00.000Z'
+  },
+  {
+    id: 'promo_student20',
+    code: 'STUDENT20',
+    title: 'Ưu Đãi Giảm Trực Tiếp 20% Cho Học Sinh - Sinh Viên',
+    description: 'Áp dụng trực tiếp khi xuất trình thẻ học sinh, sinh viên còn thời hạn.',
+    discountType: 'percentage',
+    discountValue: 20,
+    minOrderValue: 300000,
+    startDate: '2025-01-01',
+    endDate: '2025-12-31',
+    usageLimit: 500,
+    usageCount: 185,
+    applicablePackages: ['ALL'],
+    isActive: true,
+    createdAt: '2025-01-01T00:00:00.000Z'
+  },
   {
     id: 'promo_shine50',
     code: 'SHINE50',
@@ -629,9 +1061,23 @@ export async function getPromotionsFromFirebase(): Promise<PromotionCampaign[]> 
       return DEFAULT_PROMOTIONS;
     }
     const promos: PromotionCampaign[] = [];
+    const existingIds = new Set<string>();
     snap.forEach(docSnap => {
+      existingIds.add(docSnap.id);
       promos.push({ id: docSnap.id, ...docSnap.data() } as PromotionCampaign);
     });
+
+    // Ensure any new default promotions from landing page are merged/seeded into Firestore
+    for (const promo of DEFAULT_PROMOTIONS) {
+      if (!existingIds.has(promo.id)) {
+        await setDoc(doc(db, 'promotions', promo.id), {
+          ...promo,
+          timestamp: serverTimestamp()
+        });
+        promos.push(promo);
+      }
+    }
+
     return promos;
   } catch (error) {
     console.error('Error getting promotions from Firestore:', error);
@@ -716,10 +1162,10 @@ export const DEFAULT_EMAIL_FLOWS: EmailMarketingFlow[] = [
       {
         id: 'step_5',
         type: 'email',
-        title: 'Email 2: Nhắc hẹn & Tặng buổi tư vấn InBody cùng PT',
+        title: 'Email 2: Nhắc hẹn & Tặng buổi tư vấn thể trạng cùng PT',
         subtitle: 'Gửi nếu khách chưa đến sau 24h',
         config: {
-          emailSubject: '💪 {{customer_name}} ơi, HLV The Shine đang chờ bạn đến đo chỉ số cơ thể hôm nay!',
+          emailSubject: '💪 {{customer_name}} ơi, HLV The Shine đang chờ bạn đến tư vấn thể trạng hôm nay!',
           emailPreheader: 'Nhận phân tích mỡ thừa và lịch tập chuẩn cùng HLV chuyên nghiệp hoàn toàn miễn phí',
           ctaText: 'Nhận Cuộc Gọi Tư Vấn Ngay',
           ctaLink: 'https://theshinefitness.vn/#contact'
@@ -1050,8 +1496,8 @@ export async function getAllCustomersUnified(): Promise<CustomerRecord[]> {
             tdee: d.tdee || 2000,
             goal: d.goal || 'Tăng cơ giảm mỡ'
           };
-          if (!c.tags?.includes('Đã đo BMI/InBody')) {
-            c.tags = [...(c.tags || []), 'Đã đo BMI/InBody'];
+          if (!c.tags?.includes('Đã đánh giá thể trạng')) {
+            c.tags = [...(c.tags || []), 'Đã đánh giá thể trạng'];
           }
         }
       });
@@ -1167,14 +1613,22 @@ export async function createCustomerInFirebase(customer: Partial<CustomerRecord>
 export async function saveMemberProgressToFirebase(entry: MemberProgressEntry): Promise<boolean> {
   try {
     const docId = entry.id || `progress_${Date.now()}`;
+    // Strip out any undefined fields so Firestore doesn't reject the payload
+    const sanitizedEntry: Record<string, any> = {};
+    for (const [key, value] of Object.entries(entry)) {
+      if (value !== undefined) {
+        sanitizedEntry[key] = value;
+      }
+    }
+
     await setDoc(doc(db, 'member_progress', docId), {
-      ...entry,
+      ...sanitizedEntry,
       id: docId,
       timestamp: serverTimestamp()
     }, { merge: true });
     return true;
   } catch (error) {
-    console.error('Error saving member progress to Firestore:', error);
+    console.warn('Unable to persist member progress to Firestore (will use local cache):', error);
     return false;
   }
 }
@@ -1182,26 +1636,45 @@ export async function saveMemberProgressToFirebase(entry: MemberProgressEntry): 
 export async function getMemberProgressFromFirebase(userId: string, memberCode?: string): Promise<MemberProgressEntry[]> {
   try {
     const colRef = collection(db, 'member_progress');
-    // Query by userId or memberCode
-    const q = query(colRef, where('userId', '==', userId));
-    const snapshot = await getDocs(q);
     const results: MemberProgressEntry[] = [];
-    snapshot.forEach(docSnap => {
-      results.push({ id: docSnap.id, ...docSnap.data() } as MemberProgressEntry);
-    });
+    const seenIds = new Set<string>();
 
-    if (results.length === 0 && memberCode) {
-      const qCode = query(colRef, where('memberCode', '==', memberCode));
-      const snapCode = await getDocs(qCode);
-      snapCode.forEach(docSnap => {
-        results.push({ id: docSnap.id, ...docSnap.data() } as MemberProgressEntry);
-      });
+    // Query by userId if provided
+    if (userId) {
+      try {
+        const q = query(colRef, where('userId', '==', userId));
+        const snapshot = await getDocs(q);
+        snapshot.forEach(docSnap => {
+          if (!seenIds.has(docSnap.id)) {
+            seenIds.add(docSnap.id);
+            results.push({ id: docSnap.id, ...docSnap.data() } as MemberProgressEntry);
+          }
+        });
+      } catch (userErr) {
+        console.warn('Query by userId encountered an issue, trying memberCode fallback:', userErr);
+      }
+    }
+
+    // Also query by memberCode if available and needed
+    if (memberCode && (results.length === 0 || !userId)) {
+      try {
+        const qCode = query(colRef, where('memberCode', '==', memberCode));
+        const snapCode = await getDocs(qCode);
+        snapCode.forEach(docSnap => {
+          if (!seenIds.has(docSnap.id)) {
+            seenIds.add(docSnap.id);
+            results.push({ id: docSnap.id, ...docSnap.data() } as MemberProgressEntry);
+          }
+        });
+      } catch (codeErr) {
+        console.warn('Query by memberCode encountered an issue:', codeErr);
+      }
     }
 
     // Sort by date ascending
     return results.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   } catch (error) {
-    console.error('Error fetching member progress from Firestore:', error);
+    console.warn('Unable to fetch member progress from Firestore (falling back to local cache):', error);
     return [];
   }
 }

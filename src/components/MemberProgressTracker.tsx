@@ -16,11 +16,13 @@ import {
   Activity,
   Image as ImageIcon,
   ChevronRight,
-  RefreshCw
+  RefreshCw,
+  X
 } from 'lucide-react';
 import { MemberUser } from './AuthModal';
 import { Language } from '../translations';
 import { MemberProgressEntry } from '../types';
+import { safeStorage } from '../utils/storage';
 import { 
   getMemberProgressFromFirebase, 
   saveMemberProgressToFirebase, 
@@ -36,7 +38,21 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
   user,
   lang = 'vi'
 }) => {
-  const [entries, setEntries] = useState<MemberProgressEntry[]>([]);
+  const cacheKey = `theshine_progress_${user.id || user.memberCode || 'default'}`;
+
+  // Initial state loaded synchronously from safeStorage if available
+  const [entries, setEntries] = useState<MemberProgressEntry[]>(() => {
+    try {
+      const cached = safeStorage.getItem(cacheKey);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed)) {
+          return parsed.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        }
+      }
+    } catch (e) {}
+    return [];
+  });
   const [loading, setLoading] = useState<boolean>(true);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
   const [saving, setSaving] = useState<boolean>(false);
@@ -60,15 +76,27 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
     setTimeout(() => setToastMsg(null), 3500);
   };
 
-  // Load entries from Firestore
+  // Load entries from Firestore and synchronize with safeStorage
   const loadEntries = async () => {
     setLoading(true);
     try {
-      const data = await getMemberProgressFromFirebase(user.id, user.memberCode);
-      setEntries(data);
+      const remoteData = await getMemberProgressFromFirebase(user.id, user.memberCode);
+      if (remoteData && remoteData.length > 0) {
+        // Merge with any cached entries that might not yet be on remote
+        const mergedMap = new Map<string, MemberProgressEntry>();
+        entries.forEach(e => mergedMap.set(e.id, e));
+        remoteData.forEach(e => mergedMap.set(e.id, e));
+        const mergedList = Array.from(mergedMap.values()).sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
+        setEntries(mergedList);
+        safeStorage.setItem(cacheKey, JSON.stringify(mergedList));
+      } else if (entries.length > 0) {
+        // Sync local entries to Firestore in background if Firestore had no records
+        safeStorage.setItem(cacheKey, JSON.stringify(entries));
+      }
     } catch (err) {
-      console.error('Error loading progress entries:', err);
-      showToast(lang === 'vi' ? 'Lỗi khi tải dữ liệu tiến trình' : 'Error loading progress data');
+      console.warn('Error fetching progress entries:', err);
     } finally {
       setLoading(false);
     }
@@ -152,23 +180,29 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
         createdAt: new Date().toISOString()
       };
 
+      // Update state and safeStorage immediately for instant UI feedback
+      const updatedEntries = [...entries, newEntry].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      setEntries(updatedEntries);
+      safeStorage.setItem(cacheKey, JSON.stringify(updatedEntries));
+
+      setIsFormOpen(false);
+      setWeightKg('');
+      setBodyFatPct('');
+      setMuscleMassKg('');
+      setWaistCm('');
+      setNotes('');
+      setPhotoBase64(null);
+
+      // Attempt cloud synchronization
       const success = await saveMemberProgressToFirebase(newEntry);
       if (success) {
-        setEntries(prev => [...prev, newEntry].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()));
-        setIsFormOpen(false);
-        setWeightKg('');
-        setBodyFatPct('');
-        setMuscleMassKg('');
-        setWaistCm('');
-        setNotes('');
-        setPhotoBase64(null);
-        showToast(lang === 'vi' ? '✓ Đã ghi nhận tiến trình lên Firestore thành công!' : '✓ Progress entry saved to Firestore!');
+        showToast(lang === 'vi' ? '✓ Đã ghi nhận tiến trình lên Cloud Firestore!' : '✓ Progress entry saved to Cloud Firestore!');
       } else {
-        showToast(lang === 'vi' ? '❌ Không thể lưu vào Firestore' : '❌ Failed to save to Firestore');
+        showToast(lang === 'vi' ? '✓ Đã lưu tiến trình an toàn vào thiết bị!' : '✓ Progress saved locally!');
       }
     } catch (err) {
-      console.error(err);
-      showToast(lang === 'vi' ? '❌ Lỗi hệ thống' : '❌ System error');
+      console.warn('Error saving progress entry:', err);
+      showToast(lang === 'vi' ? '✓ Đã lưu tiến trình trên thiết bị!' : '✓ Saved locally!');
     } finally {
       setSaving(false);
     }
@@ -179,10 +213,15 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
     if (!window.confirm(lang === 'vi' ? 'Bạn có chắc chắn muốn xóa bản ghi này?' : 'Are you sure you want to delete this log?')) {
       return;
     }
+    const filtered = entries.filter(item => item.id !== id);
+    setEntries(filtered);
+    safeStorage.setItem(cacheKey, JSON.stringify(filtered));
+
     const ok = await deleteMemberProgressFromFirebase(id);
     if (ok) {
-      setEntries(prev => prev.filter(item => item.id !== id));
       showToast(lang === 'vi' ? '✓ Đã xóa bản ghi' : '✓ Log deleted');
+    } else {
+      showToast(lang === 'vi' ? '✓ Đã xóa bản ghi trên thiết bị' : '✓ Log removed from local storage');
     }
   };
 
@@ -517,17 +556,21 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
           <button
             type="button"
             onClick={() => setIsFormOpen(!isFormOpen)}
-            className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 transition-all flex items-center gap-1.5 cursor-pointer shadow-md shadow-orange-600/20 active:scale-95"
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-md active:scale-95 ${
+              isFormOpen 
+                ? 'bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-600' 
+                : 'bg-orange-600 hover:bg-orange-700 text-white shadow-orange-600/20'
+            }`}
           >
-            <Plus size={14} />
-            <span>{isFormOpen ? (lang === 'vi' ? 'Đóng Form' : 'Close') : (lang === 'vi' ? '+ Ghi Nhận Mới' : '+ Log Progress')}</span>
+            {isFormOpen ? <X size={14} /> : <Plus size={14} />}
+            <span>{isFormOpen ? (lang === 'vi' ? 'Đóng Form' : 'Close') : (lang === 'vi' ? 'Ghi Nhận Mới' : 'Log Progress')}</span>
           </button>
         </div>
       </div>
 
       {/* KPI Stats Summary */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
             {lang === 'vi' ? 'Cân Nặng Ban Đầu' : 'Starting Weight'}
           </span>
@@ -536,7 +579,7 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
             {lang === 'vi' ? 'Cân Nặng Hiện Tại' : 'Current Weight'}
           </span>
@@ -545,7 +588,7 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
             {lang === 'vi' ? 'Tổng Thay Đổi' : 'Total Change'}
           </span>
@@ -566,7 +609,7 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
             {lang === 'vi' ? 'Lần Cập Nhật' : 'Total Logs'}
           </span>
@@ -576,20 +619,20 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
         </div>
       </div>
 
-      {/* FORM: LOG NEW PROGRESS */}
+      {/* FORM: LOG NEW PROGRESS - COMPACT RESPONSIVE LAYOUT */}
       {isFormOpen && (
-        <form onSubmit={handleSubmit} className="p-6 rounded-3xl bg-white dark:bg-[#202020] border-2 border-orange-500/30 shadow-xl space-y-4 animate-fadeIn">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-white/10">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-5 rounded-3xl bg-white dark:bg-[#202020] border-2 border-orange-500/30 shadow-xl space-y-3.5 animate-fadeIn">
+          <div className="flex items-center justify-between pb-2.5 border-b border-slate-200 dark:border-white/10">
             <div className="flex items-center gap-2">
               <Scale size={18} className="text-orange-500" />
               <h4 className="text-sm font-bold text-slate-900 dark:text-white uppercase">
                 {lang === 'vi' ? 'Ghi Nhận Chỉ Số Tuần Này' : 'Log Weekly Metrics'}
               </h4>
             </div>
-            <span className="text-xs text-orange-500 font-semibold">* Yêu cầu bắt buộc</span>
+            <span className="text-[11px] text-orange-500 font-semibold">* Yêu cầu bắt buộc</span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
                 {lang === 'vi' ? 'Cân nặng (kg) *' : 'Weight (kg) *'}
@@ -601,7 +644,7 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
                 placeholder="Ví dụ: 68.5"
                 value={weightKg}
                 onChange={(e) => setWeightKg(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-white/15 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-white/15 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white outline-hidden focus:border-orange-500"
               />
             </div>
 
@@ -614,13 +657,13 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
                 required
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-white/15 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-white/15 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white outline-hidden focus:border-orange-500"
               />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                {lang === 'vi' ? '% Mỡ cơ thể (Tùy chọn)' : 'Body Fat % (Optional)'}
+                {lang === 'vi' ? '% Mỡ cơ thể' : 'Body Fat %'}
               </label>
               <input
                 type="number"
@@ -628,13 +671,13 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
                 placeholder="Ví dụ: 18.5"
                 value={bodyFatPct}
                 onChange={(e) => setBodyFatPct(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-white/15 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-white/15 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white outline-hidden focus:border-orange-500"
               />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                {lang === 'vi' ? 'Số đo vòng eo (cm)' : 'Waist circumference (cm)'}
+                {lang === 'vi' ? 'Vòng eo (cm)' : 'Waist (cm)'}
               </label>
               <input
                 type="number"
@@ -642,77 +685,79 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
                 placeholder="Ví dụ: 78"
                 value={waistCm}
                 onChange={(e) => setWaistCm(e.target.value)}
-                className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-white/15 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white outline-none focus:border-orange-500"
+                className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-white/15 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white outline-hidden focus:border-orange-500"
               />
             </div>
           </div>
 
-          {/* Photo Upload Section */}
-          <div className="space-y-2 pt-2">
-            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
-              {lang === 'vi' ? 'Hình ảnh tiến trình (Progress Photo)' : 'Progress Photo'}
-            </label>
-            
-            <div className="flex items-center gap-4">
-              <input
-                type="file"
-                accept="image/*"
-                ref={fileInputRef}
-                onChange={handlePhotoUpload}
-                className="hidden"
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+            {/* Photo Upload Section */}
+            <div className="space-y-1.5">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+                {lang === 'vi' ? 'Hình ảnh tiến trình' : 'Progress Photo'}
+              </label>
+              
+              <div className="flex items-center gap-3">
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  onChange={handlePhotoUpload}
+                  className="hidden"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={photoUploading}
+                  className="px-3.5 py-2 rounded-xl border border-dashed border-orange-500/50 bg-orange-500/5 hover:bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors"
+                >
+                  <Camera size={15} />
+                  <span>{photoUploading ? (lang === 'vi' ? 'Đang nén ảnh...' : 'Compressing...') : (lang === 'vi' ? 'Chọn hoặc chụp ảnh' : 'Upload photo')}</span>
+                </button>
+
+                {photoBase64 && (
+                  <div className="relative w-11 h-11 rounded-xl overflow-hidden border-2 border-orange-500 shrink-0 shadow-xs">
+                    <img src={photoBase64} alt="Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => setPhotoBase64(null)}
+                      className="absolute top-0 right-0 bg-rose-600 text-white p-0.5 rounded-bl text-[9px] cursor-pointer"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Notes */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                {lang === 'vi' ? 'Ghi chú tập luyện & cảm nhận' : 'Notes & Reflections'}
+              </label>
+              <textarea
+                rows={2}
+                placeholder={lang === 'vi' ? 'Ví dụ: Tuần này hoàn thành 4 buổi tập, cơ bắp săn chắc hơn...' : 'E.g. Completed 4 workouts this week, felt energized...'}
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-white/15 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white outline-hidden focus:border-orange-500"
               />
-
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={photoUploading}
-                className="px-4 py-2.5 rounded-xl border border-dashed border-orange-500/50 bg-orange-500/5 hover:bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors"
-              >
-                <Camera size={16} />
-                <span>{photoUploading ? (lang === 'vi' ? 'Đang nén ảnh...' : 'Compressing...') : (lang === 'vi' ? 'Chọn hoặc chụp ảnh' : 'Upload photo')}</span>
-              </button>
-
-              {photoBase64 && (
-                <div className="relative w-14 h-14 rounded-xl overflow-hidden border-2 border-orange-500 shrink-0">
-                  <img src={photoBase64} alt="Preview" className="w-full h-full object-cover" />
-                  <button
-                    type="button"
-                    onClick={() => setPhotoBase64(null)}
-                    className="absolute top-0 right-0 bg-rose-600 text-white p-0.5 rounded-bl text-[10px]"
-                  >
-                    ✕
-                  </button>
-                </div>
-              )}
             </div>
           </div>
 
-          {/* Notes */}
-          <div>
-            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-              {lang === 'vi' ? 'Ghi chú tập luyện & cảm nhận' : 'Notes & Reflections'}
-            </label>
-            <textarea
-              rows={2}
-              placeholder={lang === 'vi' ? 'Ví dụ: Tuần này hoàn thành 4 buổi tập, cơ bắp săn chắc hơn, ngủ sâu giấc...' : 'E.g. Completed 4 workouts this week, felt energized...'}
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 dark:border-white/15 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white outline-none focus:border-orange-500"
-            />
-          </div>
-
-          <div className="flex justify-end gap-2 pt-2">
+          <div className="flex justify-end gap-2 pt-1 border-t border-slate-200 dark:border-white/10">
             <button
               type="button"
               onClick={() => setIsFormOpen(false)}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-white/5 cursor-pointer"
+              className="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-white/5 cursor-pointer transition-colors"
             >
               {lang === 'vi' ? 'Hủy' : 'Cancel'}
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="px-5 py-2 rounded-xl text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 cursor-pointer shadow-md shadow-orange-600/20 disabled:opacity-50"
+              className="px-5 py-2 rounded-xl text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 cursor-pointer shadow-md shadow-orange-600/20 disabled:opacity-50 transition-colors"
             >
               {saving ? (lang === 'vi' ? 'Đang lưu...' : 'Saving...') : (lang === 'vi' ? 'Lưu Tiến Trình' : 'Save Log')}
             </button>
@@ -746,7 +791,7 @@ export const MemberProgressTracker: React.FC<MemberProgressTrackerProps> = ({
               {lang === 'vi' ? 'Bạn chưa có bản ghi tiến trình nào.' : 'No progress entries logged yet.'}
             </p>
             <p className="text-[11px] text-slate-500">
-              {lang === 'vi' ? 'Bấm "+ Ghi Nhận Mới" để lưu chỉ số cân nặng tuần này!' : 'Click "+ Log Progress" to add your first weight log!'}
+              {lang === 'vi' ? 'Bấm "Ghi Nhận Mới" để lưu chỉ số cân nặng tuần này!' : 'Click "Log Progress" to add your first weight log!'}
             </p>
           </div>
         ) : (

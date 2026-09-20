@@ -245,8 +245,16 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ lang }) => {
 
       {/* ARTICLE READER MODAL */}
       {activeArticle && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs overflow-y-auto animate-fadeIn">
-          <div className="relative w-full max-w-3xl bg-white dark:bg-[#1a1a1a] rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden my-6 max-h-[90vh] flex flex-col">
+        <div 
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs overflow-y-auto animate-fadeIn"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setActiveArticle(null);
+          }}
+        >
+          <div 
+            className="relative w-full max-w-3xl bg-white dark:bg-[#1a1a1a] rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden my-6 max-h-[90vh] flex flex-col z-[10000]"
+            onClick={(e) => e.stopPropagation()}
+          >
             
             {/* Modal Header */}
             <div className="relative aspect-16/9 sm:aspect-21/9 shrink-0 bg-slate-900">

@@ -117,7 +117,7 @@ export const HomePage: React.FC<Props> = ({ openRegistration, lang, t }) => {
                     {t.journey.a3_btn}
                   </button>
                   <a
-                    href="/khach-hang"
+                    href="/trai-nghiem"
                     className="px-6 py-4 rounded-full font-heading font-bold uppercase italic text-slate-800 dark:text-white hover:text-brand-orange dark:hover:text-brand-orange border border-slate-300 dark:border-white/20 hover:border-brand-orange transition-all flex items-center gap-2 text-sm"
                   >
                     {lang === 'vi' ? 'Khám Phá Sơ Đồ Phòng' : 'View Floor Plan'}

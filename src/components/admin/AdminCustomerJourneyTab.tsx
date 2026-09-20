@@ -315,18 +315,18 @@ export const AdminCustomerJourneyTab: React.FC<AdminCustomerJourneyTabProps> = (
       <div className={`p-5 rounded-2xl border flex flex-col lg:flex-row lg:items-center justify-between gap-4 ${cardBg}`}>
         <div>
           <div className="flex items-center space-x-2 mb-1.5">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20 flex items-center space-x-1">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20 flex items-center space-x-1 font-sans">
               <Compass className="w-3 h-3 mr-1" />
               <span>Mô Hình ACCSR · 12 Điểm Chạm Thực Tế</span>
             </span>
-            <span className={`text-xs font-semibold ${textSub}`}>
+            <span className={`text-xs font-semibold font-sans ${textSub}`}>
               Dữ liệu nghiên cứu The Shine Fitness & Yoga (154 Hoàng Hoa Thám)
             </span>
           </div>
-          <h2 className={`text-xl sm:text-2xl font-black ${textHeading}`}>
+          <h2 className={`text-xl sm:text-2xl font-heading font-black uppercase tracking-tight ${textHeading}`}>
             Hành Trình Chuyển Đổi Khách Hàng (Customer Journey)
           </h2>
-          <p className={`text-xs mt-1 max-w-3xl ${textSub}`}>
+          <p className={`text-xs mt-1 max-w-3xl font-sans ${textSub}`}>
             Bản đồ hành trình đa kênh từ lần đầu thấy quảng cáo 299K/tháng đến ngày gia hạn và giới thiệu bạn bè. 
             Theo dõi đường cảm xúc, gỡ bỏ 4 điểm đau cốt lõi và tối ưu hóa 3 khoảnh khắc quyết định (Moments of Truth).
           </p>
@@ -578,7 +578,7 @@ export const AdminCustomerJourneyTab: React.FC<AdminCustomerJourneyTabProps> = (
                       className="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white flex items-center space-x-1.5 transition-all shadow-xs"
                     >
                       <Activity className="w-3.5 h-3.5" />
-                      <span>Xem Báo Cáo InBody 270</span>
+                      <span>Xem Báo Cáo Thể Trạng</span>
                     </button>
                   )}
                   {selectedTouchpoint.n === 8 && (
@@ -751,7 +751,7 @@ export const AdminCustomerJourneyTab: React.FC<AdminCustomerJourneyTabProps> = (
                                     triggerToast(`Đã gửi cảnh báo mật độ Zalo cho ${cust.fullName}`);
                                   } else if (cust.computedStage === 'consideration') {
                                     onSendZaloIntervention(cust, 'inbody_invite');
-                                    triggerToast(`Đã gửi lịch hẹn đo InBody cho ${cust.fullName}`);
+                                    triggerToast(`Đã gửi lịch hẹn tư vấn thể trạng cho ${cust.fullName}`);
                                   } else {
                                     onSendZaloIntervention(cust, 'renewal_gift');
                                     triggerToast(`Đã gửi ưu đãi Early Bird cho ${cust.fullName}`);
@@ -903,7 +903,7 @@ export const AdminCustomerJourneyTab: React.FC<AdminCustomerJourneyTabProps> = (
             <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
               <h3 className={`text-base font-black ${textHeading}`}>
                 {activeSimulationModal === 'maps' && '⭐ Trải Nghiệm Đọc Review Google Maps Thực Tế'}
-                {activeSimulationModal === 'inbody' && '📊 Báo Cáo Đo InBody 270 Chuyên Dụng'}
+                {activeSimulationModal === 'inbody' && '📊 Báo Cáo Đánh Giá Thể Trạng Chuyên Dụng'}
                 {activeSimulationModal === 'zalo_density' && '💬 Cảnh Báo Zalo Mật Độ Từng Khu Thời Gian Thực'}
                 {activeSimulationModal === 'workout_plan' && '🏋️ Lộ Trình Tập Luyện 45 Phút Gợi Ý Cho Minh'}
               </h3>
@@ -962,7 +962,7 @@ export const AdminCustomerJourneyTab: React.FC<AdminCustomerJourneyTabProps> = (
                   </div>
                 </div>
                 <div className="p-3 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[11px]">
-                  🏆 <strong>Thành tựu 90 ngày của Tuấn:</strong> Điểm InBody tăng từ 54 lên 78 điểm. Đây là bằng chứng giữ chân hội viên tốt nhất.
+                  🏆 <strong>Thành tựu 90 ngày của Tuấn:</strong> Điểm đánh giá thể trạng tăng từ 54 lên 78 điểm. Đây là bằng chứng giữ chân hội viên tốt nhất.
                 </div>
               </div>
             )}

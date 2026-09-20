@@ -72,7 +72,7 @@ export function initCsvStorage() {
       'Premium (800k)',
       'Tăng cơ & Giảm mỡ',
       'Chiều 17:30 - 19:30',
-      'Muốn được đo InBody và tập thử 3 ngày',
+      'Muốn được tư vấn thể trạng và tập thử 3 ngày',
       'Đã liên hệ'
     ].map(escapeCsv).join(',') + '\n';
 
@@ -137,7 +137,7 @@ export function initCsvStorage() {
       'Nguyễn Văn An',
       '1',
       'Welcome Flow',
-      '[The Shine Fitness] Chào mừng bạn! Nhận Voucher 3 ngày tập thử & Đo InBody',
+      '[The Shine Fitness] Chào mừng bạn! Nhận Voucher 3 ngày tập thử & Tư vấn thể trạng',
       'Delivered'
     ].map(escapeCsv).join(',') + '\n';
 
@@ -148,7 +148,7 @@ export function initCsvStorage() {
       'Trần Thị Mai',
       '1',
       'Welcome Flow',
-      '[The Shine Fitness] Chào mừng bạn! Nhận Voucher 3 ngày tập thử & Đo InBody',
+      '[The Shine Fitness] Chào mừng bạn! Nhận Voucher 3 ngày tập thử & Tư vấn thể trạng',
       'Delivered'
     ].map(escapeCsv).join(',') + '\n';
 
@@ -257,7 +257,7 @@ export function addRegistration(data: Omit<RegistrationRecord, 'id' | 'createdAt
     recipientName: record.fullName,
     campaignStep: 1,
     campaignName: 'Welcome Lead Flow',
-    subject: `[The Shine Fitness] Chào mừng ${record.fullName}! Nhận Voucher 3 ngày tập thử & Buổi đo InBody miễn phí`
+    subject: `[The Shine Fitness] Chào mừng ${record.fullName}! Nhận Voucher 3 ngày tập thử & Buổi tư vấn thể trạng miễn phí`
   });
 
   return record;
@@ -467,9 +467,9 @@ export const EMAIL_MARKETING_FLOW = [
     trigger: 'Ngay khi điền form Đăng ký / Đăng ký Hội viên',
     timing: 'Tức thì (0 phút)',
     name: 'Thư Chào Mừng & Tặng Voucher Tập Thử',
-    subject: '[The Shine Fitness] Chào mừng bạn! Quà tặng Voucher 3 ngày tập thử & Đo InBody miễn phí',
+    subject: '[The Shine Fitness] Chào mừng bạn! Quà tặng Voucher 3 ngày tập thử & Tư vấn thể trạng miễn phí',
     badge: 'Kích hoạt tự động',
-    description: 'Xác nhận thông tin đăng ký, cấp mã Voucher tập thử 3 ngày tại 154 Hoàng Hoa Thám, tặng kèm buổi đo phân tích chỉ số cơ thể InBody cùng PT.',
+    description: 'Xác nhận thông tin đăng ký, cấp Voucher tập thử 3 ngày tại 154 Hoàng Hoa Thám, tặng kèm buổi phân tích chỉ số cơ thể cùng PT.',
     openRate: '88.4%',
     clickRate: '42.1%'
   },
@@ -517,8 +517,8 @@ export function getEmailTemplateHtml(step: number, recipientName: string = 'Quý
   if (step === 1) {
     bodyContent = `
       <div style="background-color: #fff7ed; border-left: 4px solid #f97316; padding: 16px; margin: 20px 0; border-radius: 4px;">
-        <h3 style="margin: 0 0 8px 0; color: #ea580c; font-size: 16px;">🎁 MÃ VOUCHER ĐẶC QUYỀN CỦA BẠN: <span style="background: #ea580c; color: #fff; padding: 4px 10px; border-radius: 4px; letter-spacing: 1px;">SHINE-TRIAL-FREE</span></h3>
-        <p style="margin: 0; color: #431407; font-size: 14px;">Quyền lợi: <strong>03 ngày trải nghiệm miễn phí 100%</strong> toàn bộ trang thiết bị tại The Shine Fitness + <strong>01 buổi đo InBody & tư vấn lộ trình tập luyện</strong> cùng Huấn luyện viên chuyên nghiệp.</p>
+        <h3 style="margin: 0 0 8px 0; color: #ea580c; font-size: 16px;">🎁 VOUCHER ĐẶC QUYỀN DÀNH CHO BẠN: <span style="background: #ea580c; color: #fff; padding: 4px 10px; border-radius: 4px; letter-spacing: 1px;">VOUCHER TẬP THỬ MIỄN PHÍ</span></h3>
+        <p style="margin: 0; color: #431407; font-size: 14px;">Quyền lợi: <strong>03 ngày trải nghiệm miễn phí 100%</strong> toàn bộ trang thiết bị tại The Shine Fitness + <strong>01 buổi đánh giá thể trạng & tư vấn lộ trình tập luyện</strong> cùng Huấn luyện viên chuyên nghiệp.</p>
       </div>
       <p style="color: #4b5563; font-size: 15px; line-height: 1.6;">
         Chào <strong>${recipientName}</strong>,<br><br>
@@ -528,7 +528,7 @@ export function getEmailTemplateHtml(step: number, recipientName: string = 'Quý
         <h4 style="margin: 0 0 10px 0; color: #0f172a; font-size: 15px;">📍 Hướng dẫn nhận ưu đãi:</h4>
         <ol style="margin: 0; padding-left: 20px; color: #475569; font-size: 14px; line-height: 1.6;">
           <li>Đến quầy Lễ tân tại: <strong>154 Hoàng Hoa Thám, Phường Bảy Hiền, TP. Hồ Chí Minh</strong></li>
-          <li>Đọc số điện thoại của bạn hoặc mã voucher <strong>SHINE-TRIAL-FREE</strong> để nhân viên kích hoạt thẻ tập thử.</li>
+          <li>Đọc số điện thoại của bạn để nhân viên kích hoạt Voucher tập thử miễn phí.</li>
           <li>Khung giờ hoạt động: <strong>Thứ 2 - Thứ 7: 06:00 - 21:00 | Chủ Nhật: 06:00 - 20:30</strong>.</li>
         </ol>
       </div>
@@ -648,7 +648,7 @@ export function getEmailTemplateHtml(step: number, recipientName: string = 'Quý
                 📍 154 Hoàng Hoa Thám, Phường Bảy Hiền, TP. Hồ Chí Minh | ⏰ Thứ 2 - Thứ 7: 06:00 - 21:00 | Chủ Nhật: 06:00 - 20:30
               </p>
               <p style="margin: 0; color: #94a3b8; font-size: 10px;">
-                Email này được gửi tự động từ hệ thống Email Marketing của The Shine Fitness.
+                Email được gửi tự động từ hệ thống của The Shine Fitness. Vui lòng không phản hồi.
               </p>
             </td>
           </tr>

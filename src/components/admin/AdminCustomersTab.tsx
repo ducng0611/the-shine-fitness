@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { CustomerRecord } from '../../types';
 import { enrichCustomerWithJourney } from '../../data/customerJourneyData';
+import { getCustomerPKSegment } from '../../data/pkSegmentsData';
 
 interface AdminCustomersTabProps {
   customers: CustomerRecord[];
@@ -45,12 +46,19 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
   const [statusFilter, setStatusFilter] = useState('all');
   const [journeyFilter, setJourneyFilter] = useState('all');
   const [personaFilter, setPersonaFilter] = useState('all');
+  const [pkFilter, setPkFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
 
   // Ensure all customers have journey stage & persona assigned
   const enrichedCustomers = useMemo(() => {
-    return customers.map(c => enrichCustomerWithJourney(c));
+    return customers.map(c => {
+      const enriched = enrichCustomerWithJourney(c);
+      return {
+        ...enriched,
+        computedPK: getCustomerPKSegment(c)
+      };
+    });
   }, [customers]);
 
   const filteredCustomers = useMemo(() => {
@@ -66,6 +74,11 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
         if (!matchName && !matchCode && !matchPhone && !matchEmail && !matchOcc) {
           return false;
         }
+      }
+
+      // PK Segment Filter
+      if (pkFilter !== 'all') {
+        if (c.computedPK !== pkFilter) return false;
       }
 
       // Segment
@@ -105,7 +118,7 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
 
       return true;
     });
-  }, [enrichedCustomers, searchTerm, segmentFilter, packageFilter, statusFilter, journeyFilter, personaFilter]);
+  }, [enrichedCustomers, searchTerm, segmentFilter, packageFilter, statusFilter, journeyFilter, personaFilter, pkFilter]);
 
   const totalPages = Math.max(1, Math.ceil(filteredCustomers.length / pageSize));
   const validPage = Math.min(currentPage, totalPages);
@@ -129,18 +142,18 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
       }`}>
         <div>
           <div className="flex items-center space-x-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-              ● Firestore Database
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-sans">
+              ● Dữ Liệu Trực Tuyến
             </span>
-            <span className={`text-xs font-semibold ${textSub}`}>
+            <span className={`text-xs font-semibold font-sans ${textSub}`}>
               {customers.length} Hồ Sơ Đã Lưu Trữ
             </span>
           </div>
-          <h2 className={`text-xl font-black ${textHeading}`}>
+          <h2 className={`text-xl sm:text-2xl font-heading font-black uppercase tracking-tight ${textHeading}`}>
             Quản Lý Khách Hàng & Hội Viên (CRM)
           </h2>
-          <p className={`text-xs mt-0.5 ${textSub}`}>
-            Toàn bộ dữ liệu được quản lý trực tiếp trên Firebase Firestore. Bạn có thể Thêm, Sửa hoặc Xóa ngay tại đây.
+          <p className={`text-xs mt-0.5 font-sans ${textSub}`}>
+            Toàn bộ dữ liệu được quản lý và bảo mật trực tiếp trên hệ thống. Bạn có thể Thêm, Sửa hoặc Xóa ngay tại đây.
           </p>
         </div>
 
@@ -148,8 +161,8 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
           <button
             onClick={onRefreshData}
             disabled={loading}
-            title="Tải lại từ Firestore"
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold border transition-all flex items-center space-x-1.5 ${
+            title="Tải lại dữ liệu"
+            className={`px-3.5 py-2 rounded-xl text-xs font-bold border transition-all flex items-center space-x-1.5 font-sans ${
               isDark 
                 ? 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300' 
                 : 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700'
@@ -161,21 +174,22 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
 
           <button
             onClick={onOpenNewModal}
-            className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 transition-all flex items-center space-x-1.5 shadow-md shadow-orange-600/20 active:scale-95"
+            className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 transition-all flex items-center space-x-1.5 shadow-md shadow-orange-600/20 active:scale-95 font-sans"
           >
             <Plus className="w-4 h-4" />
-            <span>Thêm Khách Hàng (Firestore)</span>
+            <span>Thêm Khách Hàng</span>
           </button>
         </div>
       </div>
 
       {/* Filters Bar */}
-      <div className={`p-4 rounded-2xl border space-y-3 ${
+      <div className={`p-4 rounded-2xl border space-y-3.5 ${
         isDark ? 'bg-slate-900/90 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
       }`}>
+        {/* Row 1: Search box & Status Pills */}
         <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
           {/* Search box */}
-          <div className="relative flex-1">
+          <div className="relative flex-1 min-w-[280px]">
             <Search className={`absolute left-3.5 top-2.5 w-4 h-4 ${textSub}`} />
             <input
               type="text"
@@ -191,7 +205,37 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
             />
           </div>
 
-          {/* Filter dropdowns */}
+          {/* Status Pills */}
+          <div className="flex items-center space-x-1.5 overflow-x-auto py-0.5">
+            {[
+              { id: 'all', label: `Tất cả (${customers.length})` },
+              { id: 'member', label: 'Đang hoạt động' },
+              { id: 'expired', label: 'Sắp hết hạn / Đã dừng' },
+              { id: 'trial_active', label: 'Đang tập thử' },
+              { id: 'new', label: 'Khách mới đăng ký' }
+            ].map(f => (
+              <button
+                key={f.id}
+                onClick={() => {
+                  setStatusFilter(f.id);
+                  setCurrentPage(1);
+                }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap cursor-pointer ${
+                  statusFilter === f.id
+                    ? 'bg-orange-500 text-white shadow-sm'
+                    : isDark
+                    ? 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                    : 'bg-slate-100 text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Row 2: Filter dropdowns */}
+        <div className="pt-2.5 border-t border-slate-100 dark:border-slate-800/80">
           <div className="flex flex-wrap items-center gap-2">
             <select
               value={journeyFilter}
@@ -199,7 +243,7 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
                 setJourneyFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className={inputClass}
+              className={`${inputClass} flex-1 min-w-[170px]`}
             >
               <option value="all">🧭 Tất cả Hành Trình (ACCSR)</option>
               <option value="awareness">1. Nhận Thức (Awareness)</option>
@@ -215,7 +259,7 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
                 setPersonaFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className={inputClass}
+              className={`${inputClass} flex-1 min-w-[150px]`}
             >
               <option value="all">👤 Tất cả Persona</option>
               <option value="minh">Persona: Ngọc Minh (Văn phòng)</option>
@@ -224,14 +268,29 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
             </select>
 
             <select
+              value={pkFilter}
+              onChange={(e) => {
+                setPkFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+              className={`${inputClass} flex-1 min-w-[170px]`}
+            >
+              <option value="all">🏷️ Tất cả Phân Khúc PK01–PK04</option>
+              <option value="PK01">PK01: Tập gần nhà, nhạy giá</option>
+              <option value="PK02">PK02: Người mới cần được kèm</option>
+              <option value="PK03">PK03: Học viên lớp nhóm</option>
+              <option value="PK04">PK04: Tập nâng cao / linh hoạt</option>
+            </select>
+
+            <select
               value={segmentFilter}
               onChange={(e) => {
                 setSegmentFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className={inputClass}
+              className={`${inputClass} flex-1 min-w-[150px]`}
             >
-              <option value="all">Tất cả Phân Khúc</option>
+              <option value="all">📊 Tất cả Phân Khúc KH</option>
               <option value="VIP (Doanh thu cao)">⭐ VIP (Doanh thu cao)</option>
               <option value="Khách hàng trung thành">🤝 Khách hàng trung thành</option>
               <option value="Khách hàng tiềm năng">🎯 Khách hàng tiềm năng</option>
@@ -245,9 +304,9 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
                 setPackageFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className={inputClass}
+              className={`${inputClass} flex-1 min-w-[130px]`}
             >
-              <option value="all">Tất cả Gói Tập</option>
+              <option value="all">🏋️ Tất cả Gói Tập</option>
               <option value="12T">12T (1 Năm)</option>
               <option value="3T">3T (3 Tháng)</option>
               <option value="1T">1T (1 Tháng)</option>
@@ -262,41 +321,13 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
                 setPageSize(Number(e.target.value));
                 setCurrentPage(1);
               }}
-              className={inputClass}
+              className={`${inputClass} w-auto`}
             >
               <option value={25}>25 dòng/trang</option>
               <option value={50}>50 dòng/trang</option>
               <option value={100}>100 dòng/trang</option>
             </select>
           </div>
-        </div>
-
-        {/* Status Pills */}
-        <div className="flex items-center space-x-1.5 overflow-x-auto pt-1">
-          {[
-            { id: 'all', label: `Tất cả (${customers.length})` },
-            { id: 'member', label: 'Đang hoạt động' },
-            { id: 'expired', label: 'Sắp hết hạn / Đã dừng' },
-            { id: 'trial_active', label: 'Đang tập thử' },
-            { id: 'new', label: 'Khách mới đăng ký' }
-          ].map(f => (
-            <button
-              key={f.id}
-              onClick={() => {
-                setStatusFilter(f.id);
-                setCurrentPage(1);
-              }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors whitespace-nowrap ${
-                statusFilter === f.id
-                  ? 'bg-orange-500 text-white shadow-sm'
-                  : isDark
-                  ? 'bg-slate-800 text-slate-400 hover:text-slate-200'
-                  : 'bg-slate-100 text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
         </div>
       </div>
 
@@ -310,14 +341,14 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
               isDark ? 'bg-slate-800/80 text-slate-400' : 'bg-slate-100 text-slate-600'
             }`}>
               <tr>
-                <th className="py-3.5 px-4">Mã HV & Họ Tên</th>
-                <th className="py-3.5 px-4">Liên Hệ</th>
-                <th className="py-3.5 px-4">Gói Tập & Chi Tiêu</th>
-                <th className="py-3.5 px-4">Hành Trình ACCSR</th>
-                <th className="py-3.5 px-4">Tần Suất Tập</th>
-                <th className="py-3.5 px-4">Phân Khúc</th>
-                <th className="py-3.5 px-4">Trạng Thái</th>
-                <th className="py-3.5 px-4 text-right">Thao Tác</th>
+                <th className="py-3.5 px-4 min-w-[180px]">Mã HV & Họ Tên</th>
+                <th className="py-3.5 px-4 min-w-[150px]">Liên Hệ</th>
+                <th className="py-3.5 px-4 min-w-[140px]">Gói Tập & Chi Tiêu</th>
+                <th className="py-3.5 px-4 min-w-[140px]">Hành Trình ACCSR</th>
+                <th className="py-3.5 px-4 min-w-[135px] whitespace-nowrap">Tần Suất Tập</th>
+                <th className="py-3.5 px-4 min-w-[130px]">Phân Khúc</th>
+                <th className="py-3.5 px-4 min-w-[120px]">Trạng Thái</th>
+                <th className="py-3.5 px-4 text-right min-w-[100px]">Thao Tác</th>
               </tr>
             </thead>
             <tbody className={`divide-y ${isDark ? 'divide-slate-800' : 'divide-slate-200'}`}>
@@ -405,25 +436,27 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
                            c.journeyStage === 'service' ? '4. Trải Nghiệm' : '5. Giữ Chân'}
                         </span>
                         {c.matchedPersona && (
-                          <span className={`text-[10px] flex items-center space-x-1 ${textSub}`}>
-                            <span>Persona:</span>
-                            <span className="font-semibold text-orange-600 dark:text-orange-400">
+                          <div className="flex items-center space-x-1.5 mt-0.5">
+                            <span className={`text-[10px] ${textSub}`}>
                               {c.matchedPersona === 'minh' ? 'Ngọc Minh' :
                                c.matchedPersona === 'tuan' ? 'Quốc Tuấn' :
                                c.matchedPersona === 'huong' ? 'Thu Hương' : 'Đại trà'}
                             </span>
-                          </span>
+                            <span className="px-1.5 py-0.2 rounded text-[10px] font-black font-mono bg-orange-500/15 text-orange-600 dark:text-orange-400 border border-orange-500/30">
+                              {c.computedPK}
+                            </span>
+                          </div>
                         )}
                       </div>
                     </td>
 
                     {/* Frequency */}
-                    <td className="py-3 px-4">
-                      <div className={`font-semibold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
-                        {c.checkinCount ? `${c.checkinCount} buổi tập` : '0 buổi'}
+                    <td className="py-3 px-4 min-w-[135px] whitespace-nowrap">
+                      <div className={`font-semibold text-xs whitespace-nowrap ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+                        {c.checkinCount ? `${c.checkinCount} buổi` : '0 buổi'}
                         {c.ptSessions ? ` • ${c.ptSessions} PT` : ''}
                       </div>
-                      <div className={`text-[10px] mt-0.5 ${textSub}`}>
+                      <div className={`text-[11px] whitespace-nowrap mt-0.5 ${textSub}`}>
                         {c.daysSinceLastCheckin !== undefined ? (
                           <span>Tập {c.daysSinceLastCheckin} ngày trước</span>
                         ) : (
@@ -481,7 +514,7 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
                       <div className="flex items-center justify-end space-x-1">
                         <button
                           onClick={() => onEditCustomer(c)}
-                          title="Sửa thông tin hội viên (Firestore)"
+                          title="Sửa thông tin hội viên"
                           className={`p-1.5 rounded-lg transition-colors ${
                             isDark ? 'text-slate-300 hover:text-white hover:bg-slate-800' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                           }`}
@@ -501,7 +534,7 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
 
                         <button
                           onClick={() => onDeleteCustomer(c)}
-                          title="Xóa khách hàng khỏi Firestore"
+                          title="Xóa khách hàng"
                           className={`p-1.5 rounded-lg transition-colors ${
                             isDark ? 'text-rose-400 hover:text-rose-300 hover:bg-rose-500/10' : 'text-rose-600 hover:text-rose-700 hover:bg-rose-50'
                           }`}
