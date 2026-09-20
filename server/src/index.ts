@@ -1,4 +1,5 @@
 import express from "express";
+import rateLimit from "express-rate-limit";
 import path from "path";
 import fs from "fs";
 import nodemailer, { Transporter } from "nodemailer";
@@ -6,6 +7,10 @@ import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import * as XLSXModule from "xlsx";
 const XLSX = (XLSXModule as any).default || XLSXModule;
+import { PRICING, OPENING_HOURS, ADDRESS, HOTLINE } from "./pricingData";
+
+const MODEL_CHINH = "gemini-2.5-flash";
+const MODEL_FALLBACK = "gemini-1.5-flash";
 import {
   initCsvStorage,
   addRegistration,
@@ -168,7 +173,7 @@ async function dispatchEmailNotification({
       <div class="voucher-banner">
         <div class="voucher-title">🎁 MÃ VOUCHER ĐẶC QUYỀN TẬP THỬ 0Đ</div>
         <div class="voucher-code">${voucherCode}</div>
-        <div class="voucher-note">✓ Đưa mã này trực tiếp cho Lễ Tân tại The Shine Fitness & Yoga để nhận vé tập miễn phí!</div>
+        <div class="voucher-note">✓ Đưa mã này cho Lễ Tân tại The Shine Fitness & Yoga để nhận vé tập miễn phí!</div>
       </div>
 
       <div class="table-box">
@@ -186,7 +191,7 @@ async function dispatchEmailNotification({
       </div>
 
       <p style="font-size: 13px; color: #64748b; text-align: center; margin-top: 24px;">
-        Bộ phận Chăm sóc khách hàng The Shine sẽ gọi điện tư vấn cho bạn trong vòng 15-30 phút tới.
+        Bộ phận Chăm sóc khách hàng The Shine sẽ tư vấn cho bạn trong vòng 15-30 phút tới.
       </p>
     </div>
     <div class="footer">
@@ -260,6 +265,32 @@ async function startServer() {
 
   // Built-in middleware to parse JSON bodies
   app.use(express.json());
+
+  // Rate Limiter Configuration
+  const chatRateLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, // 5 minutes
+    max: 20,
+    statusCode: 429,
+    message: {
+      error: "Rất tiếc, bạn đã gửi quá nhiều yêu cầu. Vui lòng thử lại sau 5 phút hoặc liên hệ Hotline 0946 293 593 để được tư vấn ngay lập tức!"
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
+  const adminRateLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, // 5 minutes
+    max: 50,
+    statusCode: 429,
+    message: {
+      error: "Hệ thống nhận quá nhiều yêu cầu thao tác quản trị. Vui lòng thử lại sau 5 phút."
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+
+  app.use("/api/chat", chatRateLimiter);
+  app.use("/api/admin", adminRateLimiter);
 
   // Health check endpoint
   app.get("/api/health", (req, res) => {
@@ -517,7 +548,7 @@ async function startServer() {
       let response;
       try {
         response = await ai.models.generateContent({
-          model: "gemini-3.6-flash",
+          model: MODEL_CHINH,
           contents: formattedContents,
           config: {
             systemInstruction: systemInstruction,
@@ -525,9 +556,9 @@ async function startServer() {
           },
         });
       } catch (genErr) {
-        console.warn("gemini-3.6-flash failed, retrying with fallback model:", genErr);
+        console.warn(`${MODEL_CHINH} failed, retrying with fallback model ${MODEL_FALLBACK}:`, genErr);
         response = await ai.models.generateContent({
-          model: "gemini-3.6-flash",
+          model: MODEL_FALLBACK,
           contents: formattedContents,
           config: {
             systemInstruction: systemInstruction,
@@ -762,7 +793,7 @@ Hãy trả về kết quả dưới dạng JSON chuẩn (chỉ trả về chuỗ
       let geminiRes;
       try {
         geminiRes = await ai.models.generateContent({
-          model: "gemini-3.8-flash",
+          model: MODEL_CHINH,
           contents: systemPrompt,
           config: {
             temperature: 0.7,
@@ -770,9 +801,9 @@ Hãy trả về kết quả dưới dạng JSON chuẩn (chỉ trả về chuỗ
           }
         });
       } catch (err) {
-        console.warn("Gemini 3.8 flash failed for flow generation, retrying fallback:", err);
+        console.warn(`${MODEL_CHINH} failed for flow generation, retrying fallback ${MODEL_FALLBACK}:`, err);
         geminiRes = await ai.models.generateContent({
-          model: "gemini-3.8-flash",
+          model: MODEL_FALLBACK,
           contents: systemPrompt
         });
       }
@@ -914,7 +945,7 @@ Hãy trả về kết quả định dạng JSON thuần túy (không bọc trong
       let geminiRes;
       try {
         geminiRes = await ai.models.generateContent({
-          model: "gemini-2.5-flash",
+          model: MODEL_CHINH,
           contents: prompt,
           config: {
             temperature: 0.7,
@@ -922,9 +953,9 @@ Hãy trả về kết quả định dạng JSON thuần túy (không bọc trong
           }
         });
       } catch (err) {
-        console.warn("Gemini 2.5 flash JSON failed, trying text fallback:", err);
+        console.warn(`${MODEL_CHINH} JSON failed, trying fallback model ${MODEL_FALLBACK}:`, err);
         geminiRes = await ai.models.generateContent({
-          model: "gemini-2.5-flash",
+          model: MODEL_FALLBACK,
           contents: prompt
         });
       }

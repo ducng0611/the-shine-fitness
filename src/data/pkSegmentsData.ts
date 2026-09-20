@@ -28,7 +28,7 @@ export const PK_SEGMENTS_LIST: PKSegmentDefinition[] = [
     primarySignal: 'Ưu tiên vị trí thuận tiện, chi phí hợp lý, mục tiêu cơ bản.',
     description: 'Khách hàng sống hoặc làm việc trong bán kính < 2km xung quanh 154 Hoàng Hoa Thám (Tân Bình). Ưu tiên tính tiện lợi di chuyển, ngân sách tối ưu và nhu cầu duy trì vóc dáng / sức khỏe cơ bản.',
     demographics: 'Dân văn phòng Tân Bình, cư dân căn hộ & nhà phố lân cận',
-    preferredPackages: ['Gói 1 Tháng Khuyến Mãi (299k)', 'Gói 3 Tháng Tiện Lợi'],
+    preferredPackages: ['Gói 1 Tháng Khuyến Mãi (349k)', 'Gói 3 Tháng Tiện Lợi'],
     keyMotivator: 'Giá tốt, không chi phí ẩn, gửi xe miễn phí & đi lại chỉ 5 phút',
     salesPlaybook: 'Minh bạch báo giá 1 trang, retargeting theo bán kính 2km, tặng vé tập thử 3 ngày trải nghiệm giờ tan làm.',
     suggestedAction: 'Gửi Zalo OA ưu đãi vé tập thử 3 ngày + Mã giảm 10% khi đăng ký trong 48h.',

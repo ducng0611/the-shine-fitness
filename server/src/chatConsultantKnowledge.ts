@@ -5,6 +5,8 @@
  * Marketing & CRM Sales Focused Consultation Engine
  */
 
+import { PRICING, OPENING_HOURS, ADDRESS, HOTLINE } from './pricingData';
+
 export interface ConsultantContext {
   pronoun: string;             // 'Anh' | 'Chị' | 'Anh/Chị'
   memberName?: string;
@@ -14,16 +16,10 @@ export interface ConsultantContext {
   memberCode?: string;
 }
 
-// Exact opening hours verified by Google Maps
-export const THE_SHINE_HOURS = {
-  weekdays: '06:00 – 21:00 (Thứ 2 đến Thứ 7)',
-  sunday: '06:00 – 20:30 (Chủ Nhật)',
-  fullTextVi: '06:00 – 21:00 từ Thứ 2 đến Thứ 7, riêng Chủ Nhật mở cửa từ 06:00 – 20:30.',
-  fullTextEn: '06:00 AM – 09:00 PM Monday through Saturday, and 06:00 AM – 08:30 PM on Sundays.'
-};
-
-export const THE_SHINE_HOTLINE = '0946 293 593';
-export const THE_SHINE_ADDRESS = '154 Hoàng Hoa Thám, Phường Bảy Hiền (Phường 12 cũ), Quận Tân Bình, TP. Hồ Chí Minh';
+// Re-export constants sourced from pricingData
+export const THE_SHINE_HOURS = OPENING_HOURS;
+export const THE_SHINE_HOTLINE = HOTLINE;
+export const THE_SHINE_ADDRESS = ADDRESS;
 
 /**
  * Builds the comprehensive prompt for Gemini AI Customer Consultant
@@ -95,18 +91,18 @@ ${honorificRule}
 [BẢNG GIÁ & THÔNG TIN DỊCH VỤ CHUẨN THE SHINE FITNESS]
 ============================================================
 * Giờ mở cửa:
-  - T2 - T7 (06:00 - 21:00)
-  - CN (06:00 - 20:30)
+  - T2 - T7 (${OPENING_HOURS.weekdays})
+  - CN (${OPENING_HOURS.sunday})
 
 * Các gói tập chính & Ưu đãi:
-  - Gói Gym & Boxing: Giá gốc 549.000đ/tháng ➔ KHUYẾN MÃI CHỈ CÒN 349.000đ/tháng (đóng theo tháng linh hoạt, HLV hướng dẫn kỹ thuật 1:1 ban đầu).
-  - Gói Yoga: Giá gốc 700.000đ/tháng ➔ KHUYẾN MÃI còn 549.000đ/tháng (chỉ báo giá khi khách hỏi Yoga).
-  - Gói Toàn Diện Yoga & Gym: Giá gốc 950.000đ/tháng ➔ KHUYẾN MÃI còn 699.000đ/tháng.
-  - Vé ngày Day Pass: 100.000đ/ngày (Trải nghiệm Gym, Boxing, locker, phòng tắm nóng lạnh).
-  - Giảm thêm 20% cho Học sinh - Sinh viên khi xuất trình thẻ HSSV. Hỗ trợ trả góp 0% qua thẻ tín dụng.
+  - Gói Gym & Boxing: Giá gốc ${PRICING.basic.originalPriceFormatted}/tháng ➔ KHUYẾN MÃI CHỈ CÒN ${PRICING.basic.discountPriceFormatted}/tháng (đóng theo tháng linh hoạt, HLV hướng dẫn kỹ thuật 1:1 ban đầu).
+  - Gói Yoga: Giá gốc ${PRICING.premium.originalPriceFormatted}/tháng ➔ KHUYẾN MÃI còn ${PRICING.premium.discountPriceFormatted}/tháng (chỉ báo giá khi khách hỏi Yoga).
+  - Gói Toàn Diện Yoga & Gym: Giá gốc ${PRICING.vip.originalPriceFormatted}/tháng ➔ KHUYẾN MÃI còn ${PRICING.vip.discountPriceFormatted}/tháng.
+  - Vé ngày Day Pass: ${PRICING.dayPass.priceFormatted}/ngày (Trải nghiệm Gym, Boxing, locker, phòng tắm nóng lạnh).
+  - Giảm thêm ${PRICING.discounts.studentDiscountPercent}% cho Học sinh - Sinh viên khi xuất trình thẻ HSSV. ${PRICING.discounts.installment}
   - HLV cá nhân 1-kèm-1 (PT Thái, PT Jackson, PT Tony, PT Minh): Hướng dẫn kỹ thuật chuẩn, kiểm tra thể trạng, giáo án riêng, không chèo kéo.
 
-* Địa chỉ: 154 Hoàng Hoa Thám, P. Bảy Hiền (P. 12 cũ), Q. Tân Bình, TP.HCM. Hotline: 0946 293 593.
+* Địa chỉ: ${ADDRESS}. Hotline: ${HOTLINE}.
 
 ============================================================
 [KỊCH BẢN MẪU TƯ VẤN CHUẨN MARKETING & CRM BÁN HÀNG]
