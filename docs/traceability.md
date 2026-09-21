@@ -23,8 +23,8 @@ Tài liệu này dùng để đối chiếu chi tiết các yêu cầu thiết k
 | **13. KPI Analytics: Fallback Rate** | `server/src/index.ts`, `AdminChatAnalyticsTab.tsx` | **Đạt** | Đánh dấu cờ `usedFallback` khi chuyển model và tính tỷ lệ % trên Admin UI. |
 | **14. KPI Analytics: Handover Rate & Count** | `server/src/index.ts`, `AdminChatAnalyticsTab.tsx` | **Đạt** | Thống kê chính xác tỷ lệ hội thoại cần chuyển giao tư vấn viên và đếm số ca trong hàng đợi. |
 | **15. KPI Analytics: Sourced Answer Rate** | `server/src/index.ts`, `AdminChatAnalyticsTab.tsx` | **Đạt** | Thống kê tỷ lệ % câu trả lời được bảo chứng bởi dữ liệu RAG (`groundedAnswer = true`). |
-| **16. KPI Analytics: Precision@K** | *Chưa triển khai trong code* | **Chưa đạt** | Cần một bộ dữ liệu kiểm thử (Test Set) có nhãn câu trả lời đúng (Ground Truth) để đánh giá offline định kỳ. |
-| **17. Rate limit & Bảo mật truy cập** | `server/src/middleware/auth.ts`, `server/src/index.ts` | **Đạt một phần** | Đã xác thực Token phía Server cho các API Admin, kiểm tra mật khẩu; chưa cài đặt Redis Rate Limit theo IP client. |
+| **16. KPI Analytics: Precision@K** | `scripts/eval_rag.ts`, `data/eval/golden_questions.json`, `server/src/index.ts`, `AdminChatAnalyticsTab.tsx` | **Đạt** | Bộ dữ liệu đánh giá chuẩn (Golden Questions) 25 câu hỏi đa dạng danh mục và trường hợp out-of-scope/handover; script `npm run eval:rag` đo Hit Rate@K, Precision@K, Recall@K, Handover Trigger Metrics và xuất file `latest_result.json`; hiển thị trực tiếp trên Admin Chat Analytics Tab. |
+| **17. Rate limit & Bảo mật truy cập** | `server/src/middleware/auth.ts`, `server/src/index.ts` | **Đạt** | Đã xác thực Token phía Server cho các API Admin, mã hóa mật khẩu hội viên chuẩn scrypt + timingSafeEqual, chống brute-force và rate limiting. |
 | **18. Khử thông tin định danh cá nhân (PII Protection)** | `server/src/chatLogStorage.ts` (`sanitizePii`) | **Đạt** | Tự động che giấu số điện thoại và email bằng ký tự `*` trước khi ghi vào đĩa `chat_logs.csv`. |
 | **19. Bảo Mật Firestore Rules & Phân Quyền Kiến Trúc** | `firestore.rules`, `server/src/index.ts`, `src/lib/firebase.ts` | **Đạt** | **Hướng A (Client + Rules):** `registrations`, `health_assessments`, `member_progress` (read/create/update), `workout_logs` (read/create/update), `members` (read) cho chính chủ (`request.auth.uid == userId`).<br>**Hướng B (Server Endpoint + Admin SDK):** Thao tác XÓA (`member_progress`, `workout_logs`) và toàn bộ thao tác ADMIN (`customers`, `packages`, `promotions`, `email_campaigns`, `admins`) thực hiện qua Express Endpoint có middleware `requireAuth`. |
 | **20. Quy trình Handover 5 Trạng Thái & KPI Success / SLA** | `server/src/handoverStorage.ts`, `server/src/index.ts`, `src/components/admin/AdminChatAnalyticsTab.tsx` | **Đạt** | **State machine:** CHO_TIEP_NHAN → DANG_XU_LY → DA_LIEN_HE → THANH_CONG / KHONG_THANH_CONG.<br>**SLA Rules:** 2h (COMPLAINT, HEALTH_RISK), 4h (REQUEST_HUMAN, HOT_LEAD_OR_NEGOTIATION), 24h (LOW_CONFIDENCE, NO_GROUNDING_DATA).<br>**KPIs:** Handover Success Rate %, SLA Breach Rate %, Avg Time to Contact (m), Open Handovers.<br>**Atomic File Write:** Backup CSV + write temp file rename. |
@@ -58,7 +58,7 @@ Tài liệu này dùng để đối chiếu chi tiết các yêu cầu thiết k
 
 ## Tóm Tắt Đánh Giá Truy Vết
 
-- **Tổng số yêu cầu đánh giá**: 20
-- **Đạt (Passed)**: 19
-- **Đạt một phần (Partially Passed)**: 1
+- **Tổng số yêu cầu đánh giá**: 21
+- **Đạt (Passed)**: 21
+- **Đạt một phần (Partially Passed)**: 0
 - **Chưa đạt (Failed / Missing)**: 0

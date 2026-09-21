@@ -12,7 +12,8 @@ import {
   deleteDoc,
   orderBy, 
   limit, 
-  serverTimestamp 
+  serverTimestamp,
+  setLogLevel
 } from 'firebase/firestore';
 import { 
   getAuth, 
@@ -29,6 +30,9 @@ import {
   CustomerRecord,
   MemberProgressEntry 
 } from '../types';
+
+// Suppress internal Firestore connection reset logs
+setLogLevel('error');
 
 // Initialize Firebase App
 const firebaseConfig = {

@@ -107,6 +107,35 @@ export interface HandoverKpis {
   successRateByTag: TagSuccessRate[];
 }
 
+export interface RagEvalReport {
+  evaluatedAt: string | null;
+  benchmarkVersion: string;
+  totalQuestions: number;
+  ragIndex?: {
+    chunkCount: number;
+    builtAt: string;
+    model: string;
+  };
+  retrievalMetrics: {
+    precisionAt1: number;
+    precisionAt3: number;
+    precisionAt5: number;
+    recallAt1: number;
+    recallAt3: number;
+    recallAt5: number;
+    hitRateAt1: number;
+    hitRateAt3: number;
+    hitRateAt5: number;
+  };
+  handoverMetrics: {
+    accuracy: number;
+    precision: number;
+    recall: number;
+    confusionMatrix?: { tp: number; fp: number; fn: number; tn: number };
+  };
+  categoryBreakdown: Record<string, { count: number; hitRate1: number; hitRate3: number; precisionAt3: number; recallAt3: number }>;
+}
+
 interface ChatKpis {
   totalConversations: number;
   totalMessages: number;
@@ -114,6 +143,8 @@ interface ChatKpis {
   p95LatencyMs: number;
   fallbackRate: number;
   handoverRate: number;
+  validLeadRate?: number;
+  conversionRate?: number;
   avgResponseChars: number;
   segmentedSessionRate?: number;
   intentDistribution?: { intent: string; count: number }[];
@@ -130,7 +161,7 @@ interface ChatKpis {
     total: number;
     likes: number;
     dislikes: number;
-    satisfactionRate: number;
+    satisfactionRate: number | null;
   };
   ragInfo?: {
     enabled: boolean;
@@ -257,6 +288,7 @@ export const AdminChatAnalyticsTab: React.FC<AdminChatAnalyticsTabProps> = ({ is
 
   const [logs, setLogs] = useState<ChatLogRecord[]>([]);
   const [handoverQueue, setHandoverQueue] = useState<HandoverRecord[]>([]);
+  const [ragEval, setRagEval] = useState<RagEvalReport | null>(null);
   const [handoverKpis, setHandoverKpis] = useState<HandoverKpis>({
     totalHandovers: 0,
     openHandovers: 0,
@@ -312,9 +344,10 @@ export const AdminChatAnalyticsTab: React.FC<AdminChatAnalyticsTabProps> = ({ is
         headers['Authorization'] = `Bearer ${token}`;
       }
 
-      const [logsRes, queueRes] = await Promise.all([
+      const [logsRes, queueRes, evalRes] = await Promise.all([
         fetch(`/api/admin/chat-logs?${params.toString()}`, { headers }),
-        fetch(`/api/admin/handover-queue`, { headers })
+        fetch(`/api/admin/handover-queue`, { headers }),
+        fetch(`/api/admin/rag-eval`, { headers }).catch(() => null)
       ]);
 
       if (!logsRes.ok) {
@@ -338,6 +371,11 @@ export const AdminChatAnalyticsTab: React.FC<AdminChatAnalyticsTabProps> = ({ is
         if (qData.kpi) {
           setHandoverKpis(qData.kpi);
         }
+      }
+
+      if (evalRes && evalRes.ok) {
+        const evalData = await evalRes.json();
+        setRagEval(evalData);
       }
     } catch (err: any) {
       console.error('Error fetching chat analytics:', err);
@@ -664,7 +702,7 @@ export const AdminChatAnalyticsTab: React.FC<AdminChatAnalyticsTabProps> = ({ is
         </div>
       </div>
 
-      {/* RAG Engine Status Banner */}
+      {/* RAG Engine Status Banner & Precision@K Benchmark */}
       <div className={`p-4 rounded-2xl border ${
         kpi.ragInfo?.enabled 
           ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' 
@@ -717,6 +755,58 @@ export const AdminChatAnalyticsTab: React.FC<AdminChatAnalyticsTabProps> = ({ is
             </div>
           </div>
         </div>
+
+        {/* Precision@K & Recall@K Benchmark Table from latest evaluation */}
+        {ragEval && ragEval.retrievalMetrics && (
+          <div className="mt-4 pt-3 border-t border-slate-700/40">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-amber-400" />
+                <span className={`text-xs font-semibold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>
+                  Đánh Giá Độ Chính Xác RAG Retrieval (Golden Benchmark: {ragEval.totalQuestions} câu hỏi)
+                </span>
+              </div>
+              <span className="text-[11px] text-slate-400 font-mono">
+                {ragEval.evaluatedAt ? `Đo lúc: ${new Date(ragEval.evaluatedAt).toLocaleString('vi-VN')}` : ''}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 text-xs">
+              <div className={`p-2 rounded-xl border ${isDark ? 'bg-slate-800/60 border-slate-700/60' : 'bg-white border-slate-200'} text-center`}>
+                <div className="text-[10px] text-slate-400 font-medium">Hit Rate @ 1</div>
+                <div className="text-sm font-bold text-emerald-400">{ragEval.retrievalMetrics.hitRateAt1}%</div>
+              </div>
+              <div className={`p-2 rounded-xl border ${isDark ? 'bg-slate-800/60 border-slate-700/60' : 'bg-white border-slate-200'} text-center`}>
+                <div className="text-[10px] text-slate-400 font-medium">Hit Rate @ 3</div>
+                <div className="text-sm font-bold text-emerald-400">{ragEval.retrievalMetrics.hitRateAt3}%</div>
+              </div>
+              <div className={`p-2 rounded-xl border ${isDark ? 'bg-slate-800/60 border-slate-700/60' : 'bg-white border-slate-200'} text-center`}>
+                <div className="text-[10px] text-slate-400 font-medium">Precision @ 1</div>
+                <div className="text-sm font-bold text-cyan-400">{ragEval.retrievalMetrics.precisionAt1}%</div>
+              </div>
+              <div className={`p-2 rounded-xl border ${isDark ? 'bg-slate-800/60 border-slate-700/60' : 'bg-white border-slate-200'} text-center`}>
+                <div className="text-[10px] text-slate-400 font-medium">Precision @ 3</div>
+                <div className="text-sm font-bold text-cyan-400">{ragEval.retrievalMetrics.precisionAt3}%</div>
+              </div>
+              <div className={`p-2 rounded-xl border ${isDark ? 'bg-slate-800/60 border-slate-700/60' : 'bg-white border-slate-200'} text-center`}>
+                <div className="text-[10px] text-slate-400 font-medium">Recall @ 1</div>
+                <div className="text-sm font-bold text-blue-400">{ragEval.retrievalMetrics.recallAt1}%</div>
+              </div>
+              <div className={`p-2 rounded-xl border ${isDark ? 'bg-slate-800/60 border-slate-700/60' : 'bg-white border-slate-200'} text-center`}>
+                <div className="text-[10px] text-slate-400 font-medium">Recall @ 3</div>
+                <div className="text-sm font-bold text-blue-400">{ragEval.retrievalMetrics.recallAt3}%</div>
+              </div>
+              <div className={`p-2 rounded-xl border ${isDark ? 'bg-slate-800/60 border-slate-700/60' : 'bg-white border-slate-200'} text-center`}>
+                <div className="text-[10px] text-slate-400 font-medium">Handover Acc</div>
+                <div className="text-sm font-bold text-amber-400">{ragEval.handoverMetrics?.accuracy ?? 0}%</div>
+              </div>
+              <div className={`p-2 rounded-xl border ${isDark ? 'bg-slate-800/60 border-slate-700/60' : 'bg-white border-slate-200'} text-center`}>
+                <div className="text-[10px] text-slate-400 font-medium">Handover Prec</div>
+                <div className="text-sm font-bold text-amber-400">{ragEval.handoverMetrics?.precision ?? 0}%</div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* KPI Cards Row (Original AI Metrics) */}
@@ -819,11 +909,23 @@ export const AdminChatAnalyticsTab: React.FC<AdminChatAnalyticsTabProps> = ({ is
               <ThumbsDown className="w-3 h-3 text-rose-400" />
             </div>
           </div>
-          <div className={`text-xl font-bold ${kpi.feedbackStats && kpi.feedbackStats.satisfactionRate < 80 ? 'text-rose-400' : 'text-emerald-400'}`}>
-            {loading ? '...' : `${kpi.feedbackStats?.satisfactionRate ?? 100}%`}
+          <div className={`text-xl font-bold ${
+            kpi.feedbackStats?.satisfactionRate === null || kpi.feedbackStats?.satisfactionRate === undefined
+              ? (isDark ? 'text-slate-400' : 'text-slate-500')
+              : kpi.feedbackStats.satisfactionRate < 80 
+                ? 'text-rose-400' 
+                : 'text-emerald-400'
+          }`}>
+            {loading 
+              ? '...' 
+              : (kpi.feedbackStats?.satisfactionRate !== null && kpi.feedbackStats?.satisfactionRate !== undefined)
+                ? `${kpi.feedbackStats.satisfactionRate}%` 
+                : 'Chưa có đánh giá'}
           </div>
           <div className="text-[10px] text-slate-500 mt-0.5">
-            {kpi.feedbackStats ? `${kpi.feedbackStats.likes}👍 / ${kpi.feedbackStats.dislikes}👎` : '0 đánh giá'}
+            {kpi.feedbackStats && kpi.feedbackStats.total > 0 
+              ? `${kpi.feedbackStats.likes}👍 / ${kpi.feedbackStats.dislikes}👎` 
+              : '0 đánh giá'}
           </div>
         </div>
       </div>

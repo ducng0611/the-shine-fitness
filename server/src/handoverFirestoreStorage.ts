@@ -1,14 +1,4 @@
-import {
-  collection,
-  getDocs,
-  doc,
-  setDoc,
-  query,
-  orderBy,
-  Timestamp,
-  runTransaction
-} from 'firebase/firestore';
-import { serverDb } from './lib/firebase-db';
+import { adminDb } from './lib/firebase-admin';
 import { HandoverTag } from './handoverRules';
 import { sanitizePii } from './chatLogStorage';
 import {
@@ -65,11 +55,10 @@ function mapDocToHandoverRecord(id: string, data: Record<string, unknown>): Hand
 
 export async function loadHandoverQueueFromFirestore(): Promise<HandoverRecord[]> {
   try {
-    const q = query(collection(serverDb, 'handover_queue'), orderBy('createdAt', 'desc'));
-    const snap = await getDocs(q);
+    const snap = await adminDb.collection('handover_queue').orderBy('createdAt', 'desc').get();
     const records: HandoverRecord[] = [];
     snap.forEach((docSnap) => {
-      records.push(mapDocToHandoverRecord(docSnap.id, docSnap.data()));
+      records.push(mapDocToHandoverRecord(docSnap.id, docSnap.data() as Record<string, unknown>));
     });
     handoverCache.length = 0;
     handoverCache.push(...records);
@@ -96,7 +85,6 @@ export function addHandoverRecordFirestore(record: {
 }): HandoverRecord {
   const cleanSummary = sanitizePii(record.summary || '');
   const nowIso = new Date().toISOString();
-  const nowTs = Timestamp.fromDate(new Date(nowIso));
   const initialStatus = 'CHO_TIEP_NHAN';
 
   const initialHistoryItem: HandoverHistoryItem = {
@@ -126,21 +114,21 @@ export function addHandoverRecordFirestore(record: {
   // Payload for Firestore
   const docData = {
     ...newRecord,
-    createdAt: nowTs,
+    createdAt: new Date(nowIso),
     contactedAt: null,
     resolvedAt: null,
     history: [
       {
         status: initialStatus,
         actor: 'System',
-        timestamp: nowTs,
+        timestamp: new Date(nowIso),
         note: 'Khởi tạo từ yêu cầu chuyển giao AI'
       }
     ]
   };
 
   // Write asynchronously to Firestore (N3 error handling: console.error and proceed)
-  setDoc(doc(serverDb, 'handover_queue', newRecord.id), docData).catch((err: unknown) => {
+  adminDb.collection('handover_queue').doc(newRecord.id).set(docData).catch((err: unknown) => {
     console.error('[HandoverFirestoreStorage] Error writing handover_queue doc to Firestore:', err);
   });
 
@@ -178,7 +166,7 @@ export function updateHandoverStatusFirestore(
   }
 
   const nowIso = new Date().toISOString();
-  const nowTs = Timestamp.fromDate(new Date(nowIso));
+  const nowDate = new Date(nowIso);
 
   // Update in-memory record
   record.status = newStatus;
@@ -206,15 +194,15 @@ export function updateHandoverStatusFirestore(
   record.history.push(newHistoryItem);
 
   // Firestore transaction for optimistic locking and atomic state update (N4)
-  runTransaction(serverDb, async (transaction) => {
-    const docRef = doc(serverDb, 'handover_queue', id);
+  adminDb.runTransaction(async (transaction) => {
+    const docRef = adminDb.collection('handover_queue').doc(id);
     const docSnap = await transaction.get(docRef);
 
-    if (!docSnap.exists()) {
+    if (!docSnap.exists) {
       throw new Error(`Bản ghi ${id} không tồn tại trên Firestore.`);
     }
 
-    const docData = docSnap.data() || {};
+    const docData = (docSnap.data() || {}) as Record<string, unknown>;
     const dbStatus = normalizeHandoverStatus(typeof docData.status === 'string' ? docData.status : '');
 
     const dbAllowedNext = VALID_TRANSITIONS[dbStatus] || [];
@@ -225,15 +213,15 @@ export function updateHandoverStatusFirestore(
     const updatedDocData: Record<string, unknown> = {
       status: newStatus,
       assignee: actor,
-      updatedAt: nowTs
+      updatedAt: nowDate
     };
 
     if (newStatus === 'DA_LIEN_HE' && !docData.contactedAt) {
-      updatedDocData.contactedAt = nowTs;
+      updatedDocData.contactedAt = nowDate;
     }
 
     if (newStatus === 'THANH_CONG' || newStatus === 'KHONG_THANH_CONG') {
-      updatedDocData.resolvedAt = nowTs;
+      updatedDocData.resolvedAt = nowDate;
       updatedDocData.resolution = note?.trim() || '';
     }
 
@@ -241,7 +229,7 @@ export function updateHandoverStatusFirestore(
     existingHistory.push({
       status: newStatus,
       actor,
-      timestamp: nowTs,
+      timestamp: nowDate,
       note: note?.trim() || ''
     });
     updatedDocData.history = existingHistory;
@@ -253,3 +241,4 @@ export function updateHandoverStatusFirestore(
 
   return record;
 }
+

@@ -1,0 +1,202 @@
+[
+  {
+    "id": "gq-01",
+    "question": "Bảng giá tập gym tại The Shine Fitness Tân Bình bao nhiêu một tháng?",
+    "expectedCategory": "PRICE",
+    "expectedDocIds": ["kb-pricing-001"],
+    "shouldHandover": false,
+    "description": "Hỏi bảng giá chung chuẩn ngữ pháp"
+  },
+  {
+    "id": "gq-02",
+    "question": "gia tap gym the shine bao nhieu 1 thang shop",
+    "expectedCategory": "PRICE",
+    "expectedDocIds": ["kb-pricing-001"],
+    "shouldHandover": false,
+    "description": "Hỏi giá không dấu + từ lóng shop"
+  },
+  {
+    "id": "gq-03",
+    "question": "Gói tập 12 tháng có được tặng thêm tháng hay giảm giá không?",
+    "expectedCategory": "PRICE",
+    "expectedDocIds": ["kb-pricing-001"],
+    "shouldHandover": false,
+    "description": "Hỏi giá và ưu đãi gói 12 tháng"
+  },
+  {
+    "id": "gq-04",
+    "question": "Thuê huấn luyện viên cá nhân PT 1 kèm 1 giá bao nhiêu 1 buổi?",
+    "expectedCategory": "PRICE",
+    "expectedDocIds": ["kb-pricing-001", "kb-trainer-001"],
+    "shouldHandover": false,
+    "description": "Hỏi giá gói thuê PT kèm riêng"
+  },
+  {
+    "id": "gq-05",
+    "question": "Giờ mở cửa và đóng cửa của phòng tập The Shine là mấy giờ?",
+    "expectedCategory": "SCHEDULE",
+    "expectedDocIds": ["kb-schedule-001"],
+    "shouldHandover": false,
+    "description": "Hỏi thời gian hoạt động phòng tập"
+  },
+  {
+    "id": "gq-06",
+    "question": "phong tap mo cua may gio vay ad, chu nhat co mo k",
+    "expectedCategory": "SCHEDULE",
+    "expectedDocIds": ["kb-schedule-001"],
+    "shouldHandover": false,
+    "description": "Hỏi lịch mở cửa không dấu và hỏi chủ nhật"
+  },
+  {
+    "id": "gq-07",
+    "question": "Lịch học các lớp Yoga và Zumba trong tuần tại cơ sở Hoàng Hoa Thám?",
+    "expectedCategory": "SCHEDULE",
+    "expectedDocIds": ["kb-schedule-001"],
+    "shouldHandover": false,
+    "description": "Hỏi lịch lớp nhóm Group X / Yoga"
+  },
+  {
+    "id": "gq-08",
+    "question": "Đội ngũ huấn luyện viên PT tại The Shine có bằng cấp chứng chỉ quốc tế gì?",
+    "expectedCategory": "TRAINER",
+    "expectedDocIds": ["kb-trainer-001"],
+    "shouldHandover": false,
+    "description": "Hỏi thông tin bằng cấp chuyên môn của HLV"
+  },
+  {
+    "id": "gq-09",
+    "question": "co pt nu kem rieng cho nu k shop",
+    "expectedCategory": "TRAINER",
+    "expectedDocIds": ["kb-trainer-001"],
+    "shouldHandover": false,
+    "description": "Hỏi PT nữ không dấu viết tắt"
+  },
+  {
+    "id": "gq-10",
+    "question": "PT có hỗ trợ lên thực đơn ăn uống dinh dưỡng giảm cân không?",
+    "expectedCategory": "TRAINER",
+    "expectedDocIds": ["kb-trainer-001"],
+    "shouldHandover": false,
+    "description": "Hỏi dịch vụ dinh dưỡng kèm theo của PT"
+  },
+  {
+    "id": "gq-11",
+    "question": "Phòng tập có phòng xông hơi sauna và bãi giữ xe ô tô xe máy không?",
+    "expectedCategory": "FACILITY",
+    "expectedDocIds": ["kb-facility-001"],
+    "shouldHandover": false,
+    "description": "Hỏi tiện ích xông hơi và giữ xe"
+  },
+  {
+    "id": "gq-12",
+    "question": "dia chi phong tap the shine o dau tan binh",
+    "expectedCategory": "FACILITY",
+    "expectedDocIds": ["kb-facility-001"],
+    "shouldHandover": false,
+    "description": "Hỏi địa chỉ vị trí phòng gym không dấu"
+  },
+  {
+    "id": "gq-13",
+    "question": "Trang thiết bị máy móc tập gym tại phòng thuộc thương hiệu nào?",
+    "expectedCategory": "FACILITY",
+    "expectedDocIds": ["kb-facility-001"],
+    "shouldHandover": false,
+    "description": "Hỏi về máy móc dụng cụ tập luyện"
+  },
+  {
+    "id": "gq-14",
+    "question": "Quy định bảo lưu thẻ tập khi đi công tác hoặc bị ốm như thế nào?",
+    "expectedCategory": "POLICY",
+    "expectedDocIds": ["kb-policy-001"],
+    "shouldHandover": false,
+    "description": "Hỏi chính sách bảo lưu thẻ tập"
+  },
+  {
+    "id": "gq-15",
+    "question": "Tôi có được chuyển nhượng gói tập cho bạn bè hoặc người thân không?",
+    "expectedCategory": "POLICY",
+    "expectedDocIds": ["kb-policy-001"],
+    "shouldHandover": false,
+    "description": "Hỏi chính sách chuyển nhượng thẻ tập"
+  },
+  {
+    "id": "gq-16",
+    "question": "Quy định trang phục khi vào phòng tập gym và yoga là gì?",
+    "expectedCategory": "POLICY",
+    "expectedDocIds": ["kb-policy-001"],
+    "shouldHandover": false,
+    "description": "Hỏi nội quy trang phục phòng tập"
+  },
+  {
+    "id": "gq-17",
+    "question": "Tôi muốn đăng ký tập thử miễn phí 03 ngày có được không?",
+    "expectedCategory": "TRIAL",
+    "expectedDocIds": ["kb-trial-001"],
+    "shouldHandover": false,
+    "description": "Hỏi chương trình trải nghiệm tập thử 0Đ"
+  },
+  {
+    "id": "gq-18",
+    "question": "dang ky tap thu co can mang theo cccd hay giay to gi k",
+    "expectedCategory": "TRIAL",
+    "expectedDocIds": ["kb-trial-001"],
+    "shouldHandover": false,
+    "description": "Hỏi thủ tục đăng ký tập thử không dấu"
+  },
+  {
+    "id": "gq-19",
+    "question": "Tập thử có được đo chỉ số cơ mỡ InBody và hướng dẫn máy không?",
+    "expectedCategory": "TRIAL",
+    "expectedDocIds": ["kb-trial-001"],
+    "shouldHandover": false,
+    "description": "Hỏi quyền lợi đo InBody khi tập thử"
+  },
+  {
+    "id": "gq-20",
+    "question": "Tôi muốn chốt luôn hợp đồng gói Diamond 2 năm, chiết khấu bao nhiêu gọi lại số 0903123456?",
+    "expectedCategory": "PRICE",
+    "expectedDocIds": ["kb-pricing-001"],
+    "shouldHandover": true,
+    "description": "Ý định chốt gói giá trị cao cần chuyển giao tư vấn viên ngay"
+  },
+  {
+    "id": "gq-21",
+    "question": "Tôi bị đau cột sống thắt lưng và thoái hóa đốt sống cổ có tập tạ được không?",
+    "expectedCategory": "NONE",
+    "expectedDocIds": [],
+    "shouldHandover": true,
+    "description": "Cảnh báo sức khỏe y tế (Health Risk) - Phải kích hoạt Handover chuyên gia"
+  },
+  {
+    "id": "gq-22",
+    "question": "Tôi bị chấn thương rách dây chằng gối khi tập hôm qua, cần quản lý hỗ trợ gấp!",
+    "expectedCategory": "NONE",
+    "expectedDocIds": [],
+    "shouldHandover": true,
+    "description": "Sự cố chấn thương khẩn cấp - Phải kích hoạt Handover"
+  },
+  {
+    "id": "gq-23",
+    "question": "Tôi muốn khiếu nại thái độ phục vụ của nhân viên lễ tân và HLV chiều nay rất thô lỗ!",
+    "expectedCategory": "NONE",
+    "expectedDocIds": [],
+    "shouldHandover": true,
+    "description": "Khiếu nại dịch vụ (Complaint) - Phải kích hoạt Handover quản lý"
+  },
+  {
+    "id": "gq-24",
+    "question": "Cho tôi gặp trực tiếp nhân viên tư vấn người thật để trao đổi ngay bây giờ",
+    "expectedCategory": "NONE",
+    "expectedDocIds": [],
+    "shouldHandover": true,
+    "description": "Yêu cầu gặp người thật trực tiếp (Request Human)"
+  },
+  {
+    "id": "gq-25",
+    "question": "Ở đây có bán thực phẩm chức năng protein bar và nước tăng lực nhập khẩu không?",
+    "expectedCategory": "FACILITY",
+    "expectedDocIds": ["kb-facility-001"],
+    "shouldHandover": false,
+    "description": "Hỏi quầy bar và thực phẩm bổ sung"
+  }
+]

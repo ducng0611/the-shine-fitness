@@ -1317,16 +1317,45 @@ async function startServer() {
 
       const ragIndexInfo = loadIndex();
       const handoverKpis = getHandoverKpis();
+      const handoverQueueRecords = getHandoverQueue();
 
-      // Valid Lead & Conversion Rate calculation
-      const validLeadSessions = new Set<string>();
+      // Valid VN Mobile Phone Regex: 0 or +84 followed by 9-digit valid mobile prefix (3x, 5x, 7x, 8x, 9x)
+      const VN_MOBILE_REGEX = /(?:\+84|0)(?:3[2-9]|5[25689]|7[06-9]|8[1-9]|9[0-9])\d{7}\b/;
+      const hasValidVnPhone = (text: string): boolean => {
+        if (!text) return false;
+        const normalized = text.replace(/[\s.-]/g, '');
+        return VN_MOBILE_REGEX.test(normalized) || /(?:\+84|0)[35789]\d{8}\b/.test(normalized);
+      };
+
+      // Set of sessions that have a handover record
+      const handoverSessionIds = new Set<string>();
+      handoverQueueRecords.forEach(h => {
+        if (h.sessionId) handoverSessionIds.add(h.sessionId);
+      });
       logs.forEach(l => {
-        if (l.sessionId && (
-          l.handoverTag === 'HOT_LEAD_OR_NEGOTIATION' ||
-          (l.intent && l.intent.toUpperCase() === 'TRIAL') ||
-          (l.intent && l.intent.toUpperCase() === 'PRICE')
-        )) {
-          validLeadSessions.add(l.sessionId);
+        if (l.sessionId && l.handoverTag && l.handoverTag.trim().length > 0) {
+          handoverSessionIds.add(l.sessionId);
+        }
+      });
+
+      // Valid Lead Rate: Số phiên có bản ghi handover KÈM số điện thoại Việt Nam hợp lệ / tổng số phiên
+      // Không tính phiên chỉ có intent PRICE hoặc TRIAL
+      const validLeadSessions = new Set<string>();
+      
+      // Check handover records text (summary, notes, history)
+      handoverQueueRecords.forEach(h => {
+        const textToCheck = `${h.summary || ''} ${h.resolution || ''} ${h.history?.map(item => item.note || '').join(' ') || ''}`;
+        if (h.sessionId && hasValidVnPhone(textToCheck)) {
+          validLeadSessions.add(h.sessionId);
+        }
+      });
+
+      // Check session logs text for sessions with handover
+      logs.forEach(l => {
+        if (l.sessionId && handoverSessionIds.has(l.sessionId)) {
+          if (hasValidVnPhone(l.userMessage) || hasValidVnPhone(l.botResponse)) {
+            validLeadSessions.add(l.sessionId);
+          }
         }
       });
 
@@ -1339,13 +1368,23 @@ async function startServer() {
         ? Number(((handoverKpis.successHandovers / validLeadCount) * 100).toFixed(1))
         : (handoverKpis.handoverSuccessRate || 0);
 
+      // Feedback & Satisfaction CSAT: Deduplicate by keeping only the LATEST rating per messageId
       const feedbacks = getChatFeedbacks();
-      const totalFeedbacks = feedbacks.length;
-      const likeCount = feedbacks.filter(f => f.feedback === 'like').length;
-      const dislikeCount = feedbacks.filter(f => f.feedback === 'dislike').length;
-      const satisfactionRate = totalFeedbacks > 0
+      const latestFeedbackByMessage = new Map<string, typeof feedbacks[0]>();
+      for (const fb of feedbacks) {
+        const key = fb.messageId || fb.id;
+        const existing = latestFeedbackByMessage.get(key);
+        if (!existing || new Date(fb.createdAt).getTime() >= new Date(existing.createdAt).getTime()) {
+          latestFeedbackByMessage.set(key, fb);
+        }
+      }
+      const deduplicatedFeedbacks = Array.from(latestFeedbackByMessage.values());
+      const totalFeedbacks = deduplicatedFeedbacks.length;
+      const likeCount = deduplicatedFeedbacks.filter(f => f.feedback === 'like').length;
+      const dislikeCount = deduplicatedFeedbacks.filter(f => f.feedback === 'dislike').length;
+      const satisfactionRate: number | null = totalFeedbacks > 0
         ? Number(((likeCount / totalFeedbacks) * 100).toFixed(1))
-        : 100;
+        : null;
 
       res.json({
         logs,
@@ -1387,6 +1426,42 @@ async function startServer() {
     } catch (error: any) {
       console.error("Error fetching chat logs:", error);
       res.status(500).json({ error: error.message || "Failed to fetch chat logs" });
+    }
+  });
+
+  // GET /api/admin/rag-eval (Returns offline RAG evaluation metrics Precision@K, Recall@K, HitRate@K)
+  app.get("/api/admin/rag-eval", requireAuth, requireAdmin, (req: AuthRequest, res) => {
+    try {
+      const resultPath = path.join(process.cwd(), 'data', 'eval', 'latest_result.json');
+      if (fs.existsSync(resultPath)) {
+        const content = fs.readFileSync(resultPath, 'utf-8');
+        return res.json(JSON.parse(content));
+      }
+      res.json({
+        evaluatedAt: null,
+        benchmarkVersion: "1.0.0",
+        totalQuestions: 0,
+        retrievalMetrics: {
+          precisionAt1: 0,
+          precisionAt3: 0,
+          precisionAt5: 0,
+          recallAt1: 0,
+          recallAt3: 0,
+          recallAt5: 0,
+          hitRateAt1: 0,
+          hitRateAt3: 0,
+          hitRateAt5: 0
+        },
+        handoverMetrics: {
+          accuracy: 0,
+          precision: 0,
+          recall: 0
+        },
+        categoryBreakdown: {}
+      });
+    } catch (error: any) {
+      console.error("Error loading RAG eval report:", error);
+      res.status(500).json({ error: error.message || "Failed to load RAG evaluation report" });
     }
   });
 
@@ -1513,14 +1588,14 @@ async function startServer() {
   });
 
   // MEMBER LOGIN
-  app.post("/api/auth/login", (req, res) => {
+  app.post("/api/auth/login", async (req, res) => {
     try {
       const { email, password } = req.body;
       if (!email || !password) {
         return res.status(400).json({ error: "Vui lòng nhập Email và Mật khẩu." });
       }
 
-      const result = loginMember(email, password);
+      const result = await loginMember(email, password);
       if (result.error) {
         return res.status(401).json({ error: result.error });
       }

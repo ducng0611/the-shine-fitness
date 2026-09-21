@@ -3,6 +3,7 @@ import path from 'path';
 import { adminDb } from '../server/src/lib/firebase-admin';
 import { Timestamp } from 'firebase-admin/firestore';
 import { sanitizePii } from '../server/src/chatLogStorage';
+import { hashPassword } from '../server/src/passwordValidation';
 
 function parseCsvLine(line: string): string[] {
   const result: string[] = [];
@@ -46,6 +47,7 @@ async function runMigration() {
   const dataDir = path.join(process.cwd(), 'data');
   const chatLogsCsv = path.join(dataDir, 'chat_logs.csv');
   const handoverCsv = path.join(dataDir, 'handover_queue.csv');
+  const membersCsv = path.join(dataDir, 'members.csv');
 
   // 1. MIGRATION CHAT LOGS
   let chatRead = 0;
@@ -217,12 +219,98 @@ async function runMigration() {
     }
   }
 
+  // 3. MIGRATION MEMBERS WITH SCRYPT PASSWORD HASHING
+  let memRead = 0;
+  let memHashed = 0;
+  let memWritten = 0;
+  let memSkipped = 0;
+  let memErrors = 0;
+  const sampleMemDocs: Record<string, unknown>[] = [];
+
+  if (fs.existsSync(membersCsv)) {
+    const content = fs.readFileSync(membersCsv, 'utf-8');
+    const lines = content.split('\n').filter((l) => l.trim().length > 0);
+    if (lines.length > 1) {
+      for (let i = 1; i < lines.length; i++) {
+        const row = parseCsvLine(lines[i]);
+        if (row.length < 5) continue;
+        memRead++;
+
+        const [
+          id,
+          createdAt,
+          fullName,
+          email,
+          phone,
+          rawPassword,
+          memberCode,
+          membershipTier,
+          startDate,
+          expiryDate,
+          status,
+          gender
+        ] = row;
+
+        // Hash plaintext password using crypto.scrypt
+        const passwordHash = await hashPassword(rawPassword || 'Shine@2025');
+        memHashed++;
+
+        // Prepare document payload: NO raw password field
+        const docData: Record<string, unknown> = {
+          id: id || `MEM-${Date.now()}`,
+          fullName: fullName || '',
+          email: (email || '').trim().toLowerCase(),
+          phone: phone || '',
+          passwordHash, // Secure scrypt hash
+          memberCode: memberCode || '',
+          membershipTier: membershipTier || 'Premium',
+          startDate: startDate || '',
+          expiryDate: expiryDate || '',
+          status: status || 'Active',
+          gender: gender || 'Nam'
+        };
+
+        if (createdAt) {
+          try {
+            docData.createdAt = Timestamp.fromDate(new Date(createdAt));
+          } catch {
+            docData.createdAt = Timestamp.now();
+          }
+        } else {
+          docData.createdAt = Timestamp.now();
+        }
+
+        if (sampleMemDocs.length < 3) {
+          sampleMemDocs.push(docData);
+        }
+
+        if (isApply) {
+          try {
+            const docRef = adminDb.collection('members').doc(docData.id as string);
+            const snap = await docRef.get();
+            if (snap.exists) {
+              memSkipped++;
+            } else {
+              await docRef.set(docData);
+              memWritten++;
+            }
+          } catch (err) {
+            console.error(`Lỗi khi ghi members doc ${docData.id}:`, err);
+            memErrors++;
+          }
+        }
+      }
+    }
+  }
+
   // PRINT RESULTS
   console.log('--- MẪU BẢN GHI DỮ LIỆU ĐÃ CHUYỂN ĐỔI KIỂU ---');
   console.log('1. Chat Logs (3 mẫu):');
   console.log(JSON.stringify(sampleChatDocs, null, 2));
   console.log('\n2. Handover Queue (3 mẫu):');
   console.log(JSON.stringify(sampleHoDocs, null, 2));
+  console.log('\n3. Members (Hashed with scrypt, 3 mẫu):');
+  console.log(JSON.stringify(sampleMemDocs, null, 2));
 
   console.log('\n================ TỔNG KẾT MIGRATION ================');
   console.log(`📊 CHAT_LOGS:`);
@@ -243,6 +331,17 @@ async function runMigration() {
     console.log(`   - Số bản ghi bị lỗi: ${hoErrors}`);
   } else {
     console.log(`   - [Dry-Run] Số bản ghi sẵn sàng để chuyển sang Firestore: ${hoRead}`);
+  }
+
+  console.log(`\n📊 MEMBERS (Password Hashing with crypto.scrypt):`);
+  console.log(`   - Tổng bản ghi đọc từ CSV: ${memRead}`);
+  console.log(`   - Số mật khẩu đã mã hóa bằng scrypt: ${memHashed}`);
+  if (isApply) {
+    console.log(`   - Số bản ghi mới đã ghi vào Firestore: ${memWritten}`);
+    console.log(`   - Số bản ghi bỏ qua (đã tồn tại): ${memSkipped}`);
+    console.log(`   - Số bản ghi bị lỗi: ${memErrors}`);
+  } else {
+    console.log(`   - [Dry-Run] Số tài khoản hội viên sẵn sàng chuyển sang Firestore: ${memRead}`);
   }
 
   console.log('====================================================');

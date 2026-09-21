@@ -9,6 +9,7 @@
     "start": "node dist/server.cjs",
     "clean": "rm -rf dist server.js",
     "build:index": "tsx scripts/build_index.ts",
+    "eval:rag": "tsx scripts/eval_rag.ts",
     "backfill:owner": "tsx scripts/backfill_owner_field.ts",
     "migrate:storage": "tsx scripts/migrate_csv_to_firestore.ts",
     "lint": "tsc --noEmit",

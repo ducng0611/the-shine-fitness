@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { inferGenderFromName } from './genderHelper';
+import { hashPasswordSync, verifyPassword } from './passwordValidation';
 
 export interface RegistrationRecord {
   id: string;
@@ -325,13 +326,15 @@ export function addMember(data: { fullName: string; email: string; phone: string
   const status = 'Active';
   const gender = data.gender ? data.gender.trim() : (inferGenderFromName(data.fullName) || 'Nam');
 
+  const hashedPassword = hashPasswordSync(data.password.trim());
+
   const memberRow: MemberRecord = {
     id,
     createdAt,
     fullName: data.fullName.trim(),
     email: cleanEmail,
     phone: data.phone.trim(),
-    password: data.password.trim(),
+    password: hashedPassword,
     memberCode,
     membershipTier: tier,
     startDate,
@@ -371,14 +374,19 @@ export function addMember(data: { fullName: string; email: string; phone: string
 }
 
 // Authenticate member
-export function loginMember(email: string, password: string): { member?: Omit<MemberRecord, 'password'>; error?: string } {
+export async function loginMember(email: string, password: string): Promise<{ member?: Omit<MemberRecord, 'password'>; error?: string }> {
   initCsvStorage();
   const members = getMembers();
   const cleanEmail = email.trim().toLowerCase();
   const cleanPass = password.trim();
 
-  const user = members.find(m => m.email === cleanEmail && m.password === cleanPass);
+  const user = members.find(m => m.email === cleanEmail);
   if (!user) {
+    return { error: 'Email hoặc mật khẩu không chính xác.' };
+  }
+
+  const isMatch = await verifyPassword(cleanPass, user.password);
+  if (!isMatch) {
     return { error: 'Email hoặc mật khẩu không chính xác.' };
   }
 

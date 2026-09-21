@@ -1,14 +1,4 @@
-import {
-  collection,
-  getDocs,
-  doc,
-  setDoc,
-  query,
-  where,
-  orderBy,
-  Timestamp
-} from 'firebase/firestore';
-import { serverDb } from './lib/firebase-db';
+import { adminDb } from './lib/firebase-admin';
 import { ChatLogRecord, ChatFeedbackRecord, sanitizePii } from './chatLogStorage';
 
 const chatLogsCache: ChatLogRecord[] = [];
@@ -50,11 +40,10 @@ function mapDocToRecord(id: string, data: Record<string, unknown>): ChatLogRecor
 
 export async function loadChatLogsFromFirestore(): Promise<ChatLogRecord[]> {
   try {
-    const q = query(collection(serverDb, 'chat_logs'), orderBy('timestamp', 'asc'));
-    const snap = await getDocs(q);
+    const snap = await adminDb.collection('chat_logs').orderBy('timestamp', 'asc').get();
     const records: ChatLogRecord[] = [];
     snap.forEach((docSnap) => {
-      records.push(mapDocToRecord(docSnap.id, docSnap.data()));
+      records.push(mapDocToRecord(docSnap.id, docSnap.data() as Record<string, unknown>));
     });
     chatLogsCache.length = 0;
     chatLogsCache.push(...records);
@@ -67,11 +56,10 @@ export async function loadChatLogsFromFirestore(): Promise<ChatLogRecord[]> {
 
 export async function loadChatFeedbacksFromFirestore(): Promise<ChatFeedbackRecord[]> {
   try {
-    const q = query(collection(serverDb, 'chat_feedback'), orderBy('createdAt', 'asc'));
-    const snap = await getDocs(q);
+    const snap = await adminDb.collection('chat_feedback').orderBy('createdAt', 'asc').get();
     const records: ChatFeedbackRecord[] = [];
     snap.forEach((docSnap) => {
-      const data = docSnap.data();
+      const data = docSnap.data() as Record<string, unknown>;
       let createdStr = new Date().toISOString();
       if (
         data.createdAt &&
@@ -148,11 +136,11 @@ export function appendChatLogFirestore(
   // Document payload for Firestore
   const docData = {
     ...fullRecord,
-    timestamp: Timestamp.fromDate(new Date(timestampIso))
+    timestamp: new Date(timestampIso)
   };
 
   // Write asynchronously to Firestore (N3 error handling: console.error and proceed)
-  setDoc(doc(serverDb, 'chat_logs', fullRecord.id), docData).catch((err: unknown) => {
+  adminDb.collection('chat_logs').doc(fullRecord.id).set(docData).catch((err: unknown) => {
     console.error('[ChatLogFirestoreStorage] Error writing chat_logs doc to Firestore:', err);
   });
 
@@ -177,21 +165,20 @@ export function getChatLogsFirestore(filter?: { from?: string; to?: string }): C
 }
 
 export async function queryChatLogsFromFirestore(filter?: { from?: string; to?: string }): Promise<ChatLogRecord[]> {
-  const constraints = [];
+  let queryRef: FirebaseFirestore.Query = adminDb.collection('chat_logs');
   if (filter?.from) {
     const fromDate = new Date(`${filter.from}T00:00:00.000Z`);
-    constraints.push(where('timestamp', '>=', Timestamp.fromDate(fromDate)));
+    queryRef = queryRef.where('timestamp', '>=', fromDate);
   }
   if (filter?.to) {
     const toDate = new Date(`${filter.to}T23:59:59.999Z`);
-    constraints.push(where('timestamp', '<=', Timestamp.fromDate(toDate)));
+    queryRef = queryRef.where('timestamp', '<=', toDate);
   }
 
-  const q = query(collection(serverDb, 'chat_logs'), ...constraints);
-  const snap = await getDocs(q);
+  const snap = await queryRef.get();
   const records: ChatLogRecord[] = [];
   snap.forEach((docSnap) => {
-    records.push(mapDocToRecord(docSnap.id, docSnap.data()));
+    records.push(mapDocToRecord(docSnap.id, docSnap.data() as Record<string, unknown>));
   });
   return records;
 }
@@ -218,10 +205,10 @@ export function saveChatFeedbackFirestore(record: {
 
   const docData = {
     ...fullRecord,
-    createdAt: Timestamp.fromDate(new Date(createdAtIso))
+    createdAt: new Date(createdAtIso)
   };
 
-  setDoc(doc(serverDb, 'chat_feedback', fullRecord.id), docData).catch((err: unknown) => {
+  adminDb.collection('chat_feedback').doc(fullRecord.id).set(docData).catch((err: unknown) => {
     console.error('[ChatLogFirestoreStorage] Error writing chat_feedback doc to Firestore:', err);
   });
 
@@ -231,4 +218,5 @@ export function saveChatFeedbackFirestore(record: {
 export function getChatFeedbacksFirestore(): ChatFeedbackRecord[] {
   return [...chatFeedbacksCache];
 }
+
 

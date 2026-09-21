@@ -1,0 +1,496 @@
+{
+  "evaluatedAt": "2026-09-21T10:33:33.616Z",
+  "benchmarkVersion": "1.0.0",
+  "totalQuestions": 25,
+  "ragIndex": {
+    "chunkCount": 28,
+    "builtAt": "2026-09-20T19:14:01.227Z",
+    "model": "gemini-embedding-001"
+  },
+  "retrievalMetrics": {
+    "precisionAt1": 76,
+    "precisionAt3": 65.3,
+    "precisionAt5": 54.4,
+    "recallAt1": 76,
+    "recallAt3": 96,
+    "recallAt5": 96,
+    "hitRateAt1": 76,
+    "hitRateAt3": 96,
+    "hitRateAt5": 96
+  },
+  "handoverMetrics": {
+    "accuracy": 96,
+    "precision": 100,
+    "recall": 80,
+    "confusionMatrix": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 1,
+      "tn": 20
+    }
+  },
+  "categoryBreakdown": {
+    "PRICE": {
+      "count": 5,
+      "hitRate1": 60,
+      "hitRate3": 100,
+      "precisionAt3": 46.7,
+      "recallAt3": 100
+    },
+    "SCHEDULE": {
+      "count": 3,
+      "hitRate1": 100,
+      "hitRate3": 100,
+      "precisionAt3": 77.8,
+      "recallAt3": 100
+    },
+    "TRAINER": {
+      "count": 3,
+      "hitRate1": 66.7,
+      "hitRate3": 66.7,
+      "precisionAt3": 44.4,
+      "recallAt3": 66.7
+    },
+    "FACILITY": {
+      "count": 4,
+      "hitRate1": 75,
+      "hitRate3": 100,
+      "precisionAt3": 75,
+      "recallAt3": 100
+    },
+    "POLICY": {
+      "count": 3,
+      "hitRate1": 33.3,
+      "hitRate3": 100,
+      "precisionAt3": 44.4,
+      "recallAt3": 100
+    },
+    "TRIAL": {
+      "count": 3,
+      "hitRate1": 100,
+      "hitRate3": 100,
+      "precisionAt3": 66.7,
+      "recallAt3": 100
+    },
+    "NONE": {
+      "count": 4,
+      "hitRate1": 100,
+      "hitRate3": 100,
+      "precisionAt3": 100,
+      "recallAt3": 100
+    }
+  },
+  "sampleEvaluations": [
+    {
+      "id": "gq-01",
+      "question": "Bảng giá tập gym tại The Shine Fitness Tân Bình bao nhiêu một tháng?",
+      "expectedCategory": "PRICE",
+      "expectedDocIds": [
+        "kb-pricing-001"
+      ],
+      "shouldHandover": false,
+      "handoverTriggered": false,
+      "handoverTag": "",
+      "retrievedDocIds": [
+        "kb-pricing-001",
+        "kb-schedule-001",
+        "kb-policy-001",
+        "kb-trainer-001",
+        "kb-trial-001"
+      ],
+      "retrievedChunkIds": [
+        "kb-pricing-001-chunk-2",
+        "kb-schedule-001-chunk-1",
+        "kb-policy-001-chunk-1",
+        "kb-trainer-001-chunk-1",
+        "kb-trial-001-chunk-1"
+      ],
+      "topScores": [
+        0.8658,
+        0.7744,
+        0.7705,
+        0.7569,
+        0.7546
+      ],
+      "precisionAt1": 1,
+      "precisionAt3": 0.3333,
+      "precisionAt5": 0.2,
+      "recallAt1": 1,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "hitAt1": 1,
+      "hitAt3": 1,
+      "hitAt5": 1
+    },
+    {
+      "id": "gq-02",
+      "question": "gia tap gym the shine bao nhieu 1 thang shop",
+      "expectedCategory": "PRICE",
+      "expectedDocIds": [
+        "kb-pricing-001"
+      ],
+      "shouldHandover": false,
+      "handoverTriggered": false,
+      "handoverTag": "",
+      "retrievedDocIds": [
+        "kb-pricing-001",
+        "kb-schedule-001",
+        "kb-facility-001",
+        "kb-policy-001",
+        "kb-trial-001"
+      ],
+      "retrievedChunkIds": [
+        "kb-pricing-001-chunk-2",
+        "kb-schedule-001-chunk-1",
+        "kb-facility-001-chunk-1",
+        "kb-policy-001-chunk-1",
+        "kb-trial-001-chunk-1"
+      ],
+      "topScores": [
+        0.8389,
+        0.7806,
+        0.7735,
+        0.7691,
+        0.7539
+      ],
+      "precisionAt1": 1,
+      "precisionAt3": 0.3333,
+      "precisionAt5": 0.2,
+      "recallAt1": 1,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "hitAt1": 1,
+      "hitAt3": 1,
+      "hitAt5": 1
+    },
+    {
+      "id": "gq-03",
+      "question": "Gói tập 12 tháng có được tặng thêm tháng hay giảm giá không?",
+      "expectedCategory": "PRICE",
+      "expectedDocIds": [
+        "kb-pricing-001"
+      ],
+      "shouldHandover": false,
+      "handoverTriggered": false,
+      "handoverTag": "",
+      "retrievedDocIds": [
+        "kb-policy-001",
+        "kb-trial-001",
+        "kb-pricing-001",
+        "kb-pricing-001",
+        "kb-pricing-001"
+      ],
+      "retrievedChunkIds": [
+        "kb-policy-001-chunk-2",
+        "kb-trial-001-chunk-3",
+        "kb-pricing-001-chunk-3",
+        "kb-pricing-001-chunk-7",
+        "kb-pricing-001-chunk-5"
+      ],
+      "topScores": [
+        0.7369,
+        0.7339,
+        0.7298,
+        0.7277,
+        0.7192
+      ],
+      "precisionAt1": 0,
+      "precisionAt3": 0.3333,
+      "precisionAt5": 0.6,
+      "recallAt1": 0,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "hitAt1": 0,
+      "hitAt3": 1,
+      "hitAt5": 1
+    },
+    {
+      "id": "gq-04",
+      "question": "Thuê huấn luyện viên cá nhân PT 1 kèm 1 giá bao nhiêu 1 buổi?",
+      "expectedCategory": "PRICE",
+      "expectedDocIds": [
+        "kb-pricing-001",
+        "kb-trainer-001"
+      ],
+      "shouldHandover": false,
+      "handoverTriggered": false,
+      "handoverTag": "",
+      "retrievedDocIds": [
+        "kb-trial-001",
+        "kb-trainer-001",
+        "kb-pricing-001",
+        "kb-trainer-001",
+        "kb-schedule-001"
+      ],
+      "retrievedChunkIds": [
+        "kb-trial-001-chunk-3",
+        "kb-trainer-001-chunk-1",
+        "kb-pricing-001-chunk-2",
+        "kb-trainer-001-chunk-2",
+        "kb-schedule-001-chunk-3"
+      ],
+      "topScores": [
+        0.733,
+        0.7236,
+        0.7141,
+        0.6951,
+        0.6928
+      ],
+      "precisionAt1": 0,
+      "precisionAt3": 0.6667,
+      "precisionAt5": 0.6,
+      "recallAt1": 0,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "hitAt1": 0,
+      "hitAt3": 1,
+      "hitAt5": 1
+    },
+    {
+      "id": "gq-05",
+      "question": "Giờ mở cửa và đóng cửa của phòng tập The Shine là mấy giờ?",
+      "expectedCategory": "SCHEDULE",
+      "expectedDocIds": [
+        "kb-schedule-001"
+      ],
+      "shouldHandover": false,
+      "handoverTriggered": false,
+      "handoverTag": "",
+      "retrievedDocIds": [
+        "kb-schedule-001",
+        "kb-pricing-001",
+        "kb-facility-001",
+        "kb-policy-001",
+        "kb-trainer-001"
+      ],
+      "retrievedChunkIds": [
+        "kb-schedule-001-chunk-1",
+        "kb-pricing-001-chunk-2",
+        "kb-facility-001-chunk-1",
+        "kb-policy-001-chunk-1",
+        "kb-trainer-001-chunk-1"
+      ],
+      "topScores": [
+        0.8766,
+        0.8017,
+        0.8013,
+        0.7759,
+        0.7594
+      ],
+      "precisionAt1": 1,
+      "precisionAt3": 0.3333,
+      "precisionAt5": 0.2,
+      "recallAt1": 1,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "hitAt1": 1,
+      "hitAt3": 1,
+      "hitAt5": 1
+    },
+    {
+      "id": "gq-06",
+      "question": "phong tap mo cua may gio vay ad, chu nhat co mo k",
+      "expectedCategory": "SCHEDULE",
+      "expectedDocIds": [
+        "kb-schedule-001"
+      ],
+      "shouldHandover": false,
+      "handoverTriggered": false,
+      "handoverTag": "",
+      "retrievedDocIds": [
+        "kb-schedule-001",
+        "kb-schedule-001",
+        "kb-schedule-001",
+        "kb-schedule-001",
+        "kb-facility-001"
+      ],
+      "retrievedChunkIds": [
+        "kb-schedule-001-chunk-2",
+        "kb-schedule-001-chunk-1",
+        "kb-schedule-001-chunk-3",
+        "kb-schedule-001-chunk-4",
+        "kb-facility-001-chunk-4"
+      ],
+      "topScores": [
+        0.7033,
+        0.665,
+        0.6648,
+        0.6543,
+        0.6385
+      ],
+      "precisionAt1": 1,
+      "precisionAt3": 1,
+      "precisionAt5": 0.8,
+      "recallAt1": 1,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "hitAt1": 1,
+      "hitAt3": 1,
+      "hitAt5": 1
+    },
+    {
+      "id": "gq-07",
+      "question": "Lịch học các lớp Yoga và Zumba trong tuần tại cơ sở Hoàng Hoa Thám?",
+      "expectedCategory": "SCHEDULE",
+      "expectedDocIds": [
+        "kb-schedule-001"
+      ],
+      "shouldHandover": false,
+      "handoverTriggered": false,
+      "handoverTag": "",
+      "retrievedDocIds": [
+        "kb-schedule-001",
+        "kb-schedule-001",
+        "kb-schedule-001",
+        "kb-schedule-001",
+        "kb-facility-001"
+      ],
+      "retrievedChunkIds": [
+        "kb-schedule-001-chunk-4",
+        "kb-schedule-001-chunk-1",
+        "kb-schedule-001-chunk-3",
+        "kb-schedule-001-chunk-2",
+        "kb-facility-001-chunk-3"
+      ],
+      "topScores": [
+        0.7578,
+        0.7529,
+        0.7458,
+        0.6954,
+        0.6919
+      ],
+      "precisionAt1": 1,
+      "precisionAt3": 1,
+      "precisionAt5": 0.8,
+      "recallAt1": 1,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "hitAt1": 1,
+      "hitAt3": 1,
+      "hitAt5": 1
+    },
+    {
+      "id": "gq-08",
+      "question": "Đội ngũ huấn luyện viên PT tại The Shine có bằng cấp chứng chỉ quốc tế gì?",
+      "expectedCategory": "TRAINER",
+      "expectedDocIds": [
+        "kb-trainer-001"
+      ],
+      "shouldHandover": false,
+      "handoverTriggered": false,
+      "handoverTag": "",
+      "retrievedDocIds": [
+        "kb-trainer-001",
+        "kb-trainer-001",
+        "kb-facility-001",
+        "kb-pricing-001",
+        "kb-schedule-001"
+      ],
+      "retrievedChunkIds": [
+        "kb-trainer-001-chunk-1",
+        "kb-trainer-001-chunk-2",
+        "kb-facility-001-chunk-1",
+        "kb-pricing-001-chunk-2",
+        "kb-schedule-001-chunk-1"
+      ],
+      "topScores": [
+        0.8895,
+        0.8189,
+        0.7655,
+        0.7638,
+        0.7594
+      ],
+      "precisionAt1": 1,
+      "precisionAt3": 0.6667,
+      "precisionAt5": 0.4,
+      "recallAt1": 1,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "hitAt1": 1,
+      "hitAt3": 1,
+      "hitAt5": 1
+    },
+    {
+      "id": "gq-09",
+      "question": "co pt nu kem rieng cho nu k shop",
+      "expectedCategory": "TRAINER",
+      "expectedDocIds": [
+        "kb-trainer-001"
+      ],
+      "shouldHandover": false,
+      "handoverTriggered": false,
+      "handoverTag": "",
+      "retrievedDocIds": [
+        "kb-facility-001",
+        "kb-trial-001",
+        "kb-policy-001",
+        "kb-policy-001",
+        "kb-pricing-001"
+      ],
+      "retrievedChunkIds": [
+        "kb-facility-001-chunk-4",
+        "kb-trial-001-chunk-3",
+        "kb-policy-001-chunk-5",
+        "kb-policy-001-chunk-3",
+        "kb-pricing-001-chunk-7"
+      ],
+      "topScores": [
+        0.6356,
+        0.6317,
+        0.6309,
+        0.613,
+        0.6127
+      ],
+      "precisionAt1": 0,
+      "precisionAt3": 0,
+      "precisionAt5": 0,
+      "recallAt1": 0,
+      "recallAt3": 0,
+      "recallAt5": 0,
+      "hitAt1": 0,
+      "hitAt3": 0,
+      "hitAt5": 0
+    },
+    {
+      "id": "gq-10",
+      "question": "PT có hỗ trợ lên thực đơn ăn uống dinh dưỡng giảm cân không?",
+      "expectedCategory": "TRAINER",
+      "expectedDocIds": [
+        "kb-trainer-001"
+      ],
+      "shouldHandover": false,
+      "handoverTriggered": false,
+      "handoverTag": "",
+      "retrievedDocIds": [
+        "kb-trainer-001",
+        "kb-trainer-001",
+        "kb-trial-001",
+        "kb-trainer-001",
+        "kb-trainer-001"
+      ],
+      "retrievedChunkIds": [
+        "kb-trainer-001-chunk-1",
+        "kb-trainer-001-chunk-4",
+        "kb-trial-001-chunk-3",
+        "kb-trainer-001-chunk-2",
+        "kb-trainer-001-chunk-3"
+      ],
+      "topScores": [
+        0.6764,
+        0.6655,
+        0.6588,
+        0.6496,
+        0.6474
+      ],
+      "precisionAt1": 1,
+      "precisionAt3": 0.6667,
+      "precisionAt5": 0.8,
+      "recallAt1": 1,
+      "recallAt3": 1,
+      "recallAt5": 1,
+      "hitAt1": 1,
+      "hitAt3": 1,
+      "hitAt5": 1
+    }
+  ]
+}
