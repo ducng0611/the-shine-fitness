@@ -23,10 +23,12 @@ jobs:
       - name: Apply guarded integration edits
         run: node scripts/integrate_companion.mjs
       - name: Domain tests
-        run: node --test tests/companion.test.mjs
+        run: |
+          set -o pipefail
+          node --test tests/companion.test.mjs | tee companion-tests.txt
       - name: Commit integration on feature branch only
         run: |
-          git add server/src/index.ts src/App.tsx .env.example README.md firestore.rules
+          git add server/src/index.ts src/App.tsx .env.example README.md firestore.rules src/components/companion/CompanionChat.tsx server/src/companion/router.ts
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -37,7 +39,21 @@ jobs:
         run: |
           if [ -f package-lock.json ]; then npm ci --ignore-scripts; else npm install --ignore-scripts --package-lock=false; fi
       - name: Type check
-        run: npm run lint
+        run: |
+          set -o pipefail
+          npm run lint 2>&1 | tee companion-types.txt
       - name: Production build
         if: success() || failure()
-        run: npm run build
+        run: |
+          set -o pipefail
+          npm run build 2>&1 | tee companion-build.txt
+      - name: Save verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: companion-verification
+          path: |
+            companion-tests.txt
+            companion-types.txt
+            companion-build.txt
+          retention-days: 7
