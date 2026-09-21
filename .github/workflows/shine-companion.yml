@@ -1,55 +1,53 @@
-name: Shine Companion integration and checks
+name: Shine Companion checks
 on:
   push:
-    branches: [feat/shine-ai-companion]
+    branches: ['**']
     paths:
       - '.github/workflows/shine-companion.yml'
       - 'scripts/integrate_companion.mjs'
       - 'server/src/companion/**'
       - 'src/components/companion/**'
       - 'tests/companion.test.mjs'
+      - 'server/src/index.ts'
+      - 'src/App.tsx'
+      - 'firestore.rules'
+      - '.env.example'
+      - 'package.json'
+      - 'package-lock.json'
 permissions:
-  contents: write
+  contents: read
 concurrency:
-  group: shine-companion-preview
-  cancel-in-progress: false
+  group: shine-companion-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   verify:
-    if: github.ref == 'refs/heads/feat/shine-ai-companion'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: feat/shine-ai-companion
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Apply guarded integration edits
-        run: node scripts/integrate_companion.mjs
+          cache: npm
+      - name: Verify idempotent integration
+        run: |
+          node scripts/integrate_companion.mjs
+          git diff --exit-code -- server/src/index.ts src/App.tsx .env.example README.md firestore.rules src/components/companion/CompanionChat.tsx server/src/companion/router.ts
       - name: Domain tests
         run: |
           set -o pipefail
           node --test tests/companion.test.mjs | tee companion-tests.txt
-      - name: Reconcile existing manifest-lock mismatch
-        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-      - name: Commit integration and repaired lock on feature branch only
-        run: |
-          git add server/src/index.ts src/App.tsx .env.example README.md firestore.rules src/components/companion/CompanionChat.tsx server/src/companion/router.ts package-lock.json
-          if ! git diff --cached --quiet; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'build: reconcile existing lockfile and companion integration'
-            git push origin HEAD:feat/shine-ai-companion
-          fi
       - name: Install locked dependencies without lifecycle scripts
+        id: install
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Type check
         run: |
           set -o pipefail
           npm run lint 2>&1 | tee companion-types.txt
       - name: Production build
-        if: success() || failure()
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: |
           set -o pipefail
           npm run build 2>&1 | tee companion-build.txt
