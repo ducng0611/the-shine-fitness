@@ -1,3 +1,4 @@
+import { registerCompanionRoutes } from "./companion/router.ts";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import path from "path";
@@ -299,6 +300,8 @@ async function startServer() {
   });
 
   // Built-in middleware to parse JSON bodies
+  // Companion has its own authenticated parser and food-photo size limit.
+  registerCompanionRoutes(app);
   app.use(express.json());
 
   // Rate Limiter Configuration
@@ -416,6 +419,16 @@ async function startServer() {
       const { uid, email, phone, memberCode } = req.body;
       const requesterUid = req.user?.uid;
       if (!requesterUid) return res.status(401).json({ error: "Unauthorized" });
+
+      // SHINE_COMPANION_OWNER_LOOKUP
+      const lookupIsAdmin = Boolean(req.user?.email_verified &&
+        (process.env.ADMIN_EMAILS || '').split(',').map(value => value.trim().toLowerCase())
+          .filter(Boolean).includes((req.user?.email || '').trim().toLowerCase()));
+      if (!lookupIsAdmin) {
+        if (uid && uid !== requesterUid) return res.status(403).json({ error: 'Forbidden: owner-only member lookup' });
+        const ownMember = await adminDb.collection('members').doc(requesterUid).get();
+        return res.json({ success: true, member: ownMember.exists ? { ...ownMember.data(), uid: ownMember.id } : null });
+      }
 
       let found: any = null;
       if (uid) {

@@ -194,6 +194,7 @@ export function registerCompanionRoutes(app: Express) {
   r.get('/admin/catalogue', requireAdmin, wrap(async (_req, res) => { res.json(await catalogue() ?? { verified: false, equipment: [], exercises: [], nutritionTemplates: [] }); }));
   r.put('/admin/catalogue', requireAdmin, wrap(async (req, res) => {
     const body = obj(req.body), cat = { ...validateCatalogue(body.catalogue), revision: randomUUID(), reviewedByUid: req.user!.uid, updatedAt: new Date().toISOString() };
+    ensure(Buffer.byteLength(JSON.stringify(cat), 'utf8') < 900000, 'CATALOGUE_TOO_LARGE', 'Danh mục vượt giới hạn pilot. Chia nhỏ dữ liệu trước khi lưu.');
     await adminDb.runTransaction(async tx => { const snap = await tx.get(catalogRef()); ensure((snap.data()?.revision ?? null) === (body.expectedRevision ?? null), 'CATALOGUE_CONFLICT', 'Danh mục đã thay đổi; tải lại trước khi lưu.', 409); tx.set(catalogRef(), cat); }); res.json(cat);
   }));
   r.use((error: any, req: AuthRequest, res: Response, _next: NextFunction) => {

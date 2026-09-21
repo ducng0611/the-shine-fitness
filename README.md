@@ -221,3 +221,19 @@ Mỗi loại trigger có thời hạn cam kết phản hồi (SLA Target):
 ### 4. Ghi đĩa an toàn (Atomic File Writing)
 Mọi thao tác cập nhật trạng thái qua `PATCH /api/admin/handover-queue/:id` đều được bảo vệ bởi middleware `requireAuth`, sao lưu file CSV hiện tại vào `data/backup/handover_queue_backup_<timestamp>.csv` và thực hiện ghi qua file tạm (`.tmp`) rồi đổi tên để đảm bảo tính toàn vẹn dữ liệu.
 
+
+
+<!-- SHINE_COMPANION_ARCHITECTURE -->
+## Shine Companion: authenticated member AI pilot
+
+A separate member experience now accompanies the existing guest service chatbot. It adds explicit profile/consent, gym-constrained workout cards, actual-set confirmation, food text/photo drafts, sourced calorie arithmetic, a timezone-aware diary, nearby food lookup with location permission, and three controlled brand-personality styles.
+
+**This is a guarded pilot, not an already-deployed or clinically validated coaching product.** Detailed station inventory and floor directions are still required from gym management; the repository template is unverified and is never automatically enabled. Model extraction cannot write member logs. Real Firebase authentication and user confirmation are required.
+
+- [Architecture and techniques (Vietnamese)](docs/shine-companion-architecture.md)
+- [Setup, demo flows and acceptance checks (Vietnamese)](docs/shine-companion-rollout.md)
+- [Unverified catalogue template](data/companion/catalogue.template.json)
+- Domain tests: `node --test tests/companion.test.mjs`
+- Integration: `node scripts/integrate_companion.mjs` (idempotent)
+
+Both `SHINE_COMPANION_ENABLED` and the frontend build flag `VITE_SHINE_COMPANION_ENABLED` default to false. API credentials remain server-side. Existing service RAG is preserved; the companion uses structured personal retrieval, JSON-schema extraction and deterministic domain rules rather than claiming a new autonomous multi-agent system.

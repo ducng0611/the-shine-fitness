@@ -44,7 +44,7 @@ import {
   Award,
   BookOpen
 , Check } from 'lucide-react';
-import Chatbot from './components/Chatbot';
+import Chatbot from './components/companion/ChatbotGateway';
 import { RegistrationModal } from './components/RegistrationModal';
 import { AuthModal, MemberUser } from './components/AuthModal';
 import { MemberPortalModal } from './components/MemberPortalModal';

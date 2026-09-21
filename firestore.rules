@@ -146,6 +146,17 @@ service cloud.firestore {
     }
 
     // Wildcard mặc định: Từ chối tất cả các collection chưa được khai báo rõ
+    // SHINE_COMPANION_SERVER_ONLY: Admin SDK + owner-scoped API only.
+    match /companion_members/{memberUid} {
+      allow read, write: if false;
+      match /{privateDocument=**} {
+        allow read, write: if false;
+      }
+    }
+    match /companion_catalogues/{catalogueId} {
+      allow read, write: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

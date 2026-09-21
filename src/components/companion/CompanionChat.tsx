@@ -49,7 +49,7 @@ export default function CompanionChat({ onToggle, onService }: Props) {
     if (!current()) return; setResult(data);
     if (data.plan) { setPlan(data.plan); setDraft(null); }
     if (data.kind === 'meal_draft') setDraft({ ...data, key: crypto.randomUUID() });
-    if (data.kind === 'progress') { setTab('diary'); void refresh(); }
+    if (data.kind === 'progress') { setTab('diary'); setContext(previous => previous ? { ...previous, history: data.history, diary: data.diary } : previous); }
   }
   function updateReadiness(key: string, value: unknown) { setReadiness(r => ({ ...r, [key]: value, confirmed: key === 'confirmed' ? Boolean(value) : false })); }
   async function send() {
