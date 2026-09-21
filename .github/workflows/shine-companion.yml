@@ -1,0 +1,50 @@
+name: Shine Companion integration and checks
+
+on:
+  push:
+    branches: [feat/shine-ai-companion]
+    paths:
+      - 'scripts/integrate_companion.mjs'
+      - 'server/src/companion/**'
+      - 'src/components/companion/**'
+      - 'tests/companion.test.mjs'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: shine-companion-preview
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/feat/shine-ai-companion'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/shine-ai-companion
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply guarded integration edits
+        run: node scripts/integrate_companion.mjs
+      - name: Domain safety and planner tests
+        run: node --test tests/companion.test.mjs
+      - name: Commit integration on feature branch only
+        run: |
+          git add server/src/index.ts src/App.tsx .env.example README.md firestore.rules
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'feat: wire companion routes and member UI; secure profile lookup'
+            git push origin HEAD:feat/shine-ai-companion
+          fi
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts
+      - name: Type check
+        run: npm run lint
+      - name: Production build
+        if: success() || failure()
+        run: npm run build
