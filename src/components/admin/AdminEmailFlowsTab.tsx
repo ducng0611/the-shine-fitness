@@ -18,6 +18,16 @@ import {
 } from 'lucide-react';
 import { EmailMarketingFlow, FlowStep, PromotionCampaign } from '../../types';
 import { EmailDispatchForm } from '../EmailDispatchForm';
+import { auth } from '../../lib/firebase';
+
+const getAdminAuthHeaders = async (): Promise<Record<string, string>> => {
+  const token = await auth.currentUser?.getIdToken();
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
+};
 
 interface AdminEmailFlowsTabProps {
   emailFlows: EmailMarketingFlow[];
@@ -52,7 +62,8 @@ export const AdminEmailFlowsTab: React.FC<AdminEmailFlowsTabProps> = ({
 
   const fetchEmailLogs = async () => {
     try {
-      const res = await fetch('/api/admin/email-logs');
+      const headers = await getAdminAuthHeaders();
+      const res = await fetch('/api/admin/email-logs', { headers });
       if (res.ok) {
         const data = await res.json();
         if (data.logs) setEmailLogs(data.logs);
@@ -67,12 +78,12 @@ export const AdminEmailFlowsTab: React.FC<AdminEmailFlowsTabProps> = ({
   }, []);
   
   // AI Flow Generator State
-  const [flowPrompt, setFlowPrompt] = useState('Tạo luồng 3 bước tự động chăm sóc hội viên mới sau khi đăng ký tập thử Gym & Boxing: gửi mail 01 chào mừng ngay lập tức, mail 02 sau 3 ngày nhắc lịch đo InBody & tặng voucher SHINE349, mail 03 sau 7 ngày hướng dẫn đăng ký lộ trình PT 1:1');
+  const [flowPrompt, setFlowPrompt] = useState('Tạo luồng 3 bước tự động chăm sóc hội viên mới sau khi đăng ký tập thử Gym & Boxing: gửi mail 01 chào mừng ngay lập tức, mail 02 sau 3 ngày nhắc lịch kiểm tra thể trạng & tư vấn lộ trình tập luyện cùng HLV, mail 03 sau 7 ngày hướng dẫn đăng ký lộ trình PT 1:1');
   const [generatingFlow, setGeneratingFlow] = useState(false);
   const [aiFlowResult, setAiFlowResult] = useState<EmailMarketingFlow | null>(null);
 
   // AI Email Composer State
-  const [aiAudience, setAiAudience] = useState(initialAudience || 'Khách mới hoàn tất đo chỉ số InBody & cần tư vấn gói tập');
+  const [aiAudience, setAiAudience] = useState(initialAudience || 'Khách mới hoàn tất kiểm tra thể trạng & cần tư vấn gói tập');
   const [aiObjective, setAiObjective] = useState(initialObjective || 'Kêu gọi kích hoạt ưu đãi giảm 20% thẻ hội viên 12T');
   const [aiVoucher, setAiVoucher] = useState(initialVoucher || 'TANBINH3D');
   const [aiTone, setAiTone] = useState('Nhiệt huyết, truyền cảm hứng thể thao & chuyên nghiệp');
@@ -83,12 +94,12 @@ export const AdminEmailFlowsTab: React.FC<AdminEmailFlowsTabProps> = ({
   // Generated Email content
   const [generatedEmail, setGeneratedEmail] = useState({
     subject: '🔥 Đánh thức năng lượng The Shine – Nhận ưu đãi 20% thẻ hội viên độc quyền!',
-    preheader: 'Kết quả InBody & Lộ trình tập luyện cá nhân hóa đang chờ bạn.',
+    preheader: 'Kết quả kiểm tra thể trạng & Lộ trình tập luyện cá nhân hóa đang chờ bạn.',
     headline: 'Bứt phá giới hạn thể lực cùng The Shine Fitness',
     greeting: 'Chào bạn,',
     paragraphs: [
       'Chúng tôi rất vui được chào đón bạn đến trải nghiệm không gian tập luyện chuẩn 5 sao tại The Shine Fitness Tân Bình.',
-      'Dựa trên kết quả đo chỉ số InBody và buổi đánh giá cùng Huấn luyện viên, cơ thể bạn đang có tiềm năng phát triển cơ bắp và đốt mỡ rất tốt nếu duy trì lịch tập từ 3-4 buổi/tuần.',
+      'Dựa trên kết quả kiểm tra thể trạng và buổi đánh giá cùng Huấn luyện viên, cơ thể bạn đang có tiềm năng phát triển thể lực và cải thiện vóc dáng rất tốt nếu duy trì lịch tập từ 3-4 buổi/tuần.',
       'Để đồng hành cùng bạn trên hành trình này, The Shine gửi tặng bạn đặc quyền ưu đãi dành riêng cho thành viên mới.'
     ],
     voucherHighlight: 'TANBINH3D',
@@ -104,9 +115,10 @@ export const AdminEmailFlowsTab: React.FC<AdminEmailFlowsTabProps> = ({
     }
     setGeneratingFlow(true);
     try {
+      const headers = await getAdminAuthHeaders();
       const response = await fetch('/api/admin/generate-email-flow', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ prompt: flowPrompt })
       });
 
@@ -142,9 +154,10 @@ export const AdminEmailFlowsTab: React.FC<AdminEmailFlowsTabProps> = ({
   const handleGenerateAiEmail = async () => {
     setAiGenerating(true);
     try {
+      const headers = await getAdminAuthHeaders();
       const response = await fetch('/api/admin/generate-email', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           audience: aiAudience,
           objective: aiObjective,
@@ -194,9 +207,10 @@ export const AdminEmailFlowsTab: React.FC<AdminEmailFlowsTabProps> = ({
     }
     setTestSending(true);
     try {
+      const headers = await getAdminAuthHeaders();
       const response = await fetch('/api/admin/send-email-test', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({
           recipientEmail: emailToUse,
           recipientName: 'Khách Hàng Đăng Ký Test',

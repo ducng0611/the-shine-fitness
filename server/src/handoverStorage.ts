@@ -63,8 +63,7 @@ export const HANDOVER_SLA_HOURS: Record<string, number> = {
   HEALTH_RISK: 2,             // Sức khỏe & chấn thương: 2 giờ
   REQUEST_HUMAN: 4,           // Yêu cầu gặp người thật: 4 giờ
   HOT_LEAD_OR_NEGOTIATION: 4, // Chốt gói & thương lượng: 4 giờ
-  LOW_CONFIDENCE: 24,         // AI chưa rõ thông tin: 24 giờ
-  NO_GROUNDING_DATA: 24       // Không có dữ liệu RAG: 24 giờ
+  LOW_CONFIDENCE: 24          // AI chưa rõ thông tin: 24 giờ
 };
 
 export const DEFAULT_SLA_HOURS = 24;

@@ -12,6 +12,7 @@ A full-stack application built with React 19 (Vite) and Express (Node.js/TypeScr
 2. **Environment Configuration**
    Copy `.env.example` to `.env` and fill in the required values:
    - `GEMINI_API_KEY`: Your Google Gemini API Key.
+   - `ADMIN_EMAILS`: Comma-separated list of authorized administrator Google emails (e.g. `ducnguyen06112002@gmail.com,theshinefitness.cskh@gmail.com`). All `/api/admin/*` endpoints require Firebase Auth ID tokens matching this list.
    - `RAG_ENABLED`: `true` or `false` (enables Retrieval-Augmented Generation).
    - SMTP credentials (`ADMIN_EMAIL`, `GMAIL_APP_PASSWORD`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`).
 

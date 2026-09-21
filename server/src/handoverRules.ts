@@ -5,8 +5,7 @@ export type HandoverTag =
   | 'HOT_LEAD_OR_NEGOTIATION' 
   | 'COMPLAINT' 
   | 'LOW_CONFIDENCE' 
-  | 'HEALTH_RISK'
-  | 'NO_GROUNDING_DATA';
+  | 'HEALTH_RISK';
 
 // Helper to remove Vietnamese diacritics for flexible keyword matching
 export function removeDiacritics(str: string): string {
@@ -191,9 +190,6 @@ export function getHandoverReply(tag: HandoverTag, pronoun: string = 'Anh/Chị'
 
     case 'LOW_CONFIDENCE':
       return `Dạ để thông tin cung cấp cho ${customerTitle} được chuẩn xác nhất, em xin phép chuyển thắc mắc của ${customerTitle} tới bộ phận chuyên môn để kiểm tra và hỗ trợ trực tiếp cho ${customerTitle} ạ.`;
-
-    case 'NO_GROUNDING_DATA':
-      return `Dạ hiện em chưa có dữ liệu chính xác về nội dung này trong hệ thống. Em xin phép chuyển câu hỏi đến tư vấn viên để hỗ trợ ${customerTitle} chu đáo nhất ạ!`;
 
     default:
       return `Dạ em đã ghi nhận thông tin của ${customerTitle} và chuyển tư vấn viên hỗ trợ ngay ạ.`;

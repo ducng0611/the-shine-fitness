@@ -51,7 +51,7 @@ import {
   getIndexBuiltAt,
   RetrievedChunk
 } from "./ragEngine";
-import { requireAuth, AuthRequest } from "./middleware/auth.ts";
+import { requireAuth, requireAdmin, AuthRequest } from "./middleware/auth.ts";
 import { adminDb } from "./lib/firebase-admin.ts";
 import { validatePassword } from "./passwordValidation";
 
@@ -441,7 +441,7 @@ async function startServer() {
   });
 
   // Admin Gym Packages Endpoints
-  app.post("/api/admin/packages", requireAuth, async (req: AuthRequest, res) => {
+  app.post("/api/admin/packages", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const pkg = req.body;
       if (!pkg || !pkg.id) return res.status(400).json({ error: "Missing package id" });
@@ -455,7 +455,7 @@ async function startServer() {
     }
   });
 
-  app.delete("/api/admin/packages/:id", requireAuth, async (req: AuthRequest, res) => {
+  app.delete("/api/admin/packages/:id", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const { id } = req.params;
       await adminDb.collection('packages').doc(id).delete();
@@ -465,7 +465,7 @@ async function startServer() {
     }
   });
 
-  app.post("/api/admin/packages/sync", requireAuth, async (req: AuthRequest, res) => {
+  app.post("/api/admin/packages/sync", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const packages = req.body;
       if (Array.isArray(packages)) {
@@ -487,7 +487,7 @@ async function startServer() {
   });
 
   // Admin Promotions Endpoints
-  app.post("/api/admin/promotions", requireAuth, async (req: AuthRequest, res) => {
+  app.post("/api/admin/promotions", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const promo = req.body;
       if (!promo || !promo.id) return res.status(400).json({ error: "Missing promo id" });
@@ -501,7 +501,7 @@ async function startServer() {
     }
   });
 
-  app.delete("/api/admin/promotions/:id", requireAuth, async (req: AuthRequest, res) => {
+  app.delete("/api/admin/promotions/:id", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const { id } = req.params;
       await adminDb.collection('promotions').doc(id).delete();
@@ -512,7 +512,7 @@ async function startServer() {
   });
 
   // Admin Email Marketing Flows Endpoints
-  app.post("/api/admin/email-flows", requireAuth, async (req: AuthRequest, res) => {
+  app.post("/api/admin/email-flows", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const flow = req.body;
       if (!flow || !flow.id) return res.status(400).json({ error: "Missing flow id" });
@@ -526,7 +526,7 @@ async function startServer() {
     }
   });
 
-  app.delete("/api/admin/email-flows/:id", requireAuth, async (req: AuthRequest, res) => {
+  app.delete("/api/admin/email-flows/:id", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const { id } = req.params;
       await adminDb.collection('email_campaigns').doc(id).delete();
@@ -537,7 +537,7 @@ async function startServer() {
   });
 
   // Admin Customers CRM Endpoints
-  app.get("/api/admin/customers/unified", requireAuth, async (req: AuthRequest, res) => {
+  app.get("/api/admin/customers/unified", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const customersMap = new Map<string, any>();
       const custSnap = await adminDb.collection('customers').get();
@@ -553,7 +553,7 @@ async function startServer() {
     }
   });
 
-  app.post("/api/admin/customers/save", requireAuth, async (req: AuthRequest, res) => {
+  app.post("/api/admin/customers/save", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const customer = req.body;
       const docId = customer.memberCode || customer.id;
@@ -568,7 +568,7 @@ async function startServer() {
     }
   });
 
-  app.post("/api/admin/customers/create", requireAuth, async (req: AuthRequest, res) => {
+  app.post("/api/admin/customers/create", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const customer = req.body;
       const memberCode = customer.memberCode || `TS_${Date.now().toString().slice(-4)}`;
@@ -602,7 +602,7 @@ async function startServer() {
     }
   });
 
-  app.post("/api/admin/customers/sync", requireAuth, async (req: AuthRequest, res) => {
+  app.post("/api/admin/customers/sync", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const customers = req.body;
       if (Array.isArray(customers)) {
@@ -624,7 +624,7 @@ async function startServer() {
     }
   });
 
-  app.delete("/api/admin/customers/:id", requireAuth, async (req: AuthRequest, res) => {
+  app.delete("/api/admin/customers/:id", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const { id } = req.params;
       await adminDb.collection('customers').doc(id).delete();
@@ -635,7 +635,7 @@ async function startServer() {
   });
 
   // Admin Users Management Endpoints
-  app.get("/api/admin/users/all", requireAuth, async (req: AuthRequest, res) => {
+  app.get("/api/admin/users/all", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const snap = await adminDb.collection('admins').get();
       const admins: any[] = [];
@@ -648,7 +648,7 @@ async function startServer() {
     }
   });
 
-  app.post("/api/admin/users/save", requireAuth, async (req: AuthRequest, res) => {
+  app.post("/api/admin/users/save", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const adminData = req.body;
       if (!adminData || !adminData.uid) return res.status(400).json({ error: "Missing admin uid" });
@@ -662,7 +662,7 @@ async function startServer() {
     }
   });
 
-  app.delete("/api/admin/users/:uid", requireAuth, async (req: AuthRequest, res) => {
+  app.delete("/api/admin/users/:uid", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const { uid } = req.params;
       await adminDb.collection('admins').doc(uid).delete();
@@ -1026,24 +1026,24 @@ async function startServer() {
         } else {
           // RAG_ENABLED=true but no chunk >= 0.55 similarity found.
           // Fallback to handover to avoid hallucination.
-          const replyText = getHandoverReply('NO_GROUNDING_DATA', pronoun);
+          const replyText = getHandoverReply('LOW_CONFIDENCE', pronoun);
           const latencyMs = Date.now() - startTime;
           const summary = buildHandoverSummary(
             history || [],
             message,
-            'NO_GROUNDING_DATA',
-            'RAG_ENABLED=true nhưng không tìm thấy dữ liệu tham chiếu đạt ngưỡng (>= 0.55)'
+            'LOW_CONFIDENCE',
+            'Không tìm thấy dữ liệu tham chiếu đạt ngưỡng'
           );
 
           try {
             addHandoverRecord({
               sessionId,
-              tag: 'NO_GROUNDING_DATA',
+              tag: 'LOW_CONFIDENCE',
               summary,
               status: 'Chờ tiếp nhận'
             });
           } catch (hoErr) {
-            console.error("Failed to add NO_GROUNDING_DATA handover record:", hoErr);
+            console.error("Failed to add LOW_CONFIDENCE handover record:", hoErr);
           }
 
           try {
@@ -1055,7 +1055,7 @@ async function startServer() {
               botResponse: replyText,
               latencyMs,
               usedFallback: false,
-              handoverTag: 'NO_GROUNDING_DATA',
+              handoverTag: 'LOW_CONFIDENCE',
               intent: classification.intent,
               pkSegment: classification.pkSegment || '',
               responseChars: replyText.length,
@@ -1064,13 +1064,13 @@ async function startServer() {
               groundedAnswer: false
             });
           } catch (logErr) {
-            console.error("Failed to append chat log for NO_GROUNDING_DATA handover:", logErr);
+            console.error("Failed to append chat log for LOW_CONFIDENCE handover:", logErr);
           }
 
           return res.json({
             text: replyText,
             handover: true,
-            handoverTag: 'NO_GROUNDING_DATA',
+            handoverTag: 'LOW_CONFIDENCE',
             hotline: HOTLINE,
             sessionId
           });
@@ -1208,7 +1208,7 @@ async function startServer() {
   });
 
   // GET /api/admin/chat-logs (Returns chat logs and pre-calculated KPI metrics)
-  app.get("/api/admin/chat-logs", (req, res) => {
+  app.get("/api/admin/chat-logs", requireAuth, requireAdmin, (req: AuthRequest, res) => {
     try {
       const from = req.query.from as string | undefined;
       const to = req.query.to as string | undefined;
@@ -1316,6 +1316,27 @@ async function startServer() {
       const ragIndexInfo = loadIndex();
       const handoverKpis = getHandoverKpis();
 
+      // Valid Lead & Conversion Rate calculation
+      const validLeadSessions = new Set<string>();
+      logs.forEach(l => {
+        if (l.sessionId && (
+          l.handoverTag === 'HOT_LEAD_OR_NEGOTIATION' ||
+          (l.intent && l.intent.toUpperCase() === 'TRIAL') ||
+          (l.intent && l.intent.toUpperCase() === 'PRICE')
+        )) {
+          validLeadSessions.add(l.sessionId);
+        }
+      });
+
+      const validLeadCount = validLeadSessions.size;
+      const validLeadRate = totalConversations > 0
+        ? Number(((validLeadCount / totalConversations) * 100).toFixed(1))
+        : 0;
+
+      const conversionRate = validLeadCount > 0
+        ? Number(((handoverKpis.successHandovers / validLeadCount) * 100).toFixed(1))
+        : (handoverKpis.handoverSuccessRate || 0);
+
       res.json({
         logs,
         kpi: {
@@ -1325,6 +1346,8 @@ async function startServer() {
           p95LatencyMs,
           fallbackRate,
           handoverRate,
+          validLeadRate,
+          conversionRate,
           avgResponseChars,
           segmentedSessionRate,
           intentDistribution,
@@ -1352,7 +1375,7 @@ async function startServer() {
   });
 
   // GET /api/admin/handover-queue (Returns human handover queue with pre-calculated KPIs, newest first)
-  app.get("/api/admin/handover-queue", (req, res) => {
+  app.get("/api/admin/handover-queue", requireAuth, requireAdmin, (req: AuthRequest, res) => {
     try {
       const queue = getHandoverQueue();
       const kpi = getHandoverKpis(queue);
@@ -1364,7 +1387,7 @@ async function startServer() {
   });
 
   // PATCH /api/admin/handover-queue/:id (Updates state of a handover record with strict state machine, SLA & audit trail)
-  app.patch("/api/admin/handover-queue/:id", requireAuth, (req: AuthRequest, res) => {
+  app.patch("/api/admin/handover-queue/:id", requireAuth, requireAdmin, (req: AuthRequest, res) => {
     try {
       const id = req.params.id;
       const { newStatus, note } = req.body;
@@ -1497,59 +1520,23 @@ async function startServer() {
     }
   });
 
-  // ADMIN AUTHENTICATION
-  app.post("/api/admin/login", (req, res) => {
+  // ADMIN AUTHENTICATION (Google OAuth via Firebase Auth verified by requireAdmin)
+  app.post("/api/admin/login", requireAuth, requireAdmin, (req: AuthRequest, res) => {
     try {
-      const { email, password } = req.body;
-      if (!email) {
-        return res.status(400).json({ error: "Vui lòng nhập Email quản trị." });
-      }
-
-      const cleanEmail = email.trim().toLowerCase();
-      const OAUTH_ADMINS = [
-        'ducnguyen06112002@gmail.com',
-        'ducnh.hindu@gmail.com',
-        'ducnguyen.526102090574@st.ueh.edu.vn'
-      ];
-
-      // If an OAuth-only admin tries to use password login
-      if (OAUTH_ADMINS.includes(cleanEmail)) {
-        return res.status(403).json({
-          error: `Tài khoản ${cleanEmail} là vai trò quản trị cấp cao, bắt buộc phải đăng nhập bằng phương thức Google OAuth (Gmail).`
-        });
-      }
-
-      // Default password-based admin
-      if (cleanEmail === 'admin@theshinefitness.vn') {
-        const passCheck = validatePassword(password);
-        if (!passCheck.isValid) {
-          return res.status(400).json({
-            error: passCheck.errorMessage || "Mật khẩu tối thiểu 8 ký tự, phải có chữ hoa, thường và ký tự đặc biệt."
-          });
+      const user = req.user;
+      return res.json({
+        success: true,
+        message: "Xác thực tài khoản quản trị viên Google OAuth thành công!",
+        admin: {
+          uid: user?.uid,
+          email: user?.email,
+          fullName: user?.name || user?.email,
+          role: 'admin',
+          roleTitle: 'Quản trị viên',
+          phone: user?.phone_number || '',
+          permissions: ['all', 'manage_members', 'manage_packages', 'manage_promotions', 'manage_email_flows', 'view_reports', 'view_revenue'],
+          lastLogin: new Date().toISOString()
         }
-
-        if (password !== 'Admin@123') {
-          return res.status(401).json({ error: "Mật khẩu quản trị viên mặc định không chính xác." });
-        }
-
-        return res.json({
-          success: true,
-          message: "Đăng nhập quản trị viên mặc định thành công!",
-          admin: {
-            uid: 'admin_theshine_default',
-            email: 'admin@theshinefitness.vn',
-            fullName: 'Ban Quản Lý The Shine (Mặc định)',
-            role: 'manager',
-            roleTitle: 'Tài khoản Quản lý Mặc định',
-            phone: '0946 293 593',
-            permissions: ['manage_members', 'manage_packages', 'manage_promotions', 'manage_email_flows'],
-            lastLogin: new Date().toISOString()
-          }
-        });
-      }
-
-      return res.status(401).json({
-        error: `Tài khoản "${email}" không thuộc danh sách quản trị viên hợp lệ.`
       });
     } catch (error) {
       console.error("Admin login API error:", error);
@@ -1558,7 +1545,7 @@ async function startServer() {
   });
 
   // ================= ADMIN AI EMAIL MARKETING API =================
-  app.post("/api/admin/generate-email-flow", async (req, res) => {
+  app.post("/api/admin/generate-email-flow", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const { prompt: userPrompt } = req.body;
 
@@ -1721,7 +1708,7 @@ Hãy trả về kết quả dưới dạng JSON chuẩn (chỉ trả về chuỗ
   });
 
   // ================= ADMIN AI EMAIL MARKETING API =================
-  app.post("/api/admin/generate-email", async (req, res) => {
+  app.post("/api/admin/generate-email", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const { 
         objective = "Chăm sóc khách đăng ký tập thử 3 ngày", 
@@ -1982,7 +1969,7 @@ Hãy trả về kết quả định dạng JSON thuần túy (không bọc trong
   });
 
   // SEND REAL EMAIL TEST / MANUAL DISPATCH
-  app.post("/api/admin/send-email-test", async (req, res) => {
+  app.post("/api/admin/send-email-test", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
     try {
       const { recipientEmail, subject, flowName, recipientName, voucherCode } = req.body;
       const targetEmail = recipientEmail || "ducnguyen06112002@gmail.com";
@@ -2011,7 +1998,7 @@ Hãy trả về kết quả định dạng JSON thuần túy (không bọc trong
   });
 
   // GET EMAIL MARKETING SENT LOGS
-  app.get("/api/admin/email-logs", (req, res) => {
+  app.get("/api/admin/email-logs", requireAuth, requireAdmin, (req: AuthRequest, res) => {
     res.json({
       success: true,
       logs: sentEmailLogs
@@ -2019,7 +2006,7 @@ Hãy trả về kết quả định dạng JSON thuần túy (không bọc trong
   });
 
   // EXCEL DATA & DISTINCT PACKAGES API (TheShineFitness_Cleaned_V2.xlsx)
-  app.get("/api/admin/excel-data", (req, res) => {
+  app.get("/api/admin/excel-data", requireAuth, requireAdmin, (req: AuthRequest, res) => {
     try {
       const data = parseExcelData();
       res.json({
@@ -2034,7 +2021,7 @@ Hãy trả về kết quả định dạng JSON thuần túy (không bọc trong
     }
   });
 
-  app.get("/api/admin/distinct-packages", (req, res) => {
+  app.get("/api/admin/distinct-packages", requireAuth, requireAdmin, (req: AuthRequest, res) => {
     try {
       const data = parseExcelData();
       res.json({
@@ -2047,7 +2034,7 @@ Hãy trả về kết quả định dạng JSON thuần túy (không bọc trong
     }
   });
 
-  app.get("/api/admin/customers", (req, res) => {
+  app.get("/api/admin/customers", requireAuth, requireAdmin, (req: AuthRequest, res) => {
     try {
       const data = parseExcelData();
       const { search, segment, packageCode, status } = req.query;
@@ -2086,6 +2073,48 @@ Hãy trả về kết quả định dạng JSON thuần túy (không bọc trong
     } catch (error: any) {
       console.error("Error getting customers:", error);
       res.status(500).json({ success: false, error: error.message });
+    }
+  });
+
+  // POST /api/chat/feedback (Thumbs up/down feedback with rate limiting)
+  const chatFeedbackLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 60, // Limit 60 feedback actions per 15 minutes
+    message: { error: "Bạn đã gửi quá nhiều phản hồi. Vui lòng thử lại sau 15 phút." }
+  });
+
+  const chatFeedbacks: Array<{
+    id: string;
+    sessionId: string;
+    messageId?: string;
+    feedback: 'like' | 'dislike';
+    createdAt: string;
+  }> = [];
+
+  app.post("/api/chat/feedback", chatFeedbackLimiter, (req, res) => {
+    try {
+      const { sessionId, messageId, feedback } = req.body;
+      if (!sessionId || !feedback || !['like', 'dislike'].includes(feedback)) {
+        return res.status(400).json({ error: "sessionId và feedback ('like' hoặc 'dislike') là bắt buộc." });
+      }
+
+      const record = {
+        id: `fb_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+        sessionId,
+        messageId,
+        feedback: feedback as 'like' | 'dislike',
+        createdAt: new Date().toISOString()
+      };
+      chatFeedbacks.push(record);
+
+      res.json({
+        success: true,
+        message: "Cảm ơn bạn đã gửi phản hồi giúp hoàn thiện The Shine Chatbot!",
+        feedbackId: record.id
+      });
+    } catch (error: any) {
+      console.error("Error storing feedback:", error);
+      res.status(500).json({ error: "Không thể lưu phản hồi." });
     }
   });
 

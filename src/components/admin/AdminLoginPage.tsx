@@ -15,9 +15,6 @@ import {
 import { signInWithPopup, signOut } from 'firebase/auth';
 import { AdminUser } from '../../types';
 import { 
-  DEFAULT_ADMINS, 
-  OAUTH_ADMIN_CONFIGS, 
-  DEFAULT_PASSWORD_ADMIN,
   auth,
   googleProvider
 } from '../../lib/firebase';
@@ -42,86 +39,11 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
   // Realtime password evaluation
   const passCheck = validatePassword(password);
 
-  // Process and authenticate an admin by verified email
-  const authenticateAdminByEmail = async (userEmail: string, isOAuth: boolean): Promise<boolean> => {
-    const cleanEmail = userEmail.trim().toLowerCase();
-
-    // 1. Check OAuth admin whitelist
-    const oauthSysadmin = OAUTH_ADMIN_CONFIGS.SYSADMIN.email.toLowerCase();
-    const oauthManager = OAUTH_ADMIN_CONFIGS.MANAGER.email.toLowerCase();
-    const oauthMarketing = OAUTH_ADMIN_CONFIGS.MARKETING.email.toLowerCase();
-
-    let authenticatedAdmin: AdminUser | null = null;
-
-    if (cleanEmail === oauthSysadmin) {
-      authenticatedAdmin = {
-        uid: 'admin_sysadmin_ducnguyen',
-        email: OAUTH_ADMIN_CONFIGS.SYSADMIN.email,
-        fullName: OAUTH_ADMIN_CONFIGS.SYSADMIN.fullName,
-        role: OAUTH_ADMIN_CONFIGS.SYSADMIN.role,
-        roleTitle: OAUTH_ADMIN_CONFIGS.SYSADMIN.roleTitle,
-        permissions: [...OAUTH_ADMIN_CONFIGS.SYSADMIN.permissions],
-        lastLogin: new Date().toISOString()
-      };
-    } else if (cleanEmail === oauthManager) {
-      authenticatedAdmin = {
-        uid: 'admin_ban_quan_ly',
-        email: OAUTH_ADMIN_CONFIGS.MANAGER.email,
-        fullName: OAUTH_ADMIN_CONFIGS.MANAGER.fullName,
-        role: OAUTH_ADMIN_CONFIGS.MANAGER.role,
-        roleTitle: OAUTH_ADMIN_CONFIGS.MANAGER.roleTitle,
-        permissions: [...OAUTH_ADMIN_CONFIGS.MANAGER.permissions],
-        lastLogin: new Date().toISOString()
-      };
-    } else if (cleanEmail === oauthMarketing) {
-      authenticatedAdmin = {
-        uid: 'admin_marketing_crm',
-        email: OAUTH_ADMIN_CONFIGS.MARKETING.email,
-        fullName: OAUTH_ADMIN_CONFIGS.MARKETING.fullName,
-        role: OAUTH_ADMIN_CONFIGS.MARKETING.role,
-        roleTitle: OAUTH_ADMIN_CONFIGS.MARKETING.roleTitle,
-        permissions: [...OAUTH_ADMIN_CONFIGS.MARKETING.permissions],
-        lastLogin: new Date().toISOString()
-      };
-    }
-
-    if (isOAuth) {
-      if (!authenticatedAdmin) {
-        // Sign out unauthorized Google account
-        try {
-          await signOut(auth);
-        } catch (e) {
-          // ignore
-        }
-        setError(`Truy cập bị từ chối: Tài khoản "${userEmail}" không thuộc các vai trò quản trị được cấp quyền Google OAuth.`);
-        return false;
-      }
-
-      localStorage.setItem('theshine_current_admin', JSON.stringify(authenticatedAdmin));
-      onLoginSuccess(authenticatedAdmin);
-      return true;
-    }
-
-    // If password login but email belongs to OAuth admin roles:
-    if ([oauthSysadmin, oauthManager, oauthMarketing].includes(cleanEmail)) {
-      setError(`Tài khoản "${userEmail}" là vai trò quản trị cấp cao, bắt buộc phải xác thực thông qua Google OAuth bên dưới.`);
-      return false;
-    }
-
-    return false;
-  };
-
   // Google OAuth Login Action
-  const handleGoogleOAuthLogin = async (specificEmail?: string) => {
+  const handleGoogleOAuthLogin = async () => {
     setError(null);
     setOauthNotice(null);
     setOauthLoading(true);
-
-    if (specificEmail) {
-      const ok = await authenticateAdminByEmail(specificEmail, true);
-      setOauthLoading(false);
-      return;
-    }
 
     try {
       const result = await signInWithPopup(auth, googleProvider);
@@ -130,11 +52,32 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
         throw new Error('Không nhận được thông tin email từ tài khoản Google.');
       }
 
-      await authenticateAdminByEmail(user.email, true);
+      const idToken = await user.getIdToken(true);
+      const res = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${idToken}`
+        }
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        try {
+          await signOut(auth);
+        } catch (e) {
+          // ignore
+        }
+        setError(data.error || `Truy cập bị từ chối: Tài khoản "${user.email}" không thuộc danh sách quản trị viên hợp lệ hoặc chưa được xác thực.`);
+        return;
+      }
+
+      localStorage.setItem('theshine_current_admin', JSON.stringify(data.admin));
+      onLoginSuccess(data.admin);
     } catch (err: any) {
       console.warn('Firebase popup OAuth error or blocked:', err);
       if (err.code === 'auth/popup-blocked' || err.code === 'auth/cancelled-popup-request' || err.code === 'auth/popup-closed-by-user') {
-        setOauthNotice('Cửa sổ Popup Google OAuth bị chặn hoặc đã đóng. Bạn có thể chọn trực tiếp tài khoản Gmail quản trị được phân quyền dưới đây để xác thực.');
+        setOauthNotice('Cửa sổ Popup Google OAuth bị chặn hoặc đã đóng. Vui lòng mở lại và cho phép popup để đăng nhập.');
       } else {
         setError(err.message || 'Lỗi kết nối xác thực Google OAuth. Vui lòng thử lại.');
       }
@@ -143,64 +86,10 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
     }
   };
 
-  // Password Login Handler
+  // Password Login Handler - Disabled for security
   const handlePasswordLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setOauthNotice(null);
-    setLoading(true);
-
-    try {
-      const cleanEmail = email.trim().toLowerCase();
-
-      // Check if user entered one of the OAuth-only emails
-      const oauthSysadmin = OAUTH_ADMIN_CONFIGS.SYSADMIN.email.toLowerCase();
-      const oauthManager = OAUTH_ADMIN_CONFIGS.MANAGER.email.toLowerCase();
-      const oauthMarketing = OAUTH_ADMIN_CONFIGS.MARKETING.email.toLowerCase();
-
-      if ([oauthSysadmin, oauthManager, oauthMarketing].includes(cleanEmail)) {
-        setError(`Tài khoản "${email}" là vai trò quản trị cấp cao, bắt buộc phải đăng nhập bằng Google OAuth bên dưới.`);
-        setLoading(false);
-        return;
-      }
-
-      // Check password validation rule
-      if (!passCheck.isValid) {
-        setError(passCheck.errorMessage || 'Mật khẩu phải tối thiểu 8 ký tự, có chữ hoa, chữ thường và ký tự đặc biệt.');
-        setLoading(false);
-        return;
-      }
-
-      // Check default admin
-      if (cleanEmail === DEFAULT_PASSWORD_ADMIN.email.toLowerCase()) {
-        if (password !== DEFAULT_PASSWORD_ADMIN.password) {
-          setError('Mật khẩu quản trị viên không chính xác.');
-          setLoading(false);
-          return;
-        }
-
-        const authenticatedAdmin: AdminUser = {
-          uid: 'admin_theshine_default',
-          email: DEFAULT_PASSWORD_ADMIN.email,
-          fullName: DEFAULT_PASSWORD_ADMIN.fullName,
-          role: DEFAULT_PASSWORD_ADMIN.role,
-          roleTitle: DEFAULT_PASSWORD_ADMIN.roleTitle,
-          permissions: [...DEFAULT_PASSWORD_ADMIN.permissions],
-          lastLogin: new Date().toISOString()
-        };
-
-        localStorage.setItem('theshine_current_admin', JSON.stringify(authenticatedAdmin));
-        onLoginSuccess(authenticatedAdmin);
-        return;
-      }
-
-      setError(`Tài khoản "${email}" không thuộc danh sách quản trị viên hợp lệ.`);
-    } catch (err: any) {
-      console.error('Password login error:', err);
-      setError('Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại.');
-    } finally {
-      setLoading(false);
-    }
+    setError('Phương thức đăng nhập mật khẩu đã bị vô hiệu hóa vì lý do bảo mật. Quản trị viên bắt buộc phải đăng nhập bằng Google OAuth bên dưới.');
   };
 
   return (

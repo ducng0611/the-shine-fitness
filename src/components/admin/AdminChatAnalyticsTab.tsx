@@ -298,9 +298,15 @@ export const AdminChatAnalyticsTab: React.FC<AdminChatAnalyticsTabProps> = ({ is
       if (dateRange.startDate) params.append('from', dateRange.startDate);
       if (dateRange.endDate) params.append('to', dateRange.endDate);
 
+      const token = await auth.currentUser?.getIdToken();
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const [logsRes, queueRes] = await Promise.all([
-        fetch(`/api/admin/chat-logs?${params.toString()}`),
-        fetch(`/api/admin/handover-queue`)
+        fetch(`/api/admin/chat-logs?${params.toString()}`, { headers }),
+        fetch(`/api/admin/handover-queue`, { headers })
       ]);
 
       if (!logsRes.ok) {

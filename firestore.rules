@@ -132,12 +132,12 @@ service cloud.firestore {
 
     // 12. Nhật ký hội thoại Chatbot (Chat Logs)
     match /chat_logs/{logId} {
-      allow read, write: if true;
+      allow read, write: if false;
     }
 
     // 13. Hàng đợi chuyển giao nhân sự (Handover Queue)
     match /handover_queue/{handoverId} {
-      allow read, write: if true;
+      allow read, write: if false;
     }
 
     // Wildcard mặc định: Từ chối tất cả các collection chưa được khai báo rõ

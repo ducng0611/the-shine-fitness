@@ -21,7 +21,9 @@ import {
   Calendar,
   PhoneCall,
   Headphones,
-  UserCheck
+  UserCheck,
+  ThumbsUp,
+  ThumbsDown
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Language, translations } from '../translations';
@@ -351,6 +353,28 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
   const [handoverName, setHandoverName] = useState('');
   const [handoverPhone, setHandoverPhone] = useState('');
   const [isSubmittingHandover, setIsSubmittingHandover] = useState(false);
+
+  // Message ratings / feedback state (👍 / 👎)
+  const [messageFeedbacks, setMessageFeedbacks] = useState<Record<string, 'like' | 'dislike'>>({});
+
+  const handleSendFeedback = async (msgId: string, feedback: 'like' | 'dislike') => {
+    if (messageFeedbacks[msgId]) return;
+    setMessageFeedbacks(prev => ({ ...prev, [msgId]: feedback }));
+    try {
+      const currentSid = sessionId || safeStorage.getItem('shine_chat_session_id') || 'session_client';
+      await fetch('/api/chat/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: currentSid,
+          messageId: msgId,
+          feedback
+        })
+      });
+    } catch (err) {
+      console.error('Error sending chat feedback:', err);
+    }
+  };
 
   // Quick inquiry suggestions state for customers (starts with initial 3, then updates intelligently)
   const [currentSuggestions, setCurrentSuggestions] = useState<string[]>(() => getInitialSuggestions(lang));
@@ -821,6 +845,47 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
                             )}
                           </div>
                         )}
+                      </div>
+                    )}
+
+                    {/* Message Rating / Feedback for Model Answers */}
+                    {msg.role === 'model' && (
+                      <div className="mt-2 pt-1.5 border-t border-slate-100 dark:border-white/5 flex items-center justify-between text-[10.5px]">
+                        <span className="text-slate-400">
+                          {messageFeedbacks[msg.id] 
+                            ? (messageFeedbacks[msg.id] === 'like' 
+                                ? (lang === 'vi' ? '✓ Cảm ơn bạn đã thích!' : '✓ Thanks for the feedback!') 
+                                : (lang === 'vi' ? '✓ Đã ghi nhận ý kiến!' : '✓ Feedback recorded!'))
+                            : (lang === 'vi' ? 'Hữu ích không?' : 'Helpful?')}
+                        </span>
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => handleSendFeedback(msg.id, 'like')}
+                            disabled={!!messageFeedbacks[msg.id]}
+                            title={lang === 'vi' ? 'Hữu ích' : 'Helpful'}
+                            className={`p-1 rounded transition-colors cursor-pointer ${
+                              messageFeedbacks[msg.id] === 'like'
+                                ? 'text-emerald-500 bg-emerald-50 dark:bg-emerald-950/40'
+                                : 'text-slate-400 hover:text-emerald-500 hover:bg-slate-100 dark:hover:bg-white/10'
+                            }`}
+                          >
+                            <ThumbsUp size={12} className={messageFeedbacks[msg.id] === 'like' ? 'fill-current' : ''} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleSendFeedback(msg.id, 'dislike')}
+                            disabled={!!messageFeedbacks[msg.id]}
+                            title={lang === 'vi' ? 'Chưa hữu ích' : 'Not helpful'}
+                            className={`p-1 rounded transition-colors cursor-pointer ${
+                              messageFeedbacks[msg.id] === 'dislike'
+                                ? 'text-rose-500 bg-rose-50 dark:bg-rose-950/40'
+                                : 'text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-white/10'
+                            }`}
+                          >
+                            <ThumbsDown size={12} className={messageFeedbacks[msg.id] === 'dislike' ? 'fill-current' : ''} />
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>

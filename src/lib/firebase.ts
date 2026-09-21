@@ -499,16 +499,6 @@ export const OAUTH_ADMIN_CONFIGS = {
   }
 } as const;
 
-export const DEFAULT_PASSWORD_ADMIN = {
-  email: 'admin@theshinefitness.vn',
-  password: 'Admin@123',
-  role: 'manager' as const,
-  roleTitle: 'Tài khoản Quản lý Mặc định',
-  fullName: 'Ban Quản Lý The Shine (Mặc định)',
-  permissions: ['manage_members', 'manage_packages', 'manage_promotions', 'manage_email_flows'],
-  authType: 'password'
-} as const;
-
 export const DEFAULT_ADMINS: AdminUser[] = [
   {
     uid: 'admin_sysadmin_ducnguyen',
@@ -1453,7 +1443,12 @@ export async function syncDistinctPackagesToFirebase(packages: GymPackage[]): Pr
 // ================= CUSTOMER CRM UNIFIED SERVICES =================
 export async function fetchExcelCustomerAndPackageData() {
   try {
-    const res = await fetch('/api/admin/excel-data');
+    const token = await auth.currentUser?.getIdToken();
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    const res = await fetch('/api/admin/excel-data', { headers });
     if (!res.ok) {
       console.warn(`Excel data API responded with status ${res.status}`);
       return null;
