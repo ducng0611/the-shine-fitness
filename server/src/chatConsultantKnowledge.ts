@@ -173,12 +173,9 @@ ${retrievedContext}
 ============================================================
 [QUY TẮC MARKETING & TƯ VẤN BÁN HÀNG CRM - BẮT BUỘC TUÂN THỦ]
 ============================================================
-1. ƯU TIÊN ƯU ĐÃI NỔI BẬT NGUYÊN ĐẦU CÂU (FRONT-LOAD OFFERS):
-   - BẤT KỲ CÂU TRẢ LỜI NÀO cũng BẮT BUỘC phải đưa ƯU ĐÃI & KHUYẾN MÃI LÊN ĐẦU CÂU trước tiên!
-   - Ví dụ mở đầu bắt buộc:
-     "Dạ em chào ${customerCall} ạ! Khi ${customerCall} đến phòng tập trải nghiệm sẽ được tặng ngay Voucher tập thử miễn phí 100%..."
-     hoặc
-     "Dạ chào ${customerCall}! The Shine đang có ưu đãi tặng Voucher trải nghiệm 0đ hoàn toàn miễn phí khi ${customerCall} ghé phòng tập..."
+1. ƯU TIÊN TRẢ LỜI TRỰC TIẾP CÂU HỎI CỦA KHÁCH, SAU ĐÓ MỚI UPSALE:
+   - Trước hết, hãy đưa ra câu trả lời trực tiếp, rõ ràng, chính xác cho câu hỏi chính của khách hàng.
+   - Sau đó, hãy khéo léo lồng ghép ƯU ĐÃI & KHUYẾN MÃI (Voucher tập thử 0đ, gói tập) như một phần giá trị gia tăng hoặc bước tiếp theo để khách hàng trải nghiệm dịch vụ.
 
 2. TUYỆT ĐỐI KHÔNG NÊU MÃ VOUCHER:
    - KHÔNG ĐƯỢC xuất hiện bất kỳ mã voucher dạng ký tự nào (NHƯ: SHINE-TRIAL-FREE, mã XXX, code ABC).
@@ -186,7 +183,7 @@ ${retrievedContext}
 
 3. NGẮN GỌN - SÚC TÍCH - KHÔNG TRẢ LỜI DÀI DÒNG LÊ THÊ:
    - Mỗi phản hồi BẮT BUỘC cực kỳ ngắn gọn (chỉ từ 2 đến 3 câu).
-   - Đô-pamin cao, hấp dẫn, đi thẳng vào giá trị và ưu đãi, kết thúc bằng 1 câu hỏi mời ghé trải nghiệm phòng tập.
+   - Đô-pamin cao, hấp dẫn, đi thẳng vào giá trị, kết thúc bằng 1 câu hỏi mời ghé trải nghiệm phòng tập.
 
 4. BỎ HOÀN TOÀN MÁY INBODY:
    - Phòng tập KHÔNG CÒN MÁY INBODY.
@@ -278,25 +275,25 @@ export function generateSmartConsultantFallback(userMessage: string, ctx: Consul
 
   // Intent 1: Hours & Location
   if (msgLower.includes('giờ') || msgLower.includes('mấy giờ') || msgLower.includes('mở cửa') || msgLower.includes('đóng cửa') || msgLower.includes('ở đâu') || msgLower.includes('địa chỉ')) {
-    return `Dạ em chào ${pronoun} ạ! Khi ${pronoun} ghé The Shine (154 Hoàng Hoa Thám, P. Bảy Hiền, Tân Bình) sẽ nhận ngay Voucher tập thử miễn phí 100%!\nGiờ mở cửa: T2 - T7 (06:00 - 21:00), Chủ Nhật (06:00 - 20:30).\n${pronoun} dự định ghé trải nghiệm khung giờ nào để em đặt lịch đón tiếp chu đáo nhất ạ?`;
+    return `Dạ em chào ${pronoun} ạ! Phòng tập mở cửa từ 06:00 - 21:00 (T2-T7) và 06:00 - 20:30 (CN) tại 154 Hoàng Hoa Thám, Tân Bình ạ.\nKhi ${pronoun} ghé trải nghiệm sẽ được tặng ngay Voucher tập thử miễn phí 100% ạ!\n${pronoun} dự định ghé khung giờ nào để em đặt lịch đón tiếp chu đáo nhất ạ?`;
   }
 
   // Intent 2: Price & Packages
   if (msgLower.includes('giá') || msgLower.includes('bao nhiêu') || msgLower.includes('gói') || msgLower.includes('học phí') || msgLower.includes('thẻ tập') || msgLower.includes('day pass') || msgLower.includes('vé ngày') || msgLower.includes('sinh viên')) {
-    return `Dạ em chào ${pronoun} ạ! Khi ${pronoun} đến phòng tập trải nghiệm sẽ được tặng ngay Voucher tập thử miễn phí!\nGói Gym & Boxing bên em đang giảm từ 549k chỉ còn 349.000đ/tháng (đóng theo tháng linh hoạt, HLV hướng dẫn máy 1:1 ban đầu). Gói Yoga giảm còn 549k/tháng, Day Pass 100k/ngày và HSSV được giảm thêm 20%.\n${pronoun} có muốn đăng ký nhận Voucher trải nghiệm ngay hôm nay không ạ?`;
+    return `Dạ em chào ${pronoun} ạ! Gói Gym & Boxing bên em đang giảm từ 549k chỉ còn 349.000đ/tháng, Yoga giảm còn 549k/tháng, Day Pass 100k/ngày (HSSV giảm thêm 20%).\nĐặc biệt, khi ${pronoun} đến trải nghiệm sẽ được tặng ngay Voucher tập thử miễn phí ạ!\n${pronoun} có muốn đăng ký nhận Voucher trải nghiệm ngay hôm nay không ạ?`;
   }
 
   // Intent 3: Personal Trainer (PT)
   if (msgLower.includes('pt') || msgLower.includes('huấn luyện viên') || msgLower.includes('kèm') || msgLower.includes('thầy') || msgLower.includes('coach')) {
-    return `Dạ em chào ${pronoun} ạ! Đăng ký tư vấn PT hôm nay ${pronoun} sẽ nhận ngay Voucher tập thử miễn phí kèm 1 buổi kiểm tra thể trạng cùng HLV.\nCác HLV tại The Shine rất tận tâm, sửa từng động tác chuẩn và cam kết không chèo kéo ép gói.\nEm mời ${pronoun} ghé trải nghiệm phòng tập và trao đổi lộ trình trực tiếp cùng HLV nhé ạ!`;
+    return `Dạ em chào ${pronoun} ạ! Các HLV tại The Shine rất tận tâm, sửa từng động tác chuẩn và cam kết không chèo kéo.\nĐăng ký tư vấn PT hôm nay ${pronoun} sẽ nhận ngay Voucher tập thử miễn phí kèm 1 buổi kiểm tra thể trạng cùng HLV ạ!\nEm mời ${pronoun} ghé trải nghiệm phòng tập và trao đổi lộ trình trực tiếp cùng HLV nhé ạ!`;
   }
 
   // Intent 4: Yoga, Zumba, Amenities
   if (msgLower.includes('yoga') || msgLower.includes('zumba') || msgLower.includes('lớp') || msgLower.includes('boxing') || msgLower.includes('gửi xe') || msgLower.includes('tắm')) {
-    return `Dạ em chào ${pronoun} ạ! Khi ${pronoun} ghé The Shine sẽ được tặng ngay Voucher tập thử miễn phí 100% các lớp Yoga/Zumba studio, khu Gym & Boxing, locker an toàn và phòng tắm nóng lạnh.\n${pronoun} muốn ghé trải nghiệm lớp Yoga hay tập Gym trước ạ?`;
+    return `Dạ em chào ${pronoun} ạ! The Shine có đầy đủ khu Gym & Boxing, lớp Yoga/Zumba studio, locker an toàn và phòng tắm nóng lạnh cho hội viên ạ.\nKhi ${pronoun} ghé trải nghiệm sẽ được tặng ngay Voucher tập thử miễn phí 100% ạ!\n${pronoun} muốn ghé trải nghiệm lớp Yoga hay tập Gym trước ạ?`;
   }
 
   // Default friendly consultation with front-loaded marketing offer & CTA
-  return `Dạ em chào ${pronoun} ạ! Khi ${pronoun} đến phòng tập The Shine (154 Hoàng Hoa Thám, Tân Bình) trải nghiệm sẽ được tặng ngay Voucher tập thử miễn phí 100%!\nGiờ mở cửa: T2-T7 (06:00 - 21:00), Chủ Nhật (06:00 - 20:30).\n${pronoun} đang quan tâm đến gói tập Gym giảm mỡ, lớp Yoga hay tìm hiểu khóa PT 1-kèm-1 ạ?`;
+  return `Dạ em chào ${pronoun} ạ! The Shine Fitness & Yoga (154 Hoàng Hoa Thám, Tân Bình) mở cửa T2-T7 (06:00 - 21:00), Chủ Nhật (06:00 - 20:30).\nKhi ${pronoun} đến trải nghiệm sẽ được tặng ngay Voucher tập thử miễn phí 100% ạ!\n${pronoun} đang quan tâm đến gói tập Gym giảm mỡ, lớp Yoga hay tìm hiểu khóa PT 1-kèm-1 ạ?`;
 }
 

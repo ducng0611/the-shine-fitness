@@ -841,7 +841,7 @@ export default function App() {
 
 
       {/* Mobile Floating Action Button (FAB) */}
-      <div className={`md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-30 w-fit min-w-[220px] transition-opacity duration-300 ${(isChatbotOpen || isAuthModalOpen || isRegModalOpen || isMemberPortalOpen || !!selectedVideoModal) ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+      <div className={`md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-30 w-fit max-w-[calc(100vw-2rem)] min-w-[200px] transition-opacity duration-300 ${(isChatbotOpen || isAuthModalOpen || isRegModalOpen || isMemberPortalOpen || !!selectedVideoModal) ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
         <button
           onClick={() => openRegistration()}
           className="w-full h-[56px] bg-brand-orange hover:bg-orange-600 text-white px-6 rounded-full font-heading font-bold text-base uppercase italic shadow-[0_4px_15px_rgba(249,115,22,0.5)] flex items-center justify-center gap-2 transition-transform active:scale-95 whitespace-nowrap"

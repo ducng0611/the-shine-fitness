@@ -555,7 +555,7 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 w-[calc(100vw-1.5rem)] sm:w-[420px] h-[580px] sm:h-[630px] max-h-[90vh] bg-white dark:bg-[#151515] rounded-3xl shadow-2xl flex flex-col overflow-hidden z-50 border border-slate-200 dark:border-white/10"
+            className="fixed bottom-2 left-2 right-2 sm:left-auto sm:bottom-6 sm:right-6 w-auto sm:w-[420px] h-[calc(100dvh-4rem)] sm:h-[630px] max-h-[630px] bg-white dark:bg-[#151515] rounded-3xl shadow-2xl flex flex-col overflow-hidden z-50 border border-slate-200 dark:border-white/10 max-w-full"
           >
             {/* Header with Real Consultant Persona */}
             <div className="bg-slate-950 text-white p-4 shrink-0 border-b border-white/10">
@@ -910,15 +910,15 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
               
               {/* Quick Suggestions (Vertical Stack - Vibrant Orange Background & Intelligent Contextual Questions) */}
               {!isConsultantTyping && currentSuggestions && currentSuggestions.length > 0 && (
-                <div className="flex flex-col gap-2 mt-1 mb-2 animate-fadeIn self-start items-start px-2">
+                <div className="flex flex-col gap-2 mt-1 mb-2 animate-fadeIn self-start items-start px-1 max-w-full">
                   {currentSuggestions.map((item, idx) => (
                     <button
                       key={`${idx}-${item}`}
                       type="button"
                       onClick={() => sendMessageWithText(item)}
-                      className="w-fit text-left text-[12.5px] sm:text-xs font-bold bg-brand-orange hover:bg-orange-600 text-white py-2.5 px-4 rounded-2xl transition-all cursor-pointer border border-orange-400/30 active:scale-95 shadow-sm hover:shadow-md flex items-center gap-1.5"
+                      className="w-full max-w-full text-left text-[12.5px] sm:text-xs font-bold bg-brand-orange hover:bg-orange-600 text-white py-2.5 px-4 rounded-2xl transition-all cursor-pointer border border-orange-400/30 active:scale-95 shadow-sm hover:shadow-md flex items-center gap-1.5 whitespace-normal break-words leading-snug"
                     >
-                      <span>{item}</span>
+                      <span className="whitespace-normal break-words">{item}</span>
                     </button>
                   ))}
                 </div>
