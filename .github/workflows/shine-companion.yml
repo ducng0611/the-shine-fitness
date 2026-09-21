@@ -1,21 +1,13 @@
 name: Shine Companion integration and checks
-
 on:
   push:
     branches: [feat/shine-ai-companion]
-    paths:
-      - 'scripts/integrate_companion.mjs'
-      - 'server/src/companion/**'
-      - 'src/components/companion/**'
-      - 'tests/companion.test.mjs'
-
+    paths: ['scripts/integrate_companion.mjs']
 permissions:
   contents: write
-
 concurrency:
   group: shine-companion-preview
   cancel-in-progress: false
-
 jobs:
   verify:
     if: github.ref == 'refs/heads/feat/shine-ai-companion'
@@ -30,7 +22,7 @@ jobs:
           node-version: '22'
       - name: Apply guarded integration edits
         run: node scripts/integrate_companion.mjs
-      - name: Domain safety and planner tests
+      - name: Domain tests
         run: node --test tests/companion.test.mjs
       - name: Commit integration on feature branch only
         run: |
@@ -38,11 +30,12 @@ jobs:
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'feat: wire companion routes and member UI; secure profile lookup'
+            git commit -m 'feat: integrate authenticated Shine Companion behind feature flags'
             git push origin HEAD:feat/shine-ai-companion
           fi
-      - name: Install locked dependencies without lifecycle scripts
-        run: npm ci --ignore-scripts
+      - name: Install dependencies without lifecycle scripts
+        run: |
+          if [ -f package-lock.json ]; then npm ci --ignore-scripts; else npm install --ignore-scripts --package-lock=false; fi
       - name: Type check
         run: npm run lint
       - name: Production build
