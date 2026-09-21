@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import { ChatLogRecord, sanitizePii } from './chatLogStorage';
+import { ChatLogRecord, ChatFeedbackRecord, sanitizePii } from './chatLogStorage';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const CHAT_LOGS_CSV = path.join(DATA_DIR, 'chat_logs.csv');
+const CHAT_FEEDBACK_CSV = path.join(DATA_DIR, 'chat_feedback.csv');
 
 // Helper to escape CSV cell value
 function escapeCsv(val: unknown): string {
@@ -46,6 +47,11 @@ export function initChatLogCsvStorage(): void {
   if (!fs.existsSync(CHAT_LOGS_CSV)) {
     const header = 'id,sessionId,timestamp,lang,isMember,userMessage,botResponse,latencyMs,usedFallback,handoverTag,intent,pkSegment,responseChars,retrievedChunkIds,topSimilarity,groundedAnswer\n';
     fs.writeFileSync(CHAT_LOGS_CSV, header, 'utf-8');
+  }
+
+  if (!fs.existsSync(CHAT_FEEDBACK_CSV)) {
+    const header = 'id,sessionId,messageId,feedback,createdAt\n';
+    fs.writeFileSync(CHAT_FEEDBACK_CSV, header, 'utf-8');
   }
 }
 
@@ -170,3 +176,65 @@ export function getChatLogsCsv(filter?: { from?: string; to?: string }): ChatLog
 
   return records;
 }
+
+// Append or save a chat feedback record to CSV
+export function saveChatFeedbackCsv(record: {
+  sessionId: string;
+  messageId: string;
+  feedback: 'like' | 'dislike';
+  createdAt?: string;
+}): ChatFeedbackRecord {
+  initChatLogCsvStorage();
+
+  const fullRecord: ChatFeedbackRecord = {
+    id: `FB-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+    sessionId: record.sessionId || `session_${Date.now()}`,
+    messageId: record.messageId || '',
+    feedback: record.feedback,
+    createdAt: record.createdAt || new Date().toISOString()
+  };
+
+  const row = [
+    fullRecord.id,
+    fullRecord.sessionId,
+    fullRecord.messageId,
+    fullRecord.feedback,
+    fullRecord.createdAt
+  ].map(escapeCsv).join(',') + '\n';
+
+  fs.appendFileSync(CHAT_FEEDBACK_CSV, row, 'utf-8');
+  return fullRecord;
+}
+
+// Retrieve all chat feedback records from CSV
+export function getChatFeedbacksCsv(): ChatFeedbackRecord[] {
+  initChatLogCsvStorage();
+
+  if (!fs.existsSync(CHAT_FEEDBACK_CSV)) {
+    return [];
+  }
+
+  const content = fs.readFileSync(CHAT_FEEDBACK_CSV, 'utf-8');
+  const lines = content.split('\n').filter(line => line.trim().length > 0);
+  if (lines.length <= 1) {
+    return [];
+  }
+
+  const records: ChatFeedbackRecord[] = [];
+  for (let i = 1; i < lines.length; i++) {
+    const rawFields = parseCsvLine(lines[i]);
+    if (rawFields.length < 5) continue;
+
+    const [id, sessionId, messageId, feedback, createdAt] = rawFields;
+    records.push({
+      id,
+      sessionId,
+      messageId,
+      feedback: (feedback === 'dislike' ? 'dislike' : 'like'),
+      createdAt
+    });
+  }
+
+  return records;
+}
+

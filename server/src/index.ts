@@ -21,6 +21,8 @@ import {
   initChatLogStorage,
   appendChatLog,
   getChatLogs,
+  saveChatFeedback,
+  getChatFeedbacks,
 } from "./chatLogStorage";
 import {
   detectHandoverTrigger,
@@ -1337,6 +1339,14 @@ async function startServer() {
         ? Number(((handoverKpis.successHandovers / validLeadCount) * 100).toFixed(1))
         : (handoverKpis.handoverSuccessRate || 0);
 
+      const feedbacks = getChatFeedbacks();
+      const totalFeedbacks = feedbacks.length;
+      const likeCount = feedbacks.filter(f => f.feedback === 'like').length;
+      const dislikeCount = feedbacks.filter(f => f.feedback === 'dislike').length;
+      const satisfactionRate = totalFeedbacks > 0
+        ? Number(((likeCount / totalFeedbacks) * 100).toFixed(1))
+        : 100;
+
       res.json({
         logs,
         kpi: {
@@ -1360,6 +1370,12 @@ async function startServer() {
           openHandovers: handoverKpis.openHandovers,
           successRateByTag: handoverKpis.successRateByTag,
           handoverStats: handoverKpis,
+          feedbackStats: {
+            total: totalFeedbacks,
+            likes: likeCount,
+            dislikes: dislikeCount,
+            satisfactionRate
+          },
           ragInfo: {
             enabled: process.env.RAG_ENABLED === 'true',
             available: ragIndexInfo.available,
@@ -2083,14 +2099,6 @@ Hãy trả về kết quả định dạng JSON thuần túy (không bọc trong
     message: { error: "Bạn đã gửi quá nhiều phản hồi. Vui lòng thử lại sau 15 phút." }
   });
 
-  const chatFeedbacks: Array<{
-    id: string;
-    sessionId: string;
-    messageId?: string;
-    feedback: 'like' | 'dislike';
-    createdAt: string;
-  }> = [];
-
   app.post("/api/chat/feedback", chatFeedbackLimiter, (req, res) => {
     try {
       const { sessionId, messageId, feedback } = req.body;
@@ -2098,14 +2106,11 @@ Hãy trả về kết quả định dạng JSON thuần túy (không bọc trong
         return res.status(400).json({ error: "sessionId và feedback ('like' hoặc 'dislike') là bắt buộc." });
       }
 
-      const record = {
-        id: `fb_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+      const record = saveChatFeedback({
         sessionId,
-        messageId,
-        feedback: feedback as 'like' | 'dislike',
-        createdAt: new Date().toISOString()
-      };
-      chatFeedbacks.push(record);
+        messageId: messageId || '',
+        feedback: feedback as 'like' | 'dislike'
+      });
 
       res.json({
         success: true,

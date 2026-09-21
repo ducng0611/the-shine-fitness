@@ -135,7 +135,12 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    // 13. Hàng đợi chuyển giao nhân sự (Handover Queue)
+    // 13. Phản hồi đánh giá tin nhắn Chatbot (Chat Feedback)
+    match /chat_feedback/{feedbackId} {
+      allow read, write: if false;
+    }
+
+    // 14. Hàng đợi chuyển giao nhân sự (Handover Queue)
     match /handover_queue/{handoverId} {
       allow read, write: if false;
     }

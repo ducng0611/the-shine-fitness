@@ -9,9 +9,10 @@ import {
   Timestamp
 } from 'firebase/firestore';
 import { serverDb } from './lib/firebase-db';
-import { ChatLogRecord, sanitizePii } from './chatLogStorage';
+import { ChatLogRecord, ChatFeedbackRecord, sanitizePii } from './chatLogStorage';
 
 const chatLogsCache: ChatLogRecord[] = [];
+const chatFeedbacksCache: ChatFeedbackRecord[] = [];
 
 function mapDocToRecord(id: string, data: Record<string, unknown>): ChatLogRecord {
   let tsStr = new Date().toISOString();
@@ -64,11 +65,53 @@ export async function loadChatLogsFromFirestore(): Promise<ChatLogRecord[]> {
   }
 }
 
+export async function loadChatFeedbacksFromFirestore(): Promise<ChatFeedbackRecord[]> {
+  try {
+    const q = query(collection(serverDb, 'chat_feedback'), orderBy('createdAt', 'asc'));
+    const snap = await getDocs(q);
+    const records: ChatFeedbackRecord[] = [];
+    snap.forEach((docSnap) => {
+      const data = docSnap.data();
+      let createdStr = new Date().toISOString();
+      if (
+        data.createdAt &&
+        typeof data.createdAt === 'object' &&
+        'toDate' in data.createdAt &&
+        typeof (data.createdAt as { toDate: () => Date }).toDate === 'function'
+      ) {
+        createdStr = (data.createdAt as { toDate: () => Date }).toDate().toISOString();
+      } else if (typeof data.createdAt === 'string') {
+        createdStr = data.createdAt;
+      }
+
+      records.push({
+        id: docSnap.id,
+        sessionId: typeof data.sessionId === 'string' ? data.sessionId : '',
+        messageId: typeof data.messageId === 'string' ? data.messageId : '',
+        feedback: (data.feedback === 'dislike' ? 'dislike' : 'like'),
+        createdAt: createdStr
+      });
+    });
+    chatFeedbacksCache.length = 0;
+    chatFeedbacksCache.push(...records);
+    return records;
+  } catch (err) {
+    console.error('[ChatLogFirestoreStorage] Error loading chat feedbacks from Firestore:', err);
+    return chatFeedbacksCache;
+  }
+}
+
 export function initChatLogFirestoreStorage(): void {
   loadChatLogsFromFirestore().then((records) => {
     console.log(`[ChatLogFirestoreStorage] Initialized & loaded ${records.length} records into cache from Firestore.`);
   }).catch((err: unknown) => {
-    console.error('[ChatLogFirestoreStorage] Initialization error:', err);
+    console.error('[ChatLogFirestoreStorage] Initialization error for chat_logs:', err);
+  });
+
+  loadChatFeedbacksFromFirestore().then((records) => {
+    console.log(`[ChatLogFirestoreStorage] Initialized & loaded ${records.length} feedback records into cache from Firestore.`);
+  }).catch((err: unknown) => {
+    console.error('[ChatLogFirestoreStorage] Initialization error for chat_feedback:', err);
   });
 }
 
@@ -152,3 +195,40 @@ export async function queryChatLogsFromFirestore(filter?: { from?: string; to?: 
   });
   return records;
 }
+
+export function saveChatFeedbackFirestore(record: {
+  sessionId: string;
+  messageId: string;
+  feedback: 'like' | 'dislike';
+  createdAt?: string;
+}): ChatFeedbackRecord {
+  const now = new Date();
+  const createdAtIso = record.createdAt || now.toISOString();
+  const id = `FB-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+  const fullRecord: ChatFeedbackRecord = {
+    id,
+    sessionId: record.sessionId || `session_${Date.now()}`,
+    messageId: record.messageId || '',
+    feedback: record.feedback,
+    createdAt: createdAtIso
+  };
+
+  chatFeedbacksCache.push(fullRecord);
+
+  const docData = {
+    ...fullRecord,
+    createdAt: Timestamp.fromDate(new Date(createdAtIso))
+  };
+
+  setDoc(doc(serverDb, 'chat_feedback', fullRecord.id), docData).catch((err: unknown) => {
+    console.error('[ChatLogFirestoreStorage] Error writing chat_feedback doc to Firestore:', err);
+  });
+
+  return fullRecord;
+}
+
+export function getChatFeedbacksFirestore(): ChatFeedbackRecord[] {
+  return [...chatFeedbacksCache];
+}
+

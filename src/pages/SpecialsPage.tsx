@@ -1,7 +1,7 @@
 import React from 'react';
 import { FadeIn } from '../components/FadeIn';
 import { Gift, Flame, ArrowRight, CheckCircle2, ChevronDown } from 'lucide-react';
-import { PRICING } from '../../server/src/pricingData';
+import { PRICING } from '../../shared/pricingData';
 
 export const SpecialsPage = ({ lang, t, openRegistration }) => {
   const renderPlanTitle = (rawName: string) => {

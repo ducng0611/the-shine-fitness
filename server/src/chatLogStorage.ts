@@ -1,13 +1,25 @@
 import {
   initChatLogCsvStorage,
   appendChatLogCsv,
-  getChatLogsCsv
+  getChatLogsCsv,
+  saveChatFeedbackCsv,
+  getChatFeedbacksCsv
 } from './chatLogCsvStorage';
 import {
   initChatLogFirestoreStorage,
   appendChatLogFirestore,
-  getChatLogsFirestore
+  getChatLogsFirestore,
+  saveChatFeedbackFirestore,
+  getChatFeedbacksFirestore
 } from './chatLogFirestoreStorage';
+
+export interface ChatFeedbackRecord {
+  id: string;
+  sessionId: string;
+  messageId: string;
+  feedback: 'like' | 'dislike';
+  createdAt: string;
+}
 
 export interface ChatLogRecord {
   id: string;
@@ -70,3 +82,23 @@ export function getChatLogs(filter?: { from?: string; to?: string }): ChatLogRec
   }
   return getChatLogsCsv(filter);
 }
+
+export function saveChatFeedback(record: {
+  sessionId: string;
+  messageId: string;
+  feedback: 'like' | 'dislike';
+  createdAt?: string;
+}): ChatFeedbackRecord {
+  if (isFirestoreBackend()) {
+    return saveChatFeedbackFirestore(record);
+  }
+  return saveChatFeedbackCsv(record);
+}
+
+export function getChatFeedbacks(): ChatFeedbackRecord[] {
+  if (isFirestoreBackend()) {
+    return getChatFeedbacksFirestore();
+  }
+  return getChatFeedbacksCsv();
+}
+

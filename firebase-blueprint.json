@@ -129,6 +129,51 @@
         "role": { "type": "string" }
       },
       "required": ["uid", "email"]
+    },
+    "ChatLog": {
+      "title": "ChatLog",
+      "description": "Server-side chat conversation and performance audit logs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sessionId": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "lang": { "type": "string" },
+        "isMember": { "type": "boolean" },
+        "userMessage": { "type": "string" },
+        "botResponse": { "type": "string" },
+        "latencyMs": { "type": "number" },
+        "usedFallback": { "type": "boolean" },
+        "handoverTag": { "type": "string" }
+      },
+      "required": ["id", "sessionId", "timestamp"]
+    },
+    "ChatFeedback": {
+      "title": "ChatFeedback",
+      "description": "Chatbot message thumbs up or thumbs down feedback ratings",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "sessionId": { "type": "string" },
+        "messageId": { "type": "string" },
+        "feedback": { "type": "string", "enum": ["like", "dislike"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "sessionId", "feedback", "createdAt"]
+    },
+    "HandoverQueue": {
+      "title": "HandoverQueue",
+      "description": "Human consultant handover queue tickets and resolution records",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "sessionId": { "type": "string" },
+        "tag": { "type": "string" },
+        "summary": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "createdAt", "sessionId", "tag", "status"]
     }
   },
   "firestore": {
@@ -175,6 +220,18 @@
     "/admins/{adminId}": {
       "schema": "#/entities/Admin",
       "description": "Admin accounts"
+    },
+    "/chat_logs/{logId}": {
+      "schema": "#/entities/ChatLog",
+      "description": "Server-side chat audit logs"
+    },
+    "/chat_feedback/{feedbackId}": {
+      "schema": "#/entities/ChatFeedback",
+      "description": "Chatbot message feedback"
+    },
+    "/handover_queue/{handoverId}": {
+      "schema": "#/entities/HandoverQueue",
+      "description": "Consultant handover queue tickets"
     }
   }
 }

@@ -1,5 +1,5 @@
 import { CustomerRecord } from '../types';
-import { PRICING } from '../../server/src/pricingData';
+import { PRICING } from '../../shared/pricingData';
 
 export type PKSegmentCode = 'PK01' | 'PK02' | 'PK03' | 'PK04';
 

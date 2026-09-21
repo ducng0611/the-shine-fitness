@@ -39,7 +39,9 @@ import {
   Filter,
   Check,
   X,
-  Info
+  Info,
+  ThumbsUp,
+  ThumbsDown
 } from 'lucide-react';
 import { DateRangePicker, DateRange, formatDisplayDate } from './DateRangePicker';
 import { auth } from '../../lib/firebase';
@@ -124,6 +126,12 @@ interface ChatKpis {
   openHandovers?: number;
   successRateByTag?: TagSuccessRate[];
   handoverStats?: HandoverKpis;
+  feedbackStats?: {
+    total: number;
+    likes: number;
+    dislikes: number;
+    satisfactionRate: number;
+  };
   ragInfo?: {
     enabled: boolean;
     available: boolean;
@@ -712,7 +720,7 @@ export const AdminChatAnalyticsTab: React.FC<AdminChatAnalyticsTabProps> = ({ is
       </div>
 
       {/* KPI Cards Row (Original AI Metrics) */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-3">
         <div className={`p-3.5 rounded-2xl border ${isDark ? 'bg-slate-900/80 border-slate-800' : 'bg-white border-slate-200'} shadow-sm`}>
           <div className="flex items-center justify-between text-amber-500 mb-1.5">
             <span className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Tổng hội thoại</span>
@@ -800,6 +808,22 @@ export const AdminChatAnalyticsTab: React.FC<AdminChatAnalyticsTabProps> = ({ is
           </div>
           <div className="text-[10px] text-indigo-400 mt-0.5 font-semibold">
             {handoverQueue.length} ca
+          </div>
+        </div>
+
+        <div className={`p-3.5 rounded-2xl border ${isDark ? 'bg-slate-900/80 border-slate-800' : 'bg-white border-slate-200'} shadow-sm`}>
+          <div className="flex items-center justify-between text-pink-400 mb-1.5">
+            <span className={`text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Hài lòng CSAT</span>
+            <div className="flex items-center gap-1">
+              <ThumbsUp className="w-3 h-3 text-emerald-400" />
+              <ThumbsDown className="w-3 h-3 text-rose-400" />
+            </div>
+          </div>
+          <div className={`text-xl font-bold ${kpi.feedbackStats && kpi.feedbackStats.satisfactionRate < 80 ? 'text-rose-400' : 'text-emerald-400'}`}>
+            {loading ? '...' : `${kpi.feedbackStats?.satisfactionRate ?? 100}%`}
+          </div>
+          <div className="text-[10px] text-slate-500 mt-0.5">
+            {kpi.feedbackStats ? `${kpi.feedbackStats.likes}👍 / ${kpi.feedbackStats.dislikes}👎` : '0 đánh giá'}
           </div>
         </div>
       </div>
