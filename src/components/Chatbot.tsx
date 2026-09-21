@@ -18,7 +18,10 @@ import {
   Gift,
   Copy,
   Check,
-  Calendar
+  Calendar,
+  PhoneCall,
+  Headphones,
+  UserCheck
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Language, translations } from '../translations';
@@ -32,6 +35,9 @@ type Message = {
   text: string;
   isAck?: boolean;
   timestamp?: number;
+  handover?: boolean;
+  handoverTag?: string;
+  hotline?: string;
 };
 
 interface ChatbotProps {
@@ -331,10 +337,20 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
     }
   }, [messages]);
   const [input, setInput] = useState('');
+  const [sessionId, setSessionId] = useState<string>(() => {
+    return safeStorage.getItem('shine_chat_session_id') || '';
+  });
   const [isConsultantTyping, setIsConsultantTyping] = useState(false);
   const ackIndexRef = useRef(0);
   const lastInteractionTimeRef = useRef<number>(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Handover callback form state
+  const [activeHandoverFormMsgId, setActiveHandoverFormMsgId] = useState<string | null>(null);
+  const [submittedHandoverMsgIds, setSubmittedHandoverMsgIds] = useState<string[]>([]);
+  const [handoverName, setHandoverName] = useState('');
+  const [handoverPhone, setHandoverPhone] = useState('');
+  const [isSubmittingHandover, setIsSubmittingHandover] = useState(false);
 
   // Quick inquiry suggestions state for customers (starts with initial 3, then updates intelligently)
   const [currentSuggestions, setCurrentSuggestions] = useState<string[]>(() => getInitialSuggestions(lang));
@@ -417,7 +433,9 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           message: userMessageText,
+          sessionId: sessionId || undefined,
           history: historyPayload,
+          lang,
           memberInfo: effectiveUser ? {
             fullName: effectiveUser.fullName,
             gender: effectiveUser.gender,
@@ -434,6 +452,10 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
       }
 
       const data = await response.json();
+      if (data.sessionId) {
+        setSessionId(data.sessionId);
+        safeStorage.setItem('shine_chat_session_id', data.sessionId);
+      }
       const cleanReply = formatBotResponse(data.text || '');
 
       // Guarantee at least 600ms total typing feeling so it feels genuinely crafted by a person
@@ -445,7 +467,10 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
       const consultantMessage: Message = { 
         id: `consultant_${Date.now()}`, 
         role: 'model', 
-        text: cleanReply || (lang === 'vi' ? `Dạ em đây ạ! ${pronoun} cần em hỗ trợ thêm thông tin gì về phòng tập không ạ?` : 'Here to help! Do you need any more details?') 
+        text: cleanReply || (lang === 'vi' ? `Dạ em đây ạ! ${pronoun} cần em hỗ trợ thêm thông tin gì về phòng tập không ạ?` : 'Here to help! Do you need any more details?'),
+        handover: !!data.handover,
+        handoverTag: data.handoverTag || '',
+        hotline: data.hotline || '0946 293 593'
       };
 
       setMessages((prev) => [...prev, consultantMessage]);
@@ -676,6 +701,126 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
                             <ExternalLink size={10} className="opacity-60 shrink-0" />
                           </a>
                         </div>
+                      </div>
+                    )}
+                    {/* Handover Actions Block when handover === true */}
+                    {msg.handover && (
+                      <div className="mt-3 pt-3 border-t border-slate-200 dark:border-white/10 flex flex-col gap-2">
+                        <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                          <Headphones size={13} className="text-brand-orange shrink-0" />
+                          <span>
+                            {lang === 'vi' 
+                              ? 'Kênh liên hệ trực tiếp tư vấn viên:' 
+                              : 'Direct consultant contact channels:'}
+                          </span>
+                        </p>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                          {/* Call Hotline Button */}
+                          <a
+                            href={`tel:${(msg.hotline || '0946293593').replace(/\s+/g, '')}`}
+                            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors cursor-pointer shadow-xs active:scale-98"
+                          >
+                            <PhoneCall size={14} className="shrink-0" />
+                            <span>
+                              {lang === 'vi' 
+                                ? `Gọi hotline (${msg.hotline || '0946 293 593'})` 
+                                : `Call hotline (${msg.hotline || '0946 293 593'})`}
+                            </span>
+                          </a>
+
+                          {/* Leave Phone Number Button */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setActiveHandoverFormMsgId(activeHandoverFormMsgId === msg.id ? null : msg.id);
+                            }}
+                            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-brand-orange hover:bg-orange-600 text-white text-xs font-bold transition-colors cursor-pointer shadow-xs active:scale-98"
+                          >
+                            <UserCheck size={14} className="shrink-0" />
+                            <span>
+                              {lang === 'vi' ? 'Để lại số điện thoại' : 'Leave phone number'}
+                            </span>
+                          </button>
+                        </div>
+
+                        {/* Inline Call Back Form */}
+                        {activeHandoverFormMsgId === msg.id && (
+                          <div className="mt-2 p-3 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 space-y-2 text-xs">
+                            {submittedHandoverMsgIds.includes(msg.id) ? (
+                              <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium py-1">
+                                <CheckCircle2 size={16} />
+                                <span>
+                                  {lang === 'vi' 
+                                    ? 'Đã gửi thông tin! Tư vấn viên sẽ gọi lại cho bạn ngay.' 
+                                    : 'Info sent! A consultant will call you shortly.'}
+                                </span>
+                              </div>
+                            ) : (
+                              <form
+                                onSubmit={async (e) => {
+                                  e.preventDefault();
+                                  if (!handoverPhone.trim()) return;
+                                  setIsSubmittingHandover(true);
+                                  try {
+                                    await fetch('/api/register', {
+                                      method: 'POST',
+                                      headers: { 'Content-Type': 'application/json' },
+                                      body: JSON.stringify({
+                                        fullName: handoverName.trim() || (effectiveUser?.fullName || 'Khách hàng Chatbot'),
+                                        phone: handoverPhone.trim(),
+                                        email: effectiveUser?.email || 'lead_handover@theshine.vn',
+                                        packageType: 'Tư vấn trực tiếp',
+                                        notes: `Khách để lại SĐT qua Chatbot Handover [Tag: ${msg.handoverTag || 'Yêu cầu gọi lại'}]`
+                                      })
+                                    });
+                                    setSubmittedHandoverMsgIds(prev => [...prev, msg.id]);
+                                    setHandoverPhone('');
+                                    setHandoverName('');
+                                  } catch (err) {
+                                    console.error("Error submitting handover lead:", err);
+                                  } finally {
+                                    setIsSubmittingHandover(false);
+                                  }
+                                }}
+                                className="space-y-2"
+                              >
+                                <p className="font-semibold text-slate-700 dark:text-slate-300 text-[11px]">
+                                  {lang === 'vi' ? 'Tư vấn viên sẽ gọi lại hỗ trợ ngay:' : 'Request a callback:'}
+                                </p>
+                                <input
+                                  type="text"
+                                  placeholder={lang === 'vi' ? 'Họ và tên' : 'Full Name'}
+                                  value={handoverName}
+                                  onChange={(e) => setHandoverName(e.target.value)}
+                                  className="w-full px-2.5 py-1.5 text-xs rounded-lg bg-white dark:bg-[#121212] border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-100 outline-none focus:border-brand-orange"
+                                />
+                                <input
+                                  type="tel"
+                                  required
+                                  placeholder={lang === 'vi' ? 'Số điện thoại *' : 'Phone number *'}
+                                  value={handoverPhone}
+                                  onChange={(e) => setHandoverPhone(e.target.value)}
+                                  className="w-full px-2.5 py-1.5 text-xs rounded-lg bg-white dark:bg-[#121212] border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-100 outline-none focus:border-brand-orange"
+                                />
+                                <button
+                                  type="submit"
+                                  disabled={isSubmittingHandover}
+                                  className="w-full py-1.5 rounded-lg bg-brand-orange text-white font-bold text-xs flex items-center justify-center gap-1 hover:bg-orange-600 transition-colors cursor-pointer disabled:opacity-50"
+                                >
+                                  {isSubmittingHandover ? (
+                                    <span>{lang === 'vi' ? 'Đang gửi...' : 'Submitting...'}</span>
+                                  ) : (
+                                    <>
+                                      <Send size={12} />
+                                      <span>{lang === 'vi' ? 'Xác nhận gửi thông tin' : 'Submit request'}</span>
+                                    </>
+                                  )}
+                                </button>
+                              </form>
+                            )}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

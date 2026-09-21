@@ -151,6 +151,18 @@ export async function saveOrUpdateMemberInFirebase(memberData: {
   status?: string;
 }) {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch('/api/members', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(memberData)
+      });
+      if (res.ok) return { success: true };
+    }
     const docRef = doc(db, 'members', memberData.uid);
     // Sanitize undefined fields
     const sanitized: Record<string, any> = {};
@@ -159,6 +171,8 @@ export async function saveOrUpdateMemberInFirebase(memberData: {
     }
     await setDoc(docRef, {
       ...sanitized,
+      userId: memberData.uid,
+      uid: memberData.uid,
       status: sanitized.status || 'Active',
       updatedAt: new Date().toISOString(),
       timestamp: serverTimestamp()
@@ -396,8 +410,13 @@ export interface WorkoutLogEntry {
 export async function saveWorkoutLogInFirebase(entry: WorkoutLogEntry) {
   try {
     const colRef = collection(db, 'workout_logs');
+    const currentUser = auth.currentUser;
+    const currentUid = currentUser ? currentUser.uid : (entry.uid || entry.memberCode);
+
     const docRef = await addDoc(colRef, {
       ...entry,
+      userId: currentUid,
+      uid: currentUid,
       createdAt: entry.createdAt || new Date().toISOString(),
       timestamp: serverTimestamp()
     });
@@ -435,6 +454,14 @@ export async function getMemberWorkoutLogsFromFirebase(memberCode: string): Prom
 export async function deleteWorkoutLogInFirebase(id: string) {
   try {
     if (id.startsWith('local_')) return { success: true };
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch(`/api/workout-logs/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) return { success: true };
+    }
     const docRef = doc(db, 'workout_logs', id);
     await deleteDoc(docRef);
     return { success: true };
@@ -876,6 +903,15 @@ export async function getPackagesFromFirebase(): Promise<GymPackage[]> {
 
 export async function savePackageToFirebase(pkg: GymPackage): Promise<boolean> {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch('/api/admin/packages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(pkg)
+      });
+      if (res.ok) return true;
+    }
     const docRef = doc(db, 'packages', pkg.id);
     await setDoc(docRef, {
       ...pkg,
@@ -891,6 +927,14 @@ export async function savePackageToFirebase(pkg: GymPackage): Promise<boolean> {
 
 export async function deletePackageFromFirebase(id: string): Promise<boolean> {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch(`/api/admin/packages/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) return true;
+    }
     await deleteDoc(doc(db, 'packages', id));
     return true;
   } catch (error) {
@@ -1087,6 +1131,15 @@ export async function getPromotionsFromFirebase(): Promise<PromotionCampaign[]> 
 
 export async function savePromotionToFirebase(promo: PromotionCampaign): Promise<boolean> {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch('/api/admin/promotions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(promo)
+      });
+      if (res.ok) return true;
+    }
     const docRef = doc(db, 'promotions', promo.id);
     await setDoc(docRef, {
       ...promo,
@@ -1102,6 +1155,14 @@ export async function savePromotionToFirebase(promo: PromotionCampaign): Promise
 
 export async function deletePromotionFromFirebase(id: string): Promise<boolean> {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch(`/api/admin/promotions/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) return true;
+    }
     await deleteDoc(doc(db, 'promotions', id));
     return true;
   } catch (error) {
@@ -1331,6 +1392,15 @@ export async function getEmailFlowsFromFirebase(): Promise<EmailMarketingFlow[]>
 
 export async function saveEmailFlowToFirebase(flow: EmailMarketingFlow): Promise<boolean> {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch('/api/admin/email-flows', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(flow)
+      });
+      if (res.ok) return true;
+    }
     const docRef = doc(db, 'email_campaigns', flow.id);
     await setDoc(docRef, {
       ...flow,
@@ -1346,6 +1416,14 @@ export async function saveEmailFlowToFirebase(flow: EmailMarketingFlow): Promise
 
 export async function deleteEmailFlowFromFirebase(id: string): Promise<boolean> {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch(`/api/admin/email-flows/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) return true;
+    }
     await deleteDoc(doc(db, 'email_campaigns', id));
     return true;
   } catch (error) {
@@ -1514,6 +1592,15 @@ export async function getAllCustomersUnified(): Promise<CustomerRecord[]> {
 
 export async function saveCustomerToFirebase(customer: CustomerRecord): Promise<boolean> {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch('/api/admin/customers/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(customer)
+      });
+      if (res.ok) return true;
+    }
     const docId = customer.memberCode || customer.id;
     const docRef = doc(db, 'customers', docId);
     await setDoc(docRef, {
@@ -1530,6 +1617,18 @@ export async function saveCustomerToFirebase(customer: CustomerRecord): Promise<
 
 export async function syncCustomersToFirebase(customers: CustomerRecord[], onProgress?: (percent: number) => void): Promise<boolean> {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch('/api/admin/customers/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(customers)
+      });
+      if (res.ok) {
+        if (onProgress) onProgress(100);
+        return true;
+      }
+    }
     const total = customers.length;
     // Chunk into batches of 20 to avoid exceeding transaction/network limits
     const chunkSize = 20;
@@ -1558,6 +1657,14 @@ export async function syncCustomersToFirebase(customers: CustomerRecord[], onPro
 
 export async function deleteCustomerFromFirebase(id: string): Promise<boolean> {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch(`/api/admin/customers/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) return true;
+    }
     await deleteDoc(doc(db, 'customers', id));
     return true;
   } catch (error) {
@@ -1568,6 +1675,14 @@ export async function deleteCustomerFromFirebase(id: string): Promise<boolean> {
 
 export async function deleteAdminUserFromFirebase(uid: string): Promise<boolean> {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch(`/api/admin/users/${uid}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) return true;
+    }
     await deleteDoc(doc(db, 'admins', uid));
     return true;
   } catch (error) {
@@ -1601,6 +1716,24 @@ export async function createCustomerInFirebase(customer: Partial<CustomerRecord>
     tags: customer.tags || ['Hội viên mới'],
     createdAt: new Date().toISOString()
   };
+
+  try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch('/api/admin/customers/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(customer)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.customer) return data.customer;
+      }
+    }
+  } catch (err) {
+    console.warn('Backend create customer failed, writing client-side:', err);
+  }
+
   await setDoc(doc(db, 'customers', docId), {
     ...newCustomer,
     timestamp: serverTimestamp()
@@ -1613,6 +1746,9 @@ export async function createCustomerInFirebase(customer: Partial<CustomerRecord>
 export async function saveMemberProgressToFirebase(entry: MemberProgressEntry): Promise<boolean> {
   try {
     const docId = entry.id || `progress_${Date.now()}`;
+    const currentUser = auth.currentUser;
+    const currentUid = currentUser ? currentUser.uid : (entry.userId || entry.memberCode);
+
     // Strip out any undefined fields so Firestore doesn't reject the payload
     const sanitizedEntry: Record<string, any> = {};
     for (const [key, value] of Object.entries(entry)) {
@@ -1624,6 +1760,8 @@ export async function saveMemberProgressToFirebase(entry: MemberProgressEntry): 
     await setDoc(doc(db, 'member_progress', docId), {
       ...sanitizedEntry,
       id: docId,
+      userId: currentUid,
+      uid: currentUid,
       timestamp: serverTimestamp()
     }, { merge: true });
     return true;
@@ -1681,6 +1819,14 @@ export async function getMemberProgressFromFirebase(userId: string, memberCode?:
 
 export async function deleteMemberProgressFromFirebase(id: string): Promise<boolean> {
   try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch(`/api/member-progress/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) return true;
+    }
     await deleteDoc(doc(db, 'member_progress', id));
     return true;
   } catch (error) {

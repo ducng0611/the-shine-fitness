@@ -2,77 +2,147 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // =========================================================================
+    // GIẢ ĐỊNH & NGUYÊN TẮC BẢO MẬT (ASSUMPTIONS & SECURITY PRINCIPLES)
+    // 1. Firebase Authentication: Bật phía client (Google Auth / Custom Auth).
+    //    Chủ sở hữu được xác định bằng request.auth.uid so với trường 'userId' / 'uid'.
+    // 2. Nguyên tắc Tối thiểu Quyền (Least Privilege): Mặc định TỪ CHỐI tất cả.
+    // 3. Quyền Server: Server Node.js (firebase-admin) chạy với Service Account
+    //    bỏ qua hoàn toàn firestore.rules để thực hiện các thao tác quản trị CRM.
+    // 4. Client cấm thao tác DELETE dữ liệu hội viên; khách không được đọc danh sách CRM.
+    // =========================================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
     function isValidId(id) {
       return id is string && id.size() > 0 && id.size() <= 128;
     }
 
-    // Member Progress tracking
+    // 1. Tiến độ hội viên (Member Progress)
     match /member_progress/{progressId} {
-      allow read: if true;
-      allow create: if isValidId(progressId) && request.resource.data.userId is string;
-      allow update, delete: if isValidId(progressId);
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid ||
+        resource.data.uid == request.auth.uid
+      );
+      allow create: if isValidId(progressId) && isAuthenticated() && (
+        request.resource.data.userId == request.auth.uid ||
+        request.resource.data.uid == request.auth.uid
+      );
+      allow update: if isValidId(progressId) && isAuthenticated() && (
+        resource.data.userId == request.auth.uid ||
+        resource.data.uid == request.auth.uid
+      );
+      allow delete: if false;
     }
 
-    // Registration for trial / consultation
+    // 2. Đăng ký tập thử công khai (Public Registrations)
     match /registrations/{regId} {
-      allow read: if true;
-      allow create: if isValidId(regId);
-      allow update, delete: if true;
+      allow read: if false;
+      allow create: if isValidId(regId) &&
+        request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100 &&
+        request.resource.data.phone is string && request.resource.data.phone.size() >= 8 && request.resource.data.phone.size() <= 20;
+      allow update, delete: if false;
     }
 
-    // Health and fitness assessment
+    // 3. Đánh giá sức khỏe (Health Assessments)
     match /health_assessments/{assessmentId} {
-      allow read: if true;
-      allow create: if isValidId(assessmentId);
-      allow update, delete: if true;
+      allow read: if false;
+      allow create: if isValidId(assessmentId) &&
+        request.resource.data.phone is string && request.resource.data.phone.size() >= 8;
+      allow update, delete: if false;
     }
 
-    // Check-in records at reception
+    // 4. Điểm danh / Check-in (Check-in Records)
     match /check_ins/{checkInId} {
-      allow read: if true;
-      allow create, update, delete: if isValidId(checkInId);
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid ||
+        resource.data.uid == request.auth.uid
+      );
+      allow create: if isValidId(checkInId) && isAuthenticated() && (
+        request.resource.data.userId == request.auth.uid ||
+        request.resource.data.uid == request.auth.uid
+      );
+      allow update, delete: if false;
     }
 
-    // Workout logs
+    // 5. Nhật ký tập luyện (Workout Logs)
     match /workout_logs/{logId} {
-      allow read: if true;
-      allow create, update, delete: if isValidId(logId);
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid ||
+        resource.data.uid == request.auth.uid
+      );
+      allow create: if isValidId(logId) && isAuthenticated() && (
+        request.resource.data.userId == request.auth.uid ||
+        request.resource.data.uid == request.auth.uid
+      );
+      allow update: if isValidId(logId) && isAuthenticated() && (
+        resource.data.userId == request.auth.uid ||
+        resource.data.uid == request.auth.uid
+      );
+      allow delete: if false;
     }
 
-    // Gym packages
+    // 6. Danh mục gói tập (Gym Packages - Read-only Catalog)
     match /packages/{packageId} {
       allow read: if true;
-      allow write: if true;
+      allow write: if false;
     }
 
-    // Promotional vouchers & campaigns
+    // 7. Chương trình ưu đãi (Promotions Catalog)
     match /promotions/{promoId} {
       allow read: if true;
-      allow write: if true;
+      allow write: if false;
     }
 
-    // Marketing email flows
+    // 8. Chiến dịch Email Marketing (Email Marketing Flows)
     match /email_campaigns/{campaignId} {
       allow read: if true;
-      allow write: if true;
+      allow write: if false;
     }
 
-    // Member profiles
+    // 9. Hồ sơ hội viên (Members)
     match /members/{memberId} {
-      allow read: if true;
-      allow write: if isValidId(memberId);
+      allow read: if isAuthenticated() && (
+        resource.data.uid == request.auth.uid ||
+        resource.data.userId == request.auth.uid
+      );
+      allow write: if false;
     }
 
-    // Customers CRM
+    // 10. Quản lý khách hàng CRM (Customers)
     match /customers/{customerId} {
-      allow read: if true;
-      allow write: if isValidId(customerId);
+      allow read: if isAuthenticated() && (
+        resource.data.uid == request.auth.uid ||
+        resource.data.userId == request.auth.uid
+      );
+      allow write: if false;
     }
 
-    // Admin profiles
+    // 11. Tài khoản Admin (Admin User Profiles)
     match /admins/{adminId} {
-      allow read: if true;
-      allow write: if isValidId(adminId);
+      allow read: if isOwner(adminId);
+      allow write: if false;
+    }
+
+    // 12. Nhật ký hội thoại Chatbot (Chat Logs)
+    match /chat_logs/{logId} {
+      allow read, write: if true;
+    }
+
+    // 13. Hàng đợi chuyển giao nhân sự (Handover Queue)
+    match /handover_queue/{handoverId} {
+      allow read, write: if true;
+    }
+
+    // Wildcard mặc định: Từ chối tất cả các collection chưa được khai báo rõ
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

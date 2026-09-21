@@ -6,6 +6,7 @@
  */
 
 import { PRICING, OPENING_HOURS, ADDRESS, HOTLINE } from './pricingData';
+import { PK_SEGMENTS_LIST } from '../../src/data/pkSegmentsData';
 
 export interface ConsultantContext {
   pronoun: string;             // 'Anh' | 'Chị' | 'Anh/Chị'
@@ -16,6 +17,17 @@ export interface ConsultantContext {
   memberCode?: string;
 }
 
+export interface SegmentContext {
+  pkSegment?: 'PK01' | 'PK02' | 'PK03' | 'PK04' | null;
+  slots?: {
+    goal: string | null;
+    experience: string | null;
+    schedule: string | null;
+    budget: string | null;
+  };
+  nextQuestion?: 'Q1' | 'Q2' | 'Q3' | 'Q4' | null;
+}
+
 // Re-export constants sourced from pricingData
 export const THE_SHINE_HOURS = OPENING_HOURS;
 export const THE_SHINE_HOTLINE = HOTLINE;
@@ -24,7 +36,11 @@ export const THE_SHINE_ADDRESS = ADDRESS;
 /**
  * Builds the comprehensive prompt for Gemini AI Customer Consultant
  */
-export function buildConsultantSystemInstruction(ctx: ConsultantContext): string {
+export function buildConsultantSystemInstruction(
+  ctx: ConsultantContext,
+  segmentContext?: SegmentContext,
+  retrievedContext?: string
+): string {
   const { pronoun, memberName, detectedGender, isMember, membershipTier } = ctx;
   const shortName = memberName ? memberName.trim().split(/\s+/).slice(-1)[0] : '';
   const customerCall = shortName ? `${pronoun} ${shortName}` : pronoun;
@@ -48,6 +64,109 @@ export function buildConsultantSystemInstruction(ctx: ConsultantContext): string
 - ĐẠI TỪ XƯNG HÔ BẮT BUỘC: Bạn BẮT BUỘC xưng "em" và gọi khách hàng là "Anh/Chị".
 - TUYỆT ĐỐI CẤM: Không dùng từ "bạn", "tôi", "mình", "quý khách". Mọi câu giao tiếp đều xưng "em" và gọi "${customerCall}".`;
   }
+
+  let segmentInstruction = '';
+  if (segmentContext) {
+    const { pkSegment, slots, nextQuestion } = segmentContext;
+
+    if (pkSegment) {
+      const segDef = PK_SEGMENTS_LIST.find((s) => s.code === pkSegment);
+      if (segDef) {
+        segmentInstruction += `
+============================================================
+[GỢI Ý GÓI TẬP DÀNH RIÊNG CHO PHÂN KHÚC: ${segDef.code} - ${segDef.title}]
+- Chân dung: ${segDef.personaName}
+- Động lực chính: ${segDef.keyMotivator}
+- Tín hiệu nhận diện: ${segDef.primarySignal}
+- Các gói phù hợp nhất: ${segDef.preferredPackages.join(', ')}
+- QUY TẮC TƯ VẤN BÁO GIÁ DÀNH CHO PHÂN KHÚC NÀY:
+  * Ưu tiên giới thiệu ĐÚNG MỘT gói tập chính phù hợp nhất với nhu cầu của ${customerCall}.
+  * TỐI ĐA MỘT phương án thay thế nếu ${customerCall} cần thêm sự lựa chọn.
+  * Giải thích ngắn gọn 1 câu vì sao gói đó hợp với mục tiêu và điều kiện của ${customerCall}.
+  * Bắt buộc sử dụng giá chuẩn từ BẢNG GIÁ/DỮ LIỆU THAM CHIẾU ở trên, tuyệt đối không bịa đặt giá.
+`;
+      }
+    }
+
+    if (slots) {
+      const knownSlots: string[] = [];
+      if (slots.goal) knownSlots.push(`* Mục tiêu tập luyện: ${slots.goal}`);
+      if (slots.experience) knownSlots.push(`* Trình độ/Kinh nghiệm: ${slots.experience}`);
+      if (slots.schedule) knownSlots.push(`* Khung giờ/Tần suất: ${slots.schedule}`);
+      if (slots.budget) knownSlots.push(`* Ngân sách/Mong muốn: ${slots.budget}`);
+
+      if (knownSlots.length > 0) {
+        segmentInstruction += `
+============================================================
+[THÔNG TIN ĐÃ BIẾT VỀ KHÁCH HÀNG - TUYỆT ĐỐI KHÔNG HỎI LẠI]
+${knownSlots.join('\n')}
+- RÀNG BUỘC: Bạn đã biết các thông tin trên, TUYỆT ĐỐI KHÔNG hỏi lại những thông tin này.
+`;
+      }
+    }
+
+    if (nextQuestion) {
+      let qText = '';
+      if (nextQuestion === 'Q1') {
+        qText = `${customerCall} muốn tập luyện để đạt mục tiêu cụ thể nào ạ (giảm cân, tăng cơ, hay duy trì sức khỏe)?`;
+      } else if (nextQuestion === 'Q2') {
+        qText = `${customerCall} đã từng tập gym hoặc tham gia các lớp nhóm Yoga/Boxing bao giờ chưa ạ?`;
+      } else if (nextQuestion === 'Q3') {
+        qText = `${customerCall} dự định tập vào khung giờ nào trong ngày và mấy buổi một tuần ạ?`;
+      } else if (nextQuestion === 'Q4') {
+        qText = `${customerCall} mong muốn tìm gói tập tiết kiệm chi phí hay gói đầy đủ tiện ích và có HLV hỗ trợ ạ?`;
+      }
+
+      if (qText) {
+        segmentInstruction += `
+============================================================
+[CÂU GẠN LỌC CẦN HỎI Ó CUỐI PHẢN HỒI]
+- Sau khi đã trả lời đầy đủ thắc mắc của khách, BẮT BUỘC đặt duy nhất câu gạn lọc sau ở CUỐI CÙNG của phản hồi:
+  "${qText}"
+- RÀNG BUỘC TUYỆT ĐỐI: KHÔNG hỏi thêm bất kỳ câu gạn lọc nào khác trong cùng phản hồi này. Chỉ đặt duy nhất 1 câu hỏi này ở cuối.
+`;
+      }
+    }
+  }
+
+  // Hardcoded Knowledge Base Block (Used only when RAG is disabled or retrievedContext is empty)
+  const hardcodedKnowledgeBlock = `
+============================================================
+[BẢNG GIÁ & THÔNG TIN DỊCH VỤ CHUẨN THE SHINE FITNESS]
+============================================================
+* Giờ mở cửa:
+  - T2 - T7 (${OPENING_HOURS.weekdays})
+  - CN (${OPENING_HOURS.sunday})
+
+* Các gói tập chính & Ưu đãi:
+  - Gói Gym & Boxing: Giá gốc ${PRICING.basic.originalPriceFormatted}/tháng ➔ KHUYẾN MÃI CHỈ CÒN ${PRICING.basic.discountPriceFormatted}/tháng (đóng theo tháng linh hoạt, HLV hướng dẫn kỹ thuật 1:1 ban đầu).
+  - Gói Yoga: Giá gốc ${PRICING.premium.originalPriceFormatted}/tháng ➔ KHUYẾN MÃI còn ${PRICING.premium.discountPriceFormatted}/tháng (chỉ báo giá khi khách hỏi Yoga).
+  - Gói Toàn Diện Yoga & Gym: Giá gốc ${PRICING.vip.originalPriceFormatted}/tháng ➔ KHUYẾN MÃI còn ${PRICING.vip.discountPriceFormatted}/tháng.
+  - Vé ngày Day Pass: ${PRICING.dayPass.priceFormatted}/ngày (Trải nghiệm Gym, Boxing, locker, phòng tắm nóng lạnh).
+  - Giảm thêm ${PRICING.discounts.studentDiscountPercent}% cho Học sinh - Sinh viên khi xuất trình thẻ HSSV. ${PRICING.discounts.installment}
+  - HLV cá nhân 1-kèm-1 (PT Thái, PT Jackson, PT Tony, PT Minh): Hướng dẫn kỹ thuật chuẩn, kiểm tra thể trạng, giáo án riêng, không chèo kéo.
+
+* Địa chỉ: ${ADDRESS}. Hotline: ${HOTLINE}.
+`;
+
+  // RAG Knowledge Rule Block (Used when retrievedContext is present)
+  let ragRuleBlock = '';
+  if (retrievedContext && retrievedContext.trim().length > 0) {
+    ragRuleBlock = `
+============================================================
+[QUY TẮC RAG KNOWLEDGE BẮT BUỘC TUÂN THỦ]
+============================================================
+- Chỉ trả lời dựa trên KHỐI DỮ LIỆU THAM CHIẾU bên dưới.
+- Nếu khối này không chứa thông tin cần thiết, PHẢI nói rõ chưa có dữ liệu và mời khách liên hệ tư vấn viên.
+- TUYỆT ĐỐI KHÔNG suy đoán giá, lịch, hồ sơ huấn luyện viên hay chính sách.
+
+${retrievedContext}
+`;
+  }
+
+  const selectedKnowledgeSection = (retrievedContext && retrievedContext.trim().length > 0)
+    ? ragRuleBlock
+    : hardcodedKnowledgeBlock;
 
   return `Bạn là CHUYÊN VIÊN TƯ VẤN CRM & CHIẾN LƯỢC MARKETING CAO CẤP tại Trung tâm Thể hình & Yoga The Shine Fitness & Yoga (154 Hoàng Hoa Thám, Phường Bảy Hiền, Q. Tân Bình, TP.HCM. Hotline: 0946 293 593).
 
@@ -86,24 +205,8 @@ export function buildConsultantSystemInstruction(ctx: ConsultantContext): string
 [QUY TẮC XƯNG HÔ BẮT BUỘC]
 ============================================================
 ${honorificRule}
-
-============================================================
-[BẢNG GIÁ & THÔNG TIN DỊCH VỤ CHUẨN THE SHINE FITNESS]
-============================================================
-* Giờ mở cửa:
-  - T2 - T7 (${OPENING_HOURS.weekdays})
-  - CN (${OPENING_HOURS.sunday})
-
-* Các gói tập chính & Ưu đãi:
-  - Gói Gym & Boxing: Giá gốc ${PRICING.basic.originalPriceFormatted}/tháng ➔ KHUYẾN MÃI CHỈ CÒN ${PRICING.basic.discountPriceFormatted}/tháng (đóng theo tháng linh hoạt, HLV hướng dẫn kỹ thuật 1:1 ban đầu).
-  - Gói Yoga: Giá gốc ${PRICING.premium.originalPriceFormatted}/tháng ➔ KHUYẾN MÃI còn ${PRICING.premium.discountPriceFormatted}/tháng (chỉ báo giá khi khách hỏi Yoga).
-  - Gói Toàn Diện Yoga & Gym: Giá gốc ${PRICING.vip.originalPriceFormatted}/tháng ➔ KHUYẾN MÃI còn ${PRICING.vip.discountPriceFormatted}/tháng.
-  - Vé ngày Day Pass: ${PRICING.dayPass.priceFormatted}/ngày (Trải nghiệm Gym, Boxing, locker, phòng tắm nóng lạnh).
-  - Giảm thêm ${PRICING.discounts.studentDiscountPercent}% cho Học sinh - Sinh viên khi xuất trình thẻ HSSV. ${PRICING.discounts.installment}
-  - HLV cá nhân 1-kèm-1 (PT Thái, PT Jackson, PT Tony, PT Minh): Hướng dẫn kỹ thuật chuẩn, kiểm tra thể trạng, giáo án riêng, không chèo kéo.
-
-* Địa chỉ: ${ADDRESS}. Hotline: ${HOTLINE}.
-
+${segmentInstruction}
+${selectedKnowledgeSection}
 ============================================================
 [KỊCH BẢN MẪU TƯ VẤN CHUẨN MARKETING & CRM BÁN HÀNG]
 ============================================================

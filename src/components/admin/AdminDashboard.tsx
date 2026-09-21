@@ -25,7 +25,8 @@ import {
   FileSpreadsheet,
   TrendingUp,
   Menu,
-  X
+  X,
+  MessageSquare
 } from 'lucide-react';
 import { 
   AdminUser, 
@@ -59,6 +60,7 @@ import {
 
 import { AdminOverviewTab } from './AdminOverviewTab';
 import { AdminAnalyticsOverview } from './AdminAnalyticsOverview';
+import { AdminChatAnalyticsTab } from './AdminChatAnalyticsTab';
 import { AdminCustomersTab } from './AdminCustomersTab';
 import { AdminCustomerJourneyTab } from './AdminCustomerJourneyTab';
 import { AdminPKSegmentsTab } from './AdminPKSegmentsTab';
@@ -81,7 +83,7 @@ interface AdminDashboardProps {
   onExitAdmin: () => void;
 }
 
-type DashboardTab = 'overview' | 'analytics' | 'customers' | 'customer_journey' | 'pk_segments' | 'packages' | 'promotions' | 'email_flows' | 'rbac';
+type DashboardTab = 'overview' | 'analytics' | 'chat_analytics' | 'customers' | 'customer_journey' | 'pk_segments' | 'packages' | 'promotions' | 'email_flows' | 'rbac';
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   currentAdmin,
@@ -478,6 +480,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             items: [
               { id: 'overview' as DashboardTab, label: 'Tổng quan KPI', sublabel: 'KPIs & doanh thu', icon: BarChart3, badge: null },
               { id: 'analytics' as DashboardTab, label: 'Xu hướng & Tương tác', sublabel: 'Biểu đồ tăng trưởng & nguồn lead', icon: TrendingUp, badge: null },
+              { id: 'chat_analytics' as DashboardTab, label: 'Phân tích hội thoại AI', sublabel: 'KPI chatbot & độ trễ', icon: MessageSquare, badge: null },
             ]
           },
           {
@@ -839,6 +842,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             isDark={isDark}
             onNavigateTab={(tab) => setActiveTab(tab)}
           />
+        )}
+
+        {activeTab === 'chat_analytics' && (
+          <AdminChatAnalyticsTab isDark={isDark} />
         )}
 
         {activeTab === 'customers' && (

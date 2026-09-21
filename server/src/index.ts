@@ -9,14 +9,31 @@ import * as XLSXModule from "xlsx";
 const XLSX = (XLSXModule as any).default || XLSXModule;
 import { PRICING, OPENING_HOURS, ADDRESS, HOTLINE } from "./pricingData";
 
-const MODEL_CHINH = "gemini-2.5-flash";
-const MODEL_FALLBACK = "gemini-1.5-flash";
+const MODEL_CHINH = "gemini-3.5-flash-lite";
+const MODEL_FALLBACK = "gemini-3.6-flash";
 import {
   initCsvStorage,
   addRegistration,
   addMember,
   loginMember,
 } from "./csvStorage";
+import {
+  initChatLogStorage,
+  appendChatLog,
+  getChatLogs,
+} from "./chatLogStorage";
+import {
+  detectHandoverTrigger,
+  getHandoverReply,
+  buildHandoverSummary,
+} from "./handoverRules";
+import {
+  initHandoverStorage,
+  addHandoverRecord,
+  getHandoverQueue,
+  updateHandoverStatus,
+  getHandoverKpis,
+} from "./handoverStorage";
 import { parseExcelData } from "./excelDataService";
 import { resolveMemberPronoun } from "./genderHelper";
 import {
@@ -25,7 +42,17 @@ import {
   generateSmartConsultantFallback,
   ConsultantContext,
 } from "./chatConsultantKnowledge";
+import { classify, ClassificationResult } from "./intentClassifier";
+import {
+  loadIndex,
+  retrieve,
+  buildContextBlock,
+  getIsRagAvailable,
+  getIndexBuiltAt,
+  RetrievedChunk
+} from "./ragEngine";
 import { requireAuth, AuthRequest } from "./middleware/auth.ts";
+import { adminDb } from "./lib/firebase-admin.ts";
 import { validatePassword } from "./passwordValidation";
 
 const chatCache = new Map<string, string>();
@@ -252,6 +279,12 @@ async function startServer() {
 
   // Initialize storage
   initCsvStorage();
+  initChatLogStorage();
+  initHandoverStorage();
+
+  // Load RAG index into memory
+  const ragInit = loadIndex();
+  console.log(`[RAG ENGINE INIT] Status: ${ragInit.available ? 'AVAILABLE' : 'UNAVAILABLE'}, RAG_ENABLED: ${process.env.RAG_ENABLED === 'true'}`);
 
   // Initialize Gemini API client
   const ai = new GoogleGenAI({ 
@@ -272,7 +305,7 @@ async function startServer() {
     max: 20,
     statusCode: 429,
     message: {
-      error: "Rất tiếc, bạn đã gửi quá nhiều yêu cầu. Vui lòng thử lại sau 5 phút hoặc liên hệ Hotline 0946 293 593 để được tư vấn ngay lập tức!"
+      error: `Rất tiếc, bạn đã gửi quá nhiều yêu cầu. Vui lòng thử lại sau 5 phút hoặc liên hệ Hotline ${HOTLINE} để được tư vấn ngay lập tức!`
     },
     standardHeaders: true,
     legacyHeaders: false,
@@ -296,6 +329,349 @@ async function startServer() {
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
   });
+
+  // ================= FIRESTORE SECURE ENDPOINTS (FIREBASE ADMIN) =================
+
+  // Member Progress Deletion Endpoint
+  app.delete("/api/member-progress/:id", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const { id } = req.params;
+      const uid = req.user?.uid;
+      if (!uid) return res.status(401).json({ error: "Unauthorized: Missing user token" });
+
+      const docRef = adminDb.collection('member_progress').doc(id);
+      const snap = await docRef.get();
+      if (!snap.exists) {
+        return res.status(404).json({ error: "Thẻ tiến độ không tồn tại." });
+      }
+      const data = snap.data();
+      if (data?.userId !== uid && data?.uid !== uid) {
+        return res.status(403).json({ error: "Forbidden: Bạn không có quyền xóa dữ liệu của người khác." });
+      }
+      await docRef.delete();
+      res.json({ success: true, message: "Đã xóa tiến độ thành công." });
+    } catch (error: any) {
+      console.error("Error deleting member progress:", error);
+      res.status(500).json({ error: error.message || "Không thể xóa tiến độ." });
+    }
+  });
+
+  // Workout Log Deletion Endpoint
+  app.delete("/api/workout-logs/:id", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const { id } = req.params;
+      const uid = req.user?.uid;
+      if (!uid) return res.status(401).json({ error: "Unauthorized: Missing user token" });
+
+      const docRef = adminDb.collection('workout_logs').doc(id);
+      const snap = await docRef.get();
+      if (!snap.exists) {
+        return res.status(404).json({ error: "Nhật ký tập luyện không tồn tại." });
+      }
+      const data = snap.data();
+      if (data?.userId !== uid && data?.uid !== uid && data?.memberCode !== uid) {
+        return res.status(403).json({ error: "Forbidden: Bạn không có quyền xóa dữ liệu của người khác." });
+      }
+      await docRef.delete();
+      res.json({ success: true, message: "Đã xóa nhật ký tập luyện thành công." });
+    } catch (error: any) {
+      console.error("Error deleting workout log:", error);
+      res.status(500).json({ error: error.message || "Không thể xóa nhật ký tập luyện." });
+    }
+  });
+
+  // Save / Update Member Profile
+  app.post("/api/members", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const uid = req.user?.uid;
+      if (!uid) return res.status(401).json({ error: "Unauthorized: Missing user token" });
+
+      const memberData = req.body;
+      const sanitized: Record<string, any> = {};
+      for (const [k, v] of Object.entries(memberData)) {
+        if (v !== undefined) sanitized[k] = v;
+      }
+
+      const docRef = adminDb.collection('members').doc(uid);
+      await docRef.set({
+        ...sanitized,
+        uid,
+        userId: uid,
+        status: sanitized.status || 'Active',
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+
+      res.json({ success: true, message: "Đã cập nhật thông tin hội viên thành công." });
+    } catch (error: any) {
+      console.error("Error saving member profile:", error);
+      res.status(500).json({ error: error.message || "Không thể lưu thông tin hội viên." });
+    }
+  });
+
+  // Lookup Member Profile
+  app.post("/api/members/lookup", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const { uid, email, phone, memberCode } = req.body;
+      const requesterUid = req.user?.uid;
+      if (!requesterUid) return res.status(401).json({ error: "Unauthorized" });
+
+      let found: any = null;
+      if (uid) {
+        const snap = await adminDb.collection('members').doc(uid).get();
+        if (snap.exists) found = { uid: snap.id, ...snap.data() };
+      }
+      if (!found && email && email.trim()) {
+        const snap = await adminDb.collection('members').where('email', '==', email.trim().toLowerCase()).limit(1).get();
+        if (!snap.empty) found = { uid: snap.docs[0].id, ...snap.docs[0].data() };
+      }
+      if (!found && phone && phone.trim()) {
+        const snap = await adminDb.collection('members').where('phone', '==', phone.trim()).limit(1).get();
+        if (!snap.empty) found = { uid: snap.docs[0].id, ...snap.docs[0].data() };
+      }
+      if (!found && memberCode && memberCode.trim()) {
+        const snap = await adminDb.collection('members').where('membershipCode', '==', memberCode.trim()).limit(1).get();
+        if (!snap.empty) found = { uid: snap.docs[0].id, ...snap.docs[0].data() };
+      }
+
+      res.json({ success: true, member: found });
+    } catch (error: any) {
+      console.error("Error looking up member:", error);
+      res.status(500).json({ error: error.message || "Lỗi tra cứu thông tin hội viên." });
+    }
+  });
+
+  // Admin Gym Packages Endpoints
+  app.post("/api/admin/packages", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const pkg = req.body;
+      if (!pkg || !pkg.id) return res.status(400).json({ error: "Missing package id" });
+      await adminDb.collection('packages').doc(pkg.id).set({
+        ...pkg,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.delete("/api/admin/packages/:id", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const { id } = req.params;
+      await adminDb.collection('packages').doc(id).delete();
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/admin/packages/sync", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const packages = req.body;
+      if (Array.isArray(packages)) {
+        const batch = adminDb.batch();
+        for (const pkg of packages) {
+          if (pkg && pkg.id) {
+            batch.set(adminDb.collection('packages').doc(pkg.id), {
+              ...pkg,
+              updatedAt: new Date().toISOString()
+            }, { merge: true });
+          }
+        }
+        await batch.commit();
+      }
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Admin Promotions Endpoints
+  app.post("/api/admin/promotions", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const promo = req.body;
+      if (!promo || !promo.id) return res.status(400).json({ error: "Missing promo id" });
+      await adminDb.collection('promotions').doc(promo.id).set({
+        ...promo,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.delete("/api/admin/promotions/:id", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const { id } = req.params;
+      await adminDb.collection('promotions').doc(id).delete();
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Admin Email Marketing Flows Endpoints
+  app.post("/api/admin/email-flows", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const flow = req.body;
+      if (!flow || !flow.id) return res.status(400).json({ error: "Missing flow id" });
+      await adminDb.collection('email_campaigns').doc(flow.id).set({
+        ...flow,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.delete("/api/admin/email-flows/:id", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const { id } = req.params;
+      await adminDb.collection('email_campaigns').doc(id).delete();
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Admin Customers CRM Endpoints
+  app.get("/api/admin/customers/unified", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const customersMap = new Map<string, any>();
+      const custSnap = await adminDb.collection('customers').get();
+      custSnap.forEach(docSnap => {
+        const d = docSnap.data();
+        const key = d.memberCode || d.id || docSnap.id;
+        customersMap.set(key, { ...d, id: docSnap.id });
+      });
+
+      res.json({ success: true, customers: Array.from(customersMap.values()) });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/admin/customers/save", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const customer = req.body;
+      const docId = customer.memberCode || customer.id;
+      if (!docId) return res.status(400).json({ error: "Missing customer id" });
+      await adminDb.collection('customers').doc(docId).set({
+        ...customer,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/admin/customers/create", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const customer = req.body;
+      const memberCode = customer.memberCode || `TS_${Date.now().toString().slice(-4)}`;
+      const docId = memberCode;
+      const newCustomer = {
+        id: docId,
+        memberCode,
+        fullName: customer.fullName || 'Hội viên mới',
+        phone: customer.phone || '',
+        email: customer.email || '',
+        gender: customer.gender || 'Nam',
+        occupation: customer.occupation || 'Tự do',
+        source: customer.source || 'reception',
+        status: customer.status || 'member',
+        membershipStatus: customer.membershipStatus || 'Đang hoạt động',
+        packageCode: customer.packageCode || '12T',
+        packageInterested: customer.packageInterested || 'Gói 12 Tháng (1 Năm Toàn Diện)',
+        totalSpent: customer.totalSpent !== undefined ? customer.totalSpent : 5900000,
+        checkinCount: customer.checkinCount || 0,
+        ptSessions: customer.ptSessions || 0,
+        customerSegment: customer.customerSegment || 'Khách mới',
+        churnRisk: customer.churnRisk || 'Thấp',
+        notes: customer.notes || '',
+        tags: customer.tags || ['Hội viên mới'],
+        createdAt: new Date().toISOString()
+      };
+      await adminDb.collection('customers').doc(docId).set(newCustomer, { merge: true });
+      res.json({ success: true, customer: newCustomer });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/admin/customers/sync", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const customers = req.body;
+      if (Array.isArray(customers)) {
+        const batch = adminDb.batch();
+        for (const c of customers) {
+          const docId = c.memberCode || c.id;
+          if (docId) {
+            batch.set(adminDb.collection('customers').doc(docId), {
+              ...c,
+              syncedAt: new Date().toISOString()
+            }, { merge: true });
+          }
+        }
+        await batch.commit();
+      }
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.delete("/api/admin/customers/:id", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const { id } = req.params;
+      await adminDb.collection('customers').doc(id).delete();
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Admin Users Management Endpoints
+  app.get("/api/admin/users/all", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const snap = await adminDb.collection('admins').get();
+      const admins: any[] = [];
+      snap.forEach(docSnap => {
+        admins.push({ uid: docSnap.id, ...docSnap.data() });
+      });
+      res.json({ success: true, admins });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/admin/users/save", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const adminData = req.body;
+      if (!adminData || !adminData.uid) return res.status(400).json({ error: "Missing admin uid" });
+      await adminDb.collection('admins').doc(adminData.uid).set({
+        ...adminData,
+        updatedAt: new Date().toISOString()
+      }, { merge: true });
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.delete("/api/admin/users/:uid", requireAuth, async (req: AuthRequest, res) => {
+    try {
+      const { uid } = req.params;
+      await adminDb.collection('admins').doc(uid).delete();
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
 
   // Return self-destroying script for any legacy Service Worker registrations to clear cache and unregister
   const swKillScript = `
@@ -502,6 +878,9 @@ async function startServer() {
 
   // API Routes for Chatbot (AI Customer Consultant for The Shine Fitness & Yoga)
   app.post("/api/chat", async (req, res) => {
+    const startTime = Date.now();
+    const sessionId = req.body?.sessionId || `session_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+
     // Resolve proper pronoun based on member status and gender
     const { pronoun, detectedGender, memberName, isMember } = resolveMemberPronoun(req.body?.memberInfo);
     const consultantContext: ConsultantContext = {
@@ -513,6 +892,8 @@ async function startServer() {
       memberCode: req.body?.memberInfo?.memberCode,
     };
 
+    let classification: ClassificationResult | null = null;
+
     try {
       const { message, history } = req.body;
       
@@ -522,17 +903,219 @@ async function startServer() {
       
       const lang = req.body?.lang || 'vi';
 
-      // Simple caching mechanism
-      // Create a cache key using the history length and the current message
-      // This caches identical conversational states
-      const historyStr = history ? JSON.stringify(history.map((h: any) => h.text)) : "";
-      const cacheKey = `${lang}_${isMember}_${pronoun}_${historyStr}_${message}`;
-      if (chatCache.has(cacheKey)) {
-        return res.json({ text: chatCache.get(cacheKey) });
+      // 1. Check handover trigger BEFORE Gemini and BEFORE checking cache
+      const handoverTrigger = detectHandoverTrigger(message, history || []);
+      if (handoverTrigger.tag) {
+        const replyText = getHandoverReply(handoverTrigger.tag, pronoun);
+        const latencyMs = Date.now() - startTime;
+        const summary = buildHandoverSummary(history || [], message, handoverTrigger.tag, handoverTrigger.reason);
+
+        const queueStatus = handoverTrigger.tag === 'COMPLAINT' 
+          ? 'Chờ tiếp nhận - Ưu tiên cao' 
+          : 'Chờ tiếp nhận';
+
+        try {
+          addHandoverRecord({
+            sessionId,
+            tag: handoverTrigger.tag,
+            summary,
+            status: queueStatus
+          });
+        } catch (hoErr) {
+          console.error("Failed to add handover record:", hoErr);
+        }
+
+        try {
+          appendChatLog({
+            sessionId,
+            lang,
+            isMember: !!isMember,
+            userMessage: message,
+            botResponse: replyText,
+            latencyMs,
+            usedFallback: false,
+            handoverTag: handoverTrigger.tag,
+            intent: '',
+            pkSegment: '',
+            responseChars: replyText.length
+          });
+        } catch (logErr) {
+          console.error("Failed to append chat log for handover:", logErr);
+        }
+
+        return res.json({
+          text: replyText,
+          handover: true,
+          handoverTag: handoverTrigger.tag,
+          hotline: HOTLINE,
+          sessionId
+        });
       }
 
-      // Build comprehensive grounded system instruction adhering to all correction rules
-      const systemInstruction = buildConsultantSystemInstruction(consultantContext);
+      // 2. Classify intent, pkSegment, slots, nextQuestion in ONE Gemini call
+      classification = await classify(message, history || [], ai);
+
+      // 3. Low confidence handover check (< 0.4)
+      if (classification.confidence < 0.4) {
+        const replyText = getHandoverReply('LOW_CONFIDENCE', pronoun);
+        const latencyMs = Date.now() - startTime;
+        const summary = buildHandoverSummary(
+          history || [],
+          message,
+          'LOW_CONFIDENCE',
+          `AI chưa tự tin nhận diện ý định (Confidence: ${classification.confidence})`
+        );
+
+        try {
+          addHandoverRecord({
+            sessionId,
+            tag: 'LOW_CONFIDENCE',
+            summary,
+            status: 'Chờ tiếp nhận'
+          });
+        } catch (hoErr) {
+          console.error("Failed to add low confidence handover record:", hoErr);
+        }
+
+        try {
+          appendChatLog({
+            sessionId,
+            lang,
+            isMember: !!isMember,
+            userMessage: message,
+            botResponse: replyText,
+            latencyMs,
+            usedFallback: false,
+            handoverTag: 'LOW_CONFIDENCE',
+            intent: classification.intent,
+            pkSegment: classification.pkSegment || '',
+            responseChars: replyText.length
+          });
+        } catch (logErr) {
+          console.error("Failed to append chat log for low confidence handover:", logErr);
+        }
+
+        return res.json({
+          text: replyText,
+          handover: true,
+          handoverTag: 'LOW_CONFIDENCE',
+          hotline: HOTLINE,
+          sessionId
+        });
+      }
+
+      // 4. RAG Retrieval (if RAG_ENABLED === 'true')
+      const RAG_ENABLED = process.env.RAG_ENABLED === 'true';
+      let retrievedChunks: RetrievedChunk[] = [];
+      let retrievedContext: string | undefined = undefined;
+      let retrievedChunkIds = '';
+      let topSimilarity = 0;
+      let groundedAnswer = false;
+
+      if (RAG_ENABLED && getIsRagAvailable()) {
+        retrievedChunks = await retrieve(message, ai, {
+          intent: classification.intent,
+          topK: 4
+        });
+
+        if (retrievedChunks.length > 0) {
+          retrievedChunkIds = retrievedChunks.map(r => r.chunk.id).join(';');
+          topSimilarity = retrievedChunks[0].similarity;
+          groundedAnswer = true;
+          retrievedContext = buildContextBlock(retrievedChunks);
+        } else {
+          // RAG_ENABLED=true but no chunk >= 0.55 similarity found.
+          // Fallback to handover to avoid hallucination.
+          const replyText = getHandoverReply('NO_GROUNDING_DATA', pronoun);
+          const latencyMs = Date.now() - startTime;
+          const summary = buildHandoverSummary(
+            history || [],
+            message,
+            'NO_GROUNDING_DATA',
+            'RAG_ENABLED=true nhưng không tìm thấy dữ liệu tham chiếu đạt ngưỡng (>= 0.55)'
+          );
+
+          try {
+            addHandoverRecord({
+              sessionId,
+              tag: 'NO_GROUNDING_DATA',
+              summary,
+              status: 'Chờ tiếp nhận'
+            });
+          } catch (hoErr) {
+            console.error("Failed to add NO_GROUNDING_DATA handover record:", hoErr);
+          }
+
+          try {
+            appendChatLog({
+              sessionId,
+              lang,
+              isMember: !!isMember,
+              userMessage: message,
+              botResponse: replyText,
+              latencyMs,
+              usedFallback: false,
+              handoverTag: 'NO_GROUNDING_DATA',
+              intent: classification.intent,
+              pkSegment: classification.pkSegment || '',
+              responseChars: replyText.length,
+              retrievedChunkIds: '',
+              topSimilarity: 0,
+              groundedAnswer: false
+            });
+          } catch (logErr) {
+            console.error("Failed to append chat log for NO_GROUNDING_DATA handover:", logErr);
+          }
+
+          return res.json({
+            text: replyText,
+            handover: true,
+            handoverTag: 'NO_GROUNDING_DATA',
+            hotline: HOTLINE,
+            sessionId
+          });
+        }
+      }
+
+      // 5. Cache check including RAG parameters in cacheKey
+      const historyStr = history ? JSON.stringify(history.map((h: any) => h.text)) : "";
+      const cacheKey = `${RAG_ENABLED}_${retrievedChunkIds}_${lang}_${isMember}_${pronoun}_${classification.pkSegment || 'NONE'}_${classification.nextQuestion || 'NONE'}_${historyStr}_${message}`;
+      if (chatCache.has(cacheKey)) {
+        const cachedText = chatCache.get(cacheKey)!;
+        const latencyMs = Date.now() - startTime;
+        try {
+          appendChatLog({
+            sessionId,
+            lang,
+            isMember: !!isMember,
+            userMessage: message,
+            botResponse: cachedText,
+            latencyMs,
+            usedFallback: false,
+            handoverTag: '',
+            intent: classification.intent,
+            pkSegment: classification.pkSegment || '',
+            responseChars: cachedText.length,
+            retrievedChunkIds,
+            topSimilarity,
+            groundedAnswer
+          });
+        } catch (logErr) {
+          console.error("Failed to append chat log for cache hit:", logErr);
+        }
+        return res.json({ text: cachedText, sessionId });
+      }
+
+      // 6. Build personalized system instruction
+      const systemInstruction = buildConsultantSystemInstruction(
+        consultantContext,
+        {
+          pkSegment: classification.pkSegment,
+          slots: classification.slots,
+          nextQuestion: classification.nextQuestion
+        },
+        retrievedContext
+      );
 
       const formattedContents = [];
       if (history && Array.isArray(history)) {
@@ -546,6 +1129,7 @@ async function startServer() {
       formattedContents.push({ role: 'user', parts: [{ text: message }] });
 
       let response;
+      let usedFallback = false;
       try {
         response = await ai.models.generateContent({
           model: MODEL_CHINH,
@@ -556,6 +1140,7 @@ async function startServer() {
           },
         });
       } catch (genErr) {
+        usedFallback = true;
         console.warn(`${MODEL_CHINH} failed, retrying with fallback model ${MODEL_FALLBACK}:`, genErr);
         response = await ai.models.generateContent({
           model: MODEL_FALLBACK,
@@ -567,14 +1152,245 @@ async function startServer() {
         });
       }
 
+      const latencyMs = Date.now() - startTime;
       const rawText = response.text || "";
       const cleanText = sanitizeConsultantOutput(rawText, consultantContext);
 
-      res.json({ text: cleanText });
+      chatCache.set(cacheKey, cleanText);
+
+      try {
+        appendChatLog({
+          sessionId,
+          lang,
+          isMember: !!isMember,
+          userMessage: message,
+          botResponse: cleanText,
+          latencyMs,
+          usedFallback,
+          handoverTag: '',
+          intent: classification.intent,
+          pkSegment: classification.pkSegment || '',
+          responseChars: cleanText.length,
+          retrievedChunkIds,
+          topSimilarity,
+          groundedAnswer
+        });
+      } catch (logErr) {
+        console.error("Failed to append chat log:", logErr);
+      }
+
+      res.json({ text: cleanText, sessionId });
     } catch (error) {
+      const latencyMs = Date.now() - startTime;
       console.error("Gemini API Error in /api/chat:", error);
       const fallbackText = generateSmartConsultantFallback(req.body?.message || "", consultantContext);
-      res.json({ text: fallbackText });
+
+      try {
+        appendChatLog({
+          sessionId,
+          lang: req.body?.lang || 'vi',
+          isMember: !!consultantContext.isMember,
+          userMessage: req.body?.message || "",
+          botResponse: fallbackText,
+          latencyMs,
+          usedFallback: true,
+          handoverTag: '',
+          intent: classification?.intent || 'OTHER',
+          pkSegment: classification?.pkSegment || '',
+          responseChars: fallbackText.length
+        });
+      } catch (logErr) {
+        console.error("Failed to append chat log in catch:", logErr);
+      }
+
+      res.json({ text: fallbackText, sessionId });
+    }
+  });
+
+  // GET /api/admin/chat-logs (Returns chat logs and pre-calculated KPI metrics)
+  app.get("/api/admin/chat-logs", (req, res) => {
+    try {
+      const from = req.query.from as string | undefined;
+      const to = req.query.to as string | undefined;
+
+      const logs = getChatLogs({ from, to });
+
+      const totalMessages = logs.length;
+      const uniqueSessions = new Set(logs.map(l => l.sessionId));
+      const totalConversations = uniqueSessions.size;
+
+      const avgLatencyMs = totalMessages > 0
+        ? Math.round(logs.reduce((acc, l) => acc + (l.latencyMs || 0), 0) / totalMessages)
+        : 0;
+
+      let p95LatencyMs = 0;
+      if (totalMessages > 0) {
+        const latencies = logs.map(l => l.latencyMs || 0).sort((a, b) => a - b);
+        const p95Idx = Math.min(latencies.length - 1, Math.floor(latencies.length * 0.95));
+        p95LatencyMs = latencies[p95Idx];
+      }
+
+      const fallbackCount = logs.filter(l => l.usedFallback).length;
+      const fallbackRate = totalMessages > 0
+        ? Number(((fallbackCount / totalMessages) * 100).toFixed(1))
+        : 0;
+
+      const handoverCount = logs.filter(l => l.handoverTag && l.handoverTag.trim().length > 0).length;
+      const handoverRate = totalMessages > 0
+        ? Number(((handoverCount / totalMessages) * 100).toFixed(1))
+        : 0;
+
+      const avgResponseChars = totalMessages > 0
+        ? Math.round(logs.reduce((acc, l) => acc + (l.responseChars || 0), 0) / totalMessages)
+        : 0;
+
+      // Intent Distribution (fixed 8 intents)
+      const ALL_INTENTS = ['PRICE', 'SCHEDULE', 'TRAINER', 'FACILITY', 'POLICY', 'TRIAL', 'GREETING', 'OTHER'];
+      const intentCounts: Record<string, number> = {
+        PRICE: 0,
+        SCHEDULE: 0,
+        TRAINER: 0,
+        FACILITY: 0,
+        POLICY: 0,
+        TRIAL: 0,
+        GREETING: 0,
+        OTHER: 0
+      };
+
+      logs.forEach(l => {
+        const i = (l.intent || '').toUpperCase();
+        if (intentCounts[i] !== undefined) {
+          intentCounts[i]++;
+        } else if (i) {
+          intentCounts['OTHER']++;
+        }
+      });
+
+      const intentDistribution = ALL_INTENTS.map(intent => ({
+        intent,
+        count: intentCounts[intent]
+      }));
+
+      // PK Segment Distribution (4 segments)
+      const ALL_SEGMENTS = ['PK01', 'PK02', 'PK03', 'PK04'];
+      const pkCounts: Record<string, number> = {
+        PK01: 0,
+        PK02: 0,
+        PK03: 0,
+        PK04: 0
+      };
+
+      const sessionSegmentMap = new Map<string, string>();
+
+      logs.forEach(l => {
+        if (l.pkSegment && pkCounts[l.pkSegment] !== undefined) {
+          pkCounts[l.pkSegment]++;
+          if (l.sessionId) {
+            sessionSegmentMap.set(l.sessionId, l.pkSegment);
+          }
+        }
+      });
+
+      const pkSegmentDistribution = ALL_SEGMENTS.map(segment => ({
+        segment,
+        count: pkCounts[segment]
+      }));
+
+      const segmentedSessionsCount = Array.from(uniqueSessions).filter(sId => sessionSegmentMap.has(sId)).length;
+      const segmentedSessionRate = totalConversations > 0
+        ? Number(((segmentedSessionsCount / totalConversations) * 100).toFixed(1))
+        : 0;
+
+      // RAG KPIs
+      const nonHandoverLogs = logs.filter(l => !l.handoverTag || l.handoverTag.trim().length === 0);
+      const groundedLogs = logs.filter(l => l.groundedAnswer);
+      const sourcedAnswerRate = nonHandoverLogs.length > 0
+        ? Number(((groundedLogs.length / nonHandoverLogs.length) * 100).toFixed(1))
+        : 0;
+
+      const groundedLogsWithScore = logs.filter(l => l.groundedAnswer && typeof l.topSimilarity === 'number' && l.topSimilarity > 0);
+      const avgTopSimilarity = groundedLogsWithScore.length > 0
+        ? Number((groundedLogsWithScore.reduce((acc, l) => acc + l.topSimilarity!, 0) / groundedLogsWithScore.length).toFixed(4))
+        : 0;
+
+      const ragIndexInfo = loadIndex();
+      const handoverKpis = getHandoverKpis();
+
+      res.json({
+        logs,
+        kpi: {
+          totalConversations,
+          totalMessages,
+          avgLatencyMs,
+          p95LatencyMs,
+          fallbackRate,
+          handoverRate,
+          avgResponseChars,
+          segmentedSessionRate,
+          intentDistribution,
+          pkSegmentDistribution,
+          sourcedAnswerRate,
+          avgTopSimilarity,
+          handoverSuccessRate: handoverKpis.handoverSuccessRate,
+          avgTimeToContactMinutes: handoverKpis.avgTimeToContactMinutes,
+          slaBreachRate: handoverKpis.slaBreachRate,
+          openHandovers: handoverKpis.openHandovers,
+          successRateByTag: handoverKpis.successRateByTag,
+          handoverStats: handoverKpis,
+          ragInfo: {
+            enabled: process.env.RAG_ENABLED === 'true',
+            available: ragIndexInfo.available,
+            builtAt: ragIndexInfo.builtAt,
+            chunkCount: ragIndexInfo.chunkCount || 0
+          }
+        }
+      });
+    } catch (error: any) {
+      console.error("Error fetching chat logs:", error);
+      res.status(500).json({ error: error.message || "Failed to fetch chat logs" });
+    }
+  });
+
+  // GET /api/admin/handover-queue (Returns human handover queue with pre-calculated KPIs, newest first)
+  app.get("/api/admin/handover-queue", (req, res) => {
+    try {
+      const queue = getHandoverQueue();
+      const kpi = getHandoverKpis(queue);
+      res.json({ queue, kpi });
+    } catch (error: any) {
+      console.error("Error fetching handover queue:", error);
+      res.status(500).json({ error: error.message || "Failed to fetch handover queue" });
+    }
+  });
+
+  // PATCH /api/admin/handover-queue/:id (Updates state of a handover record with strict state machine, SLA & audit trail)
+  app.patch("/api/admin/handover-queue/:id", requireAuth, (req: AuthRequest, res) => {
+    try {
+      const id = req.params.id;
+      const { newStatus, note } = req.body;
+
+      if (!newStatus) {
+        return res.status(400).json({ error: "Trạng thái mới (newStatus) là bắt buộc." });
+      }
+
+      // Extract actor identity from verified admin Bearer token
+      const actor = req.user?.email || req.user?.name || req.user?.uid || "Admin";
+
+      const updatedRecord = updateHandoverStatus(id, newStatus, actor, note);
+      const kpi = getHandoverKpis();
+
+      res.json({
+        success: true,
+        record: updatedRecord,
+        kpi
+      });
+    } catch (error: any) {
+      console.error("Error updating handover status:", error);
+      const msg = error.message || "Cập nhật trạng thái chuyển giao thất bại.";
+      if (msg.includes("Không tìm thấy")) {
+        return res.status(404).json({ error: msg });
+      }
+      res.status(400).json({ error: msg });
     }
   });
 
