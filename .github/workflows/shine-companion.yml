@@ -2,7 +2,12 @@ name: Shine Companion integration and checks
 on:
   push:
     branches: [feat/shine-ai-companion]
-    paths: ['scripts/integrate_companion.mjs']
+    paths:
+      - '.github/workflows/shine-companion.yml'
+      - 'scripts/integrate_companion.mjs'
+      - 'server/src/companion/**'
+      - 'src/components/companion/**'
+      - 'tests/companion.test.mjs'
 permissions:
   contents: write
 concurrency:
@@ -26,18 +31,19 @@ jobs:
         run: |
           set -o pipefail
           node --test tests/companion.test.mjs | tee companion-tests.txt
-      - name: Commit integration on feature branch only
+      - name: Reconcile existing manifest-lock mismatch
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - name: Commit integration and repaired lock on feature branch only
         run: |
-          git add server/src/index.ts src/App.tsx .env.example README.md firestore.rules src/components/companion/CompanionChat.tsx server/src/companion/router.ts
+          git add server/src/index.ts src/App.tsx .env.example README.md firestore.rules src/components/companion/CompanionChat.tsx server/src/companion/router.ts package-lock.json
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'feat: integrate authenticated Shine Companion behind feature flags'
+            git commit -m 'build: reconcile existing lockfile and companion integration'
             git push origin HEAD:feat/shine-ai-companion
           fi
-      - name: Install dependencies without lifecycle scripts
-        run: |
-          if [ -f package-lock.json ]; then npm ci --ignore-scripts; else npm install --ignore-scripts --package-lock=false; fi
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Type check
         run: |
           set -o pipefail
