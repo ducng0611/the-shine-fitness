@@ -1,0 +1,49 @@
+{
+  "notes": "MẪU CẤU TRÚC, KHÔNG PHẢI DANH MỤC THỰC TẾ CỦA THE SHINE. Thay mọi chỗ chưa xác minh; chỉ đánh dấu verified sau khi quản lý/HLV kiểm tra tại phòng tập. Không tự động nhập hoặc kích hoạt file này.",
+  "schemaVersion": 1,
+  "verified": false,
+  "equipment": [
+    {
+      "id": "REPLACE_WITH_STATION_ID",
+      "name": "CHƯA XÁC MINH - thay bằng tên máy thực tế",
+      "zone": "CHƯA XÁC MINH - tên khu/tầng thực tế",
+      "directions": "CHƯA XÁC MINH - hướng dẫn từ mốc cố định của phòng tập đến đúng máy. Không dùng vị trí suy đoán.",
+      "status": "maintenance",
+      "verified": false
+    }
+  ],
+  "exercises": [
+    {
+      "id": "REPLACE_WITH_EXERCISE_ID",
+      "name": "VÍ DỤ CẤU TRÚC - HLV thay bằng bài tập phù hợp máy này",
+      "stationId": "REPLACE_WITH_STATION_ID",
+      "groups": ["legs"],
+      "pattern": "REPLACE_WITH_MOVEMENT_PATTERN",
+      "minLevel": "beginner",
+      "verified": false,
+      "sets": 2,
+      "repsMin": 8,
+      "repsMax": 12,
+      "workSeconds": 40,
+      "restSeconds": 60,
+      "transitionSeconds": 60,
+      "cues": [
+        "CHƯA XÁC MINH - hướng dẫn điều chỉnh máy do HLV duyệt.",
+        "CHƯA XÁC MINH - kỹ thuật động tác, giới hạn và điều kiện dừng do HLV duyệt."
+      ]
+    }
+  ],
+  "nutritionTemplates": [
+    {
+      "id": "REPLACE_WITH_REVIEWED_MEAL_TEMPLATE",
+      "title": "CHƯA DUYỆT - lựa chọn trước buổi tập",
+      "body": "Chuyên gia thay bằng lựa chọn ăn phù hợp mục tiêu, chế độ ăn và thời điểm. Nêu cách điều chỉnh khẩu phần, độ dung nạp và giới hạn tư vấn. Không chép số kcal hoặc khuyến nghị điều trị chưa kiểm chứng.",
+      "diets": ["omnivore"],
+      "goals": ["general_fitness"],
+      "timing": "pre_later",
+      "verified": false,
+      "reviewedBy": "CHƯA XÁC MINH - người có chuyên môn phù hợp",
+      "source": "CHƯA XÁC MINH - tài liệu hoặc hướng dẫn đã thẩm định"
+    }
+  ]
+}
