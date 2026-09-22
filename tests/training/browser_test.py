@@ -19,7 +19,7 @@ def onboard(page):
     page.get_by_role('button', name='Save profile', exact=True).click()
     expect(page.get_by_label("Ask about today's training", exact=True)).to_be_visible()
 
-def create_plan(page):
+def create_plan(page, start=True):
     page.get_by_label("Ask about today's training", exact=True).fill('I have 35 minutes and want to train legs')
     page.get_by_role('button', name='Understand request', exact=True).click()
     expect(page.get_by_text('I have prepared the request fields.', exact=False)).to_be_visible()
@@ -30,8 +30,10 @@ def create_plan(page):
     page.get_by_role('button', name='Create my plan', exact=True).click()
     expect(page.get_by_text('Personalized general structure', exact=True)).to_be_visible()
     assert page.locator('.training-plan h4').count() == 0
-    page.get_by_role('button', name='Start session / open actual log', exact=True).click()
-    expect(page.get_by_label('Actual exercise name', exact=True)).to_be_visible()
+    expect(page.get_by_role('button', name='Start session / open actual log', exact=True)).to_be_enabled()
+    if start:
+        page.get_by_role('button', name='Start session / open actual log', exact=True).click()
+        expect(page.get_by_label('Actual exercise name', exact=True)).to_be_visible()
 
 def fill_actual(page):
     page.get_by_label('Actual exercise name', exact=True).fill('SYNTHETIC member-reported activity')
@@ -88,6 +90,49 @@ with sync_playwright() as p:
         expect(page.get_by_role('alert')).to_contain_text('Automatic planning is paused')
         assert page.locator('.training-plan').count() == 0
         results.append({'name':'reported pain blocks UI planning', 'passed':True})
+
+        onboard(page)
+        create_plan(page, start=False)
+        start_button = page.get_by_role('button', name='Start session / open actual log', exact=True)
+        page.get_by_role('combobox', name='Do you currently have pain?', exact=True).select_option('true')
+        expect(start_button).to_be_disabled()
+        expect(page.get_by_text('This plan is stale. Refresh and confirm readiness again.', exact=True)).to_be_visible()
+        # Changing an answer back is not renewed confirmation of the old plan.
+        page.get_by_role('combobox', name='Do you currently have pain?', exact=True).select_option('false')
+        expect(start_button).to_be_disabled()
+        page.get_by_label('I confirm these are my current self-reported answers', exact=False).check()
+        page.get_by_role('button', name='Create my plan', exact=True).click()
+        expect(start_button).to_be_enabled()
+        results.append({'name':'readiness edits block stale start until explicit replanning', 'passed':True})
+
+        onboard(page)
+        create_plan(page, start=False)
+        page.get_by_label("Ask about today's training", exact=True).fill('Toi bi dau lung')
+        page.get_by_role('button', name='Understand request', exact=True).click()
+        expect(page.get_by_role('alert')).to_contain_text('Automatic planning is paused')
+        expect(page.get_by_role('button', name='Start session / open actual log', exact=True)).to_be_disabled()
+        expect(page.get_by_role('combobox', name='Do you currently have pain?', exact=True)).to_have_value('')
+        expect(page.get_by_label('I confirm these are my current self-reported answers', exact=False)).not_to_be_checked()
+        page.reload()
+        expect(page.get_by_role('button', name='Start session / open actual log', exact=True)).to_be_disabled()
+        page.screenshot(path=str(OUT / 'safety-stale-plan.png'), full_page=True)
+        results.append({'name':'safety chat invalidation survives reload without fabricating a pain answer', 'passed':True})
+
+        onboard(page)
+        create_plan(page, start=False)
+        def lose_safety_response(route):
+            route.fetch()  # Commit server-side readiness invalidation.
+            route.abort('failed')
+        page.route('**/api/companion/training/chat', lose_safety_response)
+        page.get_by_label("Ask about today's training", exact=True).fill('Toi bi dau lung')
+        page.get_by_role('button', name='Understand request', exact=True).click()
+        expect(page.get_by_role('alert')).to_contain_text('connection_uncertain')
+        expect(page.get_by_role('button', name='Start session / open actual log', exact=True)).to_be_disabled()
+        page.unroute('**/api/companion/training/chat')
+        page.reload()
+        expect(page.get_by_role('button', name='Start session / open actual log', exact=True)).to_be_disabled()
+        results.append({'name':'lost safety response cannot leave old start enabled', 'passed':True})
+
         assert not errors, errors
         print(json.dumps({'results':results, 'pageErrors':errors}, indent=2))
         (OUT/'result.json').write_text(json.dumps({'results':results,'pageErrors':errors},indent=2))
