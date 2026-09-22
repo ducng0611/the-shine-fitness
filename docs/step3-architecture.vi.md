@@ -32,6 +32,8 @@ flowchart TD
   M --> N[Nhập hiệp/lần/tạ thực tế]
   N --> O[Xác nhận lưu bằng transaction]
   O --> E
+  A -->|Thông điệp cần kiểm tra an toàn| S[Vô hiệu readiness cũ bằng transaction]
+  S --> D
 ```
 
 ## 3. Kỹ thuật được sử dụng
@@ -80,6 +82,18 @@ Readiness yêu cầu người dùng xác nhận thời gian, năng lượng, đa
 Đau hiện tại hoặc cờ cần chuyên gia xem xét sẽ dừng lập kế hoạch tự động. Năng lượng rất thấp không bị ghi đè bởi lời động viên. Các ngưỡng này là quy tắc pilot, không phải công cụ chẩn đoán.
 
 Lịch sử gần đây làm giảm ưu tiên một nhóm cơ, không khẳng định cơ cần đúng 48 giờ để hồi phục. Thiếu lịch sử được ghi là thiếu; không coi đó là bằng chứng người dùng không tập. Chiều cao/cân nặng không tự quyết định tạ, nguy cơ chấn thương hoặc mức ăn kiêng.
+
+### 5.1. Thông điệp an toàn sau khi đã có kế hoạch
+
+Một kế hoạch còn trên màn hình không có nghĩa là trạng thái thể trạng cũ vẫn còn phù hợp. Khi `/chat` phân loại thông điệp là `safety`, backend xóa hiệu lực readiness cũ bằng transaction trên đúng `training_members/{uid}`. Phản hồi có `readinessInvalidated` riêng; `saved: false` vẫn nghĩa là không tự tạo nhật ký tập hoặc lưu hội thoại.
+
+Thao tác này **không** tự ghi nhận người dùng mắc bệnh, không sửa `healthReviewNeeded`, không tự xác nhận rằng họ đau hoặc không đau, và không tăng số buổi tập. Trình duyệt xóa lựa chọn đau cũ, bỏ xác nhận, khóa nút bắt đầu kế hoạch cũ. Bộ nhận diện từ khóa có thể nhận nhầm ngữ cảnh; vì vậy người dùng phải tự trả lời lại, không dùng kết quả phân loại như chẩn đoán.
+
+Bắt đầu kế hoạch luôn kiểm tra lại readiness ở server. Sau khi invalidation đã commit, gọi trực tiếp API bắt đầu kế hoạch cũ trả `409 context_changed`, kể cả khi trang chưa tải lại. Gửi lại request tạo kế hoạch cùng ID có thể trả snapshot đã lưu, nhưng snapshot không cấp quyền bắt đầu: kiểm tra server vẫn áp dụng.
+
+Thay đổi câu trả lời readiness trên biểu mẫu cũng khóa nút bắt đầu cho đến khi tạo kế hoạch mới. Nếu phản hồi chat bị mất mạng, giao diện khóa thận trọng vì server có thể đã vô hiệu readiness trước khi mất phản hồi. Tải lại trang không khôi phục readiness đã vô hiệu hóa.
+
+Buổi đã bắt đầu vẫn có thể ghi phần thực tế trước đó. Ghi lại hành động đã xảy ra không phải lời khuyên tiếp tục tập; không xóa lịch sử hoặc tạo thành tích giả khi có cảnh báo. Cơ chế này không thay thế thẩm định an toàn tổng thể hoặc kiểm tra chuyên môn.
 
 ## 6. Hai chế độ đề xuất
 
