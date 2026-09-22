@@ -1,0 +1,162 @@
+{
+  "reviewStatus": "needs_review",
+  "automaticApplicationAllowed": false,
+  "sources": [
+    {
+      "id": "AAP2020",
+      "title": "Resistance Training for Children and Adolescents",
+      "publisher": "American Academy of Pediatrics",
+      "url": "https://publications.aap.org/pediatrics/article/145/6/e20201011/76942/Resistance-Training-for-Children-and-Adolescents",
+      "note": "Báo cáo 2020, trang ghi tái xác nhận tháng 11/2024. Không phải chứng nhận chương trình The Shine."
+    },
+    {
+      "id": "NSCA2009",
+      "title": "Youth resistance training: updated position statement",
+      "publisher": "NSCA",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19620931/",
+      "note": "Tài liệu lập trường, cần áp theo đánh giá và giám sát."
+    },
+    {
+      "id": "CDC_BMI",
+      "title": "Child and Teen BMI Calculator",
+      "publisher": "CDC",
+      "url": "https://www.cdc.gov/bmi/child-teen-calculator/index.html",
+      "note": "BMI trẻ dùng bách phân vị theo tuổi và giới; không thay chẩn đoán."
+    },
+    {
+      "id": "AASM2016",
+      "title": "Recommended Amount of Sleep for Healthy Children",
+      "publisher": "American Academy of Sleep Medicine",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27707447/",
+      "note": "Nhóm 6-12 tuổi: 9-12 giờ; 13-18 tuổi: 8-10 giờ trong 24 giờ."
+    },
+    {
+      "id": "HEIGHT_GENETICS",
+      "title": "Is height determined by genetics?",
+      "publisher": "MedlinePlus Genetics",
+      "url": "https://medlineplus.gov/genetics/understanding/traits/height/",
+      "note": "Di truyền, sinh học và môi trường; không dùng để dự đoán cá nhân."
+    },
+    {
+      "id": "JUMP_RCT2001",
+      "title": "Jumping improves hip and lumbar spine bone mass in prepubescent children",
+      "publisher": "Journal of Bone and Mineral Research",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/11149479/",
+      "note": "Thử nghiệm về xương; hai nhóm tăng chiều cao tương tự, không chứng minh giáo án hiện tại làm cao thêm."
+    },
+    {
+      "id": "JUMP_TRIAL2025",
+      "title": "Effects of 24-week jumping exercise on bone mineral density and linear growth in children with short stature",
+      "publisher": "BMC Pediatrics",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41233903/",
+      "note": "Nghiên cứu nhỏ trong nhóm trẻ thấp còi được chọn; không khái quát hoặc cam kết cho một hồ sơ khác."
+    },
+    {
+      "id": "STATURE_DIURNAL",
+      "title": "Diurnal variation in stature and sitting height in 12-14-year-old boys",
+      "publisher": "Nghiên cứu đo lường",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16431557/",
+      "note": "Mức dao động phụ thuộc thời điểm và kỹ thuật; không áp cố định 1-2 cm cho mọi trẻ."
+    },
+    {
+      "id": "BREATH_RCT2023",
+      "title": "Brief structured respiration practices enhance mood and reduce physiological arousal",
+      "publisher": "Cell Reports Medicine",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36630953/",
+      "note": "Không chứng minh box breathing làm tăng chiều cao hoặc cải thiện giấc ngủ cho khách trẻ cụ thể."
+    }
+  ],
+  "claims": [
+    {
+      "id": "hp_bmi",
+      "claimFromRequest": "BMI được coi là xác nhận trẻ không thừa cân và không có chỉ định y khoa giảm cân.",
+      "status": "requires_clinical_verification",
+      "sourceIds": [
+        "CDC_BMI"
+      ],
+      "review": "Giữ BMI trong hồ sơ riêng như số đã chép. Không tính bách phân vị từ tuổi làm tròn hoặc kết luận chỉ định y khoa. Dù phân loại ra sao, chatbot không tự tư vấn giảm cân cho trẻ."
+    },
+    {
+      "id": "hp_growth",
+      "claimFromRequest": "Di truyền, dinh dưỡng và giấc ngủ quyết định chiều cao; vận động hỗ trợ.",
+      "status": "qualified_background",
+      "sourceIds": [
+        "HEIGHT_GENETICS",
+        "AASM2016"
+      ],
+      "review": "Có nhiều yếu tố sinh học và môi trường, không quy thành đúng ba nguyên nhân độc lập hoặc cam kết tăng trưởng. Ngủ đủ hỗ trợ sức khỏe, không bảo đảm số centimet."
+    },
+    {
+      "id": "hp_plyo",
+      "claimFromRequest": "Plyometrics kích thích tăng trưởng chiều cao nhờ lực tác động lên xương.",
+      "status": "not_established_for_this_program",
+      "sourceIds": [
+        "JUMP_RCT2001",
+        "JUMP_TRIAL2025"
+      ],
+      "review": "Lợi ích về xương không đồng nghĩa kéo dài xương hoặc tăng chiều cao cuối cùng. Kết quả khác nhau theo nhóm nghiên cứu; dữ liệu của ca này không kiểm chứng tác dụng tăng chiều cao."
+    },
+    {
+      "id": "hp_decompression",
+      "claimFromRequest": "Treo xà, chin-up, pull-up và lat pulldown giải nén đĩa đệm, khôi phục chiều cao.",
+      "status": "unsupported_specific_mechanism",
+      "sourceIds": [
+        "STATURE_DIURNAL"
+      ],
+      "review": "Giữ DECOMPRESSION là nhãn nguồn. Nghiên cứu dao động chiều cao không kiểm tra hiệu quả các bài này. Không gọi lat pulldown là liệu pháp kéo giãn hoặc hứa phục hồi centimet."
+    },
+    {
+      "id": "hp_posture",
+      "claimFromRequest": "Hai ghi chú tuần đầu và tuần sau chứng minh hiệu quả tư thế.",
+      "status": "observation_not_causation",
+      "sourceIds": [],
+      "review": "Đó là hai nhận xét định tính của người ghi, chưa có đo chuẩn, ảnh được đánh giá hoặc đối chứng. Không chẩn đoán gù hoặc quy kết nguyên nhân."
+    },
+    {
+      "id": "hp_breathing",
+      "claimFromRequest": "Box Breathing hạ nhịp tim, tăng phó giao cảm, cải thiện giấc ngủ và tăng trưởng.",
+      "status": "not_established_for_this_program",
+      "sourceIds": [
+        "BREATH_RCT2023"
+      ],
+      "review": "Có nghiên cứu điều hòa nhịp thở; không được gộp mọi hiệu quả của mọi kỹ thuật hoặc ngoại suy sang giấc ngủ, hormone và chiều cao của trẻ này. Không tự đặt thời gian giữ hơi."
+    },
+    {
+      "id": "hp_sleep",
+      "claimFromRequest": "Ngủ 9-11 giờ cho nhóm 6-13 và 8-10 giờ cho nhóm 14-17.",
+      "status": "source_guideline_differs",
+      "sourceIds": [
+        "AASM2016"
+      ],
+      "review": "AASM dùng 9-12 giờ cho 6-12 tuổi và 8-10 giờ cho 13-18 tuổi. Giữ khác biệt có nguồn, không nói đã đo thời gian ngủ thật của khách."
+    },
+    {
+      "id": "hp_resistance",
+      "claimFromRequest": "Không đo 1RM, vùng 8-15 lần, 45-60 phút và không tập ngày liền nhau.",
+      "status": "product_limits_not_universal_standard",
+      "sourceIds": [
+        "AAP2020",
+        "NSCA2009"
+      ],
+      "review": "Không tự thiết kế 1RM là giới hạn sản phẩm. AAP không cấm 1RM tuyệt đối khi chuyên gia đủ điều kiện giám sát. Các con số chưa duyệt không được áp mặc định; không ép giáo án bật nhảy 4 x 6 thành 8-15 lần."
+    },
+    {
+      "id": "hp_measure",
+      "claimFromRequest": "Chiều cao luôn dao động 1-2 cm mỗi ngày, bắt buộc đo trước ăn.",
+      "status": "requires_qualification",
+      "sourceIds": [
+        "STATURE_DIURNAL"
+      ],
+      "review": "Lịch buổi sáng trước tập/ăn là quy trình nội bộ được chép. Chuẩn hóa giờ, dụng cụ và tư thế; không dùng một biên độ cố định làm số điều chỉnh hoặc coi trước ăn là yêu cầu khoa học phổ quát."
+    },
+    {
+      "id": "hp_game",
+      "claimFromRequest": "Game ở gói gia hạn chứng minh HLV chủ động duy trì hứng thú.",
+      "status": "plausible_interpretation_unconfirmed",
+      "sourceIds": [
+        "AAP2020"
+      ],
+      "review": "Hai buổi gia hạn có game, bốn buổi trước không ghi game. Hứng thú là mục tiêu theo dõi hữu ích; không suy ra ý định HLV hay kết quả duy trì lâu dài từ mẫu nhỏ."
+    }
+  ]
+}

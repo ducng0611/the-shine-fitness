@@ -1,0 +1,42 @@
+{
+  "sourceId": "height_posture_user_transcription_v1",
+  "programId": "prog_height_posture_pt25",
+  "reviewStatus": "needs_review",
+  "verified": false,
+  "baseCommit": "49aef462d98756bc3fb3a2d2919df8462d2185a9",
+  "sourceType": "user_supplied_transcription",
+  "sourceImagesInspected": false,
+  "sourceWorkbookInspected": false,
+  "sessionCount": 6,
+  "rowCount": 48,
+  "sessionKeys": [
+    "initial:21",
+    "initial:22",
+    "initial:23",
+    "initial:24",
+    "renewal_1:4",
+    "renewal_1:5"
+  ],
+  "newExerciseDefinitions": 27,
+  "existingExerciseDefinitionsReused": 4,
+  "libraryProgramsAfter": 3,
+  "libraryVersionAfter": 3,
+  "remainingIssues": [
+    "hp_sticky_distance",
+    "hp_wizard_rounds",
+    "hp_lung_unit",
+    "hp_schedule",
+    "hp_days_recovery",
+    "hp_sticky_metric",
+    "hp_groups",
+    "hp_tower_notation",
+    "hp_loads",
+    "hp_growth"
+  ],
+  "privateProfileInRepository": false,
+  "dailyTrackingValuesInRepository": false,
+  "energyEstimatesRetained": false,
+  "eligibleForPlanner": false,
+  "ragRetrievalAllowed": false,
+  "note": "Repo trước đó có hai chương trình, không phải ba; đây là chương trình thứ ba trong thư viện, chưa phải chương trình được duyệt."
+}

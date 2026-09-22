@@ -1,0 +1,1072 @@
+{
+  "sourceId": "height_posture_user_transcription_v1",
+  "schemaVersion": 1,
+  "description": "Bản chép tự chứa do người dùng cung cấp, không có ảnh hoặc workbook gốc trong đợt này. Giữ nguồn và diễn giải tách biệt.",
+  "recordKind": "historical_plan_transcription",
+  "reviewStatus": "needs_review",
+  "containsMinors": true,
+  "eligibleForPlanner": false,
+  "ragRetrievalAllowed": false,
+  "directIdentifiersIncluded": false,
+  "privateProfileIncluded": false,
+  "notation": {
+    "bw": "Trọng lượng cơ thể, không quy đổi thành khối lượng cụ thể.",
+    "rest": "Giây theo A2; không tự điền ô thiếu.",
+    "mb": "Mỗi bên, không tự nhân số lần hoặc số hiệp.",
+    "tempo": "Thực hiện chậm có kiểm soát nhịp; chưa có số giây từng pha.",
+    "gamePoints": "Ghi chú luật tính điểm, không phải thành tích đã đạt.",
+    "numericLoads": "Giữ số trần với unit=null vì A2 chưa xác định đơn vị.",
+    "sourcePlacement": "STRETCH tương ứng GIÃN CƠ cuối bảng RESISTANCE trước COOL DOWN."
+  },
+  "packageCycles": [
+    {
+      "id": "initial",
+      "label": "Gói ban đầu",
+      "reportedSessionCount": 25
+    },
+    {
+      "id": "renewal_1",
+      "label": "Gói gia hạn lần một",
+      "reportedSessionCount": 25
+    }
+  ],
+  "sessions": [
+    {
+      "packageCycle": "initial",
+      "sessionNumber": 21,
+      "sourceSection": "A3",
+      "rows": [
+        [
+          "PLYOMETRICS",
+          "Jump Squat",
+          "3-4 x 10",
+          "bw",
+          null
+        ],
+        [
+          "DECOMPRESSION",
+          "Chin-ups",
+          "3 x 10",
+          "bw",
+          null
+        ],
+        [
+          "RESISTANCE",
+          "Goblet Squat",
+          "3 x 15",
+          null,
+          null
+        ],
+        [
+          "RESISTANCE",
+          "Bird Dog",
+          "3 x 15",
+          "bw",
+          null
+        ],
+        [
+          "STRETCH",
+          "1. Neck Side Stretch",
+          "30s mỗi bên",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "2. Pigeon Pose",
+          "45s mỗi bên",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "3. Overhead Triceps Stretch",
+          "30s mỗi bên",
+          null,
+          null
+        ]
+      ]
+    },
+    {
+      "packageCycle": "initial",
+      "sessionNumber": 22,
+      "sourceSection": "A4",
+      "rows": [
+        [
+          "PLYOMETRICS",
+          "Vertical Jump",
+          "4 x 8",
+          "bw",
+          null
+        ],
+        [
+          "DECOMPRESSION",
+          "Pull-ups",
+          "5 x 8",
+          "bw",
+          null
+        ],
+        [
+          "RESISTANCE",
+          "Goblet Squat",
+          "3 x 15",
+          null,
+          null
+        ],
+        [
+          "RESISTANCE",
+          "Dead Bug",
+          "3 x 12",
+          "bw",
+          null
+        ],
+        [
+          "STRETCH",
+          "1. Pigeon Pose",
+          "30s mỗi bên",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "2. Butterfly Stretch",
+          "60s",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "3. World's Greatest Stretch",
+          "2 x 6",
+          null,
+          null
+        ]
+      ]
+    },
+    {
+      "packageCycle": "initial",
+      "sessionNumber": 23,
+      "sourceSection": "A5",
+      "rows": [
+        [
+          "PLYOMETRICS",
+          "1. Sticky Jump",
+          "4 x 6 (giữ 3 giây)",
+          null,
+          "90"
+        ],
+        [
+          "PLYOMETRICS",
+          "2. Rope Skipping Flow",
+          "3 x 60s",
+          null,
+          "60"
+        ],
+        [
+          "RESISTANCE",
+          "Goblet Squat (tempo)",
+          "3 x 12",
+          "8",
+          "60"
+        ],
+        [
+          "RESISTANCE",
+          "Bird Dog",
+          null,
+          "bw",
+          "60"
+        ],
+        [
+          "RESISTANCE",
+          "Dead Hang + Core",
+          "3 x 40s",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "1. Frog Pose",
+          "2 x 30s",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "2. Lung Meridian",
+          "2 x 20",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "3. World's Greatest Stretch",
+          "2 x 6",
+          null,
+          null
+        ],
+        [
+          "COOL_DOWN",
+          "Box Breathing",
+          "3 đến 4 phút",
+          null,
+          null
+        ]
+      ]
+    },
+    {
+      "packageCycle": "initial",
+      "sessionNumber": 24,
+      "sourceSection": "A6",
+      "rows": [
+        [
+          "PLYOMETRICS",
+          "Jump Squat",
+          "3 x 10",
+          "bw",
+          "90"
+        ],
+        [
+          "DECOMPRESSION",
+          "Lat Pulldown",
+          "3 x 15",
+          "12",
+          "60"
+        ],
+        [
+          "RESISTANCE",
+          "Walking Lunges",
+          "3 x 10",
+          "4",
+          "60"
+        ],
+        [
+          "RESISTANCE",
+          "Dead Bug",
+          "3 x 15",
+          "bw",
+          null
+        ],
+        [
+          "STRETCH",
+          "1. Forward in Butterfly",
+          "2 x 45s",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "2. Seated Hamstring Stretch",
+          "2 x 30s mỗi bên",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "3. Hands Interlaced Behind Back",
+          "2 x 30s mỗi bên",
+          null,
+          null
+        ]
+      ]
+    },
+    {
+      "packageCycle": "renewal_1",
+      "sessionNumber": 4,
+      "sourceSection": "A7",
+      "rows": [
+        [
+          "WARM_UP",
+          "Dynamic Warm Up",
+          null,
+          null,
+          null
+        ],
+        [
+          "GAME",
+          "Wizard's Path (trò chơi vận động, có tính điểm)",
+          null,
+          null,
+          null
+        ],
+        [
+          "PLYOMETRICS",
+          "Jump Squat kết hợp nhảy xa",
+          "4 x 4",
+          "bw",
+          null
+        ],
+        [
+          "RESISTANCE",
+          "Walking Lunges",
+          "3 x 10",
+          "4",
+          "60"
+        ],
+        [
+          "RESISTANCE",
+          "Cow-Cat",
+          "3 x 12",
+          "bw",
+          null
+        ],
+        [
+          "STRETCH",
+          "1. Pancake Stretch",
+          "2 x 30s",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "2. Forward in Butterfly",
+          "4 x 45s",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "3. World's Greatest Stretch",
+          "2 x 10",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "4. Supine Figure-4 Stretch",
+          "2 x 45s",
+          null,
+          null
+        ]
+      ]
+    },
+    {
+      "packageCycle": "renewal_1",
+      "sessionNumber": 5,
+      "sourceSection": "A8",
+      "rows": [
+        [
+          "WARM_UP",
+          "Dynamic Warm Up",
+          null,
+          null,
+          null
+        ],
+        [
+          "GAME",
+          "Tower Defense (trò chơi vận động, 5 điểm)",
+          "6 lượt + 30 giây",
+          null,
+          null
+        ],
+        [
+          "PLYOMETRICS",
+          "1. Rope Skipping Flow",
+          "3 x 60s",
+          null,
+          null
+        ],
+        [
+          "PLYOMETRICS",
+          "2. Dead Hang + Core",
+          "3 x 60s",
+          null,
+          null
+        ],
+        [
+          "RESISTANCE",
+          "Lat Pulldown",
+          "3 x 15",
+          "12",
+          null
+        ],
+        [
+          "RESISTANCE",
+          "Glute Bridge",
+          "3 x 15",
+          "5",
+          null
+        ],
+        [
+          "STRETCH",
+          "1. Hands Interlaced Behind Back",
+          "2 x 30s mỗi bên",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "2. Lung Meridian",
+          "2 x 20",
+          null,
+          null
+        ],
+        [
+          "STRETCH",
+          "3. Box Breathing",
+          "2 x 4 phút",
+          null,
+          null
+        ]
+      ]
+    }
+  ],
+  "exerciseMappings": [
+    {
+      "sourceName": "Jump Squat",
+      "exerciseId": "ex_jump_squat",
+      "nameVi": "Bật nhảy từ tư thế Squat",
+      "category": "Plyometrics",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Chin-ups",
+      "exerciseId": "ex_chin_up",
+      "nameVi": "Kéo người trên xà kiểu Chin-up",
+      "category": "Giải nén cột sống",
+      "equipmentReferenceIds": [
+        "eq_pullup_bar_review"
+      ]
+    },
+    {
+      "sourceName": "Goblet Squat",
+      "exerciseId": "ex_goblet_squat",
+      "nameVi": "Squat giữ tải trước thân",
+      "category": "Chân",
+      "equipmentReferenceIds": [
+        "eq_goblet_implement_review"
+      ]
+    },
+    {
+      "sourceName": "Bird Dog",
+      "exerciseId": "ex_bird_dog",
+      "nameVi": "Duỗi tay chân đối bên",
+      "category": "Cơ lõi",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Neck Side Stretch",
+      "exerciseId": "ex_neck_side_stretch",
+      "nameVi": "Giãn cổ sang bên",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Pigeon Pose",
+      "exerciseId": "ex_pigeon_pose",
+      "nameVi": "Tư thế chim bồ câu",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Overhead Triceps Stretch",
+      "exerciseId": "ex_overhead_triceps_stretch",
+      "nameVi": "Giãn cơ tay sau qua đầu",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Vertical Jump",
+      "exerciseId": "ex_vertical_jump",
+      "nameVi": "Bật nhảy thẳng đứng",
+      "category": "Plyometrics",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Pull-ups",
+      "exerciseId": "ex_pull_up",
+      "nameVi": "Kéo người trên xà kiểu Pull-up",
+      "category": "Giải nén cột sống",
+      "equipmentReferenceIds": [
+        "eq_pullup_bar_review"
+      ]
+    },
+    {
+      "sourceName": "Dead Bug",
+      "exerciseId": "ex_dead_bug",
+      "nameVi": "Duỗi tay chân đối bên nằm ngửa",
+      "category": "Cơ lõi",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Butterfly Stretch",
+      "exerciseId": "ex_butterfly_stretch",
+      "nameVi": "Giãn cơ tư thế bướm",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "World's Greatest Stretch",
+      "exerciseId": "ex_worlds_greatest_stretch",
+      "nameVi": "Chuỗi giãn cơ World's Greatest Stretch",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Sticky Jump",
+      "exerciseId": "ex_sticky_jump",
+      "nameVi": "Bật nhảy tiếp đất có giữ tư thế",
+      "category": "Plyometrics",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Rope Skipping Flow",
+      "exerciseId": "ex_rope_skipping_flow",
+      "nameVi": "Chuỗi nhảy dây",
+      "category": "Plyometrics",
+      "equipmentReferenceIds": [
+        "eq_skipping_rope_review"
+      ]
+    },
+    {
+      "sourceName": "Goblet Squat (tempo)",
+      "exerciseId": "ex_goblet_squat",
+      "nameVi": "Squat giữ tải trước thân, có kiểm soát nhịp",
+      "category": "Chân",
+      "equipmentReferenceIds": [
+        "eq_goblet_implement_review"
+      ]
+    },
+    {
+      "sourceName": "Dead Hang + Core",
+      "exerciseId": "ex_dead_hang_core",
+      "nameVi": "Treo xà kết hợp cơ lõi",
+      "category": "Giải nén cột sống",
+      "equipmentReferenceIds": [
+        "eq_pullup_bar_review"
+      ]
+    },
+    {
+      "sourceName": "Frog Pose",
+      "exerciseId": "ex_frog_pose",
+      "nameVi": "Tư thế ếch",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Lung Meridian",
+      "exerciseId": "ex_lung_meridian",
+      "nameVi": "Lung Meridian, chờ xác định biến thể",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Box Breathing",
+      "exerciseId": "ex_box_breathing",
+      "nameVi": "Thở hộp",
+      "category": "Thả lỏng",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Lat Pulldown",
+      "exerciseId": "ex_lat_pulldown",
+      "nameVi": "Kéo xô trên máy",
+      "category": "Lưng",
+      "equipmentReferenceIds": [
+        "eq_lat_pulldown_review"
+      ]
+    },
+    {
+      "sourceName": "Walking Lunges",
+      "exerciseId": "ex_walking_lunges",
+      "nameVi": "Chùng chân bước đi",
+      "category": "Chân",
+      "equipmentReferenceIds": [
+        "eq_lunge_implement_review"
+      ]
+    },
+    {
+      "sourceName": "Forward in Butterfly",
+      "exerciseId": "ex_forward_in_butterfly",
+      "nameVi": "Gập thân trong tư thế bướm",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Seated Hamstring Stretch",
+      "exerciseId": "ex_seated_hamstring_stretch",
+      "nameVi": "Giãn cơ mặt sau đùi khi ngồi",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Hands Interlaced Behind Back",
+      "exerciseId": "ex_hands_interlaced_behind_back",
+      "nameVi": "Đan hai tay sau lưng",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Dynamic Warm Up",
+      "exerciseId": "ex_dynamic_warmup",
+      "nameVi": "Khởi động động",
+      "category": "Khởi động",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Wizard's Path (trò chơi vận động, có tính điểm)",
+      "exerciseId": "ex_wizards_path_game",
+      "nameVi": "Trò chơi vận động Wizard's Path",
+      "category": "Trò chơi vận động",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Jump Squat kết hợp nhảy xa",
+      "exerciseId": "ex_jump_squat_long_jump",
+      "nameVi": "Jump Squat kết hợp nhảy xa",
+      "category": "Plyometrics",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Cow-Cat",
+      "exerciseId": "ex_cow_cat",
+      "nameVi": "Vận động cột sống tư thế bò và mèo",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Pancake Stretch",
+      "exerciseId": "ex_pancake_stretch",
+      "nameVi": "Giãn cơ tư thế ngồi mở chân",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Supine Figure-4 Stretch",
+      "exerciseId": "ex_supine_figure4_stretch",
+      "nameVi": "Giãn cơ nằm ngửa hình số bốn",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Tower Defense (trò chơi vận động, 5 điểm)",
+      "exerciseId": "ex_tower_defense_game",
+      "nameVi": "Trò chơi vận động Tower Defense",
+      "category": "Trò chơi vận động",
+      "equipmentReferenceIds": []
+    },
+    {
+      "sourceName": "Glute Bridge",
+      "exerciseId": "ex_glute_bridge",
+      "nameVi": "Nâng hông nằm ngửa",
+      "category": "Cơ lõi",
+      "equipmentReferenceIds": [
+        "eq_bridge_implement_review"
+      ]
+    }
+  ],
+  "equipmentAdditions": [
+    {
+      "id": "eq_pullup_bar_review",
+      "name": "Nhu cầu xà treo, chưa gắn tài sản thực tế",
+      "verified": false,
+      "note": "Đây là nhu cầu tham chiếu trong nguồn, không chứng minh phòng tập có thiết bị này.",
+      "referenceStatus": "unresolved",
+      "isPhysicalAsset": false,
+      "candidateAssetIds": []
+    },
+    {
+      "id": "eq_goblet_implement_review",
+      "name": "Dụng cụ giữ trước thân, nguồn chưa xác định loại",
+      "verified": false,
+      "note": "Đây là nhu cầu tham chiếu trong nguồn, không chứng minh phòng tập có thiết bị này.",
+      "referenceStatus": "unresolved",
+      "isPhysicalAsset": false,
+      "candidateAssetIds": []
+    },
+    {
+      "id": "eq_skipping_rope_review",
+      "name": "Dây nhảy, chưa xác minh kiểm kê",
+      "verified": false,
+      "note": "Đây là nhu cầu tham chiếu trong nguồn, không chứng minh phòng tập có thiết bị này.",
+      "referenceStatus": "unresolved",
+      "isPhysicalAsset": false,
+      "candidateAssetIds": []
+    },
+    {
+      "id": "eq_lunge_implement_review",
+      "name": "Dụng cụ tải bài chùng chân, chưa xác định loại",
+      "verified": false,
+      "note": "Đây là nhu cầu tham chiếu trong nguồn, không chứng minh phòng tập có thiết bị này.",
+      "referenceStatus": "unresolved",
+      "isPhysicalAsset": false,
+      "candidateAssetIds": []
+    },
+    {
+      "id": "eq_bridge_implement_review",
+      "name": "Dụng cụ tải bài nâng hông, chưa xác định loại",
+      "verified": false,
+      "note": "Đây là nhu cầu tham chiếu trong nguồn, không chứng minh phòng tập có thiết bị này.",
+      "referenceStatus": "unresolved",
+      "isPhysicalAsset": false,
+      "candidateAssetIds": []
+    }
+  ],
+  "sourceIssues": [
+    {
+      "id": "hp_sticky_distance",
+      "scope": "initial:23",
+      "field": "Khoảng cách Sticky Jump",
+      "status": "needs_review",
+      "message": "Khoảng cách nhảy chưa đọc chắc; giữ trống và cần huấn luyện viên xác nhận."
+    },
+    {
+      "id": "hp_wizard_rounds",
+      "scope": "renewal_1:4",
+      "field": "Số lượt trò chơi",
+      "status": "needs_review",
+      "message": "Số lượt chưa đọc chắc; không kế thừa số lượt của Tower Defense."
+    },
+    {
+      "id": "hp_lung_unit",
+      "scope": "initial:23,renewal_1:5",
+      "field": "Lung Meridian: 2 x 20",
+      "status": "needs_review",
+      "message": "Tên chưa đủ xác định biến thể; chưa biết 20 là số lần hay thời gian."
+    },
+    {
+      "id": "hp_schedule",
+      "scope": "A1,A3-A9",
+      "field": "Lịch tập",
+      "status": "needs_review",
+      "message": "A1/A9 mô tả sáng cuối tuần; sáu ngày giáo án quy đổi thành Thứ Ba hoặc Thứ Năm. Không tự sửa nguồn hoặc dùng lịch cuối tuần làm khuyến nghị."
+    },
+    {
+      "id": "hp_days_recovery",
+      "scope": "A1,C2",
+      "field": "Ngày liền nhau",
+      "status": "needs_review",
+      "message": "Lịch hai ngày cuối tuần liền nhau không đồng nhất với nguyên tắc ngày không liền nhau được đề nghị. Cần người phụ trách xem toàn bộ tải hoạt động."
+    },
+    {
+      "id": "hp_sticky_metric",
+      "scope": "A9",
+      "field": "Định nghĩa chỉ số Sticky Jump",
+      "status": "needs_review",
+      "message": "Cột mang tên lực bật, đơn vị cm; chưa rõ chiều cao chạm tay, khoảng cách nhảy hay độ cao bật. Không coi là lực, chiều cao cơ thể hoặc trừ tầm với."
+    },
+    {
+      "id": "hp_groups",
+      "scope": "A8",
+      "field": "Nhóm trên biểu mẫu",
+      "status": "needs_review",
+      "message": "Dead Hang + Core nằm trong PLYOMETRICS; Box Breathing nằm trong GIÃN CƠ. Giữ nguyên vị trí nguồn, không tự phân loại lại."
+    },
+    {
+      "id": "hp_tower_notation",
+      "scope": "renewal_1:5",
+      "field": "6 lượt + 30 giây",
+      "status": "needs_review",
+      "message": "Không được suy ra 6 lượt mỗi lượt 30 giây; 5 điểm là ghi chú trò chơi, không phải kết quả khách đạt."
+    },
+    {
+      "id": "hp_loads",
+      "scope": "A5-A8",
+      "field": "Tải số trần",
+      "status": "needs_review",
+      "message": "Các số 8, 12, 4, 5 chưa có đơn vị tải trong A2 của nguồn này. Không kế thừa quy ước kg từ lộ trình khác."
+    },
+    {
+      "id": "hp_growth",
+      "scope": "A1,A8,A9",
+      "field": "Tăng trưởng và hiệu quả",
+      "status": "needs_review",
+      "message": "Chưa có chuỗi đo chiều cao độc lập, kiểm soát sai số hoặc đánh giá y khoa. Không kết luận đã tăng chiều cao hay cải thiện bệnh lý."
+    }
+  ],
+  "program": {
+    "id": "prog_height_posture_pt25",
+    "name": "Lộ trình phát triển chiều cao và tư thế cho thiếu niên (nguồn tham chiếu PT 1:1)",
+    "nameEn": "Youth Height & Posture Development Program (historical reference)",
+    "goal": "HEIGHT_POSTURE",
+    "goalAliases": [
+      "tăng chiều cao",
+      "cải thiện tư thế",
+      "chống gù lưng",
+      "phát triển thể chất tuổi dậy thì"
+    ],
+    "framing": {
+      "labelBasis": "Theo yêu cầu số hóa của người dùng; tên lộ trình không xác nhận hiệu quả tăng chiều cao.",
+      "recordedGoalPreservedPrivately": true,
+      "noWeightLossPrescription": true,
+      "medicalIndicationEstablished": false,
+      "growthClaimAllowed": false
+    },
+    "targetProfile": {
+      "primaryAudience": "Nguồn thuộc khách nữ dưới 18 tuổi; phạm vi áp dụng cho trẻ khác chưa được duyệt.",
+      "containsMinors": true,
+      "experienceLevel": null,
+      "proposedAudienceAgeRange": "10-17, đề nghị chờ duyệt, không phải tiêu chí tự cấp giáo án",
+      "recommendedFrequencyPerWeek": null,
+      "sourceReportedFrequencyPerWeek": 2,
+      "sessionPattern": "Nguồn mô tả sáng Thứ Bảy và Chủ Nhật; mâu thuẫn với ngày giáo án và nguyên tắc phục hồi đề nghị, chờ xác nhận.",
+      "totalSessions": 25,
+      "renewalObserved": true,
+      "renewalSessionCountAsReported": 25,
+      "renewableServiceOfferVerified": false,
+      "sessionDurationMinutes": null,
+      "automatedMinorPlanningAllowed": false
+    },
+    "minorSafetyProtocol": {
+      "appliesToAgeUnder": 18,
+      "standards": [
+        "AAP2020",
+        "NSCA2009",
+        "AASM2016"
+      ],
+      "mandatoryRules": [
+        "Không tự cấp giáo án, chọn tạ hoặc tăng tải cho trẻ qua chatbot.",
+        "Phải có người giám hộ và người phụ trách có năng lực đánh giá, xác nhận và giám sát trực tiếp.",
+        "Không suy ra đã có đồng ý của phụ huynh, đã khám sức khỏe hoặc đã phù hợp chỉ từ hồ sơ tham chiếu.",
+        "Không chẩn đoán từ BMI hoặc nhãn tư thế; không hứa tăng chiều cao.",
+        "Không dùng lịch hai ngày liền nhau thành lịch khuyến nghị tự động.",
+        "Không giao 1RM, tải cực đại, kiệt sức hoặc cuộc thi nâng tạ qua chatbot. Đây là giới hạn sản phẩm.",
+        "Định lượng từng dòng là lịch sử, không được dùng làm hướng dẫn cho trẻ khác."
+      ],
+      "mythCorrection": "AAP cho biết chương trình phù hợp, có giám sát chưa cho thấy tác động bất lợi đến tăng trưởng dài hoặc sụn tăng trưởng; không có nghĩa mọi cách tập đều an toàn.",
+      "weightManagementPolicy": "Không tư vấn giảm cân, ăn kiêng, mục tiêu năng lượng, thành phần cơ thể hoặc thực phẩm bổ sung cho người dưới 18 tuổi. Chuyển bác sĩ nhi khoa hoặc chuyên gia dinh dưỡng nhi phù hợp.",
+      "guardianConsentVerified": false,
+      "medicalClearanceVerified": false
+    },
+    "scientificBasis": {
+      "heightDeterminants": [
+        "Di truyền",
+        "Dinh dưỡng và tình trạng sức khỏe",
+        "Giấc ngủ và các yếu tố sinh học, môi trường khác"
+      ],
+      "trainingRole": "Hỗ trợ vận động, không có bằng chứng trong hồ sơ này về tăng chiều cao do lộ trình.",
+      "plyometricsRationale": "Nguồn có các bài bật nhảy; nghiên cứu xương không phải bằng chứng tăng chiều cao cho ca này.",
+      "decompressionRationale": "Nhãn DECOMPRESSION theo biểu mẫu, chưa xác minh tác dụng kéo giãn/giải nén của từng bài.",
+      "mobilityRationale": "Có giãn cơ và ghi chú tư thế; chưa xác nhận tác dụng điều trị hoặc nguyên nhân thay đổi.",
+      "noHeightGuarantee": true,
+      "automaticApplicationAllowed": false,
+      "clinicalBmiClassification": null,
+      "claimsReviewPath": "data/training-pathways/height-posture/scientific-claims.review.json"
+    },
+    "sessionStructure": [
+      {
+        "order": 1,
+        "block": "WARM_UP",
+        "blockNameVi": "Khởi động",
+        "optionalInTranscription": true
+      },
+      {
+        "order": 2,
+        "block": "GAME",
+        "blockNameVi": "Trò chơi vận động",
+        "optionalInTranscription": true
+      },
+      {
+        "order": 3,
+        "block": "PLYOMETRICS",
+        "blockNameVi": "Nhóm Plyometrics theo nguồn"
+      },
+      {
+        "order": 4,
+        "block": "DECOMPRESSION",
+        "blockNameVi": "Nhóm Decompression theo nguồn",
+        "optionalInTranscription": true
+      },
+      {
+        "order": 5,
+        "block": "RESISTANCE",
+        "blockNameVi": "Kháng lực"
+      },
+      {
+        "order": 6,
+        "block": "STRETCH",
+        "blockNameVi": "Giãn cơ cuối bảng RESISTANCE"
+      },
+      {
+        "order": 7,
+        "block": "COOL_DOWN",
+        "blockNameVi": "Thả lỏng trên biểu mẫu",
+        "optionalInTranscription": true
+      }
+    ],
+    "packageCycles": [
+      {
+        "id": "initial",
+        "label": "Gói ban đầu",
+        "reportedSessionCount": 25
+      },
+      {
+        "id": "renewal_1",
+        "label": "Gói gia hạn lần một",
+        "reportedSessionCount": 25
+      }
+    ],
+    "sourceIssues": [
+      {
+        "id": "hp_sticky_distance",
+        "scope": "initial:23",
+        "field": "Khoảng cách Sticky Jump",
+        "status": "needs_review",
+        "message": "Khoảng cách nhảy chưa đọc chắc; giữ trống và cần huấn luyện viên xác nhận."
+      },
+      {
+        "id": "hp_wizard_rounds",
+        "scope": "renewal_1:4",
+        "field": "Số lượt trò chơi",
+        "status": "needs_review",
+        "message": "Số lượt chưa đọc chắc; không kế thừa số lượt của Tower Defense."
+      },
+      {
+        "id": "hp_lung_unit",
+        "scope": "initial:23,renewal_1:5",
+        "field": "Lung Meridian: 2 x 20",
+        "status": "needs_review",
+        "message": "Tên chưa đủ xác định biến thể; chưa biết 20 là số lần hay thời gian."
+      },
+      {
+        "id": "hp_schedule",
+        "scope": "A1,A3-A9",
+        "field": "Lịch tập",
+        "status": "needs_review",
+        "message": "A1/A9 mô tả sáng cuối tuần; sáu ngày giáo án quy đổi thành Thứ Ba hoặc Thứ Năm. Không tự sửa nguồn hoặc dùng lịch cuối tuần làm khuyến nghị."
+      },
+      {
+        "id": "hp_days_recovery",
+        "scope": "A1,C2",
+        "field": "Ngày liền nhau",
+        "status": "needs_review",
+        "message": "Lịch hai ngày cuối tuần liền nhau không đồng nhất với nguyên tắc ngày không liền nhau được đề nghị. Cần người phụ trách xem toàn bộ tải hoạt động."
+      },
+      {
+        "id": "hp_sticky_metric",
+        "scope": "A9",
+        "field": "Định nghĩa chỉ số Sticky Jump",
+        "status": "needs_review",
+        "message": "Cột mang tên lực bật, đơn vị cm; chưa rõ chiều cao chạm tay, khoảng cách nhảy hay độ cao bật. Không coi là lực, chiều cao cơ thể hoặc trừ tầm với."
+      },
+      {
+        "id": "hp_groups",
+        "scope": "A8",
+        "field": "Nhóm trên biểu mẫu",
+        "status": "needs_review",
+        "message": "Dead Hang + Core nằm trong PLYOMETRICS; Box Breathing nằm trong GIÃN CƠ. Giữ nguyên vị trí nguồn, không tự phân loại lại."
+      },
+      {
+        "id": "hp_tower_notation",
+        "scope": "renewal_1:5",
+        "field": "6 lượt + 30 giây",
+        "status": "needs_review",
+        "message": "Không được suy ra 6 lượt mỗi lượt 30 giây; 5 điểm là ghi chú trò chơi, không phải kết quả khách đạt."
+      },
+      {
+        "id": "hp_loads",
+        "scope": "A5-A8",
+        "field": "Tải số trần",
+        "status": "needs_review",
+        "message": "Các số 8, 12, 4, 5 chưa có đơn vị tải trong A2 của nguồn này. Không kế thừa quy ước kg từ lộ trình khác."
+      },
+      {
+        "id": "hp_growth",
+        "scope": "A1,A8,A9",
+        "field": "Tăng trưởng và hiệu quả",
+        "status": "needs_review",
+        "message": "Chưa có chuỗi đo chiều cao độc lập, kiểm soát sai số hoặc đánh giá y khoa. Không kết luận đã tăng chiều cao hay cải thiện bệnh lý."
+      }
+    ],
+    "progressTracking": [
+      {
+        "metric": "sticky_jump",
+        "nameVi": "Chỉ số Sticky Jump theo cột nguồn",
+        "unit": "cm",
+        "definitionStatus": "needs_review",
+        "frequencyAsReported": "Theo tuần",
+        "goodRange": null,
+        "interpretation": "Chưa rõ đại lượng đo. Không coi là lực, chiều cao cơ thể hoặc tự trừ tầm với."
+      },
+      {
+        "metric": "dead_hang",
+        "nameVi": "Thời gian treo xà theo nguồn",
+        "unit": "s",
+        "frequencyAsReported": "Theo tuần",
+        "goodRange": null,
+        "interpretation": "Cần cùng cách thực hiện và đo; không chứng minh đã cao thêm."
+      },
+      {
+        "metric": "mobility_observation",
+        "nameVi": "Nhận xét cột sống và hông",
+        "unit": null,
+        "goodRange": null,
+        "interpretation": "Ghi chú định tính, không chẩn đoán tư thế."
+      },
+      {
+        "metric": "energy_self_report",
+        "nameVi": "Năng lượng tự báo",
+        "scaleMin": 1,
+        "scaleMax": 10,
+        "goodRange": null
+      },
+      {
+        "metric": "engagement",
+        "nameVi": "Hứng thú và mong muốn tiếp tục",
+        "goodRange": null,
+        "interpretation": "Ghi lời tự báo, không suy từ giờ nhắn tin."
+      },
+      {
+        "metric": "morning_height",
+        "nameVi": "Chiều cao buổi sáng theo dõi riêng",
+        "unit": "cm",
+        "frequencyAsReported": "Mỗi tháng",
+        "goodRange": null,
+        "heightTargetAllowed": false,
+        "measurementProtocolAsReported": "Sáng Thứ Bảy đầu tiên mỗi tháng, trước tập và chưa ăn sáng; đây là lịch nguồn, không phải quy tắc phổ quát."
+      },
+      {
+        "metric": "standing_reach",
+        "nameVi": "Tầm với vươn tay",
+        "unit": "cm",
+        "frequencyAsReported": "Mỗi tháng",
+        "goodRange": null
+      },
+      {
+        "metric": "posture_photo",
+        "nameVi": "Ảnh tư thế nghiêng",
+        "frequencyAsReported": "Mỗi tháng",
+        "storagePolicy": "Riêng tư có đồng ý; không có ảnh trong kho này."
+      }
+    ],
+    "privateTrackingPolicy": {
+      "bodyMetricsPurpose": "Chỉ ghi hồ sơ riêng, không đặt mục tiêu hoặc bình luận cơ thể.",
+      "mealPhotosAllowedInKnowledge": false,
+      "passiveSleepInferenceAllowed": false,
+      "dailySourceValuesIncluded": false,
+      "publicIndividualObservationsIncluded": false
+    },
+    "aiAssistantGuardrails": {
+      "allowed": [
+        "Mô tả giới hạn và quy trình liên hệ ở mức tổng quan khi phù hợp; không xác nhận dịch vụ chưa có nguồn hiện hành.",
+        "Giữ nguyên nhãn và số nguồn để người có chuyên môn đối chiếu.",
+        "Giải thích không cam kết số centimet; việc áp dụng cần người phụ trách đánh giá."
+      ],
+      "forbidden": [
+        "Không chẩn đoán BMI, gù lưng hoặc chỉ định giảm cân.",
+        "Không tự sinh giáo án cho trẻ, chỉnh số hiệp/lặp/tải hoặc lịch hai ngày liền nhau.",
+        "Không khẳng định kéo dài xương, giải nén đĩa đệm hoặc tăng hormone nhờ giáo án.",
+        "Không biến nhận xét tuần thành kết quả thử nghiệm hoặc cam kết.",
+        "Không suy đoán lịch sử còn thiếu hoặc đồng ý phụ huynh."
+      ],
+      "handoverTag": "HEALTH_RISK",
+      "handoverTriggers": [
+        "Người dưới 18 tuổi hoặc học sinh",
+        "Phụ huynh hỏi chuyên môn",
+        "Yêu cầu quản lý cân nặng hoặc ăn uống cho trẻ",
+        "Cam kết cao thêm",
+        "Thuốc hoặc bổ sung",
+        "Dậy thì sớm",
+        "Sụn tăng trưởng",
+        "Bệnh lý hoặc đau"
+      ],
+      "clinicalQuestionsRoute": "Bác sĩ nhi khoa hoặc chuyên gia dinh dưỡng nhi; không chỉ chuyển HLV cho câu hỏi y khoa."
+    },
+    "reviewStatus": "needs_review",
+    "verified": false,
+    "revision": 1,
+    "eligibleForPlanner": false,
+    "ragRetrievalAllowed": false,
+    "createdAt": "2026-09-22T00:00:00.000Z",
+    "updatedAt": "2026-09-22T00:00:00.000Z"
+  }
+}

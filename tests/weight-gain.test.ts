@@ -56,10 +56,15 @@ test('Giáo án không phải giá và intent không gọi model khi đã có qu
  assert.equal((await classify('Tư vấn giáo án tăng cân',[],ai as any)).intent,'PROGRAM');assert.equal(calls,0);
 });
 
-test('Thư viện có hai chương trình, version 2 và mọi tham chiếu đều hợp lệ',()=>{
- const result=validateTrainingPrograms(lib);
+test('Hai chương trình cũ còn nguyên trong thư viện mở rộng và mọi tham chiếu hợp lệ',()=>{
+ validateTrainingPrograms(lib);
+ const originalPrograms=lib.programs.filter((x:any)=>['prog_weight_gain_pt50','prog_fitness_flexibility_pt30'].includes(x.id));
+ const originalExercises=lib.exercises.filter((x:any)=>x.programUsage.some((u:any)=>originalPrograms.some((p:any)=>p.id===u.programId)))
+  .map((x:any)=>({...x,programUsage:x.programUsage.filter((u:any)=>originalPrograms.some((p:any)=>p.id===u.programId))}));
+ const oldIds=new Set(originalExercises.flatMap((x:any)=>x.requiredEquipmentIds));
+ const result=validateTrainingPrograms({...lib,programs:originalPrograms,exercises:originalExercises,equipmentReferences:lib.equipmentReferences.filter((x:any)=>oldIds.has(x.id))});
  assert.deepEqual(result,{programCount:2,exerciseCount:51,equipmentReferenceCount:22,referenceCount:98});
- assert.equal(lib.version,2);assert.equal(p.referenceSessions.length,5);
+ assert(lib.version>=2);assert.equal(p.referenceSessions.length,5);
  assert.deepEqual(p.referenceSessions.map((s:any)=>s.sessionNumber),[1,2,3,12,13]);
 });
 test('Không sửa bất kỳ nội dung chương trình thể lực cũ',()=>{
@@ -150,7 +155,7 @@ test('Nguồn còn thiếu hướng dẫn chuyên môn thì không tạo instruc
 test('Ghép lại cùng nguồn không tăng version, không nhân đôi usage',()=>{
  const addition=buildWeightGainAddition(source,lib);
  const merged=mergeTrainingPrograms(lib,addition);
- assert.deepEqual(merged,lib);assert.equal(merged.version,2);
+ assert.deepEqual(merged,lib);assert.equal(merged.version,lib.version);
 });
 test('Tổng quan chưa duyệt không được index hoặc coi là giáo án có quyền áp dụng',()=>{
  const parsed=parseFrontmatter(markdown);

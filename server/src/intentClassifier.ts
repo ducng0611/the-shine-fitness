@@ -44,14 +44,15 @@ export function fallbackKeywordClassifier(message: string): ClassificationResult
     };
   }
   // "giáo án" không phải từ "giá"; ưu tiên PRICE chỉ khi có từ giá/gói thực sự.
-  if (/\b(the luc|linh hoat|deo dai|suc ben|lo trinh|giao an|bai tap|tap nhu the nao|tap bao lau|tang can|tang co|nguoi gay|kho tang can|lean bulk|fitness|flexibility)\b/.test(normalized)) {
+  if (/\b(the luc|linh hoat|deo dai|suc ben|lo trinh|giao an|bai tap|tap nhu the nao|tap bao lau|tang can|tang co|nguoi gay|kho tang can|lean bulk|fitness|flexibility|tang chieu cao|cai thien tu the|gu lung|tu the|plyometrics?|treo xa|height|posture)\b/.test(normalized)) {
     const fitness = /\b(the luc|linh hoat|deo dai|suc ben|fitness|flexibility)\b/.test(normalized);
     const weight = /\b(tang can|kho tang can|nguoi gay|lean bulk)\b/.test(normalized);
     const muscle = /\btang co\b/.test(normalized);
+    const height = /\b(tang chieu cao|cai thien tu the|gu lung|tu the|height|posture)\b/.test(normalized);
     // Từ khóa xác định chủ đề; không ép nhiều mục tiêu hoặc câu phủ định thành một mục tiêu đã xác nhận.
-    const negated = /\b(khong|chua)\s+(?:muon\s+)?(?:tang can|tang co)\b/.test(normalized);
-    const goal = negated || (fitness && (weight || muscle)) ? null :
-      weight ? 'Tăng cân' : muscle ? 'Tăng cơ' : fitness ? 'Tăng thể lực và linh hoạt' : null;
+    const negated = /\b(khong|chua)\s+(?:muon\s+)?(?:tang can|tang co|tang chieu cao|cai thien tu the)\b/.test(normalized);
+    const goal = negated || (height && (fitness || weight || muscle)) || (fitness && (weight || muscle)) ? null :
+      height ? 'Chiều cao và tư thế, cần đánh giá chuyên môn' : weight ? 'Tăng cân' : muscle ? 'Tăng cơ' : fitness ? 'Tăng thể lực và linh hoạt' : null;
     return { intent:'PROGRAM', confidence:0.85, pkSegment:null,
       slots:{goal, experience:null, schedule:null, budget:null}, nextQuestion:'Q1' };
   }

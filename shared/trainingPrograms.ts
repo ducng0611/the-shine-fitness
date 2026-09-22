@@ -1,3 +1,4 @@
+import { validateHeightPostureProgram } from './heightPostureProgram';
 import { validateWeightGainProgram } from './weightGainProgram';
 /** Thư viện nguồn tham chiếu; module này không tạo giáo án hoặc ghi dữ liệu hội viên. */
 export type DataObject = Record<string, any>;
@@ -28,11 +29,17 @@ export function validateTrainingPrograms(value:unknown) {
   const exerciseIds=new Set(exercises.map(e=>e.id)),programIds=new Set(programs.map(e=>e.id)),equipmentIds=new Set(equipment.map(e=>e.id));
   for(const p of programs) {
     validateWeightGainProgram(p);
+    validateHeightPostureProgram(p);
     if(!Array.isArray(p.referenceSessions))throw new Error('Thiếu mảng buổi tham chiếu.');
     const sessionIds=new Set<number>();
+    const sessionKeys=new Set<string>();
     for(const s of p.referenceSessions) {
-      if(!Number.isInteger(s.sessionNumber)||s.sessionNumber<1||sessionIds.has(s.sessionNumber))throw new Error('Số buổi trùng hoặc không hợp lệ.');
-      sessionIds.add(s.sessionNumber);
+      if(!Number.isInteger(s.sessionNumber)||s.sessionNumber<1)throw new Error('Số buổi không hợp lệ.');
+      const cycle=s.packageCycle??'initial';
+      if(typeof cycle!=='string'||!(/^[a-z][a-z0-9_]*$/).test(cycle))throw new Error('Chu kỳ gói không hợp lệ.');
+      const sessionKey=`${cycle}:${s.sessionNumber}`;
+      if(sessionKeys.has(sessionKey))throw new Error('Trùng số buổi trong cùng chu kỳ gói.');
+      sessionKeys.add(sessionKey);sessionIds.add(s.sessionNumber);
       for(const row of referenceRows(s))if(!exerciseIds.has(row.exerciseId))throw new Error(`Bài chưa có định nghĩa: ${row.exerciseId}.`);
     }
     if(p.id===SOURCE_ID) {
