@@ -68,7 +68,12 @@ test('intake: malformed JSON arrays and duplicate muscle labels rejected',()=>{
   for(const value of ['chest','{}','["chest","chest"]'])assert.throws(()=>parseCollectedAssets(altered(r=>cell(r,'primaryMuscleGroups',value))));
 });
 test('intake: duplicate IDs rejected',()=>assert.throws(()=>parseCollectedAssets(altered(r=>{r[2][0]=r[1][0];}))));
-test('intake: missing unit in a quantity group rejected',()=>assert.throws(()=>parseCollectedAssets(altered(r=>{r.splice(r.findIndex(row=>row[0]==='shine_treadmill_03'),1);})))));
+test('intake: missing unit in a quantity group rejected', () => {
+  const missingUnit = altered(rows => {
+    rows.splice(rows.findIndex(row => row[0] === 'shine_treadmill_03'), 1);
+  });
+  assert.throws(() => parseCollectedAssets(missingUnit));
+});
 test('intake: duplicate unit ordinals rejected',()=>assert.throws(()=>parseCollectedAssets(altered(r=>{const idx=r.findIndex(row=>row[0]==='shine_treadmill_02');r[idx][ASSET_HEADERS.indexOf('unitIndex')]='1';}))));
 test('intake: extra/missing/duplicate headers rejected',()=>{
   assert.throws(()=>parseCollectedAssets(altered(r=>{r[0][1]=r[0][0];})));
