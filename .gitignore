@@ -11,3 +11,7 @@ coverage/
 test-results/
 *-debug.log
 __pycache__/
+
+# Sensitive source intake: NEVER commit these folders.
+data/training-pathways-private/
+private-training-sources/

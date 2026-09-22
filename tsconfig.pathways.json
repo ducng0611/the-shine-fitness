@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {"strict": true, "noFallthroughCasesInSwitch": true},
+  "include": ["shared/pathwayIntake.ts", "server/src/companion/pathways/**/*.ts", "src/components/pathways/**/*.ts", "src/components/pathways/**/*.tsx", "tests/pathways/**/*.ts", "tests/pathways/**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
+}

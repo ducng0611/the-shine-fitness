@@ -1,3 +1,4 @@
+import { PathwayIntakeModal, pathwayIntakeEnabled } from '../pathways/PathwayIntakeModal';
 import { TrainingPrescriptionEditor } from '../training/TrainingPrescriptionEditor';
 import { trainingUiEnabled } from '../training/TrainingGateway';
 import { auth } from '../../lib/firebase';
@@ -63,6 +64,7 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
   showToast
 }) => {
   const [subTab, setSubTab] = useState<SubTab>('zones');
+  const [pathwayOpen, setPathwayOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -362,6 +364,8 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
 
   return (
     <div className="space-y-6">
+      {pathwayIntakeEnabled() && <button type="button" onClick={() => setPathwayOpen(true)} className="px-4 py-2 rounded-xl bg-amber-400 text-black font-semibold">Training Pathway Intake</button>}
+      {pathwayOpen && <PathwayIntakeModal onClose={() => setPathwayOpen(false)} />}
       {/* 1. Core Principle Banner & Completeness Scoreboard */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-xl space-y-5">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">

@@ -55,6 +55,7 @@ import {
 } from "./ragEngine";
 import { requireAuth, requireAdmin, AuthRequest } from "./middleware/auth.ts";
 import { adminDb, adminAuth } from "./lib/firebase-admin.ts";
+import { createPathwayRouter } from "./companion/pathways/router";
 import { createTrainingRouter } from "./companion/training/router";
 import { FirestoreTrainingStore } from "./companion/training/store";
 import { createIntentParser } from "./companion/training/intent";
@@ -307,6 +308,14 @@ async function startServer() {
       }
     }
   });
+
+  // Private source intake owns its JSON limit and never feeds public RAG.
+  app.use('/api/admin/pathway-intake', createPathwayRouter({
+    store: new FirestoreTrainingStore(adminDb),
+    verifyToken: token => adminAuth.verifyIdToken(token, true),
+    enabled: () => process.env.SHINE_PATHWAY_INTAKE_ENABLED === 'true',
+    adminEmails: () => (process.env.ADMIN_EMAILS || '').split(',')
+  }));
 
   // Built-in middleware to parse JSON bodies
   app.use(express.json());

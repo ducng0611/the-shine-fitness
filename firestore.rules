@@ -8,6 +8,10 @@ service cloud.firestore {
     match /training_members/{memberId}/{document=**} {
       allow read, write: if false;
     }
+    // Private pathway sources: backend-only, never public gym knowledge.
+    match /pathway_intake_owners/{ownerId}/{document=**} {
+      allow read, write: if false;
+    }
     match /training_access/{memberId} {
       allow read, write: if false;
     }

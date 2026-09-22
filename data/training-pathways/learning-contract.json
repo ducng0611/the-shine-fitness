@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Source-grounded preparation for future human-reviewed personalization, not model fine-tuning",
+  "sourceKinds": ["intake_form", "workout_log", "tracker"],
+  "requiredProvenance": ["sourceId", "subjectGroup", "subjectAssociation", "locator", "printedSection", "rawField", "readingStatus", "explicitUnit"],
+  "learnableAfterReview": [
+    {"topic": "intake_context", "fields": ["explicit goal", "source-reported measurements", "source-reported cautions"], "constraint": "Private only; reported conditions are not diagnoses or clinical clearance"},
+    {"topic": "session_structure", "fields": ["printed session number", "warm-up", "resistance table", "cool-down", "exercise order"], "constraint": "Preserve printed sections; two pages do not establish the entire program"},
+    {"topic": "dosage", "fields": ["raw volume", "raw load", "raw rest", "explicit units"], "constraint": "Missing units and dash marks cannot be completed by inference; never copy historical loads to another member"},
+    {"topic": "daily_tracking", "fields": ["meal submission time", "estimated nutrition note", "bedtime", "45-2 note", "reported stress or fatigue"], "constraint": "Observations and qualitative labels are not dietary targets or verified nutrient measurements"},
+    {"topic": "weekly_tracking", "fields": ["Sticky Jump", "Dead Hang", "mobility observation", "energy on the source scale", "technical notes"], "constraint": "Keep original metric definitions and scale; do not convert a 1-10 source to current 1-5 readiness without an approved transformation"},
+    {"topic": "biometric_tracking", "fields": ["baseline", "printed week 4/8/12 checkpoints", "source BMI", "reach", "posture reference"], "constraint": "Blank follow-ups are not results; do not recalculate or reinterpret a source value silently"}
+  ],
+  "reviewGates": ["source association", "privacy and authority", "transcription", "unit semantics", "repeated-block meaning", "age and goal", "professional review", "separate reusable-template approval"],
+  "forbiddenAutomaticActions": ["merge subjects by upload proximity", "identify a person from handwriting or signatures", "record proposed plans as completed", "set current readiness from historical notes", "clear a health-review flag", "publish private source values", "create exercise or equipment verification", "generalize one fat-loss case to all members", "claim training efficacy", "send private sources to an AI provider without separate configuration and consent"],
+  "storage": {"publicGit": "schemas and blank templates only", "privateCases": "pathway_intake_owners/{authenticatedAdminUid}/cases/{caseId}", "publicRag": false},
+  "currentPlannerEligibility": false
+}
