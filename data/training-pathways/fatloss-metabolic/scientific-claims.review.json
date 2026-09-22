@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "reviewedOn": "2026-09-22",
+  "reviewStatus": "needs_review",
+  "automaticApplicationAllowed": false,
+  "purpose": "Tách yêu cầu nguồn khỏi kết quả đối chiếu; không phải chứng nhận chuyên môn hoặc phác đồ cá nhân.",
+  "references": [
+    {
+      "id": "ADA2026",
+      "title": "ADA, Standards of Care in Diabetes 2026, mục 5",
+      "url": "https://diabetesjournals.org/care/article/49/Supplement_1/S89/163932/5-Facilitating-Positive-Health-Behaviors-and-Well"
+    },
+    {
+      "id": "ACSM2022",
+      "title": "ACSM, Exercise/Physical Activity in Individuals with Type 2 Diabetes, 2022",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8802999/"
+    },
+    {
+      "id": "IHS",
+      "title": "Indian Health Service, Physical Activity, tiêu chuẩn chăm sóc đái tháo đường",
+      "url": "https://www.ihs.gov/diabetes/clinician-resources/soc/physical-activity1/"
+    },
+    {
+      "id": "ADA_HYPO",
+      "title": "ADA, Hypoglycemia? Low Blood Glucose? Low Blood Sugar?",
+      "url": "https://diabetesjournals.org/clinical/article/30/1/38/35419/Hypoglycemia-Low-Blood-Glucose-Low-Blood-Sugar"
+    },
+    {
+      "id": "ENDO_HYPO",
+      "title": "Endocrine Society, Severe Hypoglycemia",
+      "url": "https://www.endocrine.org/patient-engagement/endocrine-library/severe-hypoglycemia"
+    },
+    {
+      "id": "AHA_BETA",
+      "title": "AHA, How Do Beta Blocker Drugs Affect Exercise?",
+      "url": "https://www.heart.org/en/health-topics/consumer-healthcare/medication-information/how-do-beta-blocker-drugs-affect-exercise"
+    },
+    {
+      "id": "AHA_ACTIVE",
+      "title": "AHA, Getting Active to Control High Blood Pressure",
+      "url": "https://www.heart.org/en/health-topics/high-blood-pressure/changes-you-can-make-to-manage-high-blood-pressure/getting-active-to-control-high-blood-pressure"
+    },
+    {
+      "id": "NIDDK_FEET",
+      "title": "NIDDK, Diabetes & Foot Problems",
+      "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/preventing-problems/foot-problems"
+    },
+    {
+      "id": "AHA_EMERGENCY",
+      "title": "AHA, Heart Attack, Stroke and Cardiac Arrest Symptoms",
+      "url": "https://www.heart.org/en/about-us/heart-attack-and-stroke-symptoms"
+    },
+    {
+      "id": "VN115",
+      "title": "Bệnh viện Xuyên Á, danh sách trạm vệ tinh cấp cứu 115",
+      "url": "https://bvxuyena.com.vn/tin-tuc/tram-ve-tinh-cap-cuu-115-benh-vien-da-khoa-xuyen-a"
+    }
+  ],
+  "claims": [
+    {
+      "id": "medical_clearance",
+      "sourceAssertion": "Mọi khách của lộ trình phải có giấy bác sĩ, không có giấy thì không nhận tập.",
+      "reviewNote": "Giữ làm yêu cầu tiếp nhận do người dùng đề xuất cho lộ trình này, chưa xác minh đã ban hành tại doanh nghiệp. Không gán thành quy định ACSM/ADA phổ quát cho mọi người mắc đái tháo đường hoặc mọi vận động.",
+      "referenceIds": [
+        "ACSM2022",
+        "IHS"
+      ],
+      "status": "needs_review"
+    },
+    {
+      "id": "medications",
+      "sourceAssertion": "Insulin và sulfonylurea nguy cơ hạ đường huyết cao; metformin thấp hơn; chẹn beta ảnh hưởng nhịp tim.",
+      "reviewNote": "Đối chiếu chuyên môn hỗ trợ phân biệt nguy cơ theo thuốc. Ô thuốc trống là dữ liệu chưa có, không đủ để khẳng định nguy cơ thấp. Chỉ dùng cho nhận diện thiếu dữ liệu và chuyển bác sĩ; chatbot không đổi liều hoặc giờ uống.",
+      "referenceIds": [
+        "ADA2026",
+        "ACSM2022",
+        "AHA_BETA"
+      ],
+      "status": "needs_review"
+    },
+    {
+      "id": "hypoglycemia_response",
+      "sourceAssertion": "Dừng tập, cho đường hấp thu nhanh, theo dõi và liên hệ y tế nếu không cải thiện.",
+      "reviewNote": "Bổ sung ranh giới sơ cứu: chỉ ăn/uống khi tỉnh và nuốt an toàn theo kế hoạch xử trí cá nhân. Bất tỉnh, co giật hoặc không nuốt an toàn: không cho thức ăn/nước qua miệng, gọi cấp cứu. Không chờ người nhà hay hàng đợi tư vấn trước cấp cứu.",
+      "referenceIds": [
+        "ADA_HYPO",
+        "ENDO_HYPO",
+        "AHA_EMERGENCY"
+      ],
+      "status": "needs_review"
+    },
+    {
+      "id": "delayed_risk",
+      "sourceAssertion": "Hạ đường huyết có thể muộn tới 24 giờ sau tập.",
+      "reviewNote": "Giữ 24 giờ là mốc nguồn nêu, không là giới hạn bảo đảm an toàn sau đó. Theo dõi sau tập phải do người điều trị cá nhân hóa; không tự tạo thời biểu hay ngưỡng đường huyết.",
+      "referenceIds": [
+        "ADA2026",
+        "ACSM2022"
+      ],
+      "status": "needs_review"
+    },
+    {
+      "id": "foot_care",
+      "sourceAssertion": "Kiểm tra bàn chân trước và sau tập; giày vừa chân, tất thấm hút.",
+      "reviewNote": "Lưu hướng dẫn kiểm tra da/chân trong quy trình cần duyệt. NIDDK mô tả biến chứng giảm cảm giác và nhu cầu kiểm tra chân; không suy khách này đã có bệnh thần kinh hoặc vết loét.",
+      "referenceIds": [
+        "NIDDK_FEET"
+      ],
+      "status": "needs_review"
+    },
+    {
+      "id": "combined_activity",
+      "sourceAssertion": "Kháng lực kết hợp cardio cải thiện đường huyết tốt hơn từng loại.",
+      "reviewNote": "Nguồn nghiên cứu hỗ trợ lợi ích các hình thức vận động phù hợp, nhưng không chứng minh hiệu quả của sáu trang này, không tự thiết kế lịch cho khách có bệnh lý.",
+      "referenceIds": [
+        "ADA2026",
+        "ACSM2022"
+      ],
+      "status": "needs_review"
+    },
+    {
+      "id": "pressure_and_breathing",
+      "sourceAssertion": "Cấm Valsalva, tải tối đa/1RM/kiệt sức; kéo dài khởi động và thả lỏng.",
+      "reviewNote": "Giữ như giới hạn bảo thủ của sản phẩm và đề nghị quy trình PT cần thẩm định. Không đặt thời lượng, ngưỡng huyết áp hay mức tạ cá nhân. Nhịp thở tránh nín gắng sức không thay được đánh giá y tế.",
+      "referenceIds": [
+        "AHA_ACTIVE",
+        "ACSM2022"
+      ],
+      "status": "needs_review"
+    },
+    {
+      "id": "decline_and_hanging",
+      "sourceAssertion": "Decline Kettlebell Press và Hanging Leg Raises cần rà soát với bác sĩ.",
+      "reviewNote": "Gắn cờ rà soát theo chính yêu cầu nguồn. Không khẳng định đây là chống chỉ định tuyệt đối cho mọi người tăng huyết áp hoặc BMI trên 30; cần thông tin góc ghế, vai/tay, biến chứng và người điều trị.",
+      "referenceIds": [],
+      "status": "needs_review"
+    },
+    {
+      "id": "superset_safety",
+      "sourceAssertion": "Cặp liên hoàn là lựa chọn thông minh để tránh tải nặng ở khách tăng huyết áp.",
+      "reviewNote": "Dữ liệu chỉ xác nhận cặp bài theo A2. Thiếu thời gian nghỉ, cảm nhận gắng sức, tình trạng bệnh và thuốc; không đủ chứng minh an toàn, tăng tiêu hao hay mức tải là nhẹ.",
+      "referenceIds": [],
+      "status": "needs_review"
+    },
+    {
+      "id": "weight_targets",
+      "sourceAssertion": "0.5-1 kg/tuần tương đương 5-10% trong 6 tháng.",
+      "reviewNote": "Hai cách biểu diễn không tương đương về mặt số học và không được lập thành chỉ tiêu tự động. Giữ đề nghị nguồn để người điều trị duyệt; không gắn mục tiêu giảm cân hoặc thời hạn cho cá nhân.",
+      "referenceIds": [
+        "ADA2026"
+      ],
+      "status": "needs_review"
+    },
+    {
+      "id": "joint_heat",
+      "sourceAssertion": "BMI trên 30: ưu tiên tác động thấp, điểm tựa, lưu ý nhiệt và nước.",
+      "reviewNote": "Lưu yêu cầu thẩm định bài, hỗ trợ khớp, điều kiện môi trường và nước theo tình trạng. Không chẩn đoán hạn chế chức năng từ BMI; không đặt lượng nước khi thiếu thông tin bệnh thận/tim và chỉ định điều trị.",
+      "referenceIds": [
+        "ACSM2022"
+      ],
+      "status": "needs_review"
+    },
+    {
+      "id": "business_capability",
+      "sourceAssertion": "Phòng tập có nhận bệnh nền và HLV được đào tạo chuyên trách.",
+      "reviewNote": "Thông tin do người dùng cung cấp; chưa có chứng chỉ, quy trình ban hành hoặc nhân sự hiện hành kèm theo. Chatbot tiếp nhận yêu cầu và nêu giấy bác sĩ/danh sách thuốc, không tự xác nhận đủ điều kiện nhận tập hoặc quảng cáo năng lực y khoa.",
+      "referenceIds": [],
+      "status": "needs_review"
+    }
+  ]
+}

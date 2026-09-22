@@ -13,7 +13,9 @@ export function normalizeSafetyText(value: string): string {
   return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/đ/g, 'd').replace(/[’‘]/g, "'").replace(/\s+/g, ' ').trim();
 }
+const METABOLIC_TERMS_VI = ["đái tháo đường", "type 2", "insulin", "đường huyết", "hạ đường huyết", "HbA1c", "cao huyết áp", "tăng huyết áp", "huyết áp cao", "mỡ máu", "rối loạn lipid", "gan nhiễm mỡ", "gout", "béo phì", "thuốc huyết áp", "thuốc tiểu đường", "uống thuốc trước khi tập", "giấy khám sức khỏe", "bệnh nền", "bệnh chuyển hóa", "sulfonylurea", "metformin", "chẹn beta"];
 const HEALTH_TERMS_VI = [
+  ...METABOLIC_TERMS_VI,
   'tiểu đường', 'bệnh thận', 'hen suyễn', 'động kinh', 'tim bẩm sinh', 'vẹo cột sống',
   'rối loạn nội tiết', 'tuyến giáp', 'cho con bú', 'thuốc dài hạn', 'dùng thuốc dài hạn',
   'rối loạn ăn uống', 'chán ăn tâm thần', 'cuồng ăn', 'sữa tăng cân', 'thực phẩm chức năng',
@@ -34,11 +36,13 @@ const MINOR_TERMS_VI = [
 export const HEALTH_RISK_KEYWORDS = [...new Set([
   ...HEALTH_TERMS_VI, ...MINOR_TERMS_VI,
   ...HEALTH_TERMS_VI.map(normalizeSafetyText), ...MINOR_TERMS_VI.map(normalizeSafetyText),
+  'type 2','insulin','hba1c','blood glucose','blood sugar','hypoglycemia','dyslipidemia','fatty liver','gout','obesity','beta blocker',
   'mass gainer', 'whey', 'creatine', 'supplement', 'supplements',
   'diabetes', 'asthma', 'epilepsy', 'hypertension', 'pregnant', 'breastfeeding',
   'eating disorder', 'unintentional weight loss', 'unexplained weight loss', 'loss of appetite', 'weight gain pills', 'height growth pills', 'growth plates', 'early puberty', 'grow taller', 'under 18', 'underage', 'minor', 'my child', 'my son', 'my daughter'
 ])];
 const health = [...HEALTH_TERMS_VI.map(normalizeSafetyText),
+  'type 2','insulin','hba1c','blood glucose','blood sugar','hypoglycemia','dyslipidemia','fatty liver','gout','obesity','beta blocker',
   'mass gainer', 'whey', 'creatine', 'supplement', 'supplements', 'diabetes', 'asthma',
   'epilepsy', 'hypertension', 'pregnant', 'breastfeeding', 'eating disorder', 'unintentional weight loss', 'unexplained weight loss', 'loss of appetite', 'weight gain pills', 'height growth pills', 'growth plates', 'early puberty', 'grow taller'];
 const youth = ['duoi 18 tuoi','chua du 18','hoc sinh','hoc lop','cap 1','cap 2','cap 3',
@@ -81,8 +85,40 @@ export function programSafetyReply(audience: ProgramSafetyAudience): string {
   if (audience === 'parent') return 'Dạ, với câu hỏi tập luyện cho con, em chỉ trao đổi ở mức định hướng và quy trình đánh giá. Anh/chị vui lòng liên hệ cùng con để bộ phận chuyên môn xác nhận khả năng tiếp nhận, sự đồng ý của người giám hộ và phương án giám sát trực tiếp. Em xin chuyển yêu cầu; bài tập, mức tải, thực đơn và lịch riêng cho trẻ cần được đánh giá trước, không sao chép từ hồ sơ khác.';
   return 'Dạ, câu hỏi liên quan sức khỏe, thuốc hoặc thực phẩm bổ sung cần được bộ phận chuyên môn và chuyên gia y tế phù hợp xem xét. Em không chẩn đoán, kê thuốc, chọn liều hoặc tự thiết kế giáo án điều trị qua chat. Em xin chuyển yêu cầu để được hỗ trợ; chưa thể xác nhận kế hoạch phù hợp chỉ từ thông tin này.';
 }
+
+/** Dấu hiệu cảnh báo trong lời hiện tại, không chẩn đoán và không suy cấp cứu từ lời bot. */
+export function detectAcuteMetabolicWarning(message: string): boolean {
+  const text=normalizeSafetyText(message);
+  const terms=['dau nguc','kho tho bat thuong','kho tho du doi','dau dau du doi','yeu mot ben','te mot ben',
+    'yeu nua nguoi','te nua nguoi','bat tinh','co giat','ngat xiu','chest pain','severe shortness of breath','unconscious','seizure'];
+  const active=(term:string)=>{
+    const pos=text.indexOf(term);
+    if(pos<0||!containsPhrase(text,term))return false;
+    const prefix=text.slice(Math.max(0,pos-35),pos);
+    // Câu phủ định hiện tại không tự xác nhận triệu chứng.
+    return !/\b(?:khong|chua|khong con|no|without)\s*(?:bi\s+)?$/.test(prefix);
+  };
+  return terms.some(active) ||
+    (active('mo hoi lanh')&&(active('run tay')||active('lu lan'))) ||
+    (active('cold sweat')&&active('shaking'));
+}
+const METABOLIC_SERVICE_TERMS=['co nhan','nhan khach','tiep nhan','quy trinh','giay to','chuan bi','accept clients','accept people'];
+function metabolicReply(message:string):string|null {
+  const text=normalizeSafetyText(message);
+  if(/\b(thuoc|insulin|sulfonylurea|metformin|chen beta|medication|medicine)\b/.test(text))
+    return 'Dạ, em không hướng dẫn giờ uống, đổi liều hoặc ngưng thuốc trước hay sau tập. Anh/chị cần hỏi bác sĩ điều trị hoặc dược sĩ phụ trách đơn thuốc. Em xin chuyển yêu cầu chuyên môn; không đưa bài tập, thực đơn hay ngưỡng y khoa thay cho đánh giá trực tiếp.';
+  if(/\b(duong huyet|huyet ap|blood glucose|blood sugar)\b/.test(text)&&/\b(bao nhieu|nguong|muc nao|how much|threshold|level)\b/.test(text))
+    return 'Dạ, em không đặt ngưỡng đường huyết hoặc huyết áp để cho phép tập. Các ngưỡng và kế hoạch theo dõi phải do bác sĩ điều trị hướng dẫn riêng. Em xin chuyển yêu cầu chuyên môn, không chọn bài hoặc dùng số đo tự gửi để xác nhận đủ điều kiện vận động.';
+  if(METABOLIC_SERVICE_TERMS.some(k=>containsPhrase(text,k)))
+    return 'Dạ, em có thể tiếp nhận yêu cầu để bộ phận chuyên môn xác nhận khả năng hỗ trợ khách có bệnh nền. Quy trình đề nghị cần giấy bác sĩ xác nhận phạm vi vận động và danh sách thuốc qua kênh riêng, rồi đánh giá trực tiếp trước khi quyết định nhận tập. Em chưa xác nhận đủ điều kiện hoặc năng lực chuyên trách của nhân sự cho trường hợp này; em xin chuyển yêu cầu, không đưa giáo án qua chat.';
+  return null;
+}
+
 export function detectProgramSafety(message: string, history: {role:string;text:string}[] = []): ProgramSafetyDecision | null {
   if (typeof message !== 'string') return null;
+  if (detectAcuteMetabolicWarning(message)) return {tag:'HEALTH_RISK',audience:'health',
+    reason:'Dấu hiệu có thể cần cấp cứu, không chờ hàng đợi tư vấn.',
+    replyText:'Nếu những dấu hiệu này đang xảy ra, anh/chị hãy dừng tập, nhờ người gần đó hỗ trợ và gọi 115 ở Việt Nam hoặc cấp cứu địa phương ngay. Không chờ tư vấn viên phản hồi và không tự lái xe. Nếu bất tỉnh, co giật hoặc không nuốt an toàn, không cho ăn/uống; làm theo hướng dẫn của tổng đài. Em không chẩn đoán nguyên nhân và chưa gọi cấp cứu thay anh/chị.'};
   const prior = Array.isArray(history) ? history.filter(h => h?.role === 'user' && typeof h.text === 'string').map(h => h.text) : [];
   const texts = [...prior, message].map(normalizeSafetyText);
   // Tuổi/quan hệ do người dùng tự khai trước đó vẫn có hiệu lực trong ngữ cảnh gửi lên.
@@ -98,7 +134,7 @@ export function detectProgramSafety(message: string, history: {role:string;text:
   if (audience) return { tag:'HEALTH_RISK', audience, reason:'Cần xác minh độ tuổi, người giám hộ và phạm vi tư vấn.', replyText:programSafetyReply(audience) };
   if (texts.some(s => health.some(k => containsPhrase(s,k)))) return {
     tag:'HEALTH_RISK', audience:'health', reason:'Nội dung sức khỏe hoặc thực phẩm bổ sung cần chuyển chuyên môn.',
-    replyText:programSafetyReply('health')
+    replyText:metabolicReply(message) ?? programSafetyReply('health')
   };
   return null;
 }
