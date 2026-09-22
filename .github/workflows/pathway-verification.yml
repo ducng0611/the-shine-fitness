@@ -1,0 +1,84 @@
+name: Private pathway intake verification
+on:
+  push:
+    branches: [feat/training-pathway-intake]
+    paths: ['shared/pathwayIntake.ts','server/**','src/**','tests/pathways/**','scripts/extract-pathway-tracker.py','data/training-pathways/**','tsconfig.pathways.json','firestore.rules','vite.config.ts','.github/workflows/pathway-verification.yml']
+  pull_request:
+    paths: ['shared/pathwayIntake.ts','server/**','src/**','tests/pathways/**','scripts/extract-pathway-tracker.py','data/training-pathways/**','tsconfig.pathways.json','firestore.rules','vite.config.ts','.github/workflows/pathway-verification.yml']
+permissions:
+  contents: read
+concurrency:
+  group: pathways-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  tests-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: npm}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: pip install openpyxl==3.1.5
+      - run: node --import tsx --test tests/pathways/domain.test.ts tests/pathways/router.test.ts
+      - run: python tests/pathways/tracker_test.py
+      - run: npx --no-install tsc -p tsconfig.pathways.json --noEmit
+      - run: npm run test:training
+      - run: npm run lint
+      - run: npm run build
+  emulator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: npm}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Private Auth, transactions and rules
+        env: {CI: 'true'}
+        run: |
+          set -o pipefail
+          mkdir -p test-results
+          npx --yes firebase-tools@15.30.2 emulators:exec --project demo-shine-training --config firebase.training-test.json --only auth,firestore 'node --import tsx --test tests/pathways/emulator.integration.ts' 2>&1 | tee test-results/pathway-emulator.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pathway-emulator-results
+          path: test-results/pathway-emulator.txt
+          retention-days: 7
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: npm}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: pip install playwright==1.57.0
+      - run: python -m playwright install --with-deps chromium
+      - name: Actual modal with synthetic source cases
+        run: |
+          mkdir -p test-results/pathway-ui
+          NODE_ENV=test node --import tsx tests/pathways/ui-server.ts >test-results/pathway-ui/server.txt 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4174/tests/pathways/ui.html >/dev/null; then break; fi
+            sleep 1
+          done
+          python tests/pathways/browser_test.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pathway-browser-results
+          path: test-results/pathway-ui
+          retention-days: 7
