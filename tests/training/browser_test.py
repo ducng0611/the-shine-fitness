@@ -1,5 +1,5 @@
 """Local Chromium UI/API smoke tests. All identities and records are SYNTHETIC."""
-import json, os, time
+import json, os, traceback
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 BASE = 'http://127.0.0.1:4173'
@@ -23,8 +23,9 @@ def create_plan(page):
     page.get_by_label("Ask about today's training", exact=True).fill('I have 35 minutes and want to train legs')
     page.get_by_role('button', name='Understand request', exact=True).click()
     expect(page.get_by_text('I have prepared the request fields.', exact=False)).to_be_visible()
-    page.get_by_label('Energy (1 very low - 5 high)', exact=True).select_option('4')
-    page.get_by_label('Do you currently have pain?', exact=True).select_option('false')
+    expect(page.get_by_label('Available minutes', exact=True)).to_have_value('35')
+    page.get_by_role('combobox', name='Energy (1 very low - 5 high)', exact=True).select_option('4')
+    page.get_by_role('combobox', name='Do you currently have pain?', exact=True).select_option('false')
     page.get_by_label('I confirm these are my current self-reported answers', exact=False).check()
     page.get_by_role('button', name='Create my plan', exact=True).click()
     expect(page.get_by_text('Personalized general structure', exact=True)).to_be_visible()
@@ -80,8 +81,8 @@ with sync_playwright() as p:
         results.append({'name':'lost success response retried without duplicate history', 'passed':True})
         page.unroute('**/api/companion/training/plans/*/complete')
         onboard(page)
-        page.get_by_label('Energy (1 very low - 5 high)', exact=True).select_option('4')
-        page.get_by_label('Do you currently have pain?', exact=True).select_option('true')
+        page.get_by_role('combobox', name='Energy (1 very low - 5 high)', exact=True).select_option('4')
+        page.get_by_role('combobox', name='Do you currently have pain?', exact=True).select_option('true')
         page.get_by_label('I confirm these are my current self-reported answers', exact=False).check()
         page.get_by_role('button', name='Create my plan', exact=True).click()
         expect(page.get_by_role('alert')).to_contain_text('Automatic planning is paused')
@@ -92,7 +93,8 @@ with sync_playwright() as p:
         (OUT/'result.json').write_text(json.dumps({'results':results,'pageErrors':errors},indent=2))
     except Exception:
         page.screenshot(path=str(OUT/'failure.png'), full_page=True)
-        (OUT/'errors.json').write_text(json.dumps(errors))
+        (OUT/'errors.json').write_text(json.dumps({'pageErrors':errors, 'results':results, 'exception':traceback.format_exc()}, indent=2))
+        (OUT/'failure.html').write_text(page.content())
         raise
     finally:
         browser.close()
