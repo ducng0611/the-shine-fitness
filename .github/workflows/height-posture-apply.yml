@@ -35,8 +35,8 @@ jobs:
           assert hashlib.sha256(decoded).hexdigest() == '3cc256271c9195b5c14c637b51fd9111f05a2f27c1be33a65eaf86297df9cb2a', 'Patch hash mismatch'
           Path('/tmp/height-posture.patch').write_bytes(decoded)
           PY
-          git apply --check /tmp/height-posture.patch
-          git apply --index /tmp/height-posture.patch
+          git apply --check --exclude='.github/workflows/*' /tmp/height-posture.patch
+          git apply --index --exclude='.github/workflows/*' /tmp/height-posture.patch
       - name: Generate the versioned library without provider or database calls
         shell: bash
         run: |
@@ -52,14 +52,13 @@ jobs:
           PY
           git add data/companion/training_programs.json
           npx --no-install tsx scripts/validate-height-posture.ts
-      - name: Commit only reviewed files and remove the temporary transport
+      - name: Commit reviewed data and code only
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import subprocess
           expected = {
-            '.github/workflows/height-posture.yml',
             'data/companion/training_programs.json',
             'data/knowledge/09_program_height_posture.md',
             'data/training-pathways/height-posture/README.md',
@@ -80,7 +79,7 @@ jobs:
           changed = set(subprocess.check_output(['git','diff','--cached','--name-only'], text=True).splitlines())
           assert changed == expected, f'Unexpected changed paths: {changed.symmetric_difference(expected)}'
           PY
-          git rm scripts/height-patch.part0.b64 scripts/height-patch.part1.b64 scripts/height-patch.part2.b64 scripts/height-patch.part3.b64 scripts/height-patch.part4.b64 .github/workflows/height-posture-apply.yml
+          git rm scripts/height-patch.part0.b64 scripts/height-patch.part1.b64 scripts/height-patch.part2.b64 scripts/height-patch.part3.b64 scripts/height-patch.part4.b64
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'feat(programs): add source-faithful youth height and posture reference'
