@@ -1,0 +1,65 @@
+name: Nutrition source verification
+on:
+  push:
+    branches: [feat/nutrition-knowledge]
+    paths:
+      - 'data/nutrition/**'
+      - 'data/knowledge/**'
+      - 'shared/**'
+      - 'server/src/**'
+      - 'scripts/prepare-nutrition.ts'
+      - 'tests/nutrition/**'
+      - 'tsconfig.nutrition.json'
+      - '.github/workflows/nutrition.yml'
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: nutrition-source-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Nutrition sources and HTTP gates
+        run: |
+          set -o pipefail
+          mkdir -p test-results/nutrition
+          node --import tsx --test tests/nutrition/domain.test.ts tests/nutrition/router.test.ts | tee test-results/nutrition/tests.tap
+          npx --no-install tsx scripts/prepare-nutrition.ts --report
+      - name: Regression of existing programs and member data
+        run: |
+          set -o pipefail
+          node --import tsx --test tests/posture-correction.test.ts tests/fatloss-metabolic.test.ts tests/height-posture.test.ts tests/weight-gain.test.ts tests/fitness-flexibility.test.ts | tee test-results/nutrition/programs.tap
+          npm run test:training | tee test-results/nutrition/training.tap
+          node --import tsx --test tests/gym-assets.test.ts tests/pathways/domain.test.ts tests/pathways/router.test.ts | tee test-results/nutrition/intake.tap
+      - name: Type checking and offline RAG policy
+        run: |
+          npx --no-install tsc -p tsconfig.nutrition.json --noEmit
+          npm run typecheck:training
+          npm run lint
+          npm run build:index -- --check > test-results/nutrition/index-check.txt
+      - name: Build and export verified source files
+        run: |
+          npm run build
+          git diff --exit-code -- data/companion/training_programs.json data/knowledge/index.json
+          mkdir -p test-results/nutrition/delivery
+          cp data/nutrition/meal-plan-library.json test-results/nutrition/delivery/
+          cp data/knowledge/12_nutrition_meal_plan_sources.md test-results/nutrition/delivery/
+          git diff --binary a5371584dafee52ed0d87da79788ee3089db85a7 HEAD -- data/nutrition data/knowledge/12_nutrition_meal_plan_sources.md shared server/src scripts/prepare-nutrition.ts tests/nutrition docs .env.example tsconfig.nutrition.json .github/workflows/nutrition.yml > test-results/nutrition/delivery/nutrition.patch
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nutrition-verification
+          path: test-results/nutrition
+          retention-days: 7
