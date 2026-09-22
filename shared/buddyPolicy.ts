@@ -1,4 +1,5 @@
-import { normalizeSafetyText } from './programSafety';
+import { normalizeSafetyText, detectAcuteMetabolicWarning } from './programSafety';
+import { detectAcutePostureWarning } from './postureSafety';
 import type { BuddyTask } from './buddyChat';
 export const BUDDY_POLICY_VERSION = 'context-policy-v2';
 export interface BuddyMemory { minorConcern:boolean; healthConcern:boolean; allergyConcern:boolean; lastTopic:string|null }
@@ -43,12 +44,14 @@ export function routeBuddy(message:string,prior:BuddyMemory=newBuddyMemory()):Bu
   const minor=!hypothetical&&((self&&ages.some(a=>a>0&&a<18))||/\b((?:hoc|dang hoc) lop (?:1[0-2]|[1-9])|hoc sinh|duoi 18|chua du 18|i am 1[0-7]|i'm 1[0-7])\b/.test(speech)||(self&&/\blop\s*(?:1[0-2]|[1-9])\b/.test(speech))||(/\b(con toi|con em|be nha|my child|my son|my daughter)\b/.test(speech)&&!ages.some(a=>a>=18)));
   const healthSelf=self&&hasAffirmed(speech,healthPattern)&&(!concept||/\b((?:toi|em|minh|i) (?:bi|mac|co benh|dang|have|suffer))\b/.test(speech));
   const allergy=self&&hasAffirmed(speech,/\b(di ung|khong dung nap|allerg(?:y|ic)|intolerance)\b/)&&(!concept||/\b(bi|have|am allergic)\b/.test(speech));
-  const memory={...prior,minorConcern:prior.minorConcern||minor,healthConcern:prior.healthConcern||healthSelf,allergyConcern:prior.allergyConcern||allergy};
+  const symptomSelf=self&&!concept&&hasAffirmed(speech,symptomPattern);
+  const memory={...prior,minorConcern:prior.minorConcern||minor,healthConcern:prior.healthConcern||healthSelf||symptomSelf,allergyConcern:prior.allergyConcern||allergy};
   const topic=topicOf(text,prior.lastTopic);
-  const result=(task:BuddyTask,reason:string,privateRequest=false,generationAllowed=false):BuddyDecision=>({task,reason,topic,privateRequest,generationAllowed,memory:{...memory,lastTopic:topic??prior.lastTopic}});
+  const result=(task:BuddyTask,reason:string,privateRequest=false,generationAllowed=false):BuddyDecision=>({task,reason,topic,privateRequest,generationAllowed,memory:{...memory,lastTopic:task==='MEMBER_CONTEXT_QA'?'own_context':topic??prior.lastTopic}});
   const acute=/\b(dau nguc|kho tho du doi|kho tho bat thuong|yeu mot ben|yeu nua nguoi|bat tinh|co giat|sung luoi|sung hong|chest pain|severe shortness of breath|unconscious|tongue swelling|throat swelling)\b/;
   const pastOnly=/\b(nam ngoai|truoc day|hoi truoc|last year|used to|in the past)\b/.test(speech)&&!/\b(dang|bay gio|hien tai|now|today)\b/.test(speech);
-  if(!hypothetical&&!pastOnly&&(!concept||/\b(dang|bay gio|now|toi bi|em bi|i have)\b/.test(speech))&&hasAffirmed(speech,acute))return result('URGENT_SAFETY','possible_acute_warning');
+  const acuteCombination=detectAcuteMetabolicWarning(speech)||detectAcutePostureWarning(speech)||(hasAffirmed(speech,/\b(sung moi|sung mieng|swollen lips)\b/)&&hasAffirmed(speech,/\b(kho tho|kho nuot|difficulty breathing)\b/));
+  if(!hypothetical&&!pastOnly&&(!concept||/\b(dang|bay gio|now|toi bi|em bi|i have)\b/.test(speech))&&(hasAffirmed(speech,acute)||acuteCombination)){memory.healthConcern=true;return result('URGENT_SAFETY','possible_acute_warning');}
   if(/\b(ignore.*instructions|bo qua.*quy tac|bo qua.*huong dan|system prompt|api key|firebase token|show.*private|xem ho so nguoi khac|lay ho so.*nguoi khac)\b/.test(text))return result('OUT_OF_SCOPE','untrusted_instruction');
   const wantsPlan=personalPattern.test(text)||(/\b(tap gi|an gi|ke hoach|meal plan|thuc don)\b/.test(text)&&!concept);
   const actionableMedication=/\b(lieu bao nhieu|lieu dung cho|nen uong|uong truoc|uong sau|doi lieu|ngung thuoc|bo thuoc|may muong|take before|take after|should i take|my dose|dose for me)\b/.test(text);
@@ -60,6 +63,7 @@ export function routeBuddy(message:string,prior:BuddyMemory=newBuddyMemory()):Bu
   if(!concept&&!hypothetical&&(healthSelf||allergy||(hasAffirmed(speech,symptomPattern)&&(self||wantsPlan))||(healthPattern.test(text)&&wantsPlan)))return result('PROFESSIONAL_REVIEW','individual_health_context');
   if(/\b(lieu|dose|may muong|bao nhieu gram|how many scoops)\b/.test(text)&&clinicalPattern.test(text)&&self)return result('PROFESSIONAL_REVIEW','individual_dose_request');
   if(/\b(gia|bao nhieu tien|chi phi|hoc phi|bang gia|price|cost|membership fee|goi tap)\b/.test(text))return result('BUSINESS_QA','business_price');
+  if(topic==='own_context'&&/\b(tuan truoc|tuan nay|last week|this week)\b/.test(text))return result('MEMBER_CONTEXT_QA','own_context_followup',true);
   if(/\b(tuan nay|tuan truoc|lich su|thanh tich|tien do|ho so|muc tieu cua|pt giao|pt ghi|this week|my history|my progress|my profile)\b/.test(text)&&self)return result('MEMBER_CONTEXT_QA','own_context',true);
   if(/\b(da an|vua an|an xong|vua tap|ghi lai|luu buoi|luu bua|i ate|i just trained|log my|save my)\b/.test(text))return result('LOGGING_REQUEST','confirmation_workflow_required',true);
   if(wantsPlan&&!concept&&(fitnessPattern.test(text)||nutritionPattern.test(text)))return result('PERSONAL_PLAN_REQUEST','personal_context_required',true);
