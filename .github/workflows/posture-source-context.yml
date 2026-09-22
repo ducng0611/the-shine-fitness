@@ -1,0 +1,25 @@
+name: Posture program source context
+on:
+  push:
+    branches: [feat/posture-correction-program]
+    paths: ['.github/workflows/posture-source-context.yml']
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Export only tracked program code and de-identified knowledge
+        run: |
+          mkdir -p /tmp/program-context
+          git archive --format=tar HEAD package.json package-lock.json tsconfig.json tsconfig.training.json tsconfig.pathways.json shared scripts tests data/knowledge data/companion data/training-pathways server/src/intentClassifier.ts server/src/handoverRules.ts server/src/ragEngine.ts server/src/index.ts docs .github/workflows | tar -xf - -C /tmp/program-context
+          git rev-parse HEAD > /tmp/program-context/BASE_COMMIT.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: posture-program-source-context
+          path: /tmp/program-context
+          retention-days: 1
