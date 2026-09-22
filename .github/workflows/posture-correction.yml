@@ -1,0 +1,70 @@
+name: Desk posture program verification
+on:
+  push:
+    branches: [feat/desk-posture-program]
+  pull_request:
+    paths:
+      - 'data/knowledge/11_program_posture_correction.md'
+      - 'data/companion/training_programs.json'
+      - 'data/training-pathways/posture-correction/**'
+      - 'shared/**'
+      - 'server/src/intentClassifier.ts'
+      - 'tests/posture-correction.test.ts'
+      - 'scripts/*posture-correction*'
+      - '.github/workflows/posture-correction.yml'
+permissions:
+  contents: read
+concurrency:
+  group: posture-check-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Capture tracked source for offline review
+        run: |
+          mkdir -p /tmp/posture-context
+          git rev-parse HEAD > /tmp/posture-context/commit.txt
+          git archive --format=tar.gz --output=/tmp/posture-context/source.tar.gz HEAD shared server/src scripts tests data/companion data/knowledge data/training-pathways docs src package.json package-lock.json tsconfig.json tsconfig.training.json tsconfig.pathways.json .github/workflows
+      - uses: actions/upload-artifact@v4
+        with:
+          name: posture-source-context
+          path: /tmp/posture-context/
+          retention-days: 7
+      - name: Install locked dependencies without lifecycle scripts
+        if: hashFiles('tests/posture-correction.test.ts') != ''
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Source and guardrail verification
+        if: hashFiles('tests/posture-correction.test.ts') != ''
+        run: |
+          set -o pipefail
+          mkdir -p test-results/posture-correction
+          node --import tsx --test tests/posture-correction.test.ts tests/fatloss-metabolic.test.ts tests/height-posture.test.ts tests/weight-gain.test.ts tests/fitness-flexibility.test.ts | tee test-results/posture-correction/tests.tap
+          npx --no-install tsx scripts/prepare-posture-correction.ts
+          npx --no-install tsx scripts/validate-posture-correction.ts --report
+          npm run build:index -- --check
+      - name: Training and intake regression
+        if: hashFiles('tests/posture-correction.test.ts') != ''
+        run: |
+          npm run test:training
+          node --import tsx --test tests/pathways/domain.test.ts tests/pathways/router.test.ts tests/gym-assets.test.ts
+      - name: Type checks and application build
+        if: hashFiles('tests/posture-correction.test.ts') != ''
+        run: |
+          npm run typecheck:training
+          npx --no-install tsc -p tsconfig.pathways.json --noEmit
+          npm run lint
+          npm run build
+      - uses: actions/upload-artifact@v4
+        if: always() && hashFiles('tests/posture-correction.test.ts') != ''
+        with:
+          name: posture-correction-verification
+          path: test-results/posture-correction/
+          retention-days: 7
