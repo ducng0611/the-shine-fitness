@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "needs_review",
+  "outsideVerificationPerformed": false,
+  "issues": [
+    {
+      "id": "claimed_references",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 79
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 80
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 81
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 82
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 83
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 11
+        }
+      ],
+      "issue": "Các nguồn chỉ ghi tên/tựa bài; ký hiệu [cite: ...] không có tài liệu đích. Chưa xác minh xuất xứ, không gọi là trích dẫn y khoa hợp lệ.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "declared_energy_not_sum",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 36
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 5
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 35
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 61
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 84
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 109
+        }
+      ],
+      "issue": "Năng lượng là con số do tác giả ghi, không phải tổng tính từ từng món. Không dùng làm mục tiêu của hội viên mới.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "tdee_formula_missing",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 3
+        }
+      ],
+      "issue": "Nguồn nêu BMR và hệ số vận động nhưng không cho công thức/hệ số, hồ sơ đầy đủ hoặc phép tính TDEE. Không tự bổ sung.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "bmr_floor_claim",
+      "severity": "review",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 38
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 36
+        }
+      ],
+      "issue": "Nhận định không ăn dưới BMR được giữ nguyên như lời nguồn, chưa thiết lập thành ràng buộc tính năng lượng.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "unmeasured_portions",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 55
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 17
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 22
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 28
+        }
+      ],
+      "issue": "Chén, bát, nắm, cốc và loại thịt/món chưa có quy đổi hay thành phần đã duyệt. Không đổi sang gram hoặc tính kcal chính xác.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "cooked_weight_scope",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 41
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 8
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 46
+        }
+      ],
+      "issue": "Quy tắc cân sống trừ cơm chỉ hiện ở mẫu PT và mẫu tăng cân. Không lan quy tắc đó sang bốn trường hợp còn lại; gạo lứt không tự thành cơm chín.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "same_goal_not_same_person",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 35
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 34
+        }
+      ],
+      "issue": "Hai mẫu giảm mỡ không phải cùng người và không được trộn chỉ vì chung mục tiêu. Không gán mẫu theo giới tính hoặc ghép với hồ sơ chuyển hóa cũ.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "meal_options_preserve_or",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 47
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 12
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 50
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 52
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 115
+        }
+      ],
+      "issue": "Giữ chọn một lựa chọn, phép hoặc và việc bỏ/giảm như ghi nguồn. Dòng cà phê hoặc đồ uống ngoài lựa chọn vẫn riêng, chưa xác nhận áp dụng chung cho mọi phương án.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "adult_status_not_stated",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 4
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 34
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 60
+        }
+      ],
+      "issue": "Nam/nữ không xác nhận tuổi trưởng thành. Các mẫu này không được tự áp cho trẻ hoặc hội viên thiếu nhóm tuổi.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "minor_template",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 81
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 84
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 86
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 87
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 88
+        }
+      ],
+      "issue": "Mẫu tăng chiều cao chứa đối tượng tuổi dậy thì. Giữ nguyên nguồn riêng; không cấp thực đơn, mục tiêu năng lượng hay cam kết tăng trưởng qua chatbot.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "medical_template",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 106
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 109
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 131
+        }
+      ],
+      "issue": "Mẫu bệnh lý không phải phác đồ được duyệt. Không gọi là điều trị hoặc dùng lịch đo đường huyết nguồn làm chỉ định theo dõi.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "supplements_rehydration",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 50
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 63
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 64
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 76
+        }
+      ],
+      "issue": "Whey, dầu cá/vitamin và Oresol là nội dung tác giả ghi. Không tự thay bằng thực phẩm khác, không gợi ý liều hoặc công thức bù nước.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "hydration_unknown_context",
+      "severity": "review",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 24
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 25
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 26
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 43
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 9
+        }
+      ],
+      "issue": "Cỡ cốc và nhu cầu nước cá nhân chưa có. Giữ cốc/ml nguyên dạng; không chuyển thành hướng dẫn áp dụng bắt buộc.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "salt_sodium_label",
+      "severity": "review",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 19
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 42
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 52
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 64
+        }
+      ],
+      "issue": "Nguồn dùng cả muối và nhãn Sodium (muối). Chưa có quy đổi natri, lượng gia vị hoặc đánh giá phù hợp cá nhân.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "exercise_notes_not_meals",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 44
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 45
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 10
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 31
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 40
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 69
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 88
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 114
+        }
+      ],
+      "issue": "Cardio, nhịp tim, số bước và lịch tập là ghi chú nguồn, không chuyển vào workout planner hoặc thành thành tích đã thực hiện.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "rest_day_reduction_ambiguous",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 77
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 57
+        }
+      ],
+      "issue": "Cụm giảm lại 1/2 ít và xuống mức tối thiểu chưa đủ để ra quy tắc. Giữ nguyên, không tự áp giảm 50% carbohydrate.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "allergens_not_verified",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 49
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 13
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 22
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 74
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 92
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 124
+        }
+      ],
+      "issue": "Các dòng món không phải danh mục nguyên liệu/nhãn dị ứng đã kiểm tra; không xác nhận món phù hợp dị ứng từ tên món.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "photos_not_consumption",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 75
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 30
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 131
+        }
+      ],
+      "issue": "Yêu cầu chụp bữa ăn trong nguồn không thay sự đồng ý xử lý ảnh. Ảnh hay mẫu thực đơn không chứng minh đã ăn; chưa tự ghi lịch sử hoặc kcal.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "timing_not_personal_schedule",
+      "severity": "review",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 47
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 20
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 49
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 73
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 75
+        }
+      ],
+      "issue": "Giờ và khoảng cách trước/sau tập chỉ thuộc mẫu. Không suy giờ tập, múi giờ hay thời điểm hiện tại của hội viên.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    },
+    {
+      "id": "scientific_claims_not_adjudicated",
+      "severity": "blocking",
+      "sourceRefs": [
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 4
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 6
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 13
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 16
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 28
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 31
+        },
+        {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 32
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 86
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 87
+        },
+        {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 107
+        }
+      ],
+      "issue": "Các khẳng định về tốc độ giảm cân, tỷ lệ vàng, cấm thực phẩm, phục hồi, chiều cao hoặc làm sạch mỡ máu chưa được kiểm chứng trong yêu cầu số hóa này. Không sửa lén nội dung nguồn và không nâng chúng thành chân lý.",
+      "status": "open",
+      "resolution": null,
+      "resolvedBy": null
+    }
+  ]
+}

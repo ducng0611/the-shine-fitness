@@ -1,3 +1,4 @@
+import { detectNutritionSafety } from '../../shared/nutritionRouting';
 import { detectProgramSafety } from '../../shared/programSafety';
 export { HEALTH_RISK_KEYWORDS } from '../../shared/programSafety';
 import { sanitizePii } from './chatLogStorage';
@@ -81,7 +82,7 @@ export function detectHandoverTrigger(
     return { tag: null, reason: '' };
   }
 
-  const safety = detectProgramSafety(message, history);
+  const safety = detectNutritionSafety(message, history) ?? detectProgramSafety(message, history);
   if (safety) return { tag: safety.tag, reason: safety.reason, replyText: safety.replyText };
 
   const rawLower = message.toLowerCase().trim();

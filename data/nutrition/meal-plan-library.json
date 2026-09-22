@@ -1,0 +1,2700 @@
+{
+  "schemaVersion": 1,
+  "version": 1,
+  "status": "needs_review",
+  "learningMode": "source_grounding_not_fine_tuning",
+  "description": "Mẫu và nguyên tắc trích từ hai DOCX, chưa xác minh thành phần, khẩu phần, tính phù hợp cá nhân hoặc nguồn y khoa.",
+  "templates": [
+    {
+      "id": "meal_coach_example_01",
+      "name": "Mẫu meal plan do PT thiết lập, đã tách định danh",
+      "goal": "fat_loss",
+      "sourceId": "nutrition_guide_01",
+      "sourceRange": [
+        34,
+        77
+      ],
+      "population": "not_stated",
+      "sourceKind": "coach_example_deidentified",
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "eligibleForPlanner": false,
+      "aiRecommendable": false,
+      "ragRetrievalAllowed": false,
+      "sourceEnergy": {
+        "raw": "~2300calo chưa tính sai số do calo của gia vị và rau.  (Calo đã thâm hụt)",
+        "sourceRef": {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 36
+        },
+        "minKcal": 2300,
+        "maxKcal": 2300,
+        "basis": "author_declared_not_calculated",
+        "personalTarget": false,
+        "verified": false
+      },
+      "sourceBMR": {
+        "raw": "BMR: 1850 ( mức năng lượng duy trì sự sống, không ăn thấp hơn mức này )",
+        "sourceRef": {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 38
+        },
+        "valueAsWritten": 1850,
+        "usedAsMinimumIntake": false
+      },
+      "tdee": null,
+      "computedDailyKcal": null,
+      "weighingConvention": {
+        "raw": "- Cân tất cả là đồ sống trừ cơm",
+        "sourceRef": {
+          "sourceId": "nutrition_guide_01",
+          "paragraph": 41
+        }
+      },
+      "notes": [
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_guide_01",
+            "paragraph": 42
+          },
+          "raw": "- Sodium (muối) : ăn bình thường nhưng không sdung các gia vị đóng gói sẵn, nhiều dầu mỡ và calo"
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_guide_01",
+            "paragraph": 43
+          },
+          "raw": "- Nước: 3000-4000ml/ ngày"
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_guide_01",
+            "paragraph": 44
+          },
+          "raw": "Cardio : 30p/ ngày (nhịp tim 115-130) (mỗi ngày đều đi bộ trên máy hoặc đạp xe)"
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_guide_01",
+            "paragraph": 45
+          },
+          "raw": "Steps daily : >7000 ( sẽ tốt hơn nếu di chuyển sau bữa ăn )"
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_guide_01",
+            "paragraph": 74
+          },
+          "raw": "Yêu cầu: - Tuân thủ theo meal plan"
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_guide_01",
+            "paragraph": 75
+          },
+          "raw": "- Luôn chụp và gửi ĐẦY ĐỦ các bữa ăn cho Coach mỗi ngày"
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_guide_01",
+            "paragraph": 77
+          },
+          "raw": "- Những ngày KHÔNG TẬP - lượng tinh bột giảm lại 1/2 ít so với ngày tập"
+        }
+      ],
+      "meals": [
+        {
+          "id": "meal_coach_example_01_breakfast",
+          "label": "Meal 1",
+          "sourceRef": {
+            "sourceId": "nutrition_guide_01",
+            "paragraph": 47
+          },
+          "headingRaw": "Meal 1: 8-9g (Chọn 1 trong các options sau)",
+          "timing": {
+            "kind": "clock_window",
+            "start": "08:00",
+            "end": "09:00"
+          },
+          "choicePolicy": "choose_one_numbered_option",
+          "optionIds": [
+            "meal_coach_example_01_p49",
+            "meal_coach_example_01_p50",
+            "meal_coach_example_01_p51"
+          ],
+          "items": [
+            {
+              "id": "meal_coach_example_01_p49",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 49
+              },
+              "raw": "- Lựa chọn 1: 2 lát sandwich nâu + 2 trứng ốp la (ít dầu) + Rau + 1 cf đen không đường",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "2 l",
+                  "unitAsWritten": "l"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_coach_example_01_p50",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 50
+              },
+              "raw": "- Lựa chọn 2: củ khoai nhỏ + 2 trứng + Cf đen ko đường",
+              "citationMarkers": [],
+              "quantityMentions": [],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_coach_example_01_p51",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 51
+              },
+              "raw": "- Lựa chọn 3: 100gr cơm gạo lứt + 150gr tôm, thịt + rau",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "100gr",
+                  "unitAsWritten": "gr"
+                },
+                {
+                  "raw": "150gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [
+            {
+              "id": "meal_coach_example_01_p52",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 52
+              },
+              "raw": "(Pha 3/4 trái chanh + ít muối hồng với 1.5l nước)",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "3/4 trái",
+                  "unitAsWritten": "trái"
+                },
+                {
+                  "raw": "1.5l",
+                  "unitAsWritten": "l"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_coach_example_01_lunch",
+          "label": "Meal 2",
+          "sourceRef": {
+            "sourceId": "nutrition_guide_01",
+            "paragraph": 54
+          },
+          "headingRaw": "Meal 2: 13g00-14g00",
+          "timing": {
+            "kind": "clock_window",
+            "start": "13:00",
+            "end": "14:00"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_coach_example_01_p55",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 55
+              },
+              "raw": "- Cơm: 1.5 chén",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1.5 chén",
+                  "unitAsWritten": "chén"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_coach_example_01_p56",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 56
+              },
+              "raw": "- Thịt: 250gr (thịt cá các loại)",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "250gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_coach_example_01_p57",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 57
+              },
+              "raw": "- Rau: 200gr (ưu tiên nấu canh)",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "200gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_coach_example_01_afternoon",
+          "label": "Meal phụ chiều",
+          "sourceRef": {
+            "sourceId": "nutrition_guide_01",
+            "paragraph": 59
+          },
+          "headingRaw": "Meal phụ chiều:",
+          "timing": {
+            "kind": "unspecified"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_coach_example_01_p60",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 60
+              },
+              "raw": "- 1 Trái táo nhỏ",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1 Trái",
+                  "unitAsWritten": "Trái"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_coach_example_01_p61",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 61
+              },
+              "raw": "- 10 hạt điều",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "10 hạt",
+                  "unitAsWritten": "hạt"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_coach_example_01_p62",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 62
+              },
+              "raw": "- 1 sữa chua uống probi ko đường",
+              "citationMarkers": [],
+              "quantityMentions": [],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_coach_example_01_p63",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 63
+              },
+              "raw": "- 1 của khoai",
+              "citationMarkers": [],
+              "quantityMentions": [],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_coach_example_01_dinner",
+          "label": "Meal 3",
+          "sourceRef": {
+            "sourceId": "nutrition_guide_01",
+            "paragraph": 65
+          },
+          "headingRaw": "Meal 3: 18-19g00",
+          "timing": {
+            "kind": "clock_window",
+            "start": "18:00",
+            "end": "19:00"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_coach_example_01_p67",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 67
+              },
+              "raw": "- 1 chén cơm gạo lứt",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1 chén",
+                  "unitAsWritten": "chén"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_coach_example_01_p68",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 68
+              },
+              "raw": "- 250gr thịt, cá",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "250gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_coach_example_01_p69",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 69
+              },
+              "raw": "- Rau: 200gr",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "200gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_coach_example_01_pre_sleep",
+          "label": "Trước khi ngủ",
+          "sourceRef": {
+            "sourceId": "nutrition_guide_01",
+            "paragraph": 71
+          },
+          "headingRaw": "Trước khi ngủ 30p: 150gr thơm + 1 sữa chua ít đường",
+          "timing": {
+            "kind": "relative",
+            "anchor": "sleep",
+            "offsetMinutes": -30
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_coach_example_01_p71",
+              "sourceRef": {
+                "sourceId": "nutrition_guide_01",
+                "paragraph": 71
+              },
+              "raw": "Trước khi ngủ 30p: 150gr thơm + 1 sữa chua ít đường",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "150gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        }
+      ],
+      "memberIds": [],
+      "sourceInstructionsActive": false
+    },
+    {
+      "id": "meal_weight_gain_example_01",
+      "name": "Meal Plan: Tăng cân",
+      "goal": "weight_gain",
+      "sourceId": "nutrition_cases_01",
+      "sourceRange": [
+        2,
+        31
+      ],
+      "population": "not_stated",
+      "sourceKind": "illustrative_template",
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "eligibleForPlanner": false,
+      "aiRecommendable": false,
+      "ragRetrievalAllowed": false,
+      "sourceEnergy": {
+        "raw": "~2700 calo chưa tính sai số do gia vị và rau. (Calo đã thặng dư)",
+        "sourceRef": {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 5
+        },
+        "minKcal": 2700,
+        "maxKcal": 2700,
+        "basis": "author_declared_not_calculated",
+        "personalTarget": false,
+        "verified": false
+      },
+      "sourceBMR": {
+        "raw": "BMR: 1750 (mức năng lượng duy trì sự sống).",
+        "sourceRef": {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 6
+        },
+        "valueAsWritten": 1750,
+        "usedAsMinimumIntake": false
+      },
+      "tdee": null,
+      "computedDailyKcal": null,
+      "weighingConvention": {
+        "raw": "Cân tất cả là đồ sống trừ cơm.",
+        "sourceRef": {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 8
+        }
+      },
+      "notes": [
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 3
+          },
+          "raw": "Dựa trên hướng dẫn dinh dưỡng tăng cân lành mạnh, ưu tiên thực phẩm giàu đạm, tinh bột nhanh/chậm và chất béo tốt."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 4
+          },
+          "raw": "Meal plan : Học viên nam (Mục tiêu tăng cân, tăng cơ)"
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 9
+          },
+          "raw": "Nước: 2500 - 3000ml/ngày."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 10
+          },
+          "raw": "Cardio: 15-20p/ngày (nhịp tim 110-120) chủ yếu để khởi động và tăng cường trao đổi chất, không lạm dụng cardio cường độ cao."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 11
+          },
+          "raw": "Tránh bỏ bữa, đặc biệt là bữa phụ khuya giúp hấp thu tốt hơn [cite: 1.1.4]."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 30
+          },
+          "raw": "Luôn chụp và gửi ĐẦY ĐỦ các bữa ăn cho Coach."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 31
+          },
+          "raw": "Lịch tập: Tập tạ nặng (Hypertrophy) 4-5 buổi/tuần. Hạn chế đốt năng lượng ngoài luồng."
+        }
+      ],
+      "meals": [
+        {
+          "id": "meal_weight_gain_example_01_breakfast",
+          "label": "Meal 1",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 12
+          },
+          "headingRaw": "Meal 1: 7g30-8g30 (Chọn 1 trong các options sau)",
+          "timing": {
+            "kind": "clock_window",
+            "start": "07:30",
+            "end": "08:30"
+          },
+          "choicePolicy": "choose_one_numbered_option",
+          "optionIds": [
+            "meal_weight_gain_example_01_p13",
+            "meal_weight_gain_example_01_p14",
+            "meal_weight_gain_example_01_p15"
+          ],
+          "items": [
+            {
+              "id": "meal_weight_gain_example_01_p13",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 13
+              },
+              "raw": "Lựa chọn 1: 1 bát xôi lớn (xôi mặn hoặc xôi đậu) + 2 quả trứng luộc + 1 cốc sữa tươi nguyên kem.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1 bát",
+                  "unitAsWritten": "bát"
+                },
+                {
+                  "raw": "2 quả",
+                  "unitAsWritten": "quả"
+                },
+                {
+                  "raw": "1 cốc",
+                  "unitAsWritten": "cốc"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_weight_gain_example_01_p14",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 14
+              },
+              "raw": "Lựa chọn 2: 1 tô phở bò (tầm 500ml nước dùng) + nhiều thịt + rau giá [cite: 1.1.1].",
+              "citationMarkers": [
+                "[cite: 1.1.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "500ml",
+                  "unitAsWritten": "ml"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_weight_gain_example_01_p15",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 15
+              },
+              "raw": "Lựa chọn 3: Bánh mì ăn kèm 2 trứng ốp la, 1/2 quả bơ, phô mai và thịt nguội [cite: 1.1.2].",
+              "citationMarkers": [
+                "[cite: 1.1.2]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "1/2 quả",
+                  "unitAsWritten": "quả"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_weight_gain_example_01_lunch",
+          "label": "Meal 2",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 16
+          },
+          "headingRaw": "Meal 2: 12g00-13g00",
+          "timing": {
+            "kind": "clock_window",
+            "start": "12:00",
+            "end": "13:00"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_weight_gain_example_01_p17",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 17
+              },
+              "raw": "Cơm trắng: 2-3 bát [cite: 1.1.2].",
+              "citationMarkers": [
+                "[cite: 1.1.2]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "2-3 bát",
+                  "unitAsWritten": "bát"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_weight_gain_example_01_p18",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 18
+              },
+              "raw": "Thịt/Cá: 300gr (Ưu tiên thịt bò, cá hồi chứa nhiều calo và mỡ tốt).",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "300gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_weight_gain_example_01_p19",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 19
+              },
+              "raw": "Rau củ: 200gr (Bí đỏ, cà rốt hầm xương hoặc xào mỡ hành non) [cite: 1.1.1].",
+              "citationMarkers": [
+                "[cite: 1.1.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "200gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_weight_gain_example_01_pre_workout",
+          "label": "Meal phụ chiều",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 20
+          },
+          "headingRaw": "Meal phụ chiều: 15g30-16g00 (Trước tập 1 tiếng)",
+          "timing": {
+            "kind": "clock_and_relative",
+            "start": "15:30",
+            "end": "16:00",
+            "anchor": "workout_start",
+            "offsetMinutes": -60
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_weight_gain_example_01_p21",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 21
+              },
+              "raw": "1 cốc sinh tố bơ dừa hoặc yến mạch chuối sữa.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1 cốc",
+                  "unitAsWritten": "cốc"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_weight_gain_example_01_p22",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 22
+              },
+              "raw": "1 nắm hạt macca/hạt điều [cite: 1.2.1].",
+              "citationMarkers": [
+                "[cite: 1.2.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "1 nắm",
+                  "unitAsWritten": "nắm"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_weight_gain_example_01_dinner",
+          "label": "Meal 3",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 23
+          },
+          "headingRaw": "Meal 3: 19g00-20g00",
+          "timing": {
+            "kind": "clock_window",
+            "start": "19:00",
+            "end": "20:00"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_weight_gain_example_01_p24",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 24
+              },
+              "raw": "Cơm trắng: 2 chén [cite: 1.1.2].",
+              "citationMarkers": [
+                "[cite: 1.1.2]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "2 chén",
+                  "unitAsWritten": "chén"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_weight_gain_example_01_p25",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 25
+              },
+              "raw": "Đùi gà áp chảo hoặc sườn rim: 250gr [cite: 1.1.2].",
+              "citationMarkers": [
+                "[cite: 1.1.2]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "250gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_weight_gain_example_01_p26",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 26
+              },
+              "raw": "Canh rau củ nấu tôm/thịt băm [cite: 1.1.2].",
+              "citationMarkers": [
+                "[cite: 1.1.2]"
+              ],
+              "quantityMentions": [],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_weight_gain_example_01_pre_sleep",
+          "label": "Trước khi ngủ",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 27
+          },
+          "headingRaw": "Trước khi ngủ 1 tiếng (Thức ăn khuya lành mạnh):",
+          "timing": {
+            "kind": "relative",
+            "anchor": "sleep",
+            "offsetMinutes": -60
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_weight_gain_example_01_p28",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 28
+              },
+              "raw": "1 bát cháo yến mạch nhỏ hoặc 1 ly sữa nóng nguyên kem [cite: 1.1.4].",
+              "citationMarkers": [
+                "[cite: 1.1.4]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "1 bát",
+                  "unitAsWritten": "bát"
+                },
+                {
+                  "raw": "1 ly",
+                  "unitAsWritten": "ly"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "source_raw_except_rice",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        }
+      ],
+      "memberIds": [],
+      "sourceInstructionsActive": false
+    },
+    {
+      "id": "meal_fat_loss_example_01",
+      "name": "Meal Plan: Giảm mỡ",
+      "goal": "fat_loss",
+      "sourceId": "nutrition_cases_01",
+      "sourceRange": [
+        32,
+        57
+      ],
+      "population": "not_stated",
+      "sourceKind": "illustrative_template",
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "eligibleForPlanner": false,
+      "aiRecommendable": false,
+      "ragRetrievalAllowed": false,
+      "sourceEnergy": {
+        "raw": "~1450 calo chưa tính sai số. (Calo đã thâm hụt 15-20% so với TDEE) [cite: 2.1.1].",
+        "sourceRef": {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 35
+        },
+        "minKcal": 1450,
+        "maxKcal": 1450,
+        "basis": "author_declared_not_calculated",
+        "personalTarget": false,
+        "verified": false
+      },
+      "sourceBMR": {
+        "raw": "BMR: 1250 (không ăn thấp hơn mức này).",
+        "sourceRef": {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 36
+        },
+        "valueAsWritten": 1250,
+        "usedAsMinimumIntake": false
+      },
+      "tdee": null,
+      "computedDailyKcal": null,
+      "weighingConvention": null,
+      "notes": [
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 33
+          },
+          "raw": "Dựa trên tỷ lệ dinh dưỡng đa lượng tập trung vào Protein cao (30-35%), giảm calo nhưng vẫn đủ để duy trì khối lượng cơ bắp [cite: 2.1.1]."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 34
+          },
+          "raw": "Meal plan : Học viên nữ (Mục tiêu siết mỡ, giữ cơ)"
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 38
+          },
+          "raw": "Gia vị: Ưu tiên luộc, hấp, áp chảo. Hạn chế tuyệt đối đường tinh luyện và đồ chiên rán [cite: 2.1.1]."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 39
+          },
+          "raw": "Nước: 2500 - 3000ml/ngày. Có thể dùng cafein (trà, cafe đen) trước tập để tăng cường đốt mỡ [cite: 2.1.1]."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 40
+          },
+          "raw": "Cardio: 35-45p/ngày (nhịp tim 120-135). Steps daily : >8000."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 56
+          },
+          "raw": "Lịch tập: Tập tạ 3-4 buổi/tuần kết hợp HIIT/Cardio."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 57
+          },
+          "raw": "Ngày không tập giảm tinh bột bữa phụ và bữa tối xuống mức tối thiểu."
+        }
+      ],
+      "meals": [
+        {
+          "id": "meal_fat_loss_example_01_breakfast",
+          "label": "Meal 1",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 41
+          },
+          "headingRaw": "Meal 1: 7g00-8g00",
+          "timing": {
+            "kind": "clock_window",
+            "start": "07:00",
+            "end": "08:00"
+          },
+          "choicePolicy": "choose_one_numbered_option",
+          "optionIds": [
+            "meal_fat_loss_example_01_p42",
+            "meal_fat_loss_example_01_p43"
+          ],
+          "items": [
+            {
+              "id": "meal_fat_loss_example_01_p42",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 42
+              },
+              "raw": "Lựa chọn 1: 2 lát bánh mì nguyên cám + 2 lòng trắng trứng, 1 quả trứng nguyên + 1/2 quả bơ.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "2 l",
+                  "unitAsWritten": "l"
+                },
+                {
+                  "raw": "2 l",
+                  "unitAsWritten": "l"
+                },
+                {
+                  "raw": "1 quả",
+                  "unitAsWritten": "quả"
+                },
+                {
+                  "raw": "1/2 quả",
+                  "unitAsWritten": "quả"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_fat_loss_example_01_p43",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 43
+              },
+              "raw": "Lựa chọn 2: 40gr Yến mạch (ngâm qua đêm) + sữa chua Hy Lạp + quả mọng (dâu tây, việt quất) [cite: 2.1.1].",
+              "citationMarkers": [
+                "[cite: 2.1.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "40gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [
+            {
+              "id": "meal_fat_loss_example_01_p44",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 44
+              },
+              "raw": "1 ly Cafe đen không đường.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1 ly",
+                  "unitAsWritten": "ly"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_fat_loss_example_01_lunch",
+          "label": "Meal 2",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 45
+          },
+          "headingRaw": "Meal 2: 12g00-13g00",
+          "timing": {
+            "kind": "clock_window",
+            "start": "12:00",
+            "end": "13:00"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_fat_loss_example_01_p46",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 46
+              },
+              "raw": "Tinh bột: 1 củ khoai lang luộc hoặc 100gr gạo lứt.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "100gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_fat_loss_example_01_p47",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 47
+              },
+              "raw": "Thịt/Cá: 200gr ức gà hoặc phi lê cá rô phi/cá tuyết (ít béo) [cite: 2.1.1].",
+              "citationMarkers": [
+                "[cite: 2.1.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "200gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_fat_loss_example_01_p48",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 48
+              },
+              "raw": "Rau: 250gr bông cải xanh hoặc xà lách (giúp no lâu nhờ chất xơ) [cite: 2.1.1].",
+              "citationMarkers": [
+                "[cite: 2.1.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "250gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_fat_loss_example_01_pre_workout",
+          "label": "Meal phụ chiều",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 49
+          },
+          "headingRaw": "Meal phụ chiều: 15g30 (Trước tập 45p)",
+          "timing": {
+            "kind": "clock_and_relative",
+            "start": "15:30",
+            "end": null,
+            "anchor": "workout_start",
+            "offsetMinutes": -45
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_fat_loss_example_01_p50",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 50
+              },
+              "raw": "1 muỗng Whey Protein Isolate pha nước lọc [cite: 2.1.2] hoặc 1 quả táo non.",
+              "citationMarkers": [
+                "[cite: 2.1.2]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "1 muỗng",
+                  "unitAsWritten": "muỗng"
+                },
+                {
+                  "raw": "1 quả",
+                  "unitAsWritten": "quả"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": true,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_fat_loss_example_01_dinner",
+          "label": "Meal 3",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 51
+          },
+          "headingRaw": "Meal 3: 18g30-19g30",
+          "timing": {
+            "kind": "clock_window",
+            "start": "18:30",
+            "end": "19:30"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_fat_loss_example_01_p52",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 52
+              },
+              "raw": "Tinh bột: Bỏ hoặc giảm còn 50gr gạo lứt.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "50gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_fat_loss_example_01_p53",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 53
+              },
+              "raw": "Đạm: 200gr thăn bò hoặc mực hấp [cite: 2.1.1].",
+              "citationMarkers": [
+                "[cite: 2.1.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "200gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_fat_loss_example_01_p54",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 54
+              },
+              "raw": "Rau: 250gr rau bina luộc hoặc salad trộn giấm táo [cite: 2.1.1].",
+              "citationMarkers": [
+                "[cite: 2.1.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "250gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        }
+      ],
+      "memberIds": [],
+      "sourceInstructionsActive": false
+    },
+    {
+      "id": "meal_fitness_flexibility_example_01",
+      "name": "Meal Plan: Tăng thể lực & linh hoạt",
+      "goal": "fitness_flexibility",
+      "sourceId": "nutrition_cases_01",
+      "sourceRange": [
+        58,
+        80
+      ],
+      "population": "not_stated",
+      "sourceKind": "illustrative_template",
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "eligibleForPlanner": false,
+      "aiRecommendable": false,
+      "ragRetrievalAllowed": false,
+      "sourceEnergy": {
+        "raw": "~2200 calo (Calo ở mức duy trì - Maintenance).",
+        "sourceRef": {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 61
+        },
+        "minKcal": 2200,
+        "maxKcal": 2200,
+        "basis": "author_declared_not_calculated",
+        "personalTarget": false,
+        "verified": false
+      },
+      "sourceBMR": null,
+      "tdee": null,
+      "computedDailyKcal": null,
+      "weighingConvention": null,
+      "notes": [
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 59
+          },
+          "raw": "Tập trung vào phục hồi cơ bắp và bảo vệ khớp bằng Omega-3, Protein hấp thu nhanh và cân bằng điện giải."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 60
+          },
+          "raw": "Meal plan : Học viên nam/nữ (Mục tiêu sức bền, Crossfit, võ thuật)"
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 63
+          },
+          "raw": "Bổ sung vitamin, khoáng chất và Omega-3 (dầu cá) hàng ngày để bôi trơn khớp."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 64
+          },
+          "raw": "Uống Oresol hoặc nước điện giải tự nhiên (nước dừa non pha xíu muối) trong lúc tập."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 65
+          },
+          "raw": "Giãn cơ tĩnh 15p sau mỗi buổi tập."
+        }
+      ],
+      "meals": [
+        {
+          "id": "meal_fitness_flexibility_example_01_breakfast",
+          "label": "Meal 1",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 66
+          },
+          "headingRaw": "Meal 1: 7g30-8g00",
+          "timing": {
+            "kind": "clock_window",
+            "start": "07:30",
+            "end": "08:00"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_fitness_flexibility_example_01_p67",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 67
+              },
+              "raw": "1 tô bún/phở nước trong (thịt nạc) [cite: 1.1.1] HOẶC 1 bát cháo yến mạch nấu thịt bò băm.",
+              "citationMarkers": [
+                "[cite: 1.1.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "1 bát",
+                  "unitAsWritten": "bát"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_fitness_flexibility_example_01_p68",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 68
+              },
+              "raw": "1 quả chuối (cung cấp Kali chống chuột rút).",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1 quả",
+                  "unitAsWritten": "quả"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_fitness_flexibility_example_01_lunch",
+          "label": "Meal 2",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 69
+          },
+          "headingRaw": "Meal 2: 12g00-13g00",
+          "timing": {
+            "kind": "clock_window",
+            "start": "12:00",
+            "end": "13:00"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_fitness_flexibility_example_01_p70",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 70
+              },
+              "raw": "Cơm gạo lứt/gạo trắng: 1.5 chén.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1.5 chén",
+                  "unitAsWritten": "chén"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_fitness_flexibility_example_01_p71",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 71
+              },
+              "raw": "Cá béo: 250gr cá hồi/cá thu (chứa nhiều Omega-3 giảm viêm cơ khớp).",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "250gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_fitness_flexibility_example_01_p72",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 72
+              },
+              "raw": "Rau: 200gr các loại rau lá xanh đậm.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "200gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_fitness_flexibility_example_01_pre_workout",
+          "label": "Meal phụ chiều",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 73
+          },
+          "headingRaw": "Meal phụ chiều: 16g00 (Nạp năng lượng bùng nổ trước tập)",
+          "timing": {
+            "kind": "clock_and_relative",
+            "start": "16:00",
+            "end": null,
+            "anchor": "workout_start",
+            "offsetMinutes": null
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_fitness_flexibility_example_01_p74",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 74
+              },
+              "raw": "2 lát bánh mì đen + Bơ đậu phộng + 1 ly cafe đen [cite: 2.1.1].",
+              "citationMarkers": [
+                "[cite: 2.1.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "2 l",
+                  "unitAsWritten": "l"
+                },
+                {
+                  "raw": "1 ly",
+                  "unitAsWritten": "ly"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_fitness_flexibility_example_01_post_workout",
+          "label": "Meal 3 (Post-workout)",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 75
+          },
+          "headingRaw": "Meal 3 (Post-workout): Ngay sau tập",
+          "timing": {
+            "kind": "relative",
+            "anchor": "workout_end",
+            "offsetMinutes": 0
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_fitness_flexibility_example_01_p76",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 76
+              },
+              "raw": "1 muỗng Whey Protein pha cùng 250ml sữa tươi (hỗ trợ phục hồi cơ tức thì).",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1 muỗng",
+                  "unitAsWritten": "muỗng"
+                },
+                {
+                  "raw": "250ml",
+                  "unitAsWritten": "ml"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": true,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_fitness_flexibility_example_01_dinner",
+          "label": "Meal 4",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 77
+          },
+          "headingRaw": "Meal 4: 19g30 (Bữa tối)",
+          "timing": {
+            "kind": "clock_window",
+            "start": "19:30",
+            "end": null
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_fitness_flexibility_example_01_p78",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 78
+              },
+              "raw": "Cơm: 1 chén.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1 chén",
+                  "unitAsWritten": "chén"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_fitness_flexibility_example_01_p79",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 79
+              },
+              "raw": "Thịt gia cầm: 200gr ức gà hoặc đùi gà bỏ da đút lò [cite: 1.2.1].",
+              "citationMarkers": [
+                "[cite: 1.2.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "200gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_fitness_flexibility_example_01_p80",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 80
+              },
+              "raw": "Salad rau củ trộn dầu ô liu [cite: 1.2.1].",
+              "citationMarkers": [
+                "[cite: 1.2.1]"
+              ],
+              "quantityMentions": [],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        }
+      ],
+      "memberIds": [],
+      "sourceInstructionsActive": false
+    },
+    {
+      "id": "meal_height_growth_example_01",
+      "name": "Meal Plan: Tăng chiều cao",
+      "goal": "height_growth",
+      "sourceId": "nutrition_cases_01",
+      "sourceRange": [
+        81,
+        105
+      ],
+      "population": "includes_minors",
+      "sourceKind": "illustrative_template",
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "eligibleForPlanner": false,
+      "aiRecommendable": false,
+      "ragRetrievalAllowed": false,
+      "sourceEnergy": {
+        "raw": "~2000 - 2400 calo (Cần thặng dư nhẹ để cơ thể phát triển).",
+        "sourceRef": {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 84
+        },
+        "minKcal": 2000,
+        "maxKcal": 2400,
+        "basis": "author_declared_not_calculated",
+        "personalTarget": false,
+        "verified": false
+      },
+      "sourceBMR": null,
+      "tdee": null,
+      "computedDailyKcal": null,
+      "weighingConvention": null,
+      "notes": [
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 82
+          },
+          "raw": "Tập trung tối đa vào Canxi, Vitamin D, Protein từ trứng, sữa, và hải sản để kích thích hormone tăng trưởng, cấu trúc xương."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 83
+          },
+          "raw": "Meal plan : Học viên trẻ tuổi (Mục tiêu phát triển chiều cao)"
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 86
+          },
+          "raw": "Sữa là bắt buộc: Khuyến nghị khoảng 6 đơn vị sữa/ngày (tương đương 600ml sữa tươi hoặc quy đổi ra phô mai, sữa chua)."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 87
+          },
+          "raw": "Ngủ trước 22h30 (Thời điểm hormone tăng trưởng HGH tiết ra mạnh nhất)."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 88
+          },
+          "raw": "Vận động: Treo người xà đơn 10p/ngày, bơi lội hoặc bóng rổ 3 buổi/tuần."
+        }
+      ],
+      "meals": [
+        {
+          "id": "meal_height_growth_example_01_breakfast",
+          "label": "Meal 1",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 89
+          },
+          "headingRaw": "Meal 1: 6g30-7g00",
+          "timing": {
+            "kind": "clock_window",
+            "start": "06:30",
+            "end": "07:00"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_height_growth_example_01_p90",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 90
+              },
+              "raw": "1 bát miến gà hoặc xôi thịt.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1 bát",
+                  "unitAsWritten": "bát"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_height_growth_example_01_p91",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 91
+              },
+              "raw": "1 quả trứng luộc (cung cấp Canxi, Kẽm, Vitamin D).",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1 quả",
+                  "unitAsWritten": "quả"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_height_growth_example_01_p92",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 92
+              },
+              "raw": "1 hộp sữa tươi 200ml (hoặc sữa đậu nành).",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1 hộp",
+                  "unitAsWritten": "hộp"
+                },
+                {
+                  "raw": "200ml",
+                  "unitAsWritten": "ml"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_height_growth_example_01_lunch",
+          "label": "Meal 2",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 93
+          },
+          "headingRaw": "Meal 2: 11g30-12g30",
+          "timing": {
+            "kind": "clock_window",
+            "start": "11:30",
+            "end": "12:30"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_height_growth_example_01_p94",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 94
+              },
+              "raw": "Cơm: 2 chén.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "2 chén",
+                  "unitAsWritten": "chén"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_height_growth_example_01_p95",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 95
+              },
+              "raw": "Hải sản giàu Canxi: 200gr tôm rim hoặc cua/cá hấp [cite: 2.2.3].",
+              "citationMarkers": [
+                "[cite: 2.2.3]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "200gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_height_growth_example_01_p96",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 96
+              },
+              "raw": "Đậu phụ: 1 bìa (rất giàu Canxi thực vật) [cite: 2.2.1].",
+              "citationMarkers": [
+                "[cite: 2.2.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "1 bìa",
+                  "unitAsWritten": "bìa"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_height_growth_example_01_p97",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 97
+              },
+              "raw": "Canh rau cải bó xôi hoặc súp lơ xanh.",
+              "citationMarkers": [],
+              "quantityMentions": [],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_height_growth_example_01_afternoon",
+          "label": "Meal phụ chiều",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 98
+          },
+          "headingRaw": "Meal phụ chiều: 15g30",
+          "timing": {
+            "kind": "clock_window",
+            "start": "15:30",
+            "end": null
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_height_growth_example_01_p99",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 99
+              },
+              "raw": "1 quả chuối (chứa Kali giúp giữ canxi trong xương) + 1 hộp sữa chua.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1 quả",
+                  "unitAsWritten": "quả"
+                },
+                {
+                  "raw": "1 hộp",
+                  "unitAsWritten": "hộp"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_height_growth_example_01_dinner",
+          "label": "Meal 3",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 100
+          },
+          "headingRaw": "Meal 3: 18g30-19g30",
+          "timing": {
+            "kind": "clock_window",
+            "start": "18:30",
+            "end": "19:30"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_height_growth_example_01_p101",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 101
+              },
+              "raw": "Cơm: 1.5 - 2 chén.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1.5 - 2 chén",
+                  "unitAsWritten": "chén"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_height_growth_example_01_p102",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 102
+              },
+              "raw": "Thịt bò: 200gr (cung cấp Sắt, Kẽm, Protein tạo mô cơ xương) [cite: 2.2.1].",
+              "citationMarkers": [
+                "[cite: 2.2.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "200gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_height_growth_example_01_p103",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 103
+              },
+              "raw": "Rau xanh lá đậm luộc hoặc xào ít dầu [cite: 2.2.3].",
+              "citationMarkers": [
+                "[cite: 2.2.3]"
+              ],
+              "quantityMentions": [],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_height_growth_example_01_pre_sleep",
+          "label": "Trước khi ngủ",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 104
+          },
+          "headingRaw": "Trước khi ngủ 1 tiếng:",
+          "timing": {
+            "kind": "relative",
+            "anchor": "sleep",
+            "offsetMinutes": -60
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_height_growth_example_01_p105",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 105
+              },
+              "raw": "1 ly sữa ấm 200ml [cite: 2.2.1].",
+              "citationMarkers": [
+                "[cite: 2.2.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "1 ly",
+                  "unitAsWritten": "ly"
+                },
+                {
+                  "raw": "200ml",
+                  "unitAsWritten": "ml"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        }
+      ],
+      "memberIds": [],
+      "sourceInstructionsActive": false
+    },
+    {
+      "id": "meal_metabolic_example_01",
+      "name": "Meal Plan: Cải thiện bệnh lý (tên trong nguồn)",
+      "goal": "medical_nutrition",
+      "sourceId": "nutrition_cases_01",
+      "sourceRange": [
+        106,
+        131
+      ],
+      "population": "medical",
+      "sourceKind": "illustrative_template",
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "eligibleForPlanner": false,
+      "aiRecommendable": false,
+      "ragRetrievalAllowed": false,
+      "sourceEnergy": {
+        "raw": "~1600 - 1800 calo.",
+        "sourceRef": {
+          "sourceId": "nutrition_cases_01",
+          "paragraph": 109
+        },
+        "minKcal": 1600,
+        "maxKcal": 1800,
+        "basis": "author_declared_not_calculated",
+        "personalTarget": false,
+        "verified": false
+      },
+      "sourceBMR": null,
+      "tdee": null,
+      "computedDailyKcal": null,
+      "weighingConvention": null,
+      "notes": [
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 107
+          },
+          "raw": "Ưu tiên thực phẩm có Chỉ số đường huyết (GI) thấp, ngũ cốc nguyên cám, nhiều chất xơ hòa tan để kiểm soát đường huyết và làm sạch mỡ máu."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 108
+          },
+          "raw": "Meal plan : Học viên có bệnh lý chuyển hóa"
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 111
+          },
+          "raw": "Nạp tinh bột vừa phải (chiếm khoảng 50-60% tổng năng lượng), ưu tiên ngũ cốc nguyên hạt."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 112
+          },
+          "raw": "Tuyệt đối loại bỏ mỡ động vật, nội tạng động vật, đồ ngọt đóng gói. Ưu tiên chất béo tốt (Omega 3, 6, 9) [cite: 1.2.1]."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 113
+          },
+          "raw": "Nấu ăn: Chỉ luộc, hấp, hoặc dùng nồi chiên không dầu. Không xào nấu ngập dầu [cite: 1.2.1]."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 114
+          },
+          "raw": "Cardio nhẹ nhàng 30-40p mỗi ngày (Đi bộ nhanh) hỗ trợ hạ đường huyết."
+        },
+        {
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 131
+          },
+          "raw": "Theo dõi chỉ số đường huyết định kỳ 1 tuần/lần và báo cáo cho Coach cùng hình ảnh bữa ăn."
+        }
+      ],
+      "meals": [
+        {
+          "id": "meal_metabolic_example_01_breakfast",
+          "label": "Meal 1",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 115
+          },
+          "headingRaw": "Meal 1: 7g00-8g00",
+          "timing": {
+            "kind": "clock_window",
+            "start": "07:00",
+            "end": "08:00"
+          },
+          "choicePolicy": "choose_one_numbered_option",
+          "optionIds": [
+            "meal_metabolic_example_01_p116",
+            "meal_metabolic_example_01_p117"
+          ],
+          "items": [
+            {
+              "id": "meal_metabolic_example_01_p116",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 116
+              },
+              "raw": "Lựa chọn 1: Bún gạo lứt nấu với 100gr cá ngừ/cá thu + nhiều rau giá [cite: 1.2.1].",
+              "citationMarkers": [
+                "[cite: 1.2.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "100gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_metabolic_example_01_p117",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 117
+              },
+              "raw": "Lựa chọn 2: Cháo yến mạch + trứng gà luộc [cite: 1.2.1].",
+              "citationMarkers": [
+                "[cite: 1.2.1]"
+              ],
+              "quantityMentions": [],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [
+            {
+              "id": "meal_metabolic_example_01_p118",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 118
+              },
+              "raw": "Đồ uống: Nước lọc ấm hoặc nước chanh pha loãng (tuyệt đối không đường).",
+              "citationMarkers": [],
+              "quantityMentions": [],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_metabolic_example_01_lunch",
+          "label": "Meal 2",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 119
+          },
+          "headingRaw": "Meal 2: 12g00-13g00",
+          "timing": {
+            "kind": "clock_window",
+            "start": "12:00",
+            "end": "13:00"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_metabolic_example_01_p120",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 120
+              },
+              "raw": "Tinh bột: 1-1.5 chén cơm gạo lứt nhỏ [cite: 1.2.1].",
+              "citationMarkers": [
+                "[cite: 1.2.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "1-1.5 chén",
+                  "unitAsWritten": "chén"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_metabolic_example_01_p121",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 121
+              },
+              "raw": "Đạm trắng: 200gr thịt ức gà bỏ da hoặc cá diêu hồng hấp [cite: 1.2.1].",
+              "citationMarkers": [
+                "[cite: 1.2.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "200gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_metabolic_example_01_p122",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 122
+              },
+              "raw": "Rau (Rất quan trọng): 200-300gr rau nhiều chất xơ như đậu bắp, mồng tơi, cải bẹ xanh (chất xơ hòa tan giúp giảm hấp thu mỡ/đường vào máu) [cite: 1.2.1].",
+              "citationMarkers": [
+                "[cite: 1.2.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "200-300gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": false,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_metabolic_example_01_afternoon",
+          "label": "Meal phụ chiều",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 123
+          },
+          "headingRaw": "Meal phụ chiều: 15g30-16g00",
+          "timing": {
+            "kind": "clock_window",
+            "start": "15:30",
+            "end": "16:00"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_metabolic_example_01_p124",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 124
+              },
+              "raw": "1 ly sữa hạt (hạnh nhân, óc chó - không đường) hoặc sữa chua tách béo [cite: 1.2.1].",
+              "citationMarkers": [
+                "[cite: 1.2.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "1 ly",
+                  "unitAsWritten": "ly"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_metabolic_example_01_p125",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 125
+              },
+              "raw": "1 múi bưởi hoặc 1/2 trái táo (nhiều vitamin C, pectin) [cite: 1.2.1].",
+              "citationMarkers": [
+                "[cite: 1.2.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "1 múi",
+                  "unitAsWritten": "múi"
+                },
+                {
+                  "raw": "1/2 trái",
+                  "unitAsWritten": "trái"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        },
+        {
+          "id": "meal_metabolic_example_01_dinner",
+          "label": "Meal 3",
+          "sourceRef": {
+            "sourceId": "nutrition_cases_01",
+            "paragraph": 126
+          },
+          "headingRaw": "Meal 3: 18g30-19g00 (Ăn nhẹ nhàng, kết thúc sớm)",
+          "timing": {
+            "kind": "clock_window",
+            "start": "18:30",
+            "end": "19:00"
+          },
+          "choicePolicy": "preserve_source_lines",
+          "optionIds": [],
+          "items": [
+            {
+              "id": "meal_metabolic_example_01_p127",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 127
+              },
+              "raw": "Tinh bột: 1 chén nhỏ cơm gạo lứt hoặc quinoa.",
+              "citationMarkers": [],
+              "quantityMentions": [
+                {
+                  "raw": "1 chén",
+                  "unitAsWritten": "chén"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_metabolic_example_01_p128",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 128
+              },
+              "raw": "Đạm: 150gr thịt thăn nạc heo hoặc đậu hũ non [cite: 1.2.1].",
+              "citationMarkers": [
+                "[cite: 1.2.1]"
+              ],
+              "quantityMentions": [
+                {
+                  "raw": "150gr",
+                  "unitAsWritten": "gr"
+                }
+              ],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            },
+            {
+              "id": "meal_metabolic_example_01_p129",
+              "sourceRef": {
+                "sourceId": "nutrition_cases_01",
+                "paragraph": 129
+              },
+              "raw": "Canh rau dền nấu tôm khô hoặc rong biển [cite: 1.2.1].",
+              "citationMarkers": [
+                "[cite: 1.2.1]"
+              ],
+              "quantityMentions": [],
+              "hasInlineAlternative": true,
+              "containsSupplementOrRehydrationProduct": false,
+              "cookedWeightBasis": "not_stated",
+              "computedKcal": null,
+              "computedMacros": null,
+              "allergenSafety": "not_verified"
+            }
+          ],
+          "additionalItems": [],
+          "computedKcal": null,
+          "consumed": false
+        }
+      ],
+      "memberIds": [],
+      "sourceInstructionsActive": false
+    }
+  ]
+}

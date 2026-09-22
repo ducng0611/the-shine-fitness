@@ -1,3 +1,5 @@
+import { createNutritionRouter } from "./nutrition/router";
+import { nutritionChatDecision } from "../../shared/nutritionRouting";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import path from "path";
@@ -315,6 +317,13 @@ async function startServer() {
     verifyToken: token => adminAuth.verifyIdToken(token, true),
     enabled: () => process.env.SHINE_PATHWAY_INTAKE_ENABLED === 'true',
     adminEmails: () => (process.env.ADMIN_EMAILS || '').split(',')
+  }));
+
+  // Nutrition source review stays admin-only and never writes meal/member records.
+  app.use('/api/admin/nutrition', createNutritionRouter({
+    verifyToken: token => adminAuth.verifyIdToken(token, true),
+    adminEmails: () => (process.env.ADMIN_EMAILS || '').split(','),
+    enabled: () => process.env.SHINE_NUTRITION_SOURCE_REVIEW_ENABLED === 'true'
   }));
 
   // Built-in middleware to parse JSON bodies
@@ -1304,6 +1313,14 @@ async function startServer() {
           hotline: HOTLINE,
           sessionId
         });
+      }
+
+      // Source examples must not become personalized diet advice through model/cache fallback.
+      // Existing HEALTH_RISK and explicit human-handover priorities remain above this gate.
+      const nutritionDecision = nutritionChatDecision(message, Array.isArray(history) ? history : []);
+      if (nutritionDecision) {
+        res.setHeader('Cache-Control', 'no-store');
+        return res.json({ ...nutritionDecision, sessionId });
       }
 
       // 2. Classify intent, pkSegment, slots, nextQuestion in ONE Gemini call

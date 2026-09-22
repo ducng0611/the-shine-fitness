@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "types": [
+      "node"
+    ],
+    "noEmit": true
+  },
+  "include": [
+    "shared/nutritionKnowledge.ts",
+    "shared/nutritionRouting.ts",
+    "server/src/nutrition/**/*.ts",
+    "scripts/prepare-nutrition.ts"
+  ]
+}

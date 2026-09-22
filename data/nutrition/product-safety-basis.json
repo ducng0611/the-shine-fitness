@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "scope": "product_guardrails_not_source_correction",
+  "sourceDocsScientificallyVerified": false,
+  "references": [
+    {
+      "id": "nhs_food_allergy",
+      "publisher": "NHS",
+      "url": "https://www.nhs.uk/conditions/food-allergy/",
+      "accessedAt": "2026-09-23",
+      "use": "Cảnh báo tìm trợ giúp khẩn khi có sưng lưỡi/họng hoặc khó thở, không chẩn đoán."
+    },
+    {
+      "id": "nhs_anaphylaxis",
+      "publisher": "NHS",
+      "url": "https://www.nhs.uk/conditions/anaphylaxis/",
+      "accessedAt": "2026-09-23",
+      "use": "Không chờ phản hồi chatbot trong tình huống có thể cấp tính; không giả vờ đã gọi cấp cứu."
+    }
+  ],
+  "limitations": [
+    "Đây là nguồn ngoài được dùng riêng cho quy tắc an toàn phần mềm, không bổ sung/cải chính nội dung hai DOCX.",
+    "Bộ nhận diện từ khóa không phải công cụ cấp cứu đã được kiểm định và có thể bỏ sót hoặc bắt nhầm.",
+    "Không chỉ định thuốc, liều, thực đơn chữa bệnh hoặc công thức bù nước."
+  ]
+}

@@ -1,3 +1,4 @@
+import { isNutritionRequest } from '../../shared/nutritionRouting';
 import { normalizeSafetyText } from '../../shared/programSafety';
 import { GoogleGenAI } from '@google/genai';
 import { PK_SEGMENTS_LIST } from '../../src/data/pkSegmentsData';
@@ -42,6 +43,10 @@ export function fallbackKeywordClassifier(message: string): ClassificationResult
       slots: { goal: null, experience: null, schedule: null, budget: null },
       nextQuestion: 'Q1'
     };
+  }
+  if (isNutritionRequest(message)) {
+    return { intent: 'NUTRITION', confidence: 0.85, pkSegment: null,
+      slots: {goal: null, experience: null, schedule: null, budget: null}, nextQuestion: null };
   }
   // "giáo án" không phải từ "giá"; ưu tiên PRICE chỉ khi có từ giá/gói thực sự.
   if (/\b(the luc|linh hoat|deo dai|suc ben|lo trinh|giao an|bai tap|tap nhu the nao|tap bao lau|tang can|tang co|nguoi gay|kho tang can|lean bulk|fitness|flexibility|tang chieu cao|cai thien tu the|gu lung|tu the|plyometrics?|treo xa|height|posture|giam mo|giam can|giam beo|dot mo|fat loss|weight loss|chinh sua tu the|co rua|rut vai|vai tron|ngoi nhieu|van dong van phong|postural correction|desk worker mobility|upper crossed|lower crossed)\b/.test(normalized)) {
@@ -145,6 +150,7 @@ DANH SÁCH INTENT HỢP LỆ (CHỈ CHỌN 1):
 - POLICY: Chính sách bảo lưu, chuyển nhượng, đóng tiền, hợp đồng
 - TRIAL: Đăng ký tập thử, trải nghiệm 0đ, vé tập thử
 - PROGRAM: Lộ trình, giáo án, bài tập, tăng cân, tăng cơ, thể lực, linh hoạt, chiều cao/tư thế và giảm mỡ; từ khóa không xác nhận bệnh lý
+- NUTRITION: Nhu cầu bữa ăn và dinh dưỡng; cần kiểm tra dữ liệu đã duyệt, không tự kê thực đơn từ mẫu
 - GREETING: Chào hỏi, cảm ơn, xã giao
 - OTHER: Khác hoặc ngoài phạm vi
 
@@ -182,7 +188,7 @@ export async function classify(
   }
 
   const keyword = fallbackKeywordClassifier(message);
-  if (keyword.intent === 'PRICE' || keyword.intent === 'PROGRAM') return keyword;
+  if (keyword.intent === 'PRICE' || keyword.intent === 'PROGRAM' || keyword.intent === 'NUTRITION') return keyword;
 
   const promptText = buildClassifierPrompt(message, history);
 
@@ -199,6 +205,7 @@ export async function classify(
           'POLICY',
           'TRIAL',
           'PROGRAM',
+          'NUTRITION',
           'GREETING',
           'OTHER',
         ],
@@ -243,6 +250,7 @@ export async function classify(
       'POLICY',
       'TRIAL',
       'PROGRAM',
+      'NUTRITION',
       'GREETING',
       'OTHER',
     ];

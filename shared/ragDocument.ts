@@ -47,6 +47,6 @@ export function chunkDocument(body:string):string[] {
 }
 /** Hồ sơ lịch sử không trở thành chỉ định cho người mới chỉ vì đã tạo embedding. */
 export function programRagAllowed(meta:Pick<DocMetadata,'category'|'review_status'|'content_scope'> & {id?:string}):boolean {
-  if(meta.id==='kb-program-fatloss-metabolic-001'||meta.id==='kb-program-posture-correction-001')return false;
+  if(meta.id==='kb-nutrition-meal-plan-sources-001'||meta.id==='kb-program-fatloss-metabolic-001'||meta.id==='kb-program-posture-correction-001')return false;
   return meta.category!=='PROGRAM' || (meta.review_status==='verified' && meta.content_scope==='public_overview');
 }

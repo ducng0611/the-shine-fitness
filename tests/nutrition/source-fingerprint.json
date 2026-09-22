@@ -1,0 +1,10 @@
+{
+  "files": {
+    "data/nutrition/source-documents.json": "0f0896003c8fa4559dd7d4b6c866c209310abaf59af8840887304ebc146f7964",
+    "data/nutrition/template-mapping.json": "76169d44ead3c5259634e186d7899b8befe6ced89682a729477f69e06e9ccfc1"
+  },
+  "preservedFiles": {
+    "data/companion/training_programs.json": "e0e910df18df14dcb69016aa5151705cd13396f72e76835dd28fc02806466649",
+    "data/knowledge/index.json": "188ec3995ef0af8d2bb39539ae4dc58e896992c2f27cf44f3027be4cb948ad36"
+  }
+}

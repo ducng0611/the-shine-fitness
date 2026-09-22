@@ -1,0 +1,1396 @@
+{
+  "schemaVersion": 1,
+  "sourceScope": "reference_only",
+  "notModelTrainingData": true,
+  "contentVerification": "not_performed",
+  "sources": [
+    {
+      "id": "nutrition_guide_01",
+      "filename": "Thông tin dinh dưỡng - meal plan.docx",
+      "sourceFileSha256": "244bd686e75c5359be482901577e525f0d81420daaa07ce3a88a2ec39238ada5",
+      "sourceKind": "user_supplied_docx",
+      "verified": false,
+      "reviewStatus": "needs_review",
+      "paragraphCount": 83,
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Dưới đây là các thông số dinh dưỡng khoa học và nguyên tắc thiết lập chế độ ăn dành cho người tập gym, thể thao được tổng hợp từ các cơ quan y tế (Trung tâm Kiểm soát Bệnh tật TP.HCM - HCDC), bệnh viện (Vinmec), hệ thống phòng khám dinh dưỡng (Nutrihome) và các trung tâm thể hình, đào tạo PT. Bạn có thể sử dụng các dữ liệu này làm đầu vào (input) chuẩn để xây dựng hệ thống Meal Plan cho học viên.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 2,
+          "text": "1. Nguyên tắc Năng lượng (Calories) & Tỉ lệ Đa lượng chất (Macros)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 3,
+          "text": "Để lên thực đơn cá nhân hóa, huấn luyện viên cần xác định chỉ số TDEE (Tổng năng lượng tiêu hao) dựa trên BMR và hệ số vận động của học viên:",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 4,
+          "text": "Mục tiêu giảm mỡ: Cắt giảm 300 - 500 kcal/ngày so với TDEE để giảm an toàn 0.5 - 1 kg/tuần.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 5,
+          "text": "Mục tiêu tăng cân, tăng cơ: Tăng thêm 500 kcal/ngày, nạp năng lượng lớn hơn lượng đốt cháy.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 6,
+          "text": "Tỉ lệ Macros tham khảo: Theo các chuyên gia dinh dưỡng và thể hình, một tỷ lệ vàng thường được áp dụng là 40% Carb – 30% Protein – 30% Fat hoặc Protein chiếm 25-30% tổng năng lượng.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 7,
+          "text": "2. Tiêu chuẩn Chọn lọc Thực phẩm theo Nhóm chất",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 8,
+          "text": "Nhóm Protein (Chất đạm) xây dựng cơ bắp",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 9,
+          "text": "Hàm lượng: Người tập luyện thể hình cần bổ sung khoảng 1.2 - 2.0g protein/kg trọng lượng cơ thể/ngày tùy cường độ.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 10,
+          "text": "Nguồn thực phẩm ưu tiên: Ức gà (cung cấp 26g protein/85g thịt), thịt bò nạc (giàu kẽm, sắt, vitamin B), thịt lợn nạc, các loại cá (hồi, ngừ, rô phi chứa Omega-3), trứng luộc, và sữa chua Hy Lạp. Nguồn đạm thực vật tốt gồm đậu nành, đậu Hà Lan, hạnh nhân.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 11,
+          "text": "Nhóm Carbohydrate (Tinh bột) cung cấp năng lượng",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 12,
+          "text": "Nguồn ưu tiên: Sử dụng tinh bột chuyển hóa chậm (Carbs phức tạp) để giữ đường huyết ổn định và no lâu như: gạo lứt, khoai lang, yến mạch, bánh mì nguyên cám, quinoa.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 13,
+          "text": "Nguồn tinh bột hấp thu nhanh: Chỉ nên dùng sau tập hoặc cho người gầy muốn tăng cân nhanh để bù đắp glycogen. Hạn chế tối đa đường kính trắng, gạo trắng chà xát kỹ.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 14,
+          "text": "Nhóm Fat (Chất béo) hòa tan Vitamin và bảo vệ khớp",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 15,
+          "text": "Nguồn chất béo tốt: Dầu oliu, quả bơ, các loại hạt (óc chó, hạnh nhân, hạt chia) và mỡ từ cá biển sâu (cá hồi, cá trích).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 16,
+          "text": "Khuyến cáo y tế: HCDC và các trung tâm thể hình khuyến cáo thay thế mỡ động vật bằng dầu thực vật; tránh tuyệt đối chất béo công nghiệp (trans fat) từ thức ăn nhanh, thực phẩm đóng hộp để bảo vệ sức khỏe tim mạch.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 17,
+          "text": "3. Dinh dưỡng Vi lượng & Khuyến cáo Y tế (HCDC, Bộ Y tế)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 18,
+          "text": "Canxi, Sắt & Kali: Rất quan trọng để dẫn truyền thần kinh, bơm oxy tới cơ bắp và chống chuột rút, nhịp tim không đều.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 19,
+          "text": "Kiểm soát muối: Theo khuyến cáo y tế, chỉ nên nạp tối đa 5g muối/ngày. Hạn chế sử dụng thêm nước mắm, nước tương, thức ăn nhanh chế biến sẵn để tránh nguy cơ tăng huyết áp.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 20,
+          "text": "Chế biến: Ưu tiên hấp, luộc, nấu canh. Hạn chế tối đa chiên xào nhiều dầu mỡ.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 21,
+          "text": "4. Chiến lược Dinh dưỡng Xung quanh Buổi tập (Workout Nutrition)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 22,
+          "text": "Theo hướng dẫn dinh dưỡng thể thao của Hệ thống Y tế Vinmec, thời điểm nạp dinh dưỡng quyết định tốc độ phục hồi:",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 23,
+          "text": "Chế độ Hydrat hóa (Uống nước):",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 24,
+          "text": "Trước tập: 2 - 3 cốc nước.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 25,
+          "text": "Trong tập: 1/2 - 1 cốc sau mỗi 15 - 20 phút.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 26,
+          "text": "Sau tập: 2 - 3 cốc cho mỗi 0.5kg trọng lượng cơ thể bị mất đi do thoát mồ hôi. Tránh xa nước ngọt có gas.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 27,
+          "text": "Thực đơn ngay sau khi tập (Post-workout meal):",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 28,
+          "text": "Nạp lại thức ăn có tỷ lệ Carb:Protein lý tưởng (tỷ lệ 4:1) để tối ưu phục hồi.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 29,
+          "text": "Gợi ý món ăn: Trứng + bánh mì nướng nguyên cám; Sữa chocolate; Bánh mì nguyên cám kẹp thịt gà; Sữa chua Hy Lạp + quả mọng; Cá hồi + khoai lang; hoặc Cơm gạo lứt + Ức gà + Rau xanh.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 30,
+          "text": "5. Cấu trúc Meal Plan mẫu cho Học viên",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 31,
+          "text": "Tần suất bữa ăn: Chia nhỏ 5-6 bữa/ngày (3 bữa chính + 2-3 bữa phụ) giúp tối ưu hấp thu protein và không làm dạ dày quá tải.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 32,
+          "text": "Tuyệt đối không bỏ bữa sáng: Bữa sáng khởi động quá trình trao đổi chất. Gợi ý: Yến mạch ủ qua đêm, sữa chua Hy Lạp, hoặc trứng luộc kèm salad.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 33,
+          "text": "",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 34,
+          "text": "Cấu trúc Meal Plan mẫu do PT thiết lập",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 35,
+          "text": "Meal plan : [Đã loại tên khách hàng]",
+          "redaction": "direct_identifier",
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 36,
+          "text": "~2300calo chưa tính sai số do calo của gia vị và rau.  (Calo đã thâm hụt)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 37,
+          "text": "",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 38,
+          "text": "BMR: 1850 ( mức năng lượng duy trì sự sống, không ăn thấp hơn mức này )",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 39,
+          "text": "",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 40,
+          "text": "Note: ",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 41,
+          "text": "- Cân tất cả là đồ sống trừ cơm",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 42,
+          "text": "- Sodium (muối) : ăn bình thường nhưng không sdung các gia vị đóng gói sẵn, nhiều dầu mỡ và calo",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 43,
+          "text": "- Nước: 3000-4000ml/ ngày",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 44,
+          "text": "Cardio : 30p/ ngày (nhịp tim 115-130) (mỗi ngày đều đi bộ trên máy hoặc đạp xe)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 45,
+          "text": "Steps daily : >7000 ( sẽ tốt hơn nếu di chuyển sau bữa ăn )",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 46,
+          "text": "",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 47,
+          "text": "Meal 1: 8-9g (Chọn 1 trong các options sau)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 48,
+          "text": "",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 49,
+          "text": "- Lựa chọn 1: 2 lát sandwich nâu + 2 trứng ốp la (ít dầu) + Rau + 1 cf đen không đường",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 50,
+          "text": "- Lựa chọn 2: củ khoai nhỏ + 2 trứng + Cf đen ko đường",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 51,
+          "text": "- Lựa chọn 3: 100gr cơm gạo lứt + 150gr tôm, thịt + rau",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 52,
+          "text": "(Pha 3/4 trái chanh + ít muối hồng với 1.5l nước)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 53,
+          "text": "",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 54,
+          "text": "Meal 2: 13g00-14g00",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 55,
+          "text": "- Cơm: 1.5 chén",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 56,
+          "text": "- Thịt: 250gr (thịt cá các loại)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 57,
+          "text": "- Rau: 200gr (ưu tiên nấu canh)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 58,
+          "text": "",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 59,
+          "text": "Meal phụ chiều:",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 60,
+          "text": "- 1 Trái táo nhỏ",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 61,
+          "text": "- 10 hạt điều",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 62,
+          "text": "- 1 sữa chua uống probi ko đường",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 63,
+          "text": "- 1 của khoai",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 64,
+          "text": "",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 65,
+          "text": "Meal 3: 18-19g00",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 66,
+          "text": "",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 67,
+          "text": "- 1 chén cơm gạo lứt",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 68,
+          "text": "- 250gr thịt, cá",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 69,
+          "text": "- Rau: 200gr",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 70,
+          "text": "",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 71,
+          "text": "Trước khi ngủ 30p: 150gr thơm + 1 sữa chua ít đường",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 72,
+          "text": "",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 73,
+          "text": "",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 74,
+          "text": "Yêu cầu: - Tuân thủ theo meal plan",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 75,
+          "text": "- Luôn chụp và gửi ĐẦY ĐỦ các bữa ăn cho Coach mỗi ngày",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 76,
+          "text": "[Đã tách lịch tập cá nhân khỏi bản dữ liệu công khai]",
+          "redaction": "individual_schedule",
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 77,
+          "text": "- Những ngày KHÔNG TẬP - lượng tinh bột giảm lại 1/2 ít so với ngày tập",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 78,
+          "text": "Nguồn tham khảo dữ liệu thiết lập:",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 79,
+          "text": "Trung tâm Kiểm soát Bệnh tật TP.HCM (HCDC) - Dinh dưỡng và vận động tim mạch",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 80,
+          "text": "Hệ thống Y tế Vinmec - Người tập gym nên ăn gì sau buổi tập?",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 81,
+          "text": "Hệ thống Y tế Vinmec - Các vitamin tốt cho người tập gym",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 82,
+          "text": "Hệ thống Phòng khám Dinh dưỡng Nutrihome - Thực phẩm giàu protein tăng cơ",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 83,
+          "text": "Hệ thống Phòng khám Dinh dưỡng Nutrihome - Thực đơn tăng cân khoa học",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        }
+      ]
+    },
+    {
+      "id": "nutrition_cases_01",
+      "filename": "Meal Plan cho các trường hợp.docx",
+      "sourceFileSha256": "0b349a33ba4e476e58348065086b9f6a284032165c00a22ee82ca8fd9efa2d4d",
+      "sourceKind": "user_supplied_docx",
+      "verified": false,
+      "reviewStatus": "needs_review",
+      "paragraphCount": 131,
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Dưới đây là các cấu trúc Meal Plan chi tiết cho 5 trường hợp mục tiêu khác nhau, được xây dựng dựa trên nguyên tắc dinh dưỡng khoa học từ Hệ thống Phòng khám Dinh dưỡng Nutrihome và Hệ thống Y tế Vinmec. Format được thiết kế tương đồng với mẫu bạn đã cung cấp để dễ dàng áp dụng trực tiếp cho học viên.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 2,
+          "text": "1. Meal Plan: Tăng cân (Dư thừa Calo an toàn)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 3,
+          "text": "Dựa trên hướng dẫn dinh dưỡng tăng cân lành mạnh, ưu tiên thực phẩm giàu đạm, tinh bột nhanh/chậm và chất béo tốt.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 4,
+          "text": "Meal plan : Học viên nam (Mục tiêu tăng cân, tăng cơ)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 5,
+          "text": "~2700 calo chưa tính sai số do gia vị và rau. (Calo đã thặng dư)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 6,
+          "text": "BMR: 1750 (mức năng lượng duy trì sự sống).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 7,
+          "text": "Note:",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 8,
+          "text": "Cân tất cả là đồ sống trừ cơm.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 9,
+          "text": "Nước: 2500 - 3000ml/ngày.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 10,
+          "text": "Cardio: 15-20p/ngày (nhịp tim 110-120) chủ yếu để khởi động và tăng cường trao đổi chất, không lạm dụng cardio cường độ cao.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 11,
+          "text": "Tránh bỏ bữa, đặc biệt là bữa phụ khuya giúp hấp thu tốt hơn [cite: 1.1.4].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.1.4]"
+          ]
+        },
+        {
+          "index": 12,
+          "text": "Meal 1: 7g30-8g30 (Chọn 1 trong các options sau)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 13,
+          "text": "Lựa chọn 1: 1 bát xôi lớn (xôi mặn hoặc xôi đậu) + 2 quả trứng luộc + 1 cốc sữa tươi nguyên kem.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 14,
+          "text": "Lựa chọn 2: 1 tô phở bò (tầm 500ml nước dùng) + nhiều thịt + rau giá [cite: 1.1.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.1.1]"
+          ]
+        },
+        {
+          "index": 15,
+          "text": "Lựa chọn 3: Bánh mì ăn kèm 2 trứng ốp la, 1/2 quả bơ, phô mai và thịt nguội [cite: 1.1.2].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.1.2]"
+          ]
+        },
+        {
+          "index": 16,
+          "text": "Meal 2: 12g00-13g00",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 17,
+          "text": "Cơm trắng: 2-3 bát [cite: 1.1.2].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.1.2]"
+          ]
+        },
+        {
+          "index": 18,
+          "text": "Thịt/Cá: 300gr (Ưu tiên thịt bò, cá hồi chứa nhiều calo và mỡ tốt).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 19,
+          "text": "Rau củ: 200gr (Bí đỏ, cà rốt hầm xương hoặc xào mỡ hành non) [cite: 1.1.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.1.1]"
+          ]
+        },
+        {
+          "index": 20,
+          "text": "Meal phụ chiều: 15g30-16g00 (Trước tập 1 tiếng)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 21,
+          "text": "1 cốc sinh tố bơ dừa hoặc yến mạch chuối sữa.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 22,
+          "text": "1 nắm hạt macca/hạt điều [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 23,
+          "text": "Meal 3: 19g00-20g00",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 24,
+          "text": "Cơm trắng: 2 chén [cite: 1.1.2].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.1.2]"
+          ]
+        },
+        {
+          "index": 25,
+          "text": "Đùi gà áp chảo hoặc sườn rim: 250gr [cite: 1.1.2].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.1.2]"
+          ]
+        },
+        {
+          "index": 26,
+          "text": "Canh rau củ nấu tôm/thịt băm [cite: 1.1.2].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.1.2]"
+          ]
+        },
+        {
+          "index": 27,
+          "text": "Trước khi ngủ 1 tiếng (Thức ăn khuya lành mạnh):",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 28,
+          "text": "1 bát cháo yến mạch nhỏ hoặc 1 ly sữa nóng nguyên kem [cite: 1.1.4].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.1.4]"
+          ]
+        },
+        {
+          "index": 29,
+          "text": "Yêu cầu:",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 30,
+          "text": "Luôn chụp và gửi ĐẦY ĐỦ các bữa ăn cho Coach.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 31,
+          "text": "Lịch tập: Tập tạ nặng (Hypertrophy) 4-5 buổi/tuần. Hạn chế đốt năng lượng ngoài luồng.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 32,
+          "text": "2. Meal Plan: Giảm mỡ (Thâm hụt Calo, giữ cơ)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 33,
+          "text": "Dựa trên tỷ lệ dinh dưỡng đa lượng tập trung vào Protein cao (30-35%), giảm calo nhưng vẫn đủ để duy trì khối lượng cơ bắp [cite: 2.1.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.1.1]"
+          ]
+        },
+        {
+          "index": 34,
+          "text": "Meal plan : Học viên nữ (Mục tiêu siết mỡ, giữ cơ)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 35,
+          "text": "~1450 calo chưa tính sai số. (Calo đã thâm hụt 15-20% so với TDEE) [cite: 2.1.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.1.1]"
+          ]
+        },
+        {
+          "index": 36,
+          "text": "BMR: 1250 (không ăn thấp hơn mức này).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 37,
+          "text": "Note:",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 38,
+          "text": "Gia vị: Ưu tiên luộc, hấp, áp chảo. Hạn chế tuyệt đối đường tinh luyện và đồ chiên rán [cite: 2.1.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.1.1]"
+          ]
+        },
+        {
+          "index": 39,
+          "text": "Nước: 2500 - 3000ml/ngày. Có thể dùng cafein (trà, cafe đen) trước tập để tăng cường đốt mỡ [cite: 2.1.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.1.1]"
+          ]
+        },
+        {
+          "index": 40,
+          "text": "Cardio: 35-45p/ngày (nhịp tim 120-135). Steps daily : >8000.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 41,
+          "text": "Meal 1: 7g00-8g00",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 42,
+          "text": "Lựa chọn 1: 2 lát bánh mì nguyên cám + 2 lòng trắng trứng, 1 quả trứng nguyên + 1/2 quả bơ.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 43,
+          "text": "Lựa chọn 2: 40gr Yến mạch (ngâm qua đêm) + sữa chua Hy Lạp + quả mọng (dâu tây, việt quất) [cite: 2.1.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.1.1]"
+          ]
+        },
+        {
+          "index": 44,
+          "text": "1 ly Cafe đen không đường.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 45,
+          "text": "Meal 2: 12g00-13g00",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 46,
+          "text": "Tinh bột: 1 củ khoai lang luộc hoặc 100gr gạo lứt.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 47,
+          "text": "Thịt/Cá: 200gr ức gà hoặc phi lê cá rô phi/cá tuyết (ít béo) [cite: 2.1.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.1.1]"
+          ]
+        },
+        {
+          "index": 48,
+          "text": "Rau: 250gr bông cải xanh hoặc xà lách (giúp no lâu nhờ chất xơ) [cite: 2.1.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.1.1]"
+          ]
+        },
+        {
+          "index": 49,
+          "text": "Meal phụ chiều: 15g30 (Trước tập 45p)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 50,
+          "text": "1 muỗng Whey Protein Isolate pha nước lọc [cite: 2.1.2] hoặc 1 quả táo non.",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.1.2]"
+          ]
+        },
+        {
+          "index": 51,
+          "text": "Meal 3: 18g30-19g30",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 52,
+          "text": "Tinh bột: Bỏ hoặc giảm còn 50gr gạo lứt.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 53,
+          "text": "Đạm: 200gr thăn bò hoặc mực hấp [cite: 2.1.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.1.1]"
+          ]
+        },
+        {
+          "index": 54,
+          "text": "Rau: 250gr rau bina luộc hoặc salad trộn giấm táo [cite: 2.1.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.1.1]"
+          ]
+        },
+        {
+          "index": 55,
+          "text": "Yêu cầu:",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 56,
+          "text": "Lịch tập: Tập tạ 3-4 buổi/tuần kết hợp HIIT/Cardio.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 57,
+          "text": "Ngày không tập giảm tinh bột bữa phụ và bữa tối xuống mức tối thiểu.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 58,
+          "text": "3. Meal Plan: Tăng thể lực & linh hoạt",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 59,
+          "text": "Tập trung vào phục hồi cơ bắp và bảo vệ khớp bằng Omega-3, Protein hấp thu nhanh và cân bằng điện giải.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 60,
+          "text": "Meal plan : Học viên nam/nữ (Mục tiêu sức bền, Crossfit, võ thuật)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 61,
+          "text": "~2200 calo (Calo ở mức duy trì - Maintenance).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 62,
+          "text": "Note:",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 63,
+          "text": "Bổ sung vitamin, khoáng chất và Omega-3 (dầu cá) hàng ngày để bôi trơn khớp.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 64,
+          "text": "Uống Oresol hoặc nước điện giải tự nhiên (nước dừa non pha xíu muối) trong lúc tập.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 65,
+          "text": "Giãn cơ tĩnh 15p sau mỗi buổi tập.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 66,
+          "text": "Meal 1: 7g30-8g00",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 67,
+          "text": "1 tô bún/phở nước trong (thịt nạc) [cite: 1.1.1] HOẶC 1 bát cháo yến mạch nấu thịt bò băm.",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.1.1]"
+          ]
+        },
+        {
+          "index": 68,
+          "text": "1 quả chuối (cung cấp Kali chống chuột rút).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 69,
+          "text": "Meal 2: 12g00-13g00",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 70,
+          "text": "Cơm gạo lứt/gạo trắng: 1.5 chén.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 71,
+          "text": "Cá béo: 250gr cá hồi/cá thu (chứa nhiều Omega-3 giảm viêm cơ khớp).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 72,
+          "text": "Rau: 200gr các loại rau lá xanh đậm.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 73,
+          "text": "Meal phụ chiều: 16g00 (Nạp năng lượng bùng nổ trước tập)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 74,
+          "text": "2 lát bánh mì đen + Bơ đậu phộng + 1 ly cafe đen [cite: 2.1.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.1.1]"
+          ]
+        },
+        {
+          "index": 75,
+          "text": "Meal 3 (Post-workout): Ngay sau tập",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 76,
+          "text": "1 muỗng Whey Protein pha cùng 250ml sữa tươi (hỗ trợ phục hồi cơ tức thì).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 77,
+          "text": "Meal 4: 19g30 (Bữa tối)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 78,
+          "text": "Cơm: 1 chén.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 79,
+          "text": "Thịt gia cầm: 200gr ức gà hoặc đùi gà bỏ da đút lò [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 80,
+          "text": "Salad rau củ trộn dầu ô liu [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 81,
+          "text": "4. Meal Plan: Tăng chiều cao (Dành cho lứa tuổi dậy thì/Thanh niên)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 82,
+          "text": "Tập trung tối đa vào Canxi, Vitamin D, Protein từ trứng, sữa, và hải sản để kích thích hormone tăng trưởng, cấu trúc xương.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 83,
+          "text": "Meal plan : Học viên trẻ tuổi (Mục tiêu phát triển chiều cao)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 84,
+          "text": "~2000 - 2400 calo (Cần thặng dư nhẹ để cơ thể phát triển).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 85,
+          "text": "Note:",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 86,
+          "text": "Sữa là bắt buộc: Khuyến nghị khoảng 6 đơn vị sữa/ngày (tương đương 600ml sữa tươi hoặc quy đổi ra phô mai, sữa chua).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 87,
+          "text": "Ngủ trước 22h30 (Thời điểm hormone tăng trưởng HGH tiết ra mạnh nhất).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 88,
+          "text": "Vận động: Treo người xà đơn 10p/ngày, bơi lội hoặc bóng rổ 3 buổi/tuần.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 89,
+          "text": "Meal 1: 6g30-7g00",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 90,
+          "text": "1 bát miến gà hoặc xôi thịt.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 91,
+          "text": "1 quả trứng luộc (cung cấp Canxi, Kẽm, Vitamin D).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 92,
+          "text": "1 hộp sữa tươi 200ml (hoặc sữa đậu nành).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 93,
+          "text": "Meal 2: 11g30-12g30",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 94,
+          "text": "Cơm: 2 chén.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 95,
+          "text": "Hải sản giàu Canxi: 200gr tôm rim hoặc cua/cá hấp [cite: 2.2.3].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.2.3]"
+          ]
+        },
+        {
+          "index": 96,
+          "text": "Đậu phụ: 1 bìa (rất giàu Canxi thực vật) [cite: 2.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.2.1]"
+          ]
+        },
+        {
+          "index": 97,
+          "text": "Canh rau cải bó xôi hoặc súp lơ xanh.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 98,
+          "text": "Meal phụ chiều: 15g30",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 99,
+          "text": "1 quả chuối (chứa Kali giúp giữ canxi trong xương) + 1 hộp sữa chua.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 100,
+          "text": "Meal 3: 18g30-19g30",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 101,
+          "text": "Cơm: 1.5 - 2 chén.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 102,
+          "text": "Thịt bò: 200gr (cung cấp Sắt, Kẽm, Protein tạo mô cơ xương) [cite: 2.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.2.1]"
+          ]
+        },
+        {
+          "index": 103,
+          "text": "Rau xanh lá đậm luộc hoặc xào ít dầu [cite: 2.2.3].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.2.3]"
+          ]
+        },
+        {
+          "index": 104,
+          "text": "Trước khi ngủ 1 tiếng:",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 105,
+          "text": "1 ly sữa ấm 200ml [cite: 2.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 2.2.1]"
+          ]
+        },
+        {
+          "index": 106,
+          "text": "5. Meal Plan: Cải thiện bệnh lý (Mỡ máu / Tiểu đường tuýp 2 thể nhẹ)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 107,
+          "text": "Ưu tiên thực phẩm có Chỉ số đường huyết (GI) thấp, ngũ cốc nguyên cám, nhiều chất xơ hòa tan để kiểm soát đường huyết và làm sạch mỡ máu.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 108,
+          "text": "Meal plan : Học viên có bệnh lý chuyển hóa",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 109,
+          "text": "~1600 - 1800 calo.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 110,
+          "text": "Note:",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 111,
+          "text": "Nạp tinh bột vừa phải (chiếm khoảng 50-60% tổng năng lượng), ưu tiên ngũ cốc nguyên hạt.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 112,
+          "text": "Tuyệt đối loại bỏ mỡ động vật, nội tạng động vật, đồ ngọt đóng gói. Ưu tiên chất béo tốt (Omega 3, 6, 9) [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 113,
+          "text": "Nấu ăn: Chỉ luộc, hấp, hoặc dùng nồi chiên không dầu. Không xào nấu ngập dầu [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 114,
+          "text": "Cardio nhẹ nhàng 30-40p mỗi ngày (Đi bộ nhanh) hỗ trợ hạ đường huyết.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 115,
+          "text": "Meal 1: 7g00-8g00",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 116,
+          "text": "Lựa chọn 1: Bún gạo lứt nấu với 100gr cá ngừ/cá thu + nhiều rau giá [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 117,
+          "text": "Lựa chọn 2: Cháo yến mạch + trứng gà luộc [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 118,
+          "text": "Đồ uống: Nước lọc ấm hoặc nước chanh pha loãng (tuyệt đối không đường).",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 119,
+          "text": "Meal 2: 12g00-13g00",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 120,
+          "text": "Tinh bột: 1-1.5 chén cơm gạo lứt nhỏ [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 121,
+          "text": "Đạm trắng: 200gr thịt ức gà bỏ da hoặc cá diêu hồng hấp [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 122,
+          "text": "Rau (Rất quan trọng): 200-300gr rau nhiều chất xơ như đậu bắp, mồng tơi, cải bẹ xanh (chất xơ hòa tan giúp giảm hấp thu mỡ/đường vào máu) [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 123,
+          "text": "Meal phụ chiều: 15g30-16g00",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 124,
+          "text": "1 ly sữa hạt (hạnh nhân, óc chó - không đường) hoặc sữa chua tách béo [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 125,
+          "text": "1 múi bưởi hoặc 1/2 trái táo (nhiều vitamin C, pectin) [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 126,
+          "text": "Meal 3: 18g30-19g00 (Ăn nhẹ nhàng, kết thúc sớm)",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 127,
+          "text": "Tinh bột: 1 chén nhỏ cơm gạo lứt hoặc quinoa.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 128,
+          "text": "Đạm: 150gr thịt thăn nạc heo hoặc đậu hũ non [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 129,
+          "text": "Canh rau dền nấu tôm khô hoặc rong biển [cite: 1.2.1].",
+          "redaction": null,
+          "unresolvedCitationMarkers": [
+            "[cite: 1.2.1]"
+          ]
+        },
+        {
+          "index": 130,
+          "text": "Yêu cầu:",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        },
+        {
+          "index": 131,
+          "text": "Theo dõi chỉ số đường huyết định kỳ 1 tuần/lần và báo cáo cho Coach cùng hình ảnh bữa ăn.",
+          "redaction": null,
+          "unresolvedCitationMarkers": []
+        }
+      ]
+    }
+  ],
+  "attributionPolicy": "Tên cơ quan và ký hiệu trích dẫn là lời ghi trong tài liệu, chưa phải nguồn đã truy cập hoặc đã kiểm chứng.",
+  "redactionPolicy": "Không commit DOCX gốc. Tên khách và lịch tập cá nhân được tách khỏi bản công khai; không ghép mẫu này với hồ sơ hoặc lộ trình đã có."
+}
