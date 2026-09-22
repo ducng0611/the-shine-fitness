@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "strict": true, "noEmit": true },
+  "include": ["shared/buddy*.ts", "server/src/buddy/**/*.ts", "src/components/buddy/**/*.ts", "src/components/buddy/**/*.tsx", "tests/buddy/**/*.ts", "tests/buddy/**/*.tsx"]
+}
