@@ -1,0 +1,87 @@
+name: Apply reviewed height-posture patch
+on:
+  push:
+    branches: [feat/height-posture-program]
+    paths: ['.github/workflows/height-posture-apply.yml']
+permissions:
+  contents: write
+concurrency:
+  group: height-posture-exact-patch
+  cancel-in-progress: false
+jobs:
+  apply:
+    if: github.ref == 'refs/heads/feat/height-posture-program'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/height-posture-program
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify baseline and decode the exact public patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git branch --show-current)" = 'feat/height-posture-program'
+          git merge-base --is-ancestor 49aef462d98756bc3fb3a2d2919df8462d2185a9 HEAD
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64, hashlib, lzma
+          encoded = ''.join(Path(f'scripts/height-patch.part{i}.b64').read_text().strip() for i in range(5))
+          decoded = lzma.decompress(base64.b64decode(encoded, validate=True))
+          assert hashlib.sha256(decoded).hexdigest() == '3cc256271c9195b5c14c637b51fd9111f05a2f27c1be33a65eaf86297df9cb2a', 'Patch hash mismatch'
+          Path('/tmp/height-posture.patch').write_bytes(decoded)
+          PY
+          git apply --check /tmp/height-posture.patch
+          git apply --index /tmp/height-posture.patch
+      - name: Generate the versioned library without provider or database calls
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci --ignore-scripts --no-audit --no-fund
+          npx --no-install tsx scripts/prepare-height-posture.ts --out /tmp/height-programs.json
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          data = Path('/tmp/height-programs.json').read_bytes()
+          assert hashlib.sha256(data).hexdigest() == '3b5f15ea32706250e0fa6bd934e714cc39647ac8017fcb1ec6e14daaedab4a62', 'Generated library mismatch'
+          Path('data/companion/training_programs.json').write_bytes(data)
+          PY
+          git add data/companion/training_programs.json
+          npx --no-install tsx scripts/validate-height-posture.ts
+      - name: Commit only reviewed files and remove the temporary transport
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import subprocess
+          expected = {
+            '.github/workflows/height-posture.yml',
+            'data/companion/training_programs.json',
+            'data/knowledge/09_program_height_posture.md',
+            'data/training-pathways/height-posture/README.md',
+            'data/training-pathways/height-posture/scientific-claims.review.json',
+            'data/training-pathways/height-posture/source-sessions.json',
+            'data/training-pathways/height-posture/source-status.json',
+            'docs/height-posture-review.vi.md',
+            'scripts/prepare-height-posture.ts',
+            'scripts/validate-height-posture.ts',
+            'server/src/intentClassifier.ts',
+            'shared/heightPostureProgram.ts',
+            'shared/programSafety.ts',
+            'shared/trainingPrograms.ts',
+            'tests/fixtures/height-posture-baseline.json',
+            'tests/height-posture.test.ts',
+            'tests/weight-gain.test.ts'
+          }
+          changed = set(subprocess.check_output(['git','diff','--cached','--name-only'], text=True).splitlines())
+          assert changed == expected, f'Unexpected changed paths: {changed.symmetric_difference(expected)}'
+          PY
+          git rm scripts/height-patch.part0.b64 scripts/height-patch.part1.b64 scripts/height-patch.part2.b64 scripts/height-patch.part3.b64 scripts/height-patch.part4.b64 .github/workflows/height-posture-apply.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'feat(programs): add source-faithful youth height and posture reference'
+          git push origin HEAD:feat/height-posture-program
