@@ -1,0 +1,57 @@
+
+name: Weight gain program verification
+on:
+  pull_request:
+  push:
+    branches: [feat/weight-gain-program]
+    paths:
+      - '.github/workflows/weight-gain.yml'
+      - 'shared/weightGainProgram.ts'
+      - 'shared/trainingPrograms.ts'
+      - 'shared/programSafety.ts'
+      - 'server/src/intentClassifier.ts'
+      - 'data/knowledge/07_program_weight_gain.md'
+      - 'data/companion/training_programs.json'
+      - 'data/training-pathways/weight-gain/**'
+      - 'scripts/*weight-gain*'
+      - 'tests/weight-gain.test.ts'
+      - 'tests/fixtures/weight-gain-baseline.json'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: npm}
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Source, supersets, safety, merge and previous program invariants
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p test-results/weight-gain
+          node --import tsx --test tests/weight-gain.test.ts tests/fitness-flexibility.test.ts | tee test-results/weight-gain/tests.tap
+      - name: Validate source and merged library without changes
+        run: |
+          npx --no-install tsx scripts/prepare-weight-gain.ts
+          npx --no-install tsx scripts/validate-weight-gain.ts --report
+          npm run build:index -- --check
+      - name: Prior training and intake regression
+        run: |
+          npm run test:training
+          node --import tsx --test tests/pathways/domain.test.ts tests/pathways/router.test.ts tests/gym-assets.test.ts
+      - name: Strict and full project TypeScript
+        run: |
+          npm run typecheck:training
+          npx --no-install tsc -p tsconfig.pathways.json --noEmit
+          npm run lint
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: weight-gain-verification
+          path: test-results/weight-gain
+          retention-days: 7
