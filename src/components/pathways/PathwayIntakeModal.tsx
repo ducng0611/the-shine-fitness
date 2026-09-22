@@ -10,7 +10,7 @@ export function PathwayIntakeModal({onClose, api: suppliedApi}:Props) {
   const api = useMemo(() => suppliedApi ?? createPathwayApi(),[suppliedApi]);
   const dialog = useRef<HTMLDialogElement>(null), alive = useRef(true), fileVersion = useRef(0);
   const [editor,setEditor] = useState(''),[bundle,setBundle] = useState<PathwaySourceBundle|null>(null);
-  const [caseId,setCaseId] = useState(newId),[revision,setRevision] = useState(0);
+  const [caseId,setCaseId] = useState<string>(newId),[revision,setRevision] = useState(0);
   const [busy,setBusy] = useState(false),[error,setError] = useState(''),[message,setMessage] = useState('');
   const [privacy,setPrivacy] = useState(false),[reviewConsent,setReviewConsent] = useState(false);
   const [queue,setQueue] = useState<QueueItem[]>([]),[truncated,setTruncated] = useState(false);

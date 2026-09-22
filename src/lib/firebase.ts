@@ -572,7 +572,8 @@ export async function getAdminUsersFromFirebase(): Promise<AdminUser[]> {
     snap.forEach(docSnap => {
       const data = docSnap.data() as AdminUser;
       if (data && data.email) {
-        adminsMap.set(data.email.toLowerCase(), { uid: docSnap.id, ...data });
+        // The document key is authoritative; a stored field must not overwrite it.
+        adminsMap.set(data.email.toLowerCase(), { ...data, uid: docSnap.id });
       }
     });
     return Array.from(adminsMap.values());
