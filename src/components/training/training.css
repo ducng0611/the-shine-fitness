@@ -1,0 +1,48 @@
+.shine-training { color: #e7edf5; background: #111827; padding: 20px; border-radius: 18px; font: 15px/1.6 system-ui, sans-serif; width: 100%; overflow-wrap: anywhere; }
+.shine-training * { box-sizing: border-box; }
+.shine-training h2 { font-size: 25px; font-weight: 800; margin: 6px 0; }
+.shine-training h3 { font-size: 20px; font-weight: 750; margin: 14px 0; }
+.shine-training h4 { font-size: 17px; font-weight: 700; }
+.shine-training p { margin: 8px 0; }
+.shine-training button, .training-modal-toolbar button { min-height: 44px; padding: 9px 14px; border-radius: 10px; background: #27364b; border: 1px solid #52627a; color: #fff; cursor: pointer; font: inherit; }
+.shine-training button:disabled { cursor: not-allowed; opacity: .6; }
+.shine-training button:focus-visible, .shine-training input:focus-visible, .shine-training select:focus-visible, .shine-training textarea:focus-visible, .shine-training summary:focus-visible, .training-modal-toolbar button:focus-visible { outline: 3px solid #fdba74; outline-offset: 2px; }
+.shine-training label { display: block; margin: 10px 0; font-weight: 600; }
+.shine-training input:not([type=checkbox]), .shine-training select, .shine-training textarea { width: 100%; min-height: 44px; margin-top: 5px; padding: 10px; background: #182435; color: #fff; border: 1px solid #64748b; border-radius: 8px; font: inherit; }
+.shine-training textarea { min-height: 85px; }
+.shine-training input[type=checkbox] { accent-color: #f97316; width: 20px; height: 20px; margin-right: 9px; vertical-align: middle; }
+.shine-training fieldset { min-width: 0; margin: 10px 0; }
+.shine-training legend { font-weight: 700; margin: 10px 0; }
+.training-heading, .training-card header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.training-badge { display: inline-block; padding: 3px 10px; border: 1px solid #bf783e; border-radius: 99px; color: #fed7aa; font-size: 12px; font-weight: 700; }
+.training-tabs, .training-actions, .training-flags { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+.training-tabs button { flex: 1; }
+.training-tabs button[aria-current=page] { background: #9a3412; border-color: #fb923c; }
+.training-alert { padding: 14px; border: 1px solid #e3aa47; border-radius: 10px; background: #3b2c18; color: #fef3c7; margin: 12px 0; }
+.training-alert small { display: block; opacity: .85; }
+.training-notice { padding: 12px; background: #173f3b; border: 1px solid #4e9992; border-radius: 10px; }
+.training-card, .training-plan { border: 1px solid #475569; border-radius: 12px; padding: 16px; margin: 14px 0; background: #162132; }
+.training-grid, .training-set, .training-summary { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+.training-summary strong { display: block; font-size: 28px; }
+.training-summary span { display: block; color: #cbd5e1; }
+.training-checks { display: flex; flex-wrap: wrap; gap: 12px; }
+.training-checks label { font-weight: 400; }
+.training-muted { color: #cbd5e1; }
+.training-flags span { border: 1px solid #64748b; padding: 4px 8px; border-radius: 8px; }
+.shine-training ul { padding-left: 22px; list-style-type: disc; }
+.training-table-wrap { overflow-x: auto; }
+.shine-training table { width: 100%; border-collapse: collapse; text-align: left; }
+.shine-training th, .shine-training td { padding: 9px; border-bottom: 1px solid #475569; vertical-align: top; }
+.shine-training summary { cursor: pointer; min-height: 44px; padding: 9px 0; font-weight: 700; }
+.training-privacy { margin-top: 24px; padding-top: 12px; border-top: 1px solid #475569; }
+.training-overlay { position: fixed; inset: max(12px, 3vh) max(12px, calc((100vw - 820px) / 2)); z-index: 9999; border: 1px solid #64748b; border-radius: 18px; background: #111827; box-shadow: 0 0 0 100vmax #020617bd; overflow: auto; }
+.training-modal-toolbar { display: flex; justify-content: space-between; padding: 12px; background: #111827; position: sticky; top: 0; z-index: 1; }
+@media (max-width: 540px) { .shine-training { padding: 14px; font-size: 14px; } .training-grid, .training-set { grid-template-columns: 1fr; } .training-overlay { inset: 8px; max-height: calc(100dvh - 16px); } .training-tabs button { padding: 8px; } .training-card { padding: 12px; } }
+.training-stack { display: flex; flex-direction: column; gap: 10px; }
+.training-pills { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.shine-training label.training-check { font-weight: 400; display: flex; align-items: flex-start; gap: 6px; }
+.training-check input { flex-shrink: 0; margin-top: 3px; }
+.training-set-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; border-top: 1px solid #475569; padding: 10px 0; }
+.training-exercise { border: 1px solid #52627a; padding: 12px; border-radius: 10px; }
+.shine-training .training-primary { background: #9a3412; border-color: #fb923c; }
+@media (max-width: 540px) { .training-set-grid { grid-template-columns: 1fr; } }

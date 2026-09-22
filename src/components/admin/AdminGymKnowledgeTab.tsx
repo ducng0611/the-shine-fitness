@@ -1,3 +1,6 @@
+import { TrainingPrescriptionEditor } from '../training/TrainingPrescriptionEditor';
+import { trainingUiEnabled } from '../training/TrainingGateway';
+import { auth } from '../../lib/firebase';
 import React, { useState, useEffect, useMemo } from 'react';
 import { 
   MapPin, 
@@ -44,6 +47,16 @@ interface AdminGymKnowledgeTabProps {
 }
 
 type SubTab = 'zones' | 'equipment' | 'exercises' | 'revisions';
+
+async function catalogueFetch(url: string, init: RequestInit = {}) {
+  const user = auth.currentUser;
+  if (url.startsWith('/api/admin/') && !user) throw new Error('Firebase admin sign-in required.');
+  const headers = new Headers(init.headers);
+  if (user) headers.set('Authorization', `Bearer ${await user.getIdToken()}`);
+  if (user && auth.currentUser?.uid !== user.uid) throw new Error('Account changed.');
+  return fetch(url, { ...init, headers });
+}
+
 
 export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
   currentAdminEmail,
@@ -93,7 +106,7 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
   const loadData = async () => {
     try {
       setRefreshing(true);
-      const res = await fetch('/api/companion/catalogue');
+      const res = await catalogueFetch('/api/companion/catalogue');
       if (res.ok) {
         const json = await res.json();
         if (json.data) {
@@ -105,7 +118,7 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
 
       // Fetch revisions
       try {
-        const revRes = await fetch('/api/admin/catalogue/revisions');
+        const revRes = await catalogueFetch('/api/admin/catalogue/revisions');
         if (revRes.ok) {
           const revJson = await revRes.json();
           setRevisions(revJson.revisions || []);
@@ -133,7 +146,7 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
 
   // Zone handlers
   const handleSaveZone = async (zone: GymZone) => {
-    const res = await fetch('/api/admin/catalogue/zone', {
+    const res = await catalogueFetch('/api/admin/catalogue/zone', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(zone)
@@ -145,7 +158,7 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
 
   const handleDeleteZone = async (id: string, name: string) => {
     if (!window.confirm(`Bạn có chắc chắn muốn xóa khu vực "${name}"?`)) return;
-    const res = await fetch(`/api/admin/catalogue/zone/${id}`, {
+    const res = await catalogueFetch(`/api/admin/catalogue/zone/${id}`, {
       method: 'DELETE'
     });
     if (!res.ok) {
@@ -158,7 +171,7 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
 
   // Equipment handlers
   const handleSaveEquipment = async (item: GymEquipment) => {
-    const res = await fetch('/api/admin/catalogue/equipment', {
+    const res = await catalogueFetch('/api/admin/catalogue/equipment', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(item)
@@ -170,7 +183,7 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
 
   const handleDeleteEquipment = async (id: string, name: string) => {
     if (!window.confirm(`Bạn có chắc chắn muốn xóa thiết bị "${name}"?`)) return;
-    const res = await fetch(`/api/admin/catalogue/equipment/${id}`, {
+    const res = await catalogueFetch(`/api/admin/catalogue/equipment/${id}`, {
       method: 'DELETE'
     });
     if (!res.ok) {
@@ -183,7 +196,7 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
 
   // Exercise handlers
   const handleSaveExercise = async (exercise: ExerciseCatalogueEntry) => {
-    const res = await fetch('/api/admin/catalogue/exercise', {
+    const res = await catalogueFetch('/api/admin/catalogue/exercise', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(exercise)
@@ -195,7 +208,7 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
 
   const handleDeleteExercise = async (id: string, name: string) => {
     if (!window.confirm(`Bạn có chắc chắn muốn xóa bài tập "${name}"?`)) return;
-    const res = await fetch(`/api/admin/catalogue/exercise/${id}`, {
+    const res = await catalogueFetch(`/api/admin/catalogue/exercise/${id}`, {
       method: 'DELETE'
     });
     if (!res.ok) {
@@ -214,7 +227,7 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
     reviewStatus: ReviewStatus;
     notes?: string;
   }) => {
-    const res = await fetch('/api/admin/catalogue/verify', {
+    const res = await catalogueFetch('/api/admin/catalogue/verify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -266,7 +279,7 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
         // Save zones
         if (Array.isArray(parsed.zones)) {
           for (const z of parsed.zones) {
-            await fetch('/api/admin/catalogue/zone', {
+            await catalogueFetch('/api/admin/catalogue/zone', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(z)
@@ -278,7 +291,7 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
         // Save equipment
         if (Array.isArray(parsed.equipment)) {
           for (const eq of parsed.equipment) {
-            await fetch('/api/admin/catalogue/equipment', {
+            await catalogueFetch('/api/admin/catalogue/equipment', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(eq)
@@ -290,7 +303,7 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
         // Save exercises
         if (Array.isArray(parsed.exercises)) {
           for (const ex of parsed.exercises) {
-            await fetch('/api/admin/catalogue/exercise', {
+            await catalogueFetch('/api/admin/catalogue/exercise', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(ex)
@@ -994,6 +1007,8 @@ export const AdminGymKnowledgeTab: React.FC<AdminGymKnowledgeTabProps> = ({
           </div>
         </div>
       )}
+
+      {trainingUiEnabled() && <TrainingPrescriptionEditor exercises={exercises} onSaved={loadData} />}
 
       {/* MODALS */}
       <ZoneModal

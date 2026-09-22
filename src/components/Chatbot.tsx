@@ -47,6 +47,7 @@ interface ChatbotProps {
   currentUser?: MemberUser | null;
   onOpenTrialModal?: () => void;
   onToggle?: (isOpen: boolean) => void;
+  onOpenTraining?: () => void;
 }
 
 // Clean LaTeX and mathematical formatting from bot outputs
@@ -266,7 +267,7 @@ export function getPersonalizedGreeting(lang: Language, user?: MemberUser | null
   }
 }
 
-export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, onToggle }: ChatbotProps) {
+export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, onToggle, onOpenTraining }: ChatbotProps) {
   const t = translations[lang].chatbot;
   const [isOpen, setIsOpen] = useState(false);
 
@@ -623,6 +624,10 @@ export default function Chatbot({ lang = 'vi', currentUser, onOpenTrialModal, on
                 </span>
               </div>
             </div>
+
+            {onOpenTraining && <button type="button" onClick={onOpenTraining} className="mx-4 my-2 rounded-xl px-4 py-3 bg-orange-700 text-white font-semibold text-sm">
+              {lang === 'vi' ? '\u0110\u1ed3ng h\u00e0nh t\u1eadp luy\u1ec7n c\u1ee7a t\u00f4i' : 'My training companion'}
+            </button>}
 
             {/* Messages Thread */}
             <div className="flex-1 overflow-y-auto p-4 bg-slate-50 dark:bg-[#121212] flex flex-col gap-3">

@@ -6,3 +6,8 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Step 3 test outputs (synthetic data only)
+test-results/
+*-debug.log
+__pycache__/

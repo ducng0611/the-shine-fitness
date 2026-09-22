@@ -4,6 +4,24 @@ service cloud.firestore {
 
     // =========================================================================
     // GIẢ ĐỊNH & NGUYÊN TẮC BẢO MẬT (ASSUMPTIONS & SECURITY PRINCIPLES)
+    // Step 3: clients cannot mint entitlements or write authoritative training memory.
+    match /training_members/{memberId}/{document=**} {
+      allow read, write: if false;
+    }
+    match /training_access/{memberId} {
+      allow read, write: if false;
+    }
+    function ownsLegacy(data) {
+      return isAuthenticated()
+        && (data.get('uid', '') == request.auth.uid || data.get('userId', '') == request.auth.uid)
+        && (!('uid' in data) || data.uid == request.auth.uid)
+        && (!('userId' in data) || data.userId == request.auth.uid);
+    }
+    function sameLegacyOwner(before, after) {
+      return before.get('uid', '') == after.get('uid', '')
+        && before.get('userId', '') == after.get('userId', '');
+    }
+
     // 1. Firebase Authentication: Bật phía client (Google Auth / Custom Auth).
     //    Chủ sở hữu được xác định bằng request.auth.uid so với trường 'userId' / 'uid'.
     // 2. Nguyên tắc Tối thiểu Quyền (Least Privilege): Mặc định TỪ CHỐI tất cả.
@@ -26,18 +44,10 @@ service cloud.firestore {
 
     // 1. Tiến độ hội viên (Member Progress)
     match /member_progress/{progressId} {
-      allow read: if isAuthenticated() && (
-        resource.data.userId == request.auth.uid ||
-        resource.data.uid == request.auth.uid
-      );
-      allow create: if isValidId(progressId) && isAuthenticated() && (
-        request.resource.data.userId == request.auth.uid ||
-        request.resource.data.uid == request.auth.uid
-      );
-      allow update: if isValidId(progressId) && isAuthenticated() && (
-        resource.data.userId == request.auth.uid ||
-        resource.data.uid == request.auth.uid
-      );
+      allow read: if isAuthenticated() && (resource.data.get('userId', '') == request.auth.uid || resource.data.get('uid', '') == request.auth.uid);
+      allow create: if isValidId(progressId) && ownsLegacy(request.resource.data);
+      allow update: if isValidId(progressId) && ownsLegacy(resource.data)
+        && ownsLegacy(request.resource.data) && sameLegacyOwner(resource.data, request.resource.data);
       allow delete: if false;
     }
 
@@ -73,18 +83,10 @@ service cloud.firestore {
 
     // 5. Nhật ký tập luyện (Workout Logs)
     match /workout_logs/{logId} {
-      allow read: if isAuthenticated() && (
-        resource.data.userId == request.auth.uid ||
-        resource.data.uid == request.auth.uid
-      );
-      allow create: if isValidId(logId) && isAuthenticated() && (
-        request.resource.data.userId == request.auth.uid ||
-        request.resource.data.uid == request.auth.uid
-      );
-      allow update: if isValidId(logId) && isAuthenticated() && (
-        resource.data.userId == request.auth.uid ||
-        resource.data.uid == request.auth.uid
-      );
+      allow read: if isAuthenticated() && (resource.data.get('userId', '') == request.auth.uid || resource.data.get('uid', '') == request.auth.uid);
+      allow create: if isValidId(logId) && ownsLegacy(request.resource.data);
+      allow update: if isValidId(logId) && ownsLegacy(resource.data)
+        && ownsLegacy(request.resource.data) && sameLegacyOwner(resource.data, request.resource.data);
       allow delete: if false;
     }
 

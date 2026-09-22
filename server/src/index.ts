@@ -54,7 +54,10 @@ import {
   RetrievedChunk
 } from "./ragEngine";
 import { requireAuth, requireAdmin, AuthRequest } from "./middleware/auth.ts";
-import { adminDb } from "./lib/firebase-admin.ts";
+import { adminDb, adminAuth } from "./lib/firebase-admin.ts";
+import { createTrainingRouter } from "./companion/training/router";
+import { FirestoreTrainingStore } from "./companion/training/store";
+import { createIntentParser } from "./companion/training/intent";
 import { validatePassword } from "./passwordValidation";
 import {
   fetchFullCatalogueFromStorage,
@@ -308,6 +311,17 @@ async function startServer() {
   // Built-in middleware to parse JSON bodies
   app.use(express.json());
 
+  // Step 3 is isolated from public RAG/cache/logs and defaults to disabled.
+  app.use('/api/companion/training', createTrainingRouter({
+    store: new FirestoreTrainingStore(adminDb),
+    verifyToken: token => adminAuth.verifyIdToken(token, true),
+    enabled: () => process.env.SHINE_TRAINING_ENABLED === 'true',
+    pilotUids: () => (process.env.SHINE_TRAINING_PILOT_UIDS || '').split(',').map(s => s.trim()).filter(Boolean),
+    adminEmails: () => (process.env.ADMIN_EMAILS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean),
+    parseIntent: createIntentParser({ apiKey: process.env.GEMINI_API_KEY, model: process.env.SHINE_TRAINING_INTENT_MODEL })
+  }));
+
+
   // Rate Limiter Configuration
   const chatRateLimiter = rateLimit({
     windowMs: 5 * 60 * 1000, // 5 minutes
@@ -420,27 +434,12 @@ async function startServer() {
   // Lookup Member Profile
   app.post("/api/members/lookup", requireAuth, async (req: AuthRequest, res) => {
     try {
-      const { uid, email, phone, memberCode } = req.body;
       const requesterUid = req.user?.uid;
       if (!requesterUid) return res.status(401).json({ error: "Unauthorized" });
-
-      let found: any = null;
-      if (uid) {
-        const snap = await adminDb.collection('members').doc(uid).get();
-        if (snap.exists) found = { uid: snap.id, ...snap.data() };
-      }
-      if (!found && email && email.trim()) {
-        const snap = await adminDb.collection('members').where('email', '==', email.trim().toLowerCase()).limit(1).get();
-        if (!snap.empty) found = { uid: snap.docs[0].id, ...snap.docs[0].data() };
-      }
-      if (!found && phone && phone.trim()) {
-        const snap = await adminDb.collection('members').where('phone', '==', phone.trim()).limit(1).get();
-        if (!snap.empty) found = { uid: snap.docs[0].id, ...snap.docs[0].data() };
-      }
-      if (!found && memberCode && memberCode.trim()) {
-        const snap = await adminDb.collection('members').where('membershipCode', '==', memberCode.trim()).limit(1).get();
-        if (!snap.empty) found = { uid: snap.docs[0].id, ...snap.docs[0].data() };
-      }
+      if (req.body?.uid && req.body.uid !== requesterUid) return res.status(403).json({ error: "Forbidden: self lookup only" });
+      // Contact details / membership codes are identifiers, never authorization.
+      const snap = await adminDb.collection('members').doc(requesterUid).get();
+      const found = snap.exists ? { ...snap.data(), uid: requesterUid, userId: requesterUid } : null;
 
       res.json({ success: true, member: found });
     } catch (error: any) {
@@ -751,8 +750,10 @@ async function startServer() {
       const existingSnap = await docRef.get();
       const previousState = existingSnap.exists ? existingSnap.data() : null;
 
+      if (previousState?.SAMPLE_DATA_ONLY === true && zone.verified === true) return res.status(400).json({ error: 'Sample fixtures cannot be promoted to production knowledge.' });
       const updatedZone: GymZone = {
         ...zone,
+        SAMPLE_DATA_ONLY: previousState?.SAMPLE_DATA_ONLY === true || zone.SAMPLE_DATA_ONLY === true,
         revision: (previousState?.revision || 0) + 1,
         updatedAt: new Date().toISOString(),
         createdAt: previousState?.createdAt || new Date().toISOString()
@@ -819,8 +820,10 @@ async function startServer() {
       const existingSnap = await docRef.get();
       const previousState = existingSnap.exists ? existingSnap.data() : null;
 
+      if (previousState?.SAMPLE_DATA_ONLY === true && item.verified === true) return res.status(400).json({ error: 'Sample fixtures cannot be promoted to production knowledge.' });
       const updatedItem: GymEquipment = {
         ...item,
+        SAMPLE_DATA_ONLY: previousState?.SAMPLE_DATA_ONLY === true || item.SAMPLE_DATA_ONLY === true,
         revision: (previousState?.revision || 0) + 1,
         updatedAt: new Date().toISOString(),
         createdAt: previousState?.createdAt || new Date().toISOString()
@@ -887,8 +890,10 @@ async function startServer() {
       const existingSnap = await docRef.get();
       const previousState = existingSnap.exists ? existingSnap.data() : null;
 
+      if (previousState?.SAMPLE_DATA_ONLY === true && exercise.verified === true) return res.status(400).json({ error: 'Sample fixtures cannot be promoted to production knowledge.' });
       const updatedEx: ExerciseCatalogueEntry = {
         ...exercise,
+        SAMPLE_DATA_ONLY: previousState?.SAMPLE_DATA_ONLY === true || exercise.SAMPLE_DATA_ONLY === true,
         revision: (previousState?.revision || 0) + 1,
         updatedAt: new Date().toISOString(),
         createdAt: previousState?.createdAt || new Date().toISOString()
@@ -965,13 +970,14 @@ async function startServer() {
       }
 
       const prev = snap.data();
+      if (prev?.SAMPLE_DATA_ONLY === true) return res.status(400).json({ error: 'Sample fixtures cannot be approved as real gym assets. Create a new record from verified business data.' });
       const isApproved = verified === true && reviewStatus === 'verified';
       const newRevStatus = reviewStatus || (isApproved ? 'verified' : 'needs_review');
 
       const updatedPayload: any = {
         verified: isApproved,
         reviewStatus: newRevStatus,
-        SAMPLE_DATA_ONLY: false, // Once staff explicitly reviews and signs, it is no longer sample placeholder
+        SAMPLE_DATA_ONLY: prev?.SAMPLE_DATA_ONLY === true,
         verifiedBy: isApproved ? adminEmail : (prev?.verifiedBy || null),
         verifiedAt: isApproved ? new Date().toISOString() : (prev?.verifiedAt || null),
         revision: (prev?.revision || 0) + 1,

@@ -14,7 +14,11 @@
     "migrate:storage": "tsx scripts/migrate_csv_to_firestore.ts",
     "lint": "tsc --noEmit",
     "dev:client": "vite",
-    "dev:server": "tsx server/src/index.ts"
+    "dev:server": "tsx server/src/index.ts",
+    "test:training": "node --import tsx --test tests/training/domain.test.ts tests/training/service.test.ts tests/training/router.test.ts",
+    "typecheck:training": "tsc -p tsconfig.training.json --noEmit",
+    "test:training:emulator": "node --import tsx --test tests/training/emulator.integration.ts",
+    "test:training:ui:server": "NODE_ENV=test node --import tsx tests/training/ui-server.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
