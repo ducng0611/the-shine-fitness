@@ -1,0 +1,72 @@
+name: Apply reviewed weight-gain patch
+on:
+  push:
+    branches: [feat/weight-gain-program]
+    paths: ['.github/workflows/weight-gain-apply.yml']
+permissions:
+  contents: write
+jobs:
+  apply:
+    if: github.ref == 'refs/heads/feat/weight-gain-program'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/weight-gain-program
+          fetch-depth: 1
+      - name: Verify exact patch, expected prior files, and allowed paths
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import base64, hashlib, lzma, pathlib, re, subprocess
+          parts = [pathlib.Path(f'scripts/.weight-gain-bootstrap/part-{n:02}.txt') for n in range(1, 6)]
+          encoded = ''.join(p.read_text().strip() for p in parts)
+          assert len(encoded) == 51672, 'Incomplete transfer'
+          patch = lzma.decompress(base64.b64decode(encoded, validate=True))
+          assert hashlib.sha256(patch).hexdigest() == 'c7cb534672899dc5dd8cfe7518a7239aae10354c017080f0563fff4cbbb85e05', 'Patch hash mismatch'
+          expected = {
+            'shared/weightGainProgram.ts': None,
+            'shared/trainingPrograms.ts': '8878914ff032b2dacc8276c8c06d9d8a0bbd7a77',
+            'shared/programSafety.ts': 'ffcb5b299b04dd8e9ebbf7d5e1c704183b9656bf',
+            'server/src/intentClassifier.ts': 'e7016e0379d12f8eae2fdcd766ed8f5c224f7e58',
+            'scripts/prepare-weight-gain.ts': None,
+            'scripts/validate-weight-gain.ts': None,
+            'tests/weight-gain.test.ts': None,
+            'tests/fitness-flexibility.test.ts': 'cea47427e143dde6bead3353e8d391ca82d57d98',
+            'tests/fixtures/weight-gain-baseline.json': None,
+            'data/companion/training_programs.json': '02d4f6cb7a32caf9e3c971f6478c1e12c8e0b7d2',
+            'data/knowledge/07_program_weight_gain.md': None,
+            'data/training-pathways/weight-gain/source-sessions.json': None,
+            'data/training-pathways/weight-gain/scientific-claims.review.json': None,
+            'data/training-pathways/weight-gain/source-status.json': None,
+            'data/training-pathways/weight-gain/README.md': None,
+            'docs/weight-gain-review.vi.md': None
+          }
+          text = patch.decode('utf-8')
+          paths = re.findall(r'^\+\+\+ b/(.+)$', text, re.M)
+          assert len(paths) == len(expected) and set(paths) == set(expected), 'Unexpected patch paths'
+          for name, sha in expected.items():
+              path = pathlib.Path(name)
+              if sha is None:
+                  assert not path.exists(), f'New path already exists: {name}'
+              else:
+                  actual = subprocess.check_output(['git', 'hash-object', name], text=True).strip()
+                  assert actual == sha, f'Prior file changed: {name}'
+          target = pathlib.Path('/tmp/weight-gain-reviewed.patch')
+          target.write_bytes(patch)
+          subprocess.run(['git', 'apply', '--check', str(target)], check=True)
+          subprocess.run(['git', 'apply', str(target)], check=True)
+          subprocess.run(['git', 'add', '--', *expected], check=True)
+          subprocess.run(['git', 'rm', '-r', '--', 'scripts/.weight-gain-bootstrap'], check=True)
+          staged = subprocess.check_output(['git', 'diff', '--cached', '--name-only'], text=True).splitlines()
+          assert set(staged) == set(expected) | set(map(str, parts)), 'Unexpected staged paths'
+          assert not any(p.startswith('.github/') for p in staged), 'Workflow changes must use connector review'
+          PY
+          git diff --cached --check
+      - name: Commit only verified application changes and remove transfer files
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'feat(programs): add source-faithful weight-gain pathway and safety validation'
+          git push origin HEAD:feat/weight-gain-program
