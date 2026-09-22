@@ -1,0 +1,45 @@
+name: Apply scoped pathway regression fixes
+on:
+  push:
+    branches: [feat/training-pathway-intake]
+    paths: ['.github/workflows/pathway-fix.yml']
+permissions:
+  contents: write
+jobs:
+  fix:
+    if: github.ref == 'refs/heads/feat/training-pathway-intake'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: feat/training-pathway-intake}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Apply exact source edits and missing type-only dependency
+        run: |
+          cp package-lock.json /tmp/pathway-before-lock.json
+          node scripts/fix-pathway-review.mjs
+          npm install --save-dev --save-exact --ignore-scripts --no-audit --no-fund @types/react-dom@19.0.2
+          node --input-type=module - <<'JS'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const before=JSON.parse(fs.readFileSync('/tmp/pathway-before-lock.json'));
+          const after=JSON.parse(fs.readFileSync('package-lock.json'));
+          for(const [key,value] of Object.entries(before.packages)) {
+            if(key !== '') assert.deepEqual(after.packages[key],value,`Unexpected dependency change: ${key}`);
+          }
+          for(const key of Object.keys(after.packages)) {
+            assert(key in before.packages || key === 'node_modules/@types/react-dom',`Unexpected added dependency: ${key}`);
+          }
+          JS
+          npx --no-install tsc -p tsconfig.pathways.json --noEmit
+      - name: Commit only the reviewed source fixes
+        run: |
+          git add src/components/pathways/PathwayIntakeModal.tsx src/components/pathways/pathways.css src/lib/firebase.ts package.json package-lock.json
+          git rm scripts/fix-pathway-review.mjs
+          test -z "$(git diff --cached --name-only -- .github/workflows/)"
+          git diff --cached --check
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(pathways): strict case ID types, authoritative admin IDs and responsive modal'
+          git push origin HEAD:feat/training-pathway-intake
