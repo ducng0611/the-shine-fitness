@@ -10,8 +10,13 @@ const userTexts = (message:string,history:Array<{role:string;text:string}>) => [
 export function detectNutritionSafety(message:string,history:Array<{role:string;text:string}>=[]): ProgramSafetyDecision|null {
   const current=norm(message);
   const active=(term:string)=>{
-    const re=new RegExp(`(?:^|[^a-z0-9])${term}(?=$|[^a-z0-9])`,'g');
-    return [...current.matchAll(re)].some(m=>!/(?:khong|chua|khong con|no|without)\s*(?:bi\s+)?$/.test(current.slice(Math.max(0,m.index!-25),m.index)));
+    const re=new RegExp(`(?:^|[^a-z0-9])(${term})(?=$|[^a-z0-9])`,'g');
+    return [...current.matchAll(re)].some(m=>{
+      // The match includes a leading boundary. Inspect the actual phrase start
+      // so negation is not lost when the preceding whitespace is consumed.
+      const start=m.index!+m[0].lastIndexOf(m[1]);
+      return !/(?:khong|chua|khong con|no|without)\s*(?:bi\s+)?$/.test(current.slice(Math.max(0,start-35),start));
+    });
   };
   // Nguồn ngoài chỉ cho quy tắc cảnh báo sản phẩm: NHS Food allergy / Anaphylaxis.
   // Không thay thế hay sửa nội dung dinh dưỡng trong hai DOCX.
