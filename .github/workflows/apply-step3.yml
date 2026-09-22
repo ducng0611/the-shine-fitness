@@ -2,7 +2,7 @@ name: Apply locally verified Step 3 implementation
 on:
   push:
     branches: [feat/member-memory-adaptive-workout]
-    paths: [.step3-delivery/ready.json]
+    paths: [.step3-delivery/ready.json, .github/workflows/apply-step3.yml]
 permissions:
   contents: write
 concurrency:
@@ -20,11 +20,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validate source hashes and apply only the declared code files
+      - name: Validate source hashes and apply only the declared application files
         run: |
           python3 - <<'PY'
           import base64, hashlib, json, lzma, pathlib, subprocess
-          root = pathlib.Path('.')
           m = json.loads(pathlib.Path('.step3-delivery/ready.json').read_text())
           assert m['base'] == 'd40f9d37dff128ab2fdf079276dbaac70c37e0d7'
           assert m['patchSha256'] == 'cced75f6aed0a9925a3457bced72a2b149ad1cf345a5131ba19e3a52f1ca1a8a'
@@ -46,8 +45,13 @@ jobs:
           stat = subprocess.check_output(['git', 'apply', '--numstat', '/tmp/step3-reviewed.patch'], text=True)
           paths = [line.split('\t', 2)[2] for line in stat.splitlines()]
           assert sorted(paths) == sorted(m['files'])
-          subprocess.run(['git', 'apply', '--check', '/tmp/step3-reviewed.patch'], check=True)
-          subprocess.run(['git', 'apply', '--index', '/tmp/step3-reviewed.patch'], check=True)
+          # The Actions token may write source but not workflow definitions.
+          # The read-only permanent CI file is added separately through the authorized GitHub connector.
+          exclude = '--exclude=.github/workflows/training.yml'
+          subprocess.run(['git', 'apply', exclude, '--check', '/tmp/step3-reviewed.patch'], check=True)
+          subprocess.run(['git', 'apply', exclude, '--index', '/tmp/step3-reviewed.patch'], check=True)
+          staged = subprocess.check_output(['git', 'diff', '--cached', '--name-only'], text=True).splitlines()
+          assert not any(p.startswith('.github/workflows/') for p in staged)
           PY
       - name: Lock existing manifest without lifecycle scripts
         run: npm install --ignore-scripts --no-audit --no-fund
@@ -57,11 +61,11 @@ jobs:
         run: npm run typecheck:training && npm run lint
       - name: Full application build
         run: npm run build
-      - name: Commit implementation on feature branch only and remove delivery scaffolding
+      - name: Commit application source on feature branch only
         run: |
           test "$(git branch --show-current)" = 'feat/member-memory-adaptive-workout'
           git add package-lock.json
-          git rm .github/workflows/step3-baseline.yml .github/workflows/apply-step3.yml .step3-delivery/*
+          git rm .step3-delivery/*
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'feat(training): implement member memory and adaptive workout pilot with tests'
