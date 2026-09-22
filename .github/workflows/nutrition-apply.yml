@@ -41,8 +41,12 @@ jobs:
           found=[line.split('\t',2)[2] for line in stats.splitlines()]
           assert sorted(found)==sorted(paths), 'Unexpected patch paths'
           assert b'GIT binary patch' not in patch and b'new file mode 120000' not in patch
-          subprocess.run(['git','apply','--check',str(target)],check=True)
-          subprocess.run(['git','apply',str(target)],check=True)
+          # The runtime token is limited to application contents. The supported
+          # connector creates the read-only verification workflow separately.
+          excluded='--exclude=.github/workflows/nutrition.yml'
+          subprocess.run(['git','apply',excluded,'--check',str(target)],check=True)
+          subprocess.run(['git','apply',excluded,str(target)],check=True)
+          paths.remove('.github/workflows/nutrition.yml')
           pathlib.Path('/tmp/nutrition-allowed-paths.txt').write_text('\n'.join(paths+['data/nutrition/meal-plan-library.json'])+'\n')
           PY
       - name: Generate deterministic library without model or database calls
@@ -50,7 +54,7 @@ jobs:
           npm ci --ignore-scripts --no-audit --no-fund
           npx --no-install tsx scripts/prepare-nutrition.ts --write
           echo 'b98f63ce9191832eb0d6b915ea5f5bd72d7817d3d4bec147b8e1790643481bb1  data/nutrition/meal-plan-library.json' | sha256sum --check
-      - name: Commit only reviewed files on feature branch
+      - name: Commit only reviewed application files on feature branch
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
