@@ -1,8 +1,9 @@
+import { normalizeSafetyText } from '../../shared/programSafety';
 import { GoogleGenAI } from '@google/genai';
 import { PK_SEGMENTS_LIST } from '../../src/data/pkSegmentsData';
 
 export interface ClassificationResult {
-  intent: 'PRICE' | 'SCHEDULE' | 'TRAINER' | 'FACILITY' | 'POLICY' | 'TRIAL' | 'GREETING' | 'OTHER' | string;
+  intent: 'PRICE' | 'SCHEDULE' | 'TRAINER' | 'FACILITY' | 'POLICY' | 'TRIAL' | 'PROGRAM' | 'GREETING' | 'OTHER' | string;
   confidence: number; // 0 đến 1
   pkSegment: 'PK01' | 'PK02' | 'PK03' | 'PK04' | null;
   slots: {
@@ -29,10 +30,11 @@ const DEFAULT_FALLBACK_RESULT: ClassificationResult = {
 
 const MODEL_CLASSIFIER = 'gemini-3.5-flash-lite';
 
-function fallbackKeywordClassifier(message: string): ClassificationResult {
+export function fallbackKeywordClassifier(message: string): ClassificationResult {
   const lower = (message || '').toLowerCase();
+  const normalized = normalizeSafetyText(message || '');
   
-  if (/giá|bao nhiêu|chi phí|học phí|ưu đãi|khuyến mãi|tiền|bảng giá|combo|gói/.test(lower)) {
+  if (/\b(gia|bao nhieu tien|chi phi|hoc phi|uu dai|khuyen mai|tien|bang gia|combo|goi)\b/.test(normalized)) {
     return {
       intent: 'PRICE',
       confidence: 0.85,
@@ -40,6 +42,12 @@ function fallbackKeywordClassifier(message: string): ClassificationResult {
       slots: { goal: null, experience: null, schedule: null, budget: null },
       nextQuestion: 'Q1'
     };
+  }
+  // "giáo án" không phải từ "giá"; ưu tiên PRICE chỉ khi có từ giá/gói thực sự.
+  if (/\b(the luc|linh hoat|deo dai|suc ben|lo trinh|giao an|bai tap|tap nhu the nao|fitness|flexibility)\b/.test(normalized)) {
+    return { intent:'PROGRAM', confidence:0.85, pkSegment:null,
+      slots:{goal:/\b(the luc|linh hoat|deo dai|suc ben|fitness|flexibility)\b/.test(normalized) ? 'Tăng thể lực và linh hoạt' : null, experience:null, schedule:null, budget:null},
+      nextQuestion:'Q1' };
   }
   if (/giờ|lịch|mở cửa|đóng cửa|mấy giờ|thời gian|hoạt động|ca tập/.test(lower)) {
     return {
@@ -124,6 +132,7 @@ DANH SÁCH INTENT HỢP LỆ (CHỈ CHỌN 1):
 - FACILITY: Cơ sở vật chất, địa chỉ, vị trí, phòng tắm, locker, máy tập, gửi xe
 - POLICY: Chính sách bảo lưu, chuyển nhượng, đóng tiền, hợp đồng
 - TRIAL: Đăng ký tập thử, trải nghiệm 0đ, vé tập thử
+- PROGRAM: Lộ trình, giáo án, bài tập, tăng thể lực, sức bền và linh hoạt
 - GREETING: Chào hỏi, cảm ơn, xã giao
 - OTHER: Khác hoặc ngoài phạm vi
 
@@ -160,6 +169,9 @@ export async function classify(
     return { ...DEFAULT_FALLBACK_RESULT };
   }
 
+  const keyword = fallbackKeywordClassifier(message);
+  if (keyword.intent === 'PRICE' || keyword.intent === 'PROGRAM') return keyword;
+
   const promptText = buildClassifierPrompt(message, history);
 
   const classifierSchema = {
@@ -174,6 +186,7 @@ export async function classify(
           'FACILITY',
           'POLICY',
           'TRIAL',
+          'PROGRAM',
           'GREETING',
           'OTHER',
         ],
@@ -217,6 +230,7 @@ export async function classify(
       'FACILITY',
       'POLICY',
       'TRIAL',
+      'PROGRAM',
       'GREETING',
       'OTHER',
     ];

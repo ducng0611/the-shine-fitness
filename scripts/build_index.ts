@@ -9,127 +9,12 @@ import fs from 'fs';
 import path from 'path';
 import { GoogleGenAI } from '@google/genai';
 
-interface DocMetadata {
-  id: string;
-  title: string;
-  source: string;
-  version: string;
-  effective_date: string;
-  expiry_date: string;
-  owner: string;
-  category: string;
-}
-
-interface KBChunk {
-  id: string;
-  docId: string;
-  text: string;
-  embedding: number[];
-  metadata: DocMetadata;
-}
-
-interface IndexFileStructure {
-  embeddingModel: string;
-  builtAt: string;
-  chunks: KBChunk[];
-}
-
-const REQUIRED_METADATA_KEYS: (keyof DocMetadata)[] = [
-  'id',
-  'title',
-  'source',
-  'version',
-  'effective_date',
-  'expiry_date',
-  'owner',
-  'category'
-];
-
-const VALID_CATEGORIES = ['PRICE', 'SCHEDULE', 'TRAINER', 'FACILITY', 'POLICY', 'TRIAL'];
-
-function parseFrontmatter(fileContent: string, filePath: string): { metadata: DocMetadata; body: string } {
-  const parts = fileContent.split(/^---$/m);
-  if (parts.length < 3) {
-    console.error(`[ERROR] File ${filePath} không đúng định dạng YAML frontmatter (thiếu dải '---').`);
-    process.exit(1);
-  }
-
-  const rawYaml = parts[1];
-  const body = parts.slice(2).join('---').trim();
-
-  const metadataDict: Record<string, string> = {};
-  const lines = rawYaml.split(/\r?\n/);
-
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const colonIdx = trimmed.indexOf(':');
-    if (colonIdx === -1) continue;
-
-    const key = trimmed.substring(0, colonIdx).trim();
-    let val = trimmed.substring(colonIdx + 1).trim();
-    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
-      val = val.substring(1, val.length - 1);
-    }
-    metadataDict[key] = val;
-  }
-
-  // Validate missing fields
-  for (const reqKey of REQUIRED_METADATA_KEYS) {
-    if (!metadataDict[reqKey]) {
-      console.error(`[ERROR] File ${filePath} thiếu trường metadata bắt buộc: '${reqKey}'`);
-      process.exit(1);
-    }
-  }
-
-  // Validate category
-  if (!VALID_CATEGORIES.includes(metadataDict.category)) {
-    console.error(`[ERROR] File ${filePath} có category '${metadataDict.category}' không hợp lệ. Phải thuộc: ${VALID_CATEGORIES.join(', ')}`);
-    process.exit(1);
-  }
-
-  return {
-    metadata: metadataDict as unknown as DocMetadata,
-    body
-  };
-}
-
-/**
- * Splits document body into semantic chunks (300-500 tokens / 800-1500 chars)
- * respecting Markdown heading and paragraph boundaries.
- */
-function chunkDocument(body: string): string[] {
-  const sections = body.split(/(?=\n#{1,3}\s)/);
-  const chunks: string[] = [];
-
-  for (const section of sections) {
-    const trimmed = section.trim();
-    if (!trimmed) continue;
-
-    // If section is reasonable size, add as chunk
-    if (trimmed.length <= 1500) {
-      chunks.push(trimmed);
-    } else {
-      // Split large section by double linebreaks
-      const paragraphs = trimmed.split(/\n\s*\n/);
-      let currentChunk = '';
-
-      for (const para of paragraphs) {
-        if ((currentChunk + '\n\n' + para).length > 1500 && currentChunk.length > 0) {
-          chunks.push(currentChunk.trim());
-          currentChunk = para;
-        } else {
-          currentChunk = currentChunk ? `${currentChunk}\n\n${para}` : para;
-        }
-      }
-      if (currentChunk.trim()) {
-        chunks.push(currentChunk.trim());
-      }
-    }
-  }
-
-  return chunks;
-}
+import 'dotenv/config';
+import { fileURLToPath } from 'node:url';
+import { parseFrontmatter, chunkDocument, programRagAllowed, type DocMetadata } from '../shared/ragDocument';
+export { parseFrontmatter, chunkDocument } from '../shared/ragDocument';
+interface KBChunk { id:string; docId:string; text:string; embedding:number[]; metadata:DocMetadata }
+interface IndexFileStructure { embeddingModel:string; builtAt:string; chunks:KBChunk[] }
 
 async function buildIndex() {
   const startTime = Date.now();
@@ -148,6 +33,18 @@ async function buildIndex() {
   if (files.length === 0) {
     console.error(`[ERROR] Không tìm thấy file Markdown nào trong ${knowledgeDir}`);
     process.exit(1);
+  }
+
+  if (process.argv.includes('--check')) {
+    const documents = files.map(filename => {
+      const parsed=parseFrontmatter(fs.readFileSync(path.join(knowledgeDir,filename),'utf-8'),filename);
+      const chunks=chunkDocument(parsed.body);
+      return {file:filename,category:parsed.metadata.category,chunks:chunks.length,
+        minimum:Math.min(...chunks.map(c=>c.length)),maximum:Math.max(...chunks.map(c=>c.length)),
+        retrievalAllowed:programRagAllowed(parsed.metadata)};
+    });
+    console.log(JSON.stringify({mode:'kiểm tra ngoại tuyến',databaseWrites:0,embeddingCalls:0,documents},null,2));
+    return;
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -171,8 +68,13 @@ async function buildIndex() {
     const { metadata, body } = parseFrontmatter(content, filename);
     filesProcessed++;
 
+    if (!programRagAllowed(metadata)) {
+      console.log(`[SKIP REVIEW] ${filename}: bản tham chiếu chưa được duyệt làm tổng quan công khai.`);
+      continue;
+    }
+
     // Check expiry
-    if (metadata.expiry_date < todayStr) {
+    if (metadata.expiry_date <= todayStr) {
       console.log(`[SKIP EXPIRED] File ${filename} đã hết hạn (${metadata.expiry_date} < ${todayStr})`);
       const rawChunks = chunkDocument(body);
       skippedExpiredChunks += rawChunks.length;
@@ -237,4 +139,6 @@ async function buildIndex() {
   console.log('============================================================');
 }
 
-buildIndex();
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  buildIndex().catch(() => { console.error('[ERROR] Không hoàn tất kiểm tra/lập chỉ mục. Index cũ không được xác nhận là đã cập nhật.'); process.exitCode=1; });
+}

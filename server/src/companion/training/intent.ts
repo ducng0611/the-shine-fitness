@@ -1,3 +1,4 @@
+import { detectProgramSafety } from '../../../../shared/programSafety';
 import { GoogleGenAI } from '@google/genai';
 import { MUSCLE_GROUPS } from '../../../../shared/training';
 import type { IntentResult } from '../../../../shared/training';
@@ -5,6 +6,7 @@ import { exactKeys, groups, number, object, oneOf, text } from './validation';
 
 const normalized = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\u0111/g, 'd').toLowerCase();
 export function parseTrainingIntent(message: string): IntentResult {
+  if (detectProgramSafety(message)) return { intent: 'safety', source: 'rules' };
   const s = normalized(message);
   // Conservative, non-exhaustive symptom check. Never use this to clear a safety flag.
   if (/\b(dau|pain|hurt|chest pain|injury|dizzy|faint|bleed|short of breath|kho tho|chong mat|ngat)\b/.test(s)) return { intent: 'safety', source: 'rules' };

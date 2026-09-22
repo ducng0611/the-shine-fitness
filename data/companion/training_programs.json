@@ -1,0 +1,2885 @@
+{
+  "schemaVersion": 1,
+  "version": 1,
+  "status": "needs_review",
+  "description": "Nguồn lộ trình đang chờ kiểm tra, không được nạp như giáo án đang hoạt động.",
+  "programs": [
+    {
+      "id": "prog_fitness_flexibility_pt30",
+      "name": "Lộ trình tăng thể lực và linh hoạt (tham chiếu PT 1:1, 30 buổi)",
+      "nameEn": "General Fitness & Flexibility Program (1:1 PT, 30-session reference)",
+      "goal": "FITNESS_FLEXIBILITY",
+      "goalAliases": [
+        "tăng thể lực",
+        "tăng sức bền",
+        "linh hoạt",
+        "dẻo dai",
+        "khỏe hơn",
+        "thể lực yếu",
+        "tập cho khỏe"
+      ],
+      "targetProfile": {
+        "primaryAudience": "Nguồn tham chiếu thuộc nhóm dưới 18 tuổi; không mặc định áp dụng cho người mới trưởng thành.",
+        "containsMinors": true,
+        "experienceLevel": null,
+        "recommendedFrequencyPerWeek": "2-3, định hướng chờ HLV duyệt",
+        "sessionDurationMinutes": null,
+        "totalSessions": 30,
+        "estimatedDurationWeeks": null,
+        "privateProfileStoredInPublicRepo": false,
+        "proposalNotes": "45-60 phút và khoảng 12 tuần là đề xuất trong yêu cầu, không phải thời lượng thực tế suy ra từ 5 buổi. 30 buổi ở 2-3 buổi/tuần tương ứng khoảng 10-15 tuần chưa tính nghỉ."
+      },
+      "minorSafetyProtocol": {
+        "appliesToAgeUnder": 18,
+        "standards": [
+          "AAP 2020, tái xác nhận tháng 11/2024",
+          "Tài liệu NSCA về phát triển vận động dài hạn",
+          "AASM 2016 về giấc ngủ"
+        ],
+        "mandatoryRules": [
+          "Chuyển giao HEALTH_RISK trước khi tạo lời khuyên chuyên môn cho trẻ.",
+          "Cần xác nhận người giám hộ và HLV giám sát trực tiếp toàn buổi; nguồn chưa chứng minh đã có sự đồng ý.",
+          "Không tạo bài kiểm tra 1RM, tải cực đại, thi nâng tạ hoặc buổi tập đến kiệt sức trong chatbot.",
+          "Không tự tăng tải, không quy đổi số tải máy thành kg.",
+          "Không đưa thực đơn hạn chế năng lượng, mục tiêu giảm cân hoặc tư vấn thực phẩm bổ sung cho trẻ.",
+          "Không coi không khai báo bệnh/thuốc là không có bệnh/không dùng thuốc."
+        ],
+        "maxTestingRuleBasis": "Chính sách giới hạn của sản phẩm. Không gán thành lệnh cấm phổ quát của AAP: báo cáo 2020 có bối cảnh 1RM dưới giám sát đủ chuyên môn.",
+        "fixed2to5KgRuleAccepted": false,
+        "mythCorrection": "Tập kháng lực được thiết kế và giám sát phù hợp chưa được chứng minh làm giảm tăng trưởng chiều cao. Điều này không bảo đảm mọi bài, tải hay máy đều phù hợp."
+      },
+      "scientificPrinciples": {
+        "fitnessComponents": [
+          "Sức bền",
+          "Kiểm soát cơ lõi",
+          "Thăng bằng và phối hợp",
+          "Tầm vận động"
+        ],
+        "repRange": null,
+        "restBetweenSetsSeconds": null,
+        "warmupType": "Khởi động động được ghi ở 5 buổi.",
+        "cooldownType": "Giữ nhãn COOL DOWN của nguồn; đi máy 10-20 phút không tự chứng minh cường độ thả lỏng.",
+        "progressionAxes": [
+          "Thời gian giữ tĩnh",
+          "Số hiệp và số lần có ghi",
+          "Thay đổi yêu cầu phối hợp",
+          "Tổ chức hoạt động theo trạm"
+        ],
+        "loadProgressionNote": "Leg Extension giữ ký hiệu 10 ở buổi 2 và 3. Không chứng minh tăng tải chung, không đủ dữ liệu để kết luận mọi mức tải đều nhẹ.",
+        "densityIncreaseConfirmed": false
+      },
+      "sessionStructure": [
+        {
+          "order": 1,
+          "block": "WARM_UP",
+          "blockNameVi": "Khởi động",
+          "note": "Khối ghi trong nguồn; không bắt buộc khối này hiện diện ở mọi buổi."
+        },
+        {
+          "order": 2,
+          "block": "CORE_TRAIN",
+          "blockNameVi": "Cơ lõi",
+          "note": "Khối ghi trong nguồn; không bắt buộc khối này hiện diện ở mọi buổi."
+        },
+        {
+          "order": 3,
+          "block": "BALANCE",
+          "blockNameVi": "Thăng bằng",
+          "note": "Khối ghi trong nguồn; không bắt buộc khối này hiện diện ở mọi buổi."
+        },
+        {
+          "order": 4,
+          "block": "RESISTANCE",
+          "blockNameVi": "Kháng lực",
+          "note": "Khối ghi trong nguồn; không bắt buộc khối này hiện diện ở mọi buổi."
+        },
+        {
+          "order": 5,
+          "block": "CARDIO_CIRCUIT",
+          "blockNameVi": "Vòng tuần hoàn cardio",
+          "note": "Khối ghi trong nguồn; không bắt buộc khối này hiện diện ở mọi buổi."
+        },
+        {
+          "order": 6,
+          "block": "COOL_DOWN",
+          "blockNameVi": "Phần nguồn đặt nhãn thả lỏng",
+          "note": "Khối ghi trong nguồn; không bắt buộc khối này hiện diện ở mọi buổi."
+        }
+      ],
+      "phases": [
+        {
+          "id": "phase_ff_01_foundation",
+          "order": 1,
+          "name": "Làm quen và kiểm soát cơ thể",
+          "sessionRange": "1-8",
+          "sourceCoverage": "Chỉ có buổi 1-5; buổi 6-8 chưa được cung cấp.",
+          "status": "partially_observed",
+          "objective": "Khung nhóm giai đoạn do người dùng yêu cầu, không chứng minh kết quả đã đạt.",
+          "loadPolicy": "Chỉ lưu ký hiệu gốc."
+        },
+        {
+          "id": "phase_ff_02_development",
+          "order": 2,
+          "name": "Nâng sức bền và chất lượng phối hợp",
+          "sessionRange": "9-20",
+          "status": "proposed_not_observed",
+          "objective": "HLV đánh giá lại kỹ thuật, mức hứng thú và khả năng duy trì trước khi thay đổi một yếu tố.",
+          "loadPolicy": "Không có chỉ định tải; cần duyệt từng trường hợp."
+        },
+        {
+          "id": "phase_ff_03_consolidation",
+          "order": 3,
+          "name": "Củng cố kỹ năng và khả năng tự báo cảm nhận",
+          "sessionRange": "21-30",
+          "status": "proposed_not_observed",
+          "objective": "Tự chủ ở việc hiểu nhiệm vụ và phản hồi, không có nghĩa trẻ được tự tập không giám sát.",
+          "loadPolicy": "Không tự tăng tải hoặc kiểm tra cực đại."
+        }
+      ],
+      "referenceSessions": [
+        {
+          "sessionNumber": 1,
+          "phaseId": "phase_ff_01_foundation",
+          "sessionType": "MIXED",
+          "sourceNote": "Bản chép do người dùng cung cấp, chưa đối chiếu ảnh gốc; không phải kết quả tập đã xác nhận.",
+          "recordKind": "historical_plan",
+          "completionConfirmed": false,
+          "eligibleForPlanner": false,
+          "blocks": {
+            "WARM_UP": [
+              {
+                "exerciseId": "ex_dynamic_warmup",
+                "sourceExerciseName": "Dynamic Warm Up",
+                "nameVi": "Khởi động động",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "CORE_TRAIN": [
+              {
+                "exerciseId": "ex_bracing_core",
+                "sourceExerciseName": "Bracing Core",
+                "nameVi": "Kiểm soát gồng cơ lõi",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_bird_dog",
+                "sourceExerciseName": "Bird Dog",
+                "nameVi": "Duỗi tay chân đối bên",
+                "volume": {
+                  "raw": "2 x 10",
+                  "sets": 2,
+                  "repetitions": 10,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": 60,
+                "restRaw": "60",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_plank",
+                "sourceExerciseName": "Plank",
+                "nameVi": "Giữ tư thế Plank",
+                "volume": {
+                  "raw": "2 x 30s",
+                  "sets": 2,
+                  "repetitions": null,
+                  "holdSeconds": 30
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "BALANCE": [
+              {
+                "exerciseId": "ex_single_leg_hold",
+                "sourceExerciseName": "Single Leg and Hold",
+                "nameVi": "Đứng giữ thăng bằng một chân",
+                "volume": {
+                  "raw": "2 x 30s",
+                  "sets": 2,
+                  "repetitions": null,
+                  "holdSeconds": 30
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": 70,
+                "restRaw": "70",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "RESISTANCE": [
+              {
+                "exerciseId": "ex_squat",
+                "sourceExerciseName": "Squat",
+                "nameVi": "Ngồi xuống và đứng lên",
+                "volume": {
+                  "raw": "2 x 15",
+                  "sets": 2,
+                  "repetitions": 15,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": 80,
+                "restRaw": "80",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_crunch",
+                "sourceExerciseName": "Crunch",
+                "nameVi": "Gập bụng ngắn",
+                "volume": {
+                  "raw": "1 x 15",
+                  "sets": 1,
+                  "repetitions": 15,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "COOL_DOWN": [
+              {
+                "selection": "ONE_OF",
+                "sourceExerciseName": "Đạp xe 15 phút hoặc Treadmill 10 phút",
+                "alternatives": [
+                  {
+                    "exerciseId": "ex_stationary_cycle",
+                    "sourceExerciseName": "Đạp xe tại chỗ",
+                    "nameVi": "Đạp xe tại chỗ",
+                    "volume": {
+                      "raw": null,
+                      "sets": null,
+                      "repetitions": null,
+                      "holdSeconds": null
+                    },
+                    "load": {
+                      "raw": null,
+                      "kind": "not_recorded",
+                      "value": null,
+                      "unit": null
+                    },
+                    "restSeconds": null,
+                    "restRaw": null,
+                    "durationSeconds": 900,
+                    "treadmillSpeed": null,
+                    "sourceStatus": "user_transcription"
+                  },
+                  {
+                    "exerciseId": "ex_treadmill_walk",
+                    "sourceExerciseName": "Treadmill",
+                    "nameVi": "Đi bộ trên máy",
+                    "volume": {
+                      "raw": null,
+                      "sets": null,
+                      "repetitions": null,
+                      "holdSeconds": null
+                    },
+                    "load": {
+                      "raw": null,
+                      "kind": "not_recorded",
+                      "value": null,
+                      "unit": null
+                    },
+                    "restSeconds": null,
+                    "restRaw": null,
+                    "durationSeconds": 600,
+                    "treadmillSpeed": null,
+                    "sourceStatus": "user_transcription"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "sessionNumber": 2,
+          "phaseId": "phase_ff_01_foundation",
+          "sessionType": "MIXED",
+          "sourceNote": "Bản chép do người dùng cung cấp, chưa đối chiếu ảnh gốc; không phải kết quả tập đã xác nhận.",
+          "recordKind": "historical_plan",
+          "completionConfirmed": false,
+          "eligibleForPlanner": false,
+          "blocks": {
+            "WARM_UP": [
+              {
+                "exerciseId": "ex_dynamic_warmup",
+                "sourceExerciseName": "Dynamic Warm Up",
+                "nameVi": "Khởi động động",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "CORE_TRAIN": [
+              {
+                "exerciseId": "ex_plank",
+                "sourceExerciseName": "Plank",
+                "nameVi": "Giữ tư thế Plank",
+                "volume": {
+                  "raw": "2 x 50s",
+                  "sets": 2,
+                  "repetitions": null,
+                  "holdSeconds": 50
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": 60,
+                "restRaw": "60",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_wall_squat",
+                "sourceExerciseName": "Wall Squat",
+                "nameVi": "Giữ tư thế ngồi tựa tường",
+                "volume": {
+                  "raw": "2 x 30s",
+                  "sets": 2,
+                  "repetitions": null,
+                  "holdSeconds": 30
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "BALANCE": [
+              {
+                "exerciseId": "ex_sl_step_box",
+                "sourceExerciseName": "Single Leg Step Box",
+                "nameVi": "Bước lên bục một chân",
+                "volume": {
+                  "raw": "2 x 12",
+                  "sets": 2,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": 70,
+                "restRaw": "70",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_single_leg_hold",
+                "sourceExerciseName": "Single Leg Hold",
+                "nameVi": "Đứng giữ thăng bằng một chân",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "RESISTANCE": [
+              {
+                "exerciseId": "ex_standing_overhead_shoulder_press",
+                "sourceExerciseName": "1. Standing Overhead Shoulder Press",
+                "nameVi": "Đẩy vai qua đầu khi đứng",
+                "volume": {
+                  "raw": "2 x 15",
+                  "sets": 2,
+                  "repetitions": 15,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "4",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 4.0,
+                  "unit": null
+                },
+                "restSeconds": 80,
+                "restRaw": "80",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_sl_front_raise",
+                "sourceExerciseName": "2. SL Front Raise",
+                "nameVi": "Nâng tay trước khi đứng một chân",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "4",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 4.0,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_leg_extension",
+                "sourceExerciseName": "3. Leg Extension",
+                "nameVi": "Duỗi gối trên máy",
+                "volume": {
+                  "raw": "2 x 15",
+                  "sets": 2,
+                  "repetitions": 15,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "10",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 10.0,
+                  "unit": null
+                },
+                "restSeconds": 80,
+                "restRaw": "80",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_sit_up",
+                "sourceExerciseName": "4. Sit Up",
+                "nameVi": "Gập thân ngồi lên",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_mountain_climber",
+                "sourceExerciseName": "5. Mountain Climber (MTC)",
+                "nameVi": "Động tác leo núi tại chỗ",
+                "volume": {
+                  "raw": "2 x 15",
+                  "sets": 2,
+                  "repetitions": 15,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": 70,
+                "restRaw": "70",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "COOL_DOWN": [
+              {
+                "exerciseId": "ex_treadmill_walk",
+                "sourceExerciseName": "Treadmill 15 phút, tốc độ 4.0",
+                "nameVi": "Đi bộ trên máy",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": 900,
+                "treadmillSpeed": {
+                  "raw": "4.0",
+                  "value": 4.0,
+                  "unit": null
+                },
+                "sourceStatus": "user_transcription"
+              }
+            ]
+          }
+        },
+        {
+          "sessionNumber": 3,
+          "phaseId": "phase_ff_01_foundation",
+          "sessionType": "MIXED",
+          "sourceNote": "Bản chép do người dùng cung cấp, chưa đối chiếu ảnh gốc; không phải kết quả tập đã xác nhận.",
+          "recordKind": "historical_plan",
+          "completionConfirmed": false,
+          "eligibleForPlanner": false,
+          "blocks": {
+            "WARM_UP": [
+              {
+                "exerciseId": "ex_dynamic_warmup",
+                "sourceExerciseName": "Dynamic Warm Up",
+                "nameVi": "Khởi động động",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "CORE_TRAIN": [
+              {
+                "exerciseId": "ex_side_plank",
+                "sourceExerciseName": "Side Plank",
+                "nameVi": "Giữ tư thế Plank nghiêng",
+                "volume": {
+                  "raw": "2 x 30s",
+                  "sets": 2,
+                  "repetitions": null,
+                  "holdSeconds": 30
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": 60,
+                "restRaw": "60",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "BALANCE": [
+              {
+                "exerciseId": "ex_sl_shoulder_press",
+                "sourceExerciseName": "SL Shoulder Press",
+                "nameVi": "Đẩy vai khi đứng một chân",
+                "volume": {
+                  "raw": "3 x 12",
+                  "sets": 3,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "4",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 4.0,
+                  "unit": null
+                },
+                "restSeconds": 70,
+                "restRaw": "70",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_sl_step_box",
+                "sourceExerciseName": "SL Step Box (Step Up)",
+                "nameVi": "Bước lên bục một chân",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "4",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 4.0,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "RESISTANCE": [
+              {
+                "exerciseId": "ex_leg_extension",
+                "sourceExerciseName": "1. Leg Extension",
+                "nameVi": "Duỗi gối trên máy",
+                "volume": {
+                  "raw": "3 x 12",
+                  "sets": 3,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "10",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 10.0,
+                  "unit": null
+                },
+                "restSeconds": 80,
+                "restRaw": "80",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_cable_row",
+                "sourceExerciseName": "2. Cable Row",
+                "nameVi": "Kéo cáp về thân",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "10",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 10.0,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_seated_good_morning",
+                "sourceExerciseName": "3. Seated Good Morning",
+                "nameVi": "Gập hông ở tư thế ngồi",
+                "volume": {
+                  "raw": "3 x 12",
+                  "sets": 3,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": 80,
+                "restRaw": "80",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_db_curl",
+                "sourceExerciseName": "4. DB Curl",
+                "nameVi": "Cuốn tay với tạ đơn",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_wall_squat",
+                "sourceExerciseName": "5. Wall Squat",
+                "nameVi": "Giữ tư thế ngồi tựa tường",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "COOL_DOWN": []
+          },
+          "missingSourceFields": [
+            "COOL_DOWN"
+          ]
+        },
+        {
+          "sessionNumber": 4,
+          "phaseId": "phase_ff_01_foundation",
+          "sessionType": "MIXED",
+          "sourceNote": "Bản chép do người dùng cung cấp, chưa đối chiếu ảnh gốc; không phải kết quả tập đã xác nhận.",
+          "recordKind": "historical_plan",
+          "completionConfirmed": false,
+          "eligibleForPlanner": false,
+          "blocks": {
+            "WARM_UP": [
+              {
+                "exerciseId": "ex_dynamic_warmup",
+                "sourceExerciseName": "Dynamic Warm Up",
+                "nameVi": "Khởi động động",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "CORE_TRAIN": [
+              {
+                "exerciseId": "ex_plank",
+                "sourceExerciseName": "Plank",
+                "nameVi": "Giữ tư thế Plank",
+                "volume": {
+                  "raw": "2 x 50s",
+                  "sets": 2,
+                  "repetitions": null,
+                  "holdSeconds": 50
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": 60,
+                "restRaw": "60",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "BALANCE": [
+              {
+                "exerciseId": "ex_sa_kb_shoulder_press",
+                "sourceExerciseName": "SA Kettlebell Shoulder Press",
+                "nameVi": "Đẩy vai một tay với tạ ấm",
+                "volume": {
+                  "raw": "2 x 12",
+                  "sets": 2,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "3",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 3.0,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_pistol_squat",
+                "sourceExerciseName": "Pistol Squat",
+                "nameVi": "Ngồi xuống một chân",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "RESISTANCE": [
+              {
+                "exerciseId": "ex_squat",
+                "sourceExerciseName": "1. Squat",
+                "nameVi": "Ngồi xuống và đứng lên",
+                "volume": {
+                  "raw": "3 x 12",
+                  "sets": 3,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": 80,
+                "restRaw": "80",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_chest_floor_press",
+                "sourceExerciseName": "2. Chest Floor Press",
+                "nameVi": "Đẩy ngực trên sàn",
+                "volume": {
+                  "raw": "3 x 12",
+                  "sets": 3,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "5",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 5.0,
+                  "unit": null
+                },
+                "restSeconds": 80,
+                "restRaw": "80",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_rear_delt_pec_fly",
+                "sourceExerciseName": "3. Rear Delt Pec Fly",
+                "nameVi": "Dang tay sau trên máy pec fly",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "5",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 5.0,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_leg_curl",
+                "sourceExerciseName": "4. Leg Curl",
+                "nameVi": "Gập gối trên máy",
+                "volume": {
+                  "raw": "3 x 12",
+                  "sets": 3,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "5",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 5.0,
+                  "unit": null
+                },
+                "restSeconds": 80,
+                "restRaw": "80",
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_cable_tricep_pushdown",
+                "sourceExerciseName": "5. Cable Tricep Push Down",
+                "nameVi": "Duỗi khuỷu tay kéo cáp xuống",
+                "volume": {
+                  "raw": "2 set",
+                  "sets": 2,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              },
+              {
+                "exerciseId": "ex_cross_step_abs",
+                "sourceExerciseName": "6. Cross Step Abs",
+                "nameVi": "Bài bụng bước chéo, chờ xác định biến thể",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "COOL_DOWN": [
+              {
+                "exerciseId": "ex_treadmill_walk",
+                "sourceExerciseName": "Treadmill 20 phút, tốc độ 4.0",
+                "nameVi": "Đi bộ trên máy",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": 1200,
+                "treadmillSpeed": {
+                  "raw": "4.0",
+                  "value": 4.0,
+                  "unit": null
+                },
+                "sourceStatus": "user_transcription"
+              }
+            ]
+          }
+        },
+        {
+          "sessionNumber": 5,
+          "phaseId": "phase_ff_01_foundation",
+          "sessionType": "CARDIO_CIRCUIT",
+          "sourceNote": "Bản chép do người dùng cung cấp, chưa đối chiếu ảnh gốc; không phải kết quả tập đã xác nhận.",
+          "recordKind": "historical_plan",
+          "completionConfirmed": false,
+          "eligibleForPlanner": false,
+          "blocks": {
+            "WARM_UP": [
+              {
+                "exerciseId": "ex_dynamic_warmup",
+                "sourceExerciseName": "Dynamic Warm Up",
+                "nameVi": "Khởi động động",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ],
+            "CARDIO_CIRCUIT": {
+              "rounds": 3,
+              "secondsPerStation": 60,
+              "betweenStationsRestSeconds": null,
+              "betweenRoundsRestSeconds": null,
+              "stations": [
+                {
+                  "exerciseId": "ex_jumping_jack",
+                  "sourceExerciseName": "Jumping Jack",
+                  "nameVi": "Bật nhảy dang tay chân",
+                  "volume": {
+                    "raw": null,
+                    "sets": null,
+                    "repetitions": null,
+                    "holdSeconds": null
+                  },
+                  "load": {
+                    "raw": null,
+                    "kind": "not_recorded",
+                    "value": null,
+                    "unit": null
+                  },
+                  "restSeconds": null,
+                  "restRaw": null,
+                  "durationSeconds": 60,
+                  "treadmillSpeed": null,
+                  "sourceStatus": "user_transcription"
+                },
+                {
+                  "exerciseId": "ex_mountain_climber",
+                  "sourceExerciseName": "Mountain Climber (MTC)",
+                  "nameVi": "Động tác leo núi tại chỗ",
+                  "volume": {
+                    "raw": null,
+                    "sets": null,
+                    "repetitions": null,
+                    "holdSeconds": null
+                  },
+                  "load": {
+                    "raw": null,
+                    "kind": "not_recorded",
+                    "value": null,
+                    "unit": null
+                  },
+                  "restSeconds": null,
+                  "restRaw": null,
+                  "durationSeconds": 60,
+                  "treadmillSpeed": null,
+                  "sourceStatus": "user_transcription"
+                },
+                {
+                  "exerciseId": "ex_inchworm",
+                  "sourceExerciseName": "Inchworm",
+                  "nameVi": "Di chuyển tay bò sâu",
+                  "volume": {
+                    "raw": null,
+                    "sets": null,
+                    "repetitions": null,
+                    "holdSeconds": null
+                  },
+                  "load": {
+                    "raw": null,
+                    "kind": "not_recorded",
+                    "value": null,
+                    "unit": null
+                  },
+                  "restSeconds": null,
+                  "restRaw": null,
+                  "durationSeconds": 60,
+                  "treadmillSpeed": null,
+                  "sourceStatus": "user_transcription"
+                },
+                {
+                  "exerciseId": "ex_wall_squat",
+                  "sourceExerciseName": "Wall Squat",
+                  "nameVi": "Giữ tư thế ngồi tựa tường",
+                  "volume": {
+                    "raw": null,
+                    "sets": null,
+                    "repetitions": null,
+                    "holdSeconds": null
+                  },
+                  "load": {
+                    "raw": null,
+                    "kind": "not_recorded",
+                    "value": null,
+                    "unit": null
+                  },
+                  "restSeconds": null,
+                  "restRaw": null,
+                  "durationSeconds": 60,
+                  "treadmillSpeed": null,
+                  "sourceStatus": "user_transcription"
+                },
+                {
+                  "exerciseId": "ex_box_step",
+                  "sourceExerciseName": "Box Step",
+                  "nameVi": "Bước bục",
+                  "volume": {
+                    "raw": null,
+                    "sets": null,
+                    "repetitions": null,
+                    "holdSeconds": null
+                  },
+                  "load": {
+                    "raw": null,
+                    "kind": "not_recorded",
+                    "value": null,
+                    "unit": null
+                  },
+                  "restSeconds": null,
+                  "restRaw": null,
+                  "durationSeconds": 60,
+                  "treadmillSpeed": null,
+                  "sourceStatus": "user_transcription"
+                }
+              ],
+              "derivedWorkSeconds": 900,
+              "derivation": "5 trạm x 3 vòng x 60 giây = 900 giây hoạt động, chưa gồm nghỉ và chuyển trạm."
+            },
+            "COOL_DOWN": [
+              {
+                "exerciseId": "ex_treadmill_walk",
+                "sourceExerciseName": "Treadmill 20 phút",
+                "nameVi": "Đi bộ trên máy",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null
+                },
+                "restSeconds": null,
+                "restRaw": null,
+                "durationSeconds": 1200,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription"
+              }
+            ]
+          }
+        }
+      ],
+      "progressTracking": [
+        {
+          "metric": "Giữ Plank",
+          "method": "Ghi thời gian cùng biến thể; dừng khi kỹ thuật mất kiểm soát.",
+          "goodRange": null,
+          "note": "So với mốc cá nhân theo cùng quy trình do HLV chọn, không đặt ngưỡng đạt chuẩn từ một hồ sơ."
+        },
+        {
+          "metric": "Squat trong 60 giây",
+          "method": "Chỉ thực hiện khi HLV phê duyệt; ghi số lần hợp lệ, không khuyến khích chạy đua.",
+          "goodRange": null,
+          "note": "So với mốc cá nhân theo cùng quy trình do HLV chọn, không đặt ngưỡng đạt chuẩn từ một hồ sơ."
+        },
+        {
+          "metric": "Thăng bằng một chân",
+          "method": "Giữ cùng điều kiện và bên đo.",
+          "goodRange": null,
+          "note": "So với mốc cá nhân theo cùng quy trình do HLV chọn, không đặt ngưỡng đạt chuẩn từ một hồ sơ."
+        },
+        {
+          "metric": "Sức bền tim mạch",
+          "method": "HLV chọn cùng bài đo và mức theo dõi phù hợp.",
+          "goodRange": null,
+          "note": "So với mốc cá nhân theo cùng quy trình do HLV chọn, không đặt ngưỡng đạt chuẩn từ một hồ sơ."
+        },
+        {
+          "metric": "Tầm vận động hông và vai",
+          "method": "Dùng phương pháp đo nhất quán, không so số khác thang.",
+          "goodRange": null,
+          "note": "So với mốc cá nhân theo cùng quy trình do HLV chọn, không đặt ngưỡng đạt chuẩn từ một hồ sơ."
+        },
+        {
+          "metric": "Hứng thú duy trì",
+          "method": "Ghi thang cảm nhận và mức tham gia, không suy ra thành tích từ lịch dự kiến.",
+          "goodRange": null,
+          "note": "So với mốc cá nhân theo cùng quy trình do HLV chọn, không đặt ngưỡng đạt chuẩn từ một hồ sơ."
+        }
+      ],
+      "weightMetricPolicy": "Không dùng cân nặng, giảm cân hoặc số đo vòng làm chỉ số thành công chính của trẻ trong lộ trình này.",
+      "aiAssistantGuardrails": {
+        "allowed": [
+          "Giải thích phạm vi của dữ liệu",
+          "Mô tả nguyên tắc tổng quan đã được duyệt",
+          "Hướng dẫn phụ huynh liên hệ đánh giá"
+        ],
+        "forbidden": [
+          "Sao chép tải từ hồ sơ tham chiếu",
+          "Tạo giáo án cá nhân cho người dưới 18 tuổi",
+          "Khôi phục định danh",
+          "Suy ra kết quả sức khỏe từ lịch dự kiến",
+          "Tính calo, thực đơn, liều thuốc hoặc chất bổ sung cho trẻ"
+        ],
+        "handoverTag": "HEALTH_RISK",
+        "handoverTriggers": [
+          "Dưới 18 tuổi",
+          "Phụ huynh hỏi cho con",
+          "Bệnh lý hoặc chấn thương",
+          "Thuốc hoặc thực phẩm bổ sung"
+        ],
+        "eligibleForPlanner": false
+      },
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "eligibleForPlanner": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z",
+      "sourceProvenance": {
+        "type": "user_supplied_transcription",
+        "originalImagesReviewedThisBatch": false,
+        "independentlyVerified": false,
+        "completionEvidence": null,
+        "publicRecordMinimized": true
+      },
+      "reviewIssues": [
+        {
+          "code": "SOURCE_PROTOCOL_AMBIGUITY",
+          "note": "Số tải trần được A2 gọi là mức máy kể cả ở bài tạ đơn/tạ ấm. Giữ nguyên quy ước nguồn, cần HLV xác nhận theo bài."
+        },
+        {
+          "code": "PUSHDOWN_BW",
+          "note": "Buổi 4 Cable Tricep Push Down ghi bw, chưa biết ý nghĩa thực tế; không sửa thành kg hoặc mức máy."
+        },
+        {
+          "code": "NO_UNITS_SPEED",
+          "note": "Tốc độ 4.0 chưa có đơn vị; không tự đặt km/h."
+        },
+        {
+          "code": "BLANK_IS_UNKNOWN",
+          "note": "Ô trống không kế thừa dòng trước; không đủ dữ liệu để lập buổi tự động."
+        },
+        {
+          "code": "NOT_APPROVED_FOR_GENERAL_REUSE",
+          "note": "Đây là nguồn lịch sử cho người chưa thành niên, chưa là mẫu tái sử dụng."
+        },
+        {
+          "code": "POSSIBLE_ALIAS_OVERLAP",
+          "note": "Box Step/SL Step Box, SL Front Raise/SL Flexion DB Raise và Rear Delt Pec Fly/Rear Delt Fly cần đối chiếu biến thể trước khi gộp. Không khẳng định chúng là các kỹ thuật độc lập đã xác minh."
+        }
+      ],
+      "commercialPolicy": {
+        "currentOfferVerified": false,
+        "sourcePackageSessions": 30,
+        "quoteFrom": "data/knowledge/01_pricing.md",
+        "note": "30 buổi là gói trong nguồn, không chứng minh gói đang bán."
+      }
+    }
+  ],
+  "exercises": [
+    {
+      "id": "ex_dynamic_warmup",
+      "name": "Khởi động động (Dynamic Warm Up)",
+      "nameEn": "Dynamic Warm Up",
+      "aliases": [
+        "Dynamic Warm Up"
+      ],
+      "category": "Khởi động",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 1,
+          "block": "WARM_UP",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 2,
+          "block": "WARM_UP",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 3,
+          "block": "WARM_UP",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 4,
+          "block": "WARM_UP",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 5,
+          "block": "WARM_UP",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_bracing_core",
+      "name": "Kiểm soát gồng cơ lõi (Bracing Core)",
+      "nameEn": "Bracing Core",
+      "aliases": [
+        "Bracing Core"
+      ],
+      "category": "Cơ lõi",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 1,
+          "block": "CORE_TRAIN",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_bird_dog",
+      "name": "Duỗi tay chân đối bên (Bird Dog)",
+      "nameEn": "Bird Dog",
+      "aliases": [
+        "Bird Dog"
+      ],
+      "category": "Cơ lõi",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 1,
+          "block": "CORE_TRAIN",
+          "sourceVolume": "2 x 10",
+          "sourceLoad": "bw",
+          "restSeconds": 60,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_plank",
+      "name": "Giữ tư thế Plank (Plank)",
+      "nameEn": "Plank",
+      "aliases": [
+        "Plank"
+      ],
+      "category": "Cơ lõi",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 1,
+          "block": "CORE_TRAIN",
+          "sourceVolume": "2 x 30s",
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 2,
+          "block": "CORE_TRAIN",
+          "sourceVolume": "2 x 50s",
+          "sourceLoad": "bw",
+          "restSeconds": 60,
+          "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 4,
+          "block": "CORE_TRAIN",
+          "sourceVolume": "2 x 50s",
+          "sourceLoad": "bw",
+          "restSeconds": 60,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_side_plank",
+      "name": "Giữ tư thế Plank nghiêng (Side Plank)",
+      "nameEn": "Side Plank",
+      "aliases": [
+        "Side Plank"
+      ],
+      "category": "Cơ lõi",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 3,
+          "block": "CORE_TRAIN",
+          "sourceVolume": "2 x 30s",
+          "sourceLoad": "bw",
+          "restSeconds": 60,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_single_leg_hold",
+      "name": "Đứng giữ thăng bằng một chân (Single Leg and Hold)",
+      "nameEn": "Single Leg and Hold",
+      "aliases": [
+        "Single Leg Hold",
+        "Single Leg and Hold"
+      ],
+      "category": "Thăng bằng",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 1,
+          "block": "BALANCE",
+          "sourceVolume": "2 x 30s",
+          "sourceLoad": "bw",
+          "restSeconds": 70,
+          "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 2,
+          "block": "BALANCE",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_squat",
+      "name": "Ngồi xuống và đứng lên (Squat)",
+      "nameEn": "Squat",
+      "aliases": [
+        "1. Squat",
+        "Squat"
+      ],
+      "category": "Chân",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 1,
+          "block": "RESISTANCE",
+          "sourceVolume": "2 x 15",
+          "sourceLoad": "bw",
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 4,
+          "block": "RESISTANCE",
+          "sourceVolume": "3 x 12",
+          "sourceLoad": "bw",
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_crunch",
+      "name": "Gập bụng ngắn (Crunch)",
+      "nameEn": "Crunch",
+      "aliases": [
+        "Crunch"
+      ],
+      "category": "Cơ lõi",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 1,
+          "block": "RESISTANCE",
+          "sourceVolume": "1 x 15",
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_stationary_cycle",
+      "name": "Đạp xe tại chỗ (Đạp xe tại chỗ)",
+      "nameEn": "Stationary Cycling",
+      "aliases": [
+        "Đạp xe tại chỗ"
+      ],
+      "category": "Cardio",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_stationary_cycle_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 1,
+          "block": "COOL_DOWN",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": 900,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_treadmill_walk",
+      "name": "Đi bộ trên máy (Treadmill)",
+      "nameEn": "Treadmill",
+      "aliases": [
+        "Treadmill",
+        "Treadmill 15 phút, tốc độ 4.0",
+        "Treadmill 20 phút",
+        "Treadmill 20 phút, tốc độ 4.0"
+      ],
+      "category": "Cardio",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_treadmill_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 1,
+          "block": "COOL_DOWN",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": 600,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 2,
+          "block": "COOL_DOWN",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": 900,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 4,
+          "block": "COOL_DOWN",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": 1200,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 5,
+          "block": "COOL_DOWN",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": 1200,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_wall_squat",
+      "name": "Giữ tư thế ngồi tựa tường (Wall Squat)",
+      "nameEn": "Wall Squat",
+      "aliases": [
+        "5. Wall Squat",
+        "Wall Squat"
+      ],
+      "category": "Chân",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_wall_support_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 2,
+          "block": "CORE_TRAIN",
+          "sourceVolume": "2 x 30s",
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 3,
+          "block": "RESISTANCE",
+          "sourceVolume": null,
+          "sourceLoad": "bw",
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 5,
+          "block": "CARDIO_CIRCUIT",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": 60,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_sl_step_box",
+      "name": "Bước lên bục một chân (SL Step Box)",
+      "nameEn": "SL Step Box",
+      "aliases": [
+        "SL Step Box (Step Up)",
+        "Single Leg Step Box"
+      ],
+      "category": "Thăng bằng",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_step_box_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 2,
+          "block": "BALANCE",
+          "sourceVolume": "2 x 12",
+          "sourceLoad": "bw",
+          "restSeconds": 70,
+          "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 3,
+          "block": "BALANCE",
+          "sourceVolume": null,
+          "sourceLoad": "4",
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_standing_overhead_shoulder_press",
+      "name": "Đẩy vai qua đầu khi đứng (Standing Overhead Shoulder Press)",
+      "nameEn": "Standing Overhead Shoulder Press",
+      "aliases": [
+        "1. Standing Overhead Shoulder Press"
+      ],
+      "category": "Vai",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_press_implement_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 2,
+          "block": "RESISTANCE",
+          "sourceVolume": "2 x 15",
+          "sourceLoad": "4",
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_sl_front_raise",
+      "name": "Nâng tay trước khi đứng một chân (SL Front Raise)",
+      "nameEn": "SL Front Raise",
+      "aliases": [
+        "2. SL Front Raise"
+      ],
+      "category": "Thăng bằng",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_raise_implement_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 2,
+          "block": "RESISTANCE",
+          "sourceVolume": null,
+          "sourceLoad": "4",
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_leg_extension",
+      "name": "Duỗi gối trên máy (Leg Extension)",
+      "nameEn": "Leg Extension",
+      "aliases": [
+        "1. Leg Extension",
+        "3. Leg Extension"
+      ],
+      "category": "Chân",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_leg_extension_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 2,
+          "block": "RESISTANCE",
+          "sourceVolume": "2 x 15",
+          "sourceLoad": "10",
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 3,
+          "block": "RESISTANCE",
+          "sourceVolume": "3 x 12",
+          "sourceLoad": "10",
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_sit_up",
+      "name": "Gập thân ngồi lên (Sit Up)",
+      "nameEn": "Sit Up",
+      "aliases": [
+        "4. Sit Up"
+      ],
+      "category": "Cơ lõi",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 2,
+          "block": "RESISTANCE",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_mountain_climber",
+      "name": "Động tác leo núi tại chỗ (Mountain Climber (MTC))",
+      "nameEn": "Mountain Climber (MTC)",
+      "aliases": [
+        "5. Mountain Climber (MTC)",
+        "Mountain Climber (MTC)"
+      ],
+      "category": "Cardio",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 2,
+          "block": "RESISTANCE",
+          "sourceVolume": "2 x 15",
+          "sourceLoad": null,
+          "restSeconds": 70,
+          "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 5,
+          "block": "CARDIO_CIRCUIT",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": 60,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_sl_shoulder_press",
+      "name": "Đẩy vai khi đứng một chân (SL Shoulder Press)",
+      "nameEn": "SL Shoulder Press",
+      "aliases": [
+        "SL Shoulder Press"
+      ],
+      "category": "Thăng bằng",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_press_implement_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 3,
+          "block": "BALANCE",
+          "sourceVolume": "3 x 12",
+          "sourceLoad": "4",
+          "restSeconds": 70,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_cable_row",
+      "name": "Kéo cáp về thân (Cable Row)",
+      "nameEn": "Cable Row",
+      "aliases": [
+        "2. Cable Row"
+      ],
+      "category": "Lưng",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_cable_row_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 3,
+          "block": "RESISTANCE",
+          "sourceVolume": null,
+          "sourceLoad": "10",
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_seated_good_morning",
+      "name": "Gập hông ở tư thế ngồi (Seated Good Morning)",
+      "nameEn": "Seated Good Morning",
+      "aliases": [
+        "3. Seated Good Morning"
+      ],
+      "category": "Linh hoạt",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_seat_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 3,
+          "block": "RESISTANCE",
+          "sourceVolume": "3 x 12",
+          "sourceLoad": null,
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_db_curl",
+      "name": "Cuốn tay với tạ đơn (DB Curl)",
+      "nameEn": "DB Curl",
+      "aliases": [
+        "4. DB Curl"
+      ],
+      "category": "Tay",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_dumbbell_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 3,
+          "block": "RESISTANCE",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_sa_kb_shoulder_press",
+      "name": "Đẩy vai một tay với tạ ấm (SA Kettlebell Shoulder Press)",
+      "nameEn": "SA Kettlebell Shoulder Press",
+      "aliases": [
+        "SA Kettlebell Shoulder Press"
+      ],
+      "category": "Vai",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_kettlebell_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 4,
+          "block": "BALANCE",
+          "sourceVolume": "2 x 12",
+          "sourceLoad": "3",
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_pistol_squat",
+      "name": "Ngồi xuống một chân (Pistol Squat)",
+      "nameEn": "Pistol Squat",
+      "aliases": [
+        "Pistol Squat"
+      ],
+      "category": "Thăng bằng",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 4,
+          "block": "BALANCE",
+          "sourceVolume": null,
+          "sourceLoad": "bw",
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_chest_floor_press",
+      "name": "Đẩy ngực trên sàn (Chest Floor Press)",
+      "nameEn": "Chest Floor Press",
+      "aliases": [
+        "2. Chest Floor Press"
+      ],
+      "category": "Ngực",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_floor_press_implement_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 4,
+          "block": "RESISTANCE",
+          "sourceVolume": "3 x 12",
+          "sourceLoad": "5",
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_rear_delt_pec_fly",
+      "name": "Dang tay sau trên máy pec fly (Rear Delt Pec Fly)",
+      "nameEn": "Rear Delt Pec Fly",
+      "aliases": [
+        "3. Rear Delt Pec Fly"
+      ],
+      "category": "Vai",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_reverse_pec_fly_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 4,
+          "block": "RESISTANCE",
+          "sourceVolume": null,
+          "sourceLoad": "5",
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_leg_curl",
+      "name": "Gập gối trên máy (Leg Curl)",
+      "nameEn": "Leg Curl",
+      "aliases": [
+        "4. Leg Curl"
+      ],
+      "category": "Chân",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_leg_curl_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 4,
+          "block": "RESISTANCE",
+          "sourceVolume": "3 x 12",
+          "sourceLoad": "5",
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_cable_tricep_pushdown",
+      "name": "Duỗi khuỷu tay kéo cáp xuống (Cable Tricep Push Down)",
+      "nameEn": "Cable Tricep Push Down",
+      "aliases": [
+        "5. Cable Tricep Push Down"
+      ],
+      "category": "Tay",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_cable_pushdown_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 4,
+          "block": "RESISTANCE",
+          "sourceVolume": "2 set",
+          "sourceLoad": "bw",
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_cross_step_abs",
+      "name": "Bài bụng bước chéo, chờ xác định biến thể (Cross Step Abs)",
+      "nameEn": "Cross Step Abs",
+      "aliases": [
+        "6. Cross Step Abs"
+      ],
+      "category": "Cơ lõi",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 4,
+          "block": "RESISTANCE",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_jumping_jack",
+      "name": "Bật nhảy dang tay chân (Jumping Jack)",
+      "nameEn": "Jumping Jack",
+      "aliases": [
+        "Jumping Jack"
+      ],
+      "category": "Cardio",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 5,
+          "block": "CARDIO_CIRCUIT",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": 60,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_inchworm",
+      "name": "Di chuyển tay bò sâu (Inchworm)",
+      "nameEn": "Inchworm",
+      "aliases": [
+        "Inchworm"
+      ],
+      "category": "Cardio",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 5,
+          "block": "CARDIO_CIRCUIT",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": 60,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_box_step",
+      "name": "Bước bục (Box Step)",
+      "nameEn": "Box Step",
+      "aliases": [
+        "Box Step"
+      ],
+      "category": "Cardio",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_step_box_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ ghi tên bài, chưa cung cấp hướng dẫn kỹ thuật, biến thể, chống chỉ định hoặc mức độ phù hợp. Không dùng mảng rỗng để suy ra không có rủi ro.",
+      "programUsage": [
+        {
+          "programId": "prog_fitness_flexibility_pt30",
+          "sessionNumber": 5,
+          "block": "CARDIO_CIRCUIT",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "restSeconds": null,
+          "durationSeconds": 60,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    }
+  ],
+  "equipmentReferences": [
+    {
+      "id": "eq_stationary_cycle_review",
+      "name": "Xe đạp tại chỗ",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_treadmill_review",
+      "name": "Máy chạy bộ",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [
+        "shine_treadmill_01",
+        "shine_treadmill_02",
+        "shine_treadmill_03"
+      ],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_wall_support_review",
+      "name": "Bề mặt tường phù hợp",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_step_box_review",
+      "name": "Bục tập",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_press_implement_review",
+      "name": "Dụng cụ đẩy vai chưa xác định",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_raise_implement_review",
+      "name": "Dụng cụ nâng tay chưa xác định",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_leg_extension_review",
+      "name": "Máy duỗi gối",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [
+        "shine_leg_extension_01"
+      ],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_cable_row_review",
+      "name": "Trạm kéo cáp phù hợp",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_seat_review",
+      "name": "Ghế phù hợp, chưa xác định",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_dumbbell_review",
+      "name": "Tạ đơn trong khu tạ, chưa xác định quả/đôi",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [
+        "shine_dumbbell_area_01"
+      ],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_kettlebell_review",
+      "name": "Tạ ấm",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_floor_press_implement_review",
+      "name": "Dụng cụ đẩy ngực trên sàn chưa xác định",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_reverse_pec_fly_review",
+      "name": "Máy có chức năng reverse fly, cần kiểm tra",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [
+        "shine_pec_deck_fly_01"
+      ],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_leg_curl_review",
+      "name": "Máy gập gối",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [
+        "shine_leg_curl_01"
+      ],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_cable_pushdown_review",
+      "name": "Trạm cáp và tay cầm phù hợp",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    }
+  ],
+  "compatibility": {
+    "baselineHadTrainingProgramsFile": false,
+    "declaredButAbsentProgramIds": [
+      "prog_weight_gain_pt50"
+    ],
+    "note": "Danh sách 24 ID và lộ trình tăng cân trong yêu cầu chưa có trong snapshot repo. Chỉ tạo các định nghĩa được nguồn mới tham chiếu; không tạo giả giáo án cũ."
+  }
+}

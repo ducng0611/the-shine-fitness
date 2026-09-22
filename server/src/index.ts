@@ -1260,7 +1260,7 @@ async function startServer() {
       // 1. Check handover trigger BEFORE Gemini and BEFORE checking cache
       const handoverTrigger = detectHandoverTrigger(message, history || []);
       if (handoverTrigger.tag) {
-        const replyText = getHandoverReply(handoverTrigger.tag, pronoun);
+        const replyText = handoverTrigger.replyText ?? getHandoverReply(handoverTrigger.tag, pronoun);
         const latencyMs = Date.now() - startTime;
         const summary = buildHandoverSummary(history || [], message, handoverTrigger.tag, handoverTrigger.reason);
 

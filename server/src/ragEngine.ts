@@ -1,3 +1,4 @@
+import { programRagAllowed, VALID_CATEGORIES } from '../../shared/ragDocument';
 /**
  * RAG Engine for The Shine Fitness & Yoga
  * Loads vector index, embeds queries, calculates cosine similarity,
@@ -17,6 +18,8 @@ export interface DocMetadata {
   expiry_date: string;
   owner: string;
   category: string;
+  review_status?: string;
+  content_scope?: string;
 }
 
 export interface KBChunk {
@@ -40,7 +43,7 @@ export interface RetrievedChunk {
 
 const EMBEDDING_MODEL = 'gemini-embedding-001';
 const MIN_SIMILARITY_THRESHOLD = 0.55;
-const VALID_CATEGORIES = ['PRICE', 'SCHEDULE', 'TRAINER', 'FACILITY', 'POLICY', 'TRIAL'];
+
 
 let cachedIndex: IndexData | null = null;
 let isRagAvailable = false;
@@ -124,7 +127,7 @@ export async function retrieve(
   }
 
   const topK = opts?.topK || 4;
-  const targetCategory = opts?.intent && VALID_CATEGORIES.includes(opts.intent.toUpperCase())
+  const targetCategory = opts?.intent && (VALID_CATEGORIES as readonly string[]).includes(opts.intent.toUpperCase())
     ? opts.intent.toUpperCase()
     : null;
 
@@ -156,8 +159,9 @@ export async function retrieve(
     const results: RetrievedChunk[] = [];
 
     for (const chunk of cachedIndex!.chunks) {
+      if (!programRagAllowed(chunk.metadata)) continue;
       // 1. Expiry check
-      if (chunk.metadata.expiry_date && chunk.metadata.expiry_date < todayStr) {
+      if (chunk.metadata.expiry_date && chunk.metadata.expiry_date <= todayStr) {
         continue;
       }
 
@@ -193,7 +197,7 @@ export async function retrieve(
 export function buildContextBlock(retrieved: RetrievedChunk[]): string {
   if (!retrieved || retrieved.length === 0) return '';
 
-  const blocks = retrieved.map((item, idx) => {
+  const blocks = retrieved.filter(item => programRagAllowed(item.chunk.metadata)).map((item, idx) => {
     const { metadata, text } = item.chunk;
     return `---
 [TÀI LIỆU THAM CHIẾU #${idx + 1}]
@@ -207,6 +211,7 @@ NỘI DUNG TÀI LIỆU:
 ${text}`;
   });
 
+  if (!blocks.length) return '';
   return `============================================================
 [KHỐI DỮ LIỆU THAM CHIẾU DÀNH CHO BÀI TOÁN RAG - GROUNDED KNOWLEDGE]
 ============================================================

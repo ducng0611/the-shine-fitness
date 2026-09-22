@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "programId": "prog_fitness_flexibility_pt30",
+  "sourceKind": "user_supplied_transcription",
+  "referenceSessionCount": 5,
+  "exerciseDefinitionCount": 31,
+  "exerciseReferenceCount": 47,
+  "containsMinorSource": true,
+  "directIdentifiersIncluded": false,
+  "preciseBodyMetricsIncluded": false,
+  "privateDatesIncluded": false,
+  "reviewStatus": "needs_review",
+  "verified": false,
+  "eligibleForPlanner": false,
+  "note": "Bản ghi trạng thái, không phải hồ sơ khách hàng hoặc xác nhận hoàn thành."
+}
