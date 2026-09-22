@@ -1,0 +1,40 @@
+name: Local Pilot SQLite verification
+on:
+  push:
+    branches: [feat/local-pilot-sqlite]
+  pull_request:
+    paths: ['server/src/local/**','src/local/**','scripts/local/**','tests/local/**','local.html','vite.local.config.ts','tsconfig.local.json','.github/workflows/local-pilot.yml']
+permissions:
+  contents: read
+concurrency:
+  group: local-pilot-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Baseline type check
+        run: npm run lint
+      - name: Local Pilot tests when implementation is present
+        run: |
+          if [ -f scripts/local/verify.sh ]; then bash scripts/local/verify.sh; fi
+      - name: Export isolated verification workspace (no credentials)
+        run: |
+          mkdir -p test-results/local-workspace
+          git archive --format=tar.gz HEAD > test-results/local-workspace/source.tar.gz
+          tar -czf test-results/local-workspace/dependencies.tar.gz node_modules
+          git rev-parse HEAD > test-results/local-workspace/commit.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: local-pilot-workspace
+          path: test-results/local-workspace
+          retention-days: 1
