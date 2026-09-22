@@ -8,12 +8,14 @@ import type { TrainingContextResponse } from '../../../shared/training';
 import { ConversationStore, PublicAnswerCache, BuddyMetrics, digest, type Conversation } from './state';
 import { BuddyKnowledge } from './knowledge';
 import { acceptableEducationOutput, nextWithSignal, transientProviderError, type BuddyProvider } from './provider';
+import { isOwnSafetyReport } from './freshness';
 
 export interface BuddyRouterOptions {
   verifyToken:(token:string)=>Promise<{uid:string;email?:string;email_verified?:boolean}>;
   enabled:()=>boolean; memberContextEnabled:()=>boolean; adminEmails:()=>string[];
   entitled:(uid:string)=>Promise<boolean>;
   readContext:(uid:string)=>Promise<TrainingContextResponse>;
+  onOwnSafetyReport?:(uid:string)=>Promise<boolean>;
   knowledge?:BuddyKnowledge; provider?:BuddyProvider|null;
   sessions?:ConversationStore; cache?:PublicAnswerCache; metrics?:BuddyMetrics;
   now?:()=>number; timeoutMs?:number; rateLimit?:number;
@@ -158,8 +160,6 @@ export function createBuddyRouter(options:BuddyRouterOptions):Router {
                 const next=await nextWithSignal(iterator.next(),controller.signal);if(next.done)break;
                 pending+=next.value;
                 if(!acceptableEducationOutput(produced+pending))throw new BuddyError('unsafe_model_output','Phản hồi không vượt qua kiểm tra nội dung. Không tiếp tục hiển thị.',502);
-                // Health/nutrition answers are checked as a whole even with an injected provider.
-                // High-risk personal requests never enter generation.
                 if(!wholeAnswerGate){
                   let match:RegExpExecArray|null;
                   while((match=/^[\s\S]*?[.!?\n](?:\s|$)/.exec(pending))){const piece=match[0];pending=pending.slice(piece.length);produced+=piece;await emit(piece);}
@@ -172,6 +172,22 @@ export function createBuddyRouter(options:BuddyRouterOptions):Router {
           if(!produced.trim())throw new BuddyError('empty_model_output','Chưa có phản hồi hữu ích. Hãy thử diễn đạt lại câu hỏi.',502);
           reply.text=produced;reply.reasonCodes.push('general_model_knowledge_not_source_verified');timings.modelMs=performance.now()-modelStart;
         }
+      }
+      // Preserve the existing Training safety invariant across the new chat entrypoint.
+      // This only removes old readiness; it never confirms symptoms, creates readiness
+      // or records a workout. Emit controlled urgent guidance before any storage wait.
+      if(options.onOwnSafetyReport&&who.uid&&who.emailVerified&&options.memberContextEnabled()&&isOwnSafetyReport(input.message)){
+        if(timings.firstContentMs===null)await emit(reply.text);
+        const safetyStart=performance.now();
+        if(await nextWithSignal(options.entitled(who.uid),controller.signal)){
+          const invalidated=await nextWithSignal(options.onOwnSafetyReport(who.uid),controller.signal);
+          if(invalidated){
+            reply.reasonCodes.push('previous_readiness_invalidated');
+            const notice=choose('\n\nXác nhận thể trạng cũ đã được vô hiệu hóa. Bạn cần trả lời lại trong Training trước khi bắt đầu kế hoạch cũ; không có chẩn đoán hay buổi tập nào được tự ghi thêm.','\n\nYour previous readiness was invalidated. Confirm your current state in Training before starting an old plan; no diagnosis or completed workout was created.');
+            reply.text+=notice;await emit(notice);
+          }
+        }
+        timings.contextMs+=performance.now()-safetyStart;
       }
       if(timings.firstContentMs===null)await emit(reply.text);
       controller.signal.throwIfAborted();
