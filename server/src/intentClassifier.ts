@@ -44,16 +44,20 @@ export function fallbackKeywordClassifier(message: string): ClassificationResult
     };
   }
   // "giáo án" không phải từ "giá"; ưu tiên PRICE chỉ khi có từ giá/gói thực sự.
-  if (/\b(the luc|linh hoat|deo dai|suc ben|lo trinh|giao an|bai tap|tap nhu the nao|tap bao lau|tang can|tang co|nguoi gay|kho tang can|lean bulk|fitness|flexibility|tang chieu cao|cai thien tu the|gu lung|tu the|plyometrics?|treo xa|height|posture|giam mo|giam can|giam beo|dot mo|fat loss|weight loss)\b/.test(normalized)) {
+  if (/\b(the luc|linh hoat|deo dai|suc ben|lo trinh|giao an|bai tap|tap nhu the nao|tap bao lau|tang can|tang co|nguoi gay|kho tang can|lean bulk|fitness|flexibility|tang chieu cao|cai thien tu the|gu lung|tu the|plyometrics?|treo xa|height|posture|giam mo|giam can|giam beo|dot mo|fat loss|weight loss|chinh sua tu the|co rua|rut vai|vai tron|ngoi nhieu|van dong van phong|postural correction|desk worker mobility|upper crossed|lower crossed)\b/.test(normalized)) {
     const fitness = /\b(the luc|linh hoat|deo dai|suc ben|fitness|flexibility)\b/.test(normalized);
     const weight = /\b(tang can|kho tang can|nguoi gay|lean bulk)\b/.test(normalized);
     const fat = /\b(giam mo|giam can|giam beo|dot mo|fat loss|weight loss)\b/.test(normalized);
     const muscle = /\btang co\b/.test(normalized);
-    const height = /\b(tang chieu cao|cai thien tu the|gu lung|tu the|height|posture)\b/.test(normalized);
+    const height = /\b(tang chieu cao|height|grow taller)\b/.test(normalized);
+    const posture = /\b(cai thien tu the|chinh sua tu the|gu lung|tu the|posture|co rua|rut vai|vai tron|ngoi nhieu|van dong van phong|postural correction|desk worker mobility|upper crossed|lower crossed)\b/.test(normalized);
     // Từ khóa xác định chủ đề; không ép nhiều mục tiêu hoặc câu phủ định thành một mục tiêu đã xác nhận.
-    const negated = /\b(khong|chua)\s+(?:muon\s+)?(?:tang can|tang co|tang chieu cao|cai thien tu the|giam mo|giam can|giam beo|dot mo)\b/.test(normalized);
-    const goal = negated || (fat && (weight || muscle || height || fitness)) || (height && (fitness || weight || muscle)) || (fitness && (weight || muscle)) ? null :
-      fat ? 'Giảm mỡ' : height ? 'Chiều cao và tư thế, cần đánh giá chuyên môn' : weight ? 'Tăng cân' : muscle ? 'Tăng cơ' : fitness ? 'Tăng thể lực và linh hoạt' : null;
+    const negated = /\b(khong|chua)\s+(?:muon\s+)?(?:tang can|tang co|tang chieu cao|cai thien tu the|chinh sua tu the|giam mo|giam can|giam beo|dot mo)\b/.test(normalized);
+    const topics = [fat, weight, muscle, height, posture, fitness].filter(Boolean).length;
+    const goal = negated || topics > 1 ? null :
+      fat ? 'Giảm mỡ' : height ? 'Chiều cao và tư thế, cần đánh giá chuyên môn' :
+      posture ? 'Tư thế và tính vận động, cần đánh giá trực tiếp' :
+      weight ? 'Tăng cân' : muscle ? 'Tăng cơ' : fitness ? 'Tăng thể lực và linh hoạt' : null;
     return { intent:'PROGRAM', confidence:0.85, pkSegment:null,
       slots:{goal, experience:null, schedule:null, budget:null}, nextQuestion:'Q1' };
   }

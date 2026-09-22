@@ -1,3 +1,4 @@
+import { POSTURE_HEALTH_TERMS_VI, POSTURE_HEALTH_TERMS_EN, detectAcutePostureWarning, postureNeedsReview, acutePostureReply, postureReviewReply } from './postureSafety';
 /**
  * Chính sách chuyển giao bảo thủ của sản phẩm, không phải bộ chẩn đoán y khoa.
  * Chỉ đọc lời người dùng; nội dung bot, tài liệu RAG và con số số hiệp không xác nhận tuổi.
@@ -15,6 +16,7 @@ export function normalizeSafetyText(value: string): string {
 }
 const METABOLIC_TERMS_VI = ["đái tháo đường", "type 2", "insulin", "đường huyết", "hạ đường huyết", "HbA1c", "cao huyết áp", "tăng huyết áp", "huyết áp cao", "mỡ máu", "rối loạn lipid", "gan nhiễm mỡ", "gout", "béo phì", "thuốc huyết áp", "thuốc tiểu đường", "uống thuốc trước khi tập", "giấy khám sức khỏe", "bệnh nền", "bệnh chuyển hóa", "sulfonylurea", "metformin", "chẹn beta"];
 const HEALTH_TERMS_VI = [
+  ...POSTURE_HEALTH_TERMS_VI,
   ...METABOLIC_TERMS_VI,
   'tiểu đường', 'bệnh thận', 'hen suyễn', 'động kinh', 'tim bẩm sinh', 'vẹo cột sống',
   'rối loạn nội tiết', 'tuyến giáp', 'cho con bú', 'thuốc dài hạn', 'dùng thuốc dài hạn',
@@ -34,7 +36,7 @@ const MINOR_TERMS_VI = [
 ];
 // Giữ cả bản có dấu và không dấu theo hợp đồng tích hợp; so khớp chuẩn hóa bên dưới.
 export const HEALTH_RISK_KEYWORDS = [...new Set([
-  ...HEALTH_TERMS_VI, ...MINOR_TERMS_VI,
+  ...HEALTH_TERMS_VI, ...MINOR_TERMS_VI, ...POSTURE_HEALTH_TERMS_EN,
   ...HEALTH_TERMS_VI.map(normalizeSafetyText), ...MINOR_TERMS_VI.map(normalizeSafetyText),
   'type 2','insulin','hba1c','blood glucose','blood sugar','hypoglycemia','dyslipidemia','fatty liver','gout','obesity','beta blocker',
   'mass gainer', 'whey', 'creatine', 'supplement', 'supplements',
@@ -119,6 +121,8 @@ export function detectProgramSafety(message: string, history: {role:string;text:
   if (detectAcuteMetabolicWarning(message)) return {tag:'HEALTH_RISK',audience:'health',
     reason:'Dấu hiệu có thể cần cấp cứu, không chờ hàng đợi tư vấn.',
     replyText:'Nếu những dấu hiệu này đang xảy ra, anh/chị hãy dừng tập, nhờ người gần đó hỗ trợ và gọi 115 ở Việt Nam hoặc cấp cứu địa phương ngay. Không chờ tư vấn viên phản hồi và không tự lái xe. Nếu bất tỉnh, co giật hoặc không nuốt an toàn, không cho ăn/uống; làm theo hướng dẫn của tổng đài. Em không chẩn đoán nguyên nhân và chưa gọi cấp cứu thay anh/chị.'};
+  if (detectAcutePostureWarning(normalizeSafetyText(message))) return {tag:'HEALTH_RISK',audience:'health',
+    reason:'Dấu hiệu thần kinh/cột sống có thể cần cấp cứu, không chờ hàng đợi tư vấn.',replyText:acutePostureReply()};
   const prior = Array.isArray(history) ? history.filter(h => h?.role === 'user' && typeof h.text === 'string').map(h => h.text) : [];
   const texts = [...prior, message].map(normalizeSafetyText);
   // Tuổi/quan hệ do người dùng tự khai trước đó vẫn có hiệu lực trong ngữ cảnh gửi lên.
@@ -132,6 +136,9 @@ export function detectProgramSafety(message: string, history: {role:string;text:
   if(heightTopic) return {tag:'HEALTH_RISK',audience:audience??'health',
     reason:'Không cam kết chiều cao hoặc tự thiết kế can thiệp tăng trưởng.',replyText:heightReply(audience??'health')};
   if (audience) return { tag:'HEALTH_RISK', audience, reason:'Cần xác minh độ tuổi, người giám hộ và phạm vi tư vấn.', replyText:programSafetyReply(audience) };
+  if (postureNeedsReview(texts, POSTURE_HEALTH_TERMS_VI.map(normalizeSafetyText))) return {
+    tag:'HEALTH_RISK',audience:'health',reason:'Nội dung cột sống hoặc triệu chứng cần đánh giá trực tiếp.',replyText:postureReviewReply()
+  };
   if (texts.some(s => health.some(k => containsPhrase(s,k)))) return {
     tag:'HEALTH_RISK', audience:'health', reason:'Nội dung sức khỏe hoặc thực phẩm bổ sung cần chuyển chuyên môn.',
     replyText:metabolicReply(message) ?? programSafetyReply('health')

@@ -1,0 +1,70 @@
+{
+  "programId": "prog_posture_correction_pt36",
+  "reviewStatus": "needs_review",
+  "sourceRows": 29,
+  "issues": [
+    {
+      "id": "provenance",
+      "description": "Chưa có giáo án giấy, nhật ký kết quả hoặc xác nhận của HLV để kiểm tra tuyên bố thực chiến.",
+      "status": "needs_review"
+    },
+    {
+      "id": "no_diagnosis",
+      "description": "Không có đánh giá lâm sàng chứng minh hội chứng chéo trên/chéo dưới hoặc nguyên nhân đau.",
+      "status": "needs_review"
+    },
+    {
+      "id": "missing_health",
+      "description": "Hồ sơ không có bệnh sử, thuốc, chấn thương, sàng lọc triệu chứng hoặc xác nhận đủ điều kiện.",
+      "status": "needs_review"
+    },
+    {
+      "id": "time_budget",
+      "description": "55, 55 và 45 phút là tổng nhãn khối, chưa kiểm tra tổng thời gian bài, nghỉ, đổi bên và di chuyển.",
+      "status": "needs_review"
+    },
+    {
+      "id": "ytw_count",
+      "description": "3 x 10 Y-T-W chưa rõ 10 chuỗi hay 10 lần mỗi chữ; không tự nhân ba.",
+      "status": "needs_review"
+    },
+    {
+      "id": "combined_regions",
+      "description": "Các dòng lăn nhiều vùng không nói rõ định lượng cho mỗi vùng hay tổng dòng.",
+      "status": "needs_review"
+    },
+    {
+      "id": "load_scope",
+      "description": "2 DB 6 kg và 2 DB 8 kg giữ nguyên số dụng cụ; phạm vi mỗi tạ cần đối chiếu, không tự cộng tổng tải.",
+      "status": "needs_review"
+    },
+    {
+      "id": "spinal_smr",
+      "description": "Cụm 'toàn bộ lưng' cần người có chuyên môn xác định vùng, áp lực và trường hợp cần tránh.",
+      "status": "needs_review"
+    },
+    {
+      "id": "itb_smr",
+      "description": "Chưa có bằng chứng lăn dải chậu chày làm thay đổi độ dài/độ cứng trong hồ sơ.",
+      "status": "needs_review"
+    },
+    {
+      "id": "no_outcome",
+      "description": "Không có tiến độ hoặc kết quả, không gọi ba buổi khác nhau là tiến bộ đã đo được.",
+      "status": "needs_review"
+    },
+    {
+      "id": "absent_other_program",
+      "description": "Nhánh cơ sở có bốn chương trình, chưa có chương trình tạo hình mông-đùi như prompt nêu.",
+      "status": "needs_review"
+    },
+    {
+      "id": "no_timestamps",
+      "description": "Không có ngày thực hiện ba buổi, không suy ngày từ các hồ sơ trước.",
+      "status": "needs_review"
+    }
+  ],
+  "confirmedClinicalAssessment": false,
+  "sourceFilesAttached": false,
+  "baselineProgramCount": 4
+}

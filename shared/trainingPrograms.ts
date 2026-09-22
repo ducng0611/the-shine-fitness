@@ -1,3 +1,4 @@
+import { validatePostureCorrectionProgram } from './postureCorrectionProgram';
 import {validateMetabolicProgram, unresolvedMetabolicSession} from './fatlossMetabolicProgram';
 import { validateHeightPostureProgram } from './heightPostureProgram';
 import { validateWeightGainProgram } from './weightGainProgram';
@@ -32,6 +33,7 @@ export function validateTrainingPrograms(value:unknown) {
     validateWeightGainProgram(p);
     validateHeightPostureProgram(p);
     validateMetabolicProgram(p);
+    validatePostureCorrectionProgram(p);
     if(!Array.isArray(p.referenceSessions))throw new Error('Thiếu mảng buổi tham chiếu.');
     const sessionIds=new Set<number>();
     const sessionKeys=new Set<string>();

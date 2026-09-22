@@ -14,7 +14,7 @@ for(const [id,h] of Object.entries(baseline.programHashes))assert.equal(hash(lib
 for(const [id,h] of Object.entries(baseline.exerciseMetadataHashes)){
  const {programUsage,...meta}=library.exercises.find((e:any)=>e.id===id);
  assert.equal(hash(meta),h);
- assert.equal(hash(programUsage.filter((u:any)=>u.programId!==METABOLIC_PROGRAM_ID)),baseline.usageHashes[id]);
+ assert.equal(hash(programUsage.filter((u:any)=>u.programId in baseline.programHashes)),baseline.usageHashes[id]);
 }
 for(const [id,h] of Object.entries(baseline.equipmentHashes))assert.equal(hash(library.equipmentReferences.find((e:any)=>e.id===id)),h);
 for(const s of source.sessions){
@@ -36,7 +36,7 @@ const report={...summary,version:library.version,programId:p.id,sourceDocuments:
  singleD1Records:p.referenceSessions.flatMap((s:any)=>s.supersets).filter((g:any)=>g.status==='single_record_only').length,
  circuitStations:p.referenceSessions[5].blocks.CARDIO_CIRCUIT.stations.length,
  chunkCount:chunks.length,minimumChunkCharacters:Math.min(...sizes),maximumChunkCharacters:Math.max(...sizes),
- newExerciseDefinitions:library.exercises.length-Object.keys(baseline.exerciseMetadataHashes).length,
+ newExerciseDefinitions:library.exercises.filter((e:any)=>!(e.id in baseline.exerciseMetadataHashes)&&e.programUsage.some((u:any)=>u.programId===METABOLIC_PROGRAM_ID)).length,
  previousProgramsPreserved:true,publicRetrievalAllowed:false,eligibleForPlanner:false,aiRecommendable:false,
  embeddingCalls:0,databaseWrites:0,note:'Kiểm tra dữ liệu và mã, không chứng nhận y khoa hoặc hiệu quả điều trị.'};
 console.log(JSON.stringify(report,null,2));
