@@ -56,6 +56,13 @@ import {
 import { requireAuth, requireAdmin, AuthRequest } from "./middleware/auth.ts";
 import { adminDb } from "./lib/firebase-admin.ts";
 import { validatePassword } from "./passwordValidation";
+import {
+  fetchFullCatalogueFromStorage,
+  recordRevision,
+  GymZone,
+  GymEquipment,
+  ExerciseCatalogueEntry
+} from "./companion/catalogueService";
 
 const chatCache = new Map<string, string>();
 
@@ -669,6 +676,336 @@ async function startServer() {
       const { uid } = req.params;
       await adminDb.collection('admins').doc(uid).delete();
       res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // ================= GYM KNOWLEDGE & CATALOGUE API ENDPOINTS =================
+
+  // 1. Get full catalogue (zones, equipment, exercises)
+  app.get("/api/companion/catalogue", async (req, res) => {
+    try {
+      const data = await fetchFullCatalogueFromStorage();
+      res.json({ success: true, data });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // 2. Get strictly verified catalogue (for Shine Companion workout recommendation)
+  app.get("/api/companion/catalogue/verified", async (req, res) => {
+    try {
+      const data = await fetchFullCatalogueFromStorage();
+      
+      const verifiedZones = (data.zones || []).filter(
+        z => z.verified === true && z.reviewStatus === 'verified' && !z.SAMPLE_DATA_ONLY
+      );
+      
+      const verifiedEquipment = (data.equipment || []).filter(
+        e => e.verified === true && e.reviewStatus === 'verified' && !e.SAMPLE_DATA_ONLY && e.isFunctional && e.operationalStatus === 'operational'
+      );
+      const verifiedEquipmentIds = new Set(verifiedEquipment.map(e => e.id));
+
+      const verifiedExercises = (data.exercises || []).filter(ex => {
+        if (ex.SAMPLE_DATA_ONLY || !ex.verified || ex.reviewStatus !== 'verified') return false;
+        if (ex.requiredEquipmentIds && ex.requiredEquipmentIds.length > 0) {
+          return ex.requiredEquipmentIds.every(id => verifiedEquipmentIds.has(id));
+        }
+        return true;
+      });
+
+      const isSufficient = verifiedZones.length >= 1 && verifiedEquipment.length >= 3 && verifiedExercises.length >= 5;
+
+      res.json({
+        success: true,
+        isSufficient,
+        verified: {
+          zones: verifiedZones,
+          equipment: verifiedEquipment,
+          exercises: verifiedExercises
+        },
+        counts: {
+          zones: verifiedZones.length,
+          equipment: verifiedEquipment.length,
+          exercises: verifiedExercises.length
+        }
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // 3. Admin Zone Operations
+  app.post("/api/admin/catalogue/zone", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
+    try {
+      const zone: GymZone = req.body;
+      if (!zone || !zone.id || !zone.name) {
+        return res.status(400).json({ error: "Missing zone id or name" });
+      }
+
+      const zoneId = zone.id;
+      const adminEmail = req.user?.email || 'admin';
+      
+      const docRef = adminDb.collection('gym_zones').doc(zoneId);
+      const existingSnap = await docRef.get();
+      const previousState = existingSnap.exists ? existingSnap.data() : null;
+
+      const updatedZone: GymZone = {
+        ...zone,
+        revision: (previousState?.revision || 0) + 1,
+        updatedAt: new Date().toISOString(),
+        createdAt: previousState?.createdAt || new Date().toISOString()
+      };
+
+      await docRef.set(updatedZone, { merge: true });
+
+      await recordRevision({
+        version: updatedZone.revision,
+        entityType: 'zone',
+        entityId: zoneId,
+        action: previousState ? 'update' : 'create',
+        changedBy: adminEmail,
+        changeSummary: `${previousState ? 'Cập nhật' : 'Tạo mới'} khu vực: ${zone.name}`,
+        previousState,
+        newState: updatedZone
+      });
+
+      res.json({ success: true, zone: updatedZone });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.delete("/api/admin/catalogue/zone/:id", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
+    try {
+      const { id } = req.params;
+      const adminEmail = req.user?.email || 'admin';
+      const docRef = adminDb.collection('gym_zones').doc(id);
+      const existingSnap = await docRef.get();
+      const previousState = existingSnap.exists ? existingSnap.data() : null;
+
+      await docRef.delete();
+
+      await recordRevision({
+        version: (previousState?.revision || 0) + 1,
+        entityType: 'zone',
+        entityId: id,
+        action: 'delete',
+        changedBy: adminEmail,
+        changeSummary: `Xóa khu vực: ${previousState?.name || id}`,
+        previousState,
+        newState: null
+      });
+
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // 4. Admin Equipment Operations
+  app.post("/api/admin/catalogue/equipment", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
+    try {
+      const item: GymEquipment = req.body;
+      if (!item || !item.id || !item.name) {
+        return res.status(400).json({ error: "Missing equipment id or name" });
+      }
+
+      const eqId = item.id;
+      const adminEmail = req.user?.email || 'admin';
+
+      const docRef = adminDb.collection('gym_equipment').doc(eqId);
+      const existingSnap = await docRef.get();
+      const previousState = existingSnap.exists ? existingSnap.data() : null;
+
+      const updatedItem: GymEquipment = {
+        ...item,
+        revision: (previousState?.revision || 0) + 1,
+        updatedAt: new Date().toISOString(),
+        createdAt: previousState?.createdAt || new Date().toISOString()
+      };
+
+      await docRef.set(updatedItem, { merge: true });
+
+      await recordRevision({
+        version: updatedItem.revision,
+        entityType: 'equipment',
+        entityId: eqId,
+        action: previousState ? 'update' : 'create',
+        changedBy: adminEmail,
+        changeSummary: `${previousState ? 'Cập nhật' : 'Tạo mới'} thiết bị: ${item.name}`,
+        previousState,
+        newState: updatedItem
+      });
+
+      res.json({ success: true, equipment: updatedItem });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.delete("/api/admin/catalogue/equipment/:id", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
+    try {
+      const { id } = req.params;
+      const adminEmail = req.user?.email || 'admin';
+      const docRef = adminDb.collection('gym_equipment').doc(id);
+      const existingSnap = await docRef.get();
+      const previousState = existingSnap.exists ? existingSnap.data() : null;
+
+      await docRef.delete();
+
+      await recordRevision({
+        version: (previousState?.revision || 0) + 1,
+        entityType: 'equipment',
+        entityId: id,
+        action: 'delete',
+        changedBy: adminEmail,
+        changeSummary: `Xóa thiết bị: ${previousState?.name || id}`,
+        previousState,
+        newState: null
+      });
+
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // 5. Admin Exercise Operations
+  app.post("/api/admin/catalogue/exercise", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
+    try {
+      const exercise: ExerciseCatalogueEntry = req.body;
+      if (!exercise || !exercise.id || !exercise.name) {
+        return res.status(400).json({ error: "Missing exercise id or name" });
+      }
+
+      const exId = exercise.id;
+      const adminEmail = req.user?.email || 'admin';
+
+      const docRef = adminDb.collection('gym_exercises').doc(exId);
+      const existingSnap = await docRef.get();
+      const previousState = existingSnap.exists ? existingSnap.data() : null;
+
+      const updatedEx: ExerciseCatalogueEntry = {
+        ...exercise,
+        revision: (previousState?.revision || 0) + 1,
+        updatedAt: new Date().toISOString(),
+        createdAt: previousState?.createdAt || new Date().toISOString()
+      };
+
+      await docRef.set(updatedEx, { merge: true });
+
+      await recordRevision({
+        version: updatedEx.revision,
+        entityType: 'exercise',
+        entityId: exId,
+        action: previousState ? 'update' : 'create',
+        changedBy: adminEmail,
+        changeSummary: `${previousState ? 'Cập nhật' : 'Tạo mới'} bài tập: ${exercise.name}`,
+        previousState,
+        newState: updatedEx
+      });
+
+      res.json({ success: true, exercise: updatedEx });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.delete("/api/admin/catalogue/exercise/:id", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
+    try {
+      const { id } = req.params;
+      const adminEmail = req.user?.email || 'admin';
+      const docRef = adminDb.collection('gym_exercises').doc(id);
+      const existingSnap = await docRef.get();
+      const previousState = existingSnap.exists ? existingSnap.data() : null;
+
+      await docRef.delete();
+
+      await recordRevision({
+        version: (previousState?.revision || 0) + 1,
+        entityType: 'exercise',
+        entityId: id,
+        action: 'delete',
+        changedBy: adminEmail,
+        changeSummary: `Xóa bài tập: ${previousState?.name || id}`,
+        previousState,
+        newState: null
+      });
+
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // 6. Admin Staff Verification & Audit Signing Endpoint
+  app.post("/api/admin/catalogue/verify", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
+    try {
+      const { entityType, entityId, verified, reviewStatus, notes } = req.body;
+      if (!entityType || !entityId) {
+        return res.status(400).json({ error: "Missing entityType or entityId" });
+      }
+
+      const collectionName = 
+        entityType === 'zone' ? 'gym_zones' :
+        entityType === 'equipment' ? 'gym_equipment' :
+        entityType === 'exercise' ? 'gym_exercises' : null;
+
+      if (!collectionName) {
+        return res.status(400).json({ error: "Invalid entityType" });
+      }
+
+      const adminEmail = req.user?.email || 'trainer';
+      const docRef = adminDb.collection(collectionName).doc(entityId);
+      const snap = await docRef.get();
+      if (!snap.exists) {
+        return res.status(404).json({ error: "Entity not found" });
+      }
+
+      const prev = snap.data();
+      const isApproved = verified === true && reviewStatus === 'verified';
+      const newRevStatus = reviewStatus || (isApproved ? 'verified' : 'needs_review');
+
+      const updatedPayload: any = {
+        verified: isApproved,
+        reviewStatus: newRevStatus,
+        SAMPLE_DATA_ONLY: false, // Once staff explicitly reviews and signs, it is no longer sample placeholder
+        verifiedBy: isApproved ? adminEmail : (prev?.verifiedBy || null),
+        verifiedAt: isApproved ? new Date().toISOString() : (prev?.verifiedAt || null),
+        revision: (prev?.revision || 0) + 1,
+        updatedAt: new Date().toISOString()
+      };
+
+      await docRef.set(updatedPayload, { merge: true });
+
+      await recordRevision({
+        version: updatedPayload.revision,
+        entityType,
+        entityId,
+        action: isApproved ? 'verify' : (newRevStatus === 'rejected' ? 'reject' : 'update'),
+        changedBy: adminEmail,
+        changeSummary: isApproved 
+          ? `HLV/Quản lý (${adminEmail}) ĐÃ PHÊ DUYỆT XÁC THỰC: ${prev?.name || entityId}` 
+          : `Cập nhật trạng thái duyệt (${newRevStatus}): ${prev?.name || entityId}${notes ? ` - Ghi chú: ${notes}` : ''}`,
+        previousState: prev,
+        newState: { ...prev, ...updatedPayload }
+      });
+
+      res.json({ success: true, updated: { ...prev, ...updatedPayload } });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // 7. Get Revisions History
+  app.get("/api/admin/catalogue/revisions", requireAuth, requireAdmin, async (req: AuthRequest, res) => {
+    try {
+      const snap = await adminDb.collection('gym_catalogue_revisions').orderBy('timestamp', 'desc').limit(100).get();
+      const revisions: any[] = [];
+      snap.forEach(d => revisions.push({ id: d.id, ...d.data() }));
+      res.json({ success: true, revisions });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }

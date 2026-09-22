@@ -240,3 +240,6 @@ export interface MemberProgressEntry {
   createdAt: string;
 }
 
+// ================= SHINE COMPANION KNOWLEDGE DOMAIN =================
+export * from './types/companion';
+

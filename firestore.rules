@@ -145,6 +145,29 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    // 15. Khu vực phòng tập (Gym Zones - Public / Member Read-only)
+    match /gym_zones/{zoneId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // 16. Thiết bị & Máy tập (Gym Equipment - Public / Member Read-only)
+    match /gym_equipment/{equipmentId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // 17. Danh mục bài tập (Gym Exercises - Public / Member Read-only)
+    match /gym_exercises/{exerciseId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // 18. Lịch sử kiểm duyệt danh mục (Gym Catalogue Revisions - Server only)
+    match /gym_catalogue_revisions/{revId} {
+      allow read, write: if false;
+    }
+
     // Wildcard mặc định: Từ chối tất cả các collection chưa được khai báo rõ
     match /{document=**} {
       allow read, write: if false;

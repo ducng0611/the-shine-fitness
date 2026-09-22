@@ -174,6 +174,75 @@
         "status": { "type": "string" }
       },
       "required": ["id", "createdAt", "sessionId", "tag", "status"]
+    },
+    "GymZone": {
+      "title": "GymZone",
+      "description": "Physical zones and areas at The Shine Fitness facility",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "floor": { "type": "string" },
+        "reviewStatus": { "type": "string", "enum": ["draft", "needs_review", "verified", "rejected"] },
+        "verified": { "type": "boolean" },
+        "revision": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "floor", "reviewStatus", "verified"]
+    },
+    "GymEquipment": {
+      "title": "GymEquipment",
+      "description": "Physical gym machines and equipment stations at The Shine Fitness",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "zoneId": { "type": "string" },
+        "category": { "type": "string" },
+        "operationalStatus": { "type": "string" },
+        "isFunctional": { "type": "boolean" },
+        "reviewStatus": { "type": "string", "enum": ["draft", "needs_review", "verified", "rejected"] },
+        "verified": { "type": "boolean" },
+        "revision": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "zoneId", "category", "operationalStatus", "isFunctional", "reviewStatus", "verified"]
+    },
+    "GymExercise": {
+      "title": "GymExercise",
+      "description": "Trainer-approved exercise catalogue mapped to The Shine equipment",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "primaryMuscle": { "type": "string" },
+        "difficulty": { "type": "string" },
+        "reviewStatus": { "type": "string", "enum": ["draft", "needs_review", "verified", "rejected"] },
+        "verified": { "type": "boolean" },
+        "revision": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "category", "primaryMuscle", "difficulty", "reviewStatus", "verified"]
+    },
+    "GymCatalogueRevision": {
+      "title": "GymCatalogueRevision",
+      "description": "Audit trail and revision log for gym catalogue modifications",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "version": { "type": "number" },
+        "entityType": { "type": "string" },
+        "entityId": { "type": "string" },
+        "action": { "type": "string" },
+        "changedBy": { "type": "string" },
+        "changeSummary": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "version", "entityType", "entityId", "action", "changedBy", "changeSummary", "timestamp"]
     }
   },
   "firestore": {
@@ -232,6 +301,22 @@
     "/handover_queue/{handoverId}": {
       "schema": "#/entities/HandoverQueue",
       "description": "Consultant handover queue tickets"
+    },
+    "/gym_zones/{zoneId}": {
+      "schema": "#/entities/GymZone",
+      "description": "Physical zones in the facility"
+    },
+    "/gym_equipment/{equipmentId}": {
+      "schema": "#/entities/GymEquipment",
+      "description": "Gym equipment and machine stations"
+    },
+    "/gym_exercises/{exerciseId}": {
+      "schema": "#/entities/GymExercise",
+      "description": "Trainer-approved exercises catalogue"
+    },
+    "/gym_catalogue_revisions/{revId}": {
+      "schema": "#/entities/GymCatalogueRevision",
+      "description": "Audit revisions of gym knowledge catalogue"
     }
   }
 }

@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "TheShineGymCatalogueTemplate",
+  "description": "Standardized schema template for importing and verifying The Shine Fitness equipment, zones, and exercise catalogue. Real company data must be reviewed and verified by authorized gym management before reaching Shine Companion workout recommendations.",
+  "version": 1,
+  "SAMPLE_DATA_ONLY": true,
+  "lastUpdated": "2026-09-21T00:00:00.000Z",
+  "zones": [
+    {
+      "id": "zone_sample_floor2_freeweights",
+      "name": "Khu Vực Tạ Tự Do (Free Weights)",
+      "nameEn": "Free Weights Zone",
+      "floor": "floor2",
+      "description": "Khu vực tập luyện tạ đơn, tạ đòn, ghế dốc và khung squat.",
+      "landmark": "Nằm ở cánh trái Tầng 2, cạnh cửa sổ hướng mặt tiền Hoàng Hoa Thám.",
+      "directionsFromReception": "Từ Lễ Tân Tầng 1, đi cầu thang bộ lên Tầng 2, rẽ trái đi thẳng 10m.",
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "SAMPLE_DATA_ONLY": true,
+      "createdAt": "2026-09-21T00:00:00.000Z",
+      "updatedAt": "2026-09-21T00:00:00.000Z"
+    },
+    {
+      "id": "zone_sample_floor2_machines",
+      "name": "Khu Máy Kháng Lực (Pin & Plate Loaded)",
+      "nameEn": "Machine & Selectorized Zone",
+      "floor": "floor2",
+      "description": "Khu vực bố trí các máy tập chuyên biệt cho từng nhóm cơ.",
+      "landmark": "Trung tâm Tầng 2.",
+      "directionsFromReception": "Từ Lễ Tân Tầng 1, lên Tầng 2, đi thẳng vào giữa sảnh tập.",
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "SAMPLE_DATA_ONLY": true,
+      "createdAt": "2026-09-21T00:00:00.000Z",
+      "updatedAt": "2026-09-21T00:00:00.000Z"
+    }
+  ],
+  "equipment": [
+    {
+      "id": "eq_sample_lat_pulldown_01",
+      "name": "Máy Kéo Xô (Lat Pulldown Machine)",
+      "nameEn": "Lat Pulldown Machine",
+      "modelNumber": "SAMPLE-LAT-2024",
+      "brand": "CẦN XÁC THỰC TỪ BỘ PHẬN CƠ SỞ",
+      "zoneId": "zone_sample_floor2_machines",
+      "zoneName": "Khu Máy Kháng Lực (Pin & Plate Loaded)",
+      "floor": "floor2",
+      "category": "selectorized_machine",
+      "operationalStatus": "unverified",
+      "isFunctional": true,
+      "primaryMuscleGroups": ["Lưng", "Xô"],
+      "secondaryMuscleGroups": ["Tay trước", "Cơ trám"],
+      "contraindications": ["Chấn thương khớp vai cấp tính"],
+      "safetyNotes": "Căn chỉnh đệm đùi ôm sát chân, không ngả lưng quá 30 độ khi kéo.",
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "SAMPLE_DATA_ONLY": true,
+      "createdAt": "2026-09-21T00:00:00.000Z",
+      "updatedAt": "2026-09-21T00:00:00.000Z"
+    }
+  ],
+  "exercises": [
+    {
+      "id": "ex_sample_lat_pulldown_wide",
+      "name": "Kéo Xô Rộng Tay Trên Máy (Wide-Grip Lat Pulldown)",
+      "nameEn": "Wide-Grip Lat Pulldown",
+      "aliases": ["Kéo xô máy", "Lat pulldown"],
+      "category": "Lưng",
+      "targetMuscles": ["Cơ lưng rộng (Latissimus Dorsi)", "Cơ tròn lớn (Teres Major)"],
+      "primaryMuscle": "Lưng",
+      "secondaryMuscles": ["Tay trước (Biceps)", "Cơ trám (Rhomboids)"],
+      "requiredEquipmentIds": ["eq_sample_lat_pulldown_01"],
+      "optionalEquipmentIds": [],
+      "difficulty": "beginner",
+      "movementPattern": "pull",
+      "instructions": [
+        "1. Ngồi vào ghế, điều chỉnh đệm đùi cố định chắc chắn.",
+        "2. Hai tay nắm thanh xà rộng hơn vai khoảng 1.5 lần, lòng bàn tay hướng về phía trước.",
+        "3. Ngực ưỡn nhẹ, kéo thanh đòn xuống ngang cằm/ngực trên, ép chặt 2 xương bả vai.",
+        "4. Từ từ thả tay có kiểm soát về vị trí ban đầu trong 2-3 giây."
+      ],
+      "trainerCues": [
+        "Tưởng tượng kéo cùi chỏ về phía túi quần sau.",
+        "Giữ lưng thẳng, không dùng quán tính giật người."
+      ],
+      "contraindications": ["Đau khớp vai", "Trật khớp vai chưa phục hồi"],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "SAMPLE_DATA_ONLY": true,
+      "createdAt": "2026-09-21T00:00:00.000Z",
+      "updatedAt": "2026-09-21T00:00:00.000Z"
+    }
+  ]
+}

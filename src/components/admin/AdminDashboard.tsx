@@ -26,7 +26,8 @@ import {
   TrendingUp,
   Menu,
   X,
-  MessageSquare
+  MessageSquare,
+  Dumbbell
 } from 'lucide-react';
 import { 
   AdminUser, 
@@ -68,6 +69,7 @@ import { AdminPackagesTab } from './AdminPackagesTab';
 import { AdminPromotionsTab } from './AdminPromotionsTab';
 import { AdminEmailFlowsTab } from './AdminEmailFlowsTab';
 import { AdminRbacTab } from './AdminRbacTab';
+import { AdminGymKnowledgeTab } from './AdminGymKnowledgeTab';
 import { 
   EditCustomerModal, 
   NewCustomerModal, 
@@ -83,7 +85,7 @@ interface AdminDashboardProps {
   onExitAdmin: () => void;
 }
 
-type DashboardTab = 'overview' | 'analytics' | 'chat_analytics' | 'customers' | 'customer_journey' | 'pk_segments' | 'packages' | 'promotions' | 'email_flows' | 'rbac';
+type DashboardTab = 'overview' | 'analytics' | 'chat_analytics' | 'customers' | 'customer_journey' | 'pk_segments' | 'packages' | 'promotions' | 'gym_knowledge' | 'email_flows' | 'rbac';
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   currentAdmin,
@@ -505,6 +507,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             ]
           },
           {
+            id: 'companion',
+            name: 'Hạ Tầng & Companion',
+            icon: Dumbbell,
+            badge: null,
+            items: [
+              { id: 'gym_knowledge' as DashboardTab, label: 'Hạ tầng phòng tập', sublabel: 'Zones, máy tập & bài tập AI', icon: Dumbbell, badge: null },
+            ]
+          },
+          {
             id: 'marketing',
             name: 'Marketing & AI',
             icon: Mail,
@@ -903,6 +914,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             onDeletePromotion={handleDeletePromotionClick}
             onSendToEmailFlow={handleSendPromoToEmailFlow}
             onToast={showToast}
+          />
+        )}
+
+        {activeTab === 'gym_knowledge' && (
+          <AdminGymKnowledgeTab
+            currentAdminEmail={currentAdmin.email}
+            showToast={showToast}
           />
         )}
 

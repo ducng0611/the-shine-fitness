@@ -1834,4 +1834,223 @@ export async function deleteMemberProgressFromFirebase(id: string): Promise<bool
   }
 }
 
+// ================= GYM KNOWLEDGE & CATALOGUE FIRESTORE SERVICES =================
+
+import {
+  GymZone,
+  GymEquipment,
+  ExerciseCatalogueEntry,
+  CatalogueRevision
+} from '../types/companion';
+import {
+  filterVerifiedZones,
+  filterVerifiedEquipment,
+  filterVerifiedExercises
+} from './companion/catalogueGuard';
+
+export async function getGymZonesFromFirebase(): Promise<GymZone[]> {
+  try {
+    const colRef = collection(db, 'gym_zones');
+    const snap = await getDocs(colRef);
+    const zones: GymZone[] = [];
+    snap.forEach(docSnap => {
+      zones.push({ id: docSnap.id, ...docSnap.data() } as GymZone);
+    });
+    return zones;
+  } catch (error) {
+    console.warn('Error fetching gym zones from Firestore:', error);
+    return [];
+  }
+}
+
+export async function saveGymZoneToFirebase(zone: GymZone): Promise<boolean> {
+  try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch('/api/admin/catalogue/zone', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(zone)
+      });
+      if (res.ok) return true;
+    }
+    const docRef = doc(db, 'gym_zones', zone.id);
+    await setDoc(docRef, {
+      ...zone,
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+    return true;
+  } catch (error) {
+    console.error('Error saving gym zone to Firestore:', error);
+    return false;
+  }
+}
+
+export async function deleteGymZoneFromFirebase(id: string): Promise<boolean> {
+  try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch(`/api/admin/catalogue/zone/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) return true;
+    }
+    await deleteDoc(doc(db, 'gym_zones', id));
+    return true;
+  } catch (error) {
+    console.error('Error deleting gym zone:', error);
+    return false;
+  }
+}
+
+export async function getGymEquipmentFromFirebase(): Promise<GymEquipment[]> {
+  try {
+    const colRef = collection(db, 'gym_equipment');
+    const snap = await getDocs(colRef);
+    const equipment: GymEquipment[] = [];
+    snap.forEach(docSnap => {
+      equipment.push({ id: docSnap.id, ...docSnap.data() } as GymEquipment);
+    });
+    return equipment;
+  } catch (error) {
+    console.warn('Error fetching gym equipment from Firestore:', error);
+    return [];
+  }
+}
+
+export async function saveGymEquipmentToFirebase(item: GymEquipment): Promise<boolean> {
+  try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch('/api/admin/catalogue/equipment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(item)
+      });
+      if (res.ok) return true;
+    }
+    const docRef = doc(db, 'gym_equipment', item.id);
+    await setDoc(docRef, {
+      ...item,
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+    return true;
+  } catch (error) {
+    console.error('Error saving gym equipment to Firestore:', error);
+    return false;
+  }
+}
+
+export async function deleteGymEquipmentFromFirebase(id: string): Promise<boolean> {
+  try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch(`/api/admin/catalogue/equipment/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) return true;
+    }
+    await deleteDoc(doc(db, 'gym_equipment', id));
+    return true;
+  } catch (error) {
+    console.error('Error deleting gym equipment:', error);
+    return false;
+  }
+}
+
+export async function getGymExercisesFromFirebase(): Promise<ExerciseCatalogueEntry[]> {
+  try {
+    const colRef = collection(db, 'gym_exercises');
+    const snap = await getDocs(colRef);
+    const exercises: ExerciseCatalogueEntry[] = [];
+    snap.forEach(docSnap => {
+      exercises.push({ id: docSnap.id, ...docSnap.data() } as ExerciseCatalogueEntry);
+    });
+    return exercises;
+  } catch (error) {
+    console.warn('Error fetching exercises from Firestore:', error);
+    return [];
+  }
+}
+
+export async function saveGymExerciseToFirebase(exercise: ExerciseCatalogueEntry): Promise<boolean> {
+  try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch('/api/admin/catalogue/exercise', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(exercise)
+      });
+      if (res.ok) return true;
+    }
+    const docRef = doc(db, 'gym_exercises', exercise.id);
+    await setDoc(docRef, {
+      ...exercise,
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+    return true;
+  } catch (error) {
+    console.error('Error saving exercise to Firestore:', error);
+    return false;
+  }
+}
+
+export async function deleteGymExerciseFromFirebase(id: string): Promise<boolean> {
+  try {
+    const token = await auth.currentUser?.getIdToken();
+    if (token) {
+      const res = await fetch(`/api/admin/catalogue/exercise/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) return true;
+    }
+    await deleteDoc(doc(db, 'gym_exercises', id));
+    return true;
+  } catch (error) {
+    console.error('Error deleting exercise:', error);
+    return false;
+  }
+}
+
+export async function getCatalogueRevisionsFromFirebase(): Promise<CatalogueRevision[]> {
+  try {
+    const colRef = collection(db, 'gym_catalogue_revisions');
+    const snap = await getDocs(colRef);
+    const revs: CatalogueRevision[] = [];
+    snap.forEach(docSnap => {
+      revs.push({ id: docSnap.id, ...docSnap.data() } as CatalogueRevision);
+    });
+    return revs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  } catch (error) {
+    console.warn('Error fetching catalogue revisions:', error);
+    return [];
+  }
+}
+
+export async function getStrictlyVerifiedCatalogueFromFirebase(): Promise<{
+  zones: GymZone[];
+  equipment: GymEquipment[];
+  exercises: ExerciseCatalogueEntry[];
+}> {
+  const [allZones, allEquipment, allExercises] = await Promise.all([
+    getGymZonesFromFirebase(),
+    getGymEquipmentFromFirebase(),
+    getGymExercisesFromFirebase()
+  ]);
+
+  const verifiedZones = filterVerifiedZones(allZones);
+  const verifiedEquipment = filterVerifiedEquipment(allEquipment);
+  const verifiedExercises = filterVerifiedExercises(allExercises, verifiedEquipment);
+
+  return {
+    zones: verifiedZones,
+    equipment: verifiedEquipment,
+    exercises: verifiedExercises
+  };
+}
+
 
