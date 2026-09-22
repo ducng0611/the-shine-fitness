@@ -1,0 +1,69 @@
+name: Fitness-flexibility knowledge verification
+on:
+  push:
+    branches: [feat/fitness-flexibility-program]
+    paths:
+      - 'shared/programSafety.ts'
+      - 'shared/ragDocument.ts'
+      - 'shared/trainingPrograms.ts'
+      - 'server/src/**'
+      - 'scripts/**'
+      - 'tests/fitness-flexibility.test.ts'
+      - 'data/knowledge/08_program_fitness_flexibility.md'
+      - 'data/companion/training_programs.json'
+      - '.github/workflows/fitness-flexibility.yml'
+  pull_request:
+    paths:
+      - 'shared/**'
+      - 'server/src/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'data/knowledge/**'
+      - 'data/companion/training_programs.json'
+      - '.github/workflows/fitness-flexibility.yml'
+permissions:
+  contents: read
+concurrency:
+  group: fitness-flexibility-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Source fidelity, routing, RAG isolation and merge tests
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p test-results/fitness-flexibility
+          node --import tsx --test tests/fitness-flexibility.test.ts | tee test-results/fitness-flexibility/tests.tap
+      - name: Validate JSON references and real chunk boundaries
+        run: npx --no-install tsx scripts/validate-fitness-flexibility.ts --report
+      - name: Validate repository RAG sources without embeddings or index writes
+        run: npm run build:index -- --check
+      - name: Regression for training and source intake
+        run: |
+          npm run test:training
+          node --import tsx --test tests/pathways/domain.test.ts tests/pathways/router.test.ts tests/gym-assets.test.ts
+      - name: Strict and full-project type checks
+        run: |
+          npm run typecheck:training
+          npx --no-install tsc -p tsconfig.pathways.json --noEmit
+          npm run lint
+      - name: Frontend and backend production compilation
+        run: npm run build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fitness-flexibility-verification
+          path: test-results/fitness-flexibility
+          retention-days: 7
+          if-no-files-found: warn
