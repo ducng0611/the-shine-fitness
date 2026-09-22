@@ -1,0 +1,52 @@
+name: Step 3 baseline verification
+on:
+  push:
+    branches: [feat/member-memory-adaptive-workout]
+    paths: [.github/workflows/step3-baseline.yml]
+permissions:
+  contents: read
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Code-only source snapshot (no business data or credentials)
+        run: |
+          python3 - <<'PY'
+          import pathlib, tarfile
+          root = pathlib.Path('.')
+          allowed_dirs = ['src', 'server', 'scripts', 'tests']
+          allowed_files = ['package.json', 'package-lock.json', 'tsconfig.json', 'vite.config.ts', 'index.html', 'firestore.rules', 'firebase.json', 'firebase-applet-config.json', 'metadata.json', '.gitignore']
+          with tarfile.open('step3-source.tar.gz', 'w:gz') as out:
+              for folder in allowed_dirs:
+                  if pathlib.Path(folder).exists():
+                      for f in pathlib.Path(folder).rglob('*'):
+                          if f.is_file() and f.suffix in ['.ts', '.tsx', '.mjs', '.js', '.css', '.json']:
+                              out.add(f, arcname=str(f))
+              for name in allowed_files:
+                  if pathlib.Path(name).is_file(): out.add(name, arcname=name)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: step3-code-baseline
+          path: step3-source.tar.gz
+          retention-days: 2
+      - name: Install existing dependencies
+        run: npm ci --ignore-scripts
+      - name: Baseline type check
+        run: npm run lint
+      - name: Baseline build
+        run: npm run build
+      - name: Package installed public dependencies for offline tests
+        run: tar -czf step3-dependencies.tar.gz node_modules
+      - uses: actions/upload-artifact@v4
+        with:
+          name: step3-offline-dependencies
+          path: step3-dependencies.tar.gz
+          retention-days: 2
