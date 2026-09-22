@@ -26,8 +26,8 @@ export function ProfileForm({ profile, revision, lang, busy, onSave }: { profile
       <div className="training-grid">
         <label>{t('nickname')}<input name="nickname" defaultValue={profile?.nickname ?? ''} required maxLength={60} autoComplete="nickname" /></label>
         <label>{t('age')}<input name="age" type="number" min={18} max={100} step={1} defaultValue={profile?.age ?? ''} required /></label>
-        <label>{t('goal')}<select name="goal" defaultValue={profile?.goal ?? ''} required><option value="">{t('select')}</option>{TRAINING_GOALS.map(g => <option key={g} value={g}>{t(g)}</option>)}</select></label>
-        <label>{t('experience')}<select name="experience" defaultValue={profile?.experience ?? ''} required><option value="">{t('select')}</option>{EXPERIENCE_LEVELS.map(g => <option key={g} value={g}>{t(g)}</option>)}</select></label>
+        <label>{t('goal')}<select name="goal" aria-label={t('goal')} defaultValue={profile?.goal ?? ''} required><option value="">{t('select')}</option>{TRAINING_GOALS.map(g => <option key={g} value={g}>{t(g)}</option>)}</select></label>
+        <label>{t('experience')}<select name="experience" aria-label={t('experience')} defaultValue={profile?.experience ?? ''} required><option value="">{t('select')}</option>{EXPERIENCE_LEVELS.map(g => <option key={g} value={g}>{t(g)}</option>)}</select></label>
         <label>{t('minutes')}<input name="preferredMinutes" type="number" min={10} max={120} step={1} defaultValue={profile?.preferredMinutes ?? 35} required /></label>
         <label>{t('timezone')}<input name="timezone" maxLength={80} defaultValue={profile?.timezone ?? Intl.DateTimeFormat().resolvedOptions().timeZone ?? 'Asia/Ho_Chi_Minh'} required /></label>
         <label>{t('height')}<input name="heightCm" type="number" min={100} max={250} step="any" defaultValue={profile?.heightCm ?? ''} /></label>
@@ -35,8 +35,8 @@ export function ProfileForm({ profile, revision, lang, busy, onSave }: { profile
       </div>
       <fieldset><legend>{t('preferences')}</legend><div className="training-pills">{MUSCLE_GROUPS.map(g => <label className="training-check" key={g}><input name="preferences" type="checkbox" value={g} defaultChecked={profile?.preferences.includes(g)} />{t(g)}</label>)}</div></fieldset>
       <label>{t('avoid')}<input name="avoidedExerciseIds" maxLength={1200} defaultValue={profile?.avoidedExerciseIds.join(', ') ?? ''} /></label>
-      <label>{t('health')}<select name="health" defaultValue={profile ? String(profile.healthReviewNeeded) : ''} required><option value="">{t('select')}</option><option value="false">{t('no')}</option><option value="true">{t('yes')}</option></select></label>
-      <label>{t('style')}<select name="style" defaultValue={profile?.style ?? 'gentle'}>{['gentle', 'energetic', 'direct'].map(s => <option value={s} key={s}>{t(s)}</option>)}</select></label>
+      <label>{t('health')}<select name="health" aria-label={t('health')} defaultValue={profile ? String(profile.healthReviewNeeded) : ''} required><option value="">{t('select')}</option><option value="false">{t('no')}</option><option value="true">{t('yes')}</option></select></label>
+      <label>{t('style')}<select name="style" aria-label={t('style')} defaultValue={profile?.style ?? 'gentle'}>{['gentle', 'energetic', 'direct'].map(s => <option value={s} key={s}>{t(s)}</option>)}</select></label>
       <label className="training-check"><input name="legacy" type="checkbox" defaultChecked={profile?.includeLegacyHistory ?? false} />{t('legacy')}</label>
       <label className="training-check"><input name="adult" type="checkbox" required defaultChecked={profile?.adultConfirmed ?? false} />{t('adult')}</label>
       <label className="training-check"><input name="consent" type="checkbox" required defaultChecked={profile?.consent ?? false} />{t('consent')}</label>
@@ -53,9 +53,9 @@ export function ReadinessForm({ draft, setDraft, onPlan, lang, busy }: { draft: 
     <fieldset disabled={busy} className="training-stack"><legend>{t('readiness')}</legend>
       <div className="training-grid">
         <label>{t('minutes')}<input type="number" required min={10} max={120} step={1} value={draft.minutes} onChange={e => set('minutes', e.target.value)} /></label>
-        <label>{t('energy')}<select required value={draft.energy} onChange={e => set('energy', e.target.value)}><option value="">{t('select')}</option>{[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n}</option>)}</select></label>
+        <label>{t('energy')}<select aria-label={t('energy')} required value={draft.energy} onChange={e => set('energy', e.target.value)}><option value="">{t('select')}</option>{[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n}</option>)}</select></label>
       </div>
-      <label>{t('pain')}<select required value={draft.pain} onChange={e => set('pain', e.target.value)}><option value="">{t('select')}</option><option value="false">{t('no')}</option><option value="true">{t('yes')}</option></select></label>
+      <label>{t('pain')}<select aria-label={t('pain')} required value={draft.pain} onChange={e => set('pain', e.target.value)}><option value="">{t('select')}</option><option value="false">{t('no')}</option><option value="true">{t('yes')}</option></select></label>
       {(['soreness', 'desired'] as const).map(field => <fieldset key={field}><legend>{t(field === 'soreness' ? 'sore' : 'desired')}</legend><div className="training-pills">{MUSCLE_GROUPS.map(g => <label className="training-check" key={g}><input type="checkbox" checked={draft[field].includes(g)} onChange={() => toggle(field, g)} />{t(g)}</label>)}</div></fieldset>)}
       <label>{t('blocked')}<input maxLength={1200} value={draft.blocked} onChange={e => set('blocked', e.target.value)} /></label>
       <label className="training-check"><input type="checkbox" checked={draft.gymOnly} onChange={e => set('gymOnly', e.target.checked)} />{t('gymOnly')}</label>
