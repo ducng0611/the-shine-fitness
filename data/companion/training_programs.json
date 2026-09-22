@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": 1,
+  "version": 2,
   "status": "needs_review",
   "description": "Nguồn lộ trình đang chờ kiểm tra, không được nạp như giáo án đang hoạt động.",
   "programs": [
@@ -501,7 +501,7 @@
                 "load": {
                   "raw": "4",
                   "kind": "machine_marker_as_supplied",
-                  "value": 4.0,
+                  "value": 4,
                   "unit": null
                 },
                 "restSeconds": 80,
@@ -523,7 +523,7 @@
                 "load": {
                   "raw": "4",
                   "kind": "machine_marker_as_supplied",
-                  "value": 4.0,
+                  "value": 4,
                   "unit": null
                 },
                 "restSeconds": null,
@@ -545,7 +545,7 @@
                 "load": {
                   "raw": "10",
                   "kind": "machine_marker_as_supplied",
-                  "value": 10.0,
+                  "value": 10,
                   "unit": null
                 },
                 "restSeconds": 80,
@@ -621,7 +621,7 @@
                 "durationSeconds": 900,
                 "treadmillSpeed": {
                   "raw": "4.0",
-                  "value": 4.0,
+                  "value": 4,
                   "unit": null
                 },
                 "sourceStatus": "user_transcription"
@@ -700,7 +700,7 @@
                 "load": {
                   "raw": "4",
                   "kind": "machine_marker_as_supplied",
-                  "value": 4.0,
+                  "value": 4,
                   "unit": null
                 },
                 "restSeconds": 70,
@@ -722,7 +722,7 @@
                 "load": {
                   "raw": "4",
                   "kind": "machine_marker_as_supplied",
-                  "value": 4.0,
+                  "value": 4,
                   "unit": null
                 },
                 "restSeconds": null,
@@ -746,7 +746,7 @@
                 "load": {
                   "raw": "10",
                   "kind": "machine_marker_as_supplied",
-                  "value": 10.0,
+                  "value": 10,
                   "unit": null
                 },
                 "restSeconds": 80,
@@ -768,7 +768,7 @@
                 "load": {
                   "raw": "10",
                   "kind": "machine_marker_as_supplied",
-                  "value": 10.0,
+                  "value": 10,
                   "unit": null
                 },
                 "restSeconds": null,
@@ -921,7 +921,7 @@
                 "load": {
                   "raw": "3",
                   "kind": "machine_marker_as_supplied",
-                  "value": 3.0,
+                  "value": 3,
                   "unit": null
                 },
                 "restSeconds": null,
@@ -989,7 +989,7 @@
                 "load": {
                   "raw": "5",
                   "kind": "machine_marker_as_supplied",
-                  "value": 5.0,
+                  "value": 5,
                   "unit": null
                 },
                 "restSeconds": 80,
@@ -1011,7 +1011,7 @@
                 "load": {
                   "raw": "5",
                   "kind": "machine_marker_as_supplied",
-                  "value": 5.0,
+                  "value": 5,
                   "unit": null
                 },
                 "restSeconds": null,
@@ -1033,7 +1033,7 @@
                 "load": {
                   "raw": "5",
                   "kind": "machine_marker_as_supplied",
-                  "value": 5.0,
+                  "value": 5,
                   "unit": null
                 },
                 "restSeconds": 80,
@@ -1109,7 +1109,7 @@
                 "durationSeconds": 1200,
                 "treadmillSpeed": {
                   "raw": "4.0",
-                  "value": 4.0,
+                  "value": 4,
                   "unit": null
                 },
                 "sourceStatus": "user_transcription"
@@ -1403,6 +1403,2283 @@
         "quoteFrom": "data/knowledge/01_pricing.md",
         "note": "30 buổi là gói trong nguồn, không chứng minh gói đang bán."
       }
+    },
+    {
+      "id": "prog_weight_gain_pt50",
+      "name": "Lộ trình tăng cân - tăng khối cơ nạc (tham chiếu PT 1:1, 50 buổi)",
+      "nameEn": "Lean Weight Gain Program (1:1 PT, 50-session reference)",
+      "goal": "WEIGHT_GAIN",
+      "goalAliases": [
+        "tăng cân",
+        "tăng cơ",
+        "gầy muốn tăng cân",
+        "cải thiện vóc dáng",
+        "lean bulk"
+      ],
+      "targetProfile": {
+        "primaryAudience": "Nguồn tham chiếu khách nữ trưởng thành, 21 tuổi; không tự xem là mẫu phù hợp cho người khác.",
+        "bmiRange": null,
+        "bmiRangeRequested": "Dưới 20.0, chưa duyệt làm điều kiện chọn mẫu",
+        "experienceLevel": null,
+        "containsMinors": false,
+        "minimumAgeForAutomatedAssessment": 18,
+        "recommendedFrequencyPerWeek": null,
+        "sourceReportedFrequencyPerWeek": 3,
+        "sessionPattern": "Nguồn nói tập cách ngày. Các ngày được cung cấp chưa đủ xác minh toàn bộ lịch.",
+        "totalSessions": 50,
+        "estimatedDurationWeeks": null,
+        "durationProposal": {
+          "weeks": 17,
+          "basis": "50/3 xấp xỉ 16.67 tuần, phép tính từ tần suất khai báo, không phải thời hạn thực tế hoặc cam kết."
+        },
+        "privateProfileStoredInPublicRepo": false
+      },
+      "scientificPrinciples": {
+        "status": "needs_review",
+        "sourceOfParameters": "Yêu cầu của người dùng, không phải ghi chép chỉ định trong năm giáo án.",
+        "calorieSurplusKcalPerDay": null,
+        "targetWeightGainKgPerWeek": null,
+        "proteinGramPerKgBodyweight": null,
+        "hypertrophyRepRange": null,
+        "reserveInReps": null,
+        "referenceStandards": [
+          "ACSM 2026, đối chiếu tổng quan",
+          "ISSN 2017, đối chiếu dinh dưỡng",
+          "NSCA được nêu trong yêu cầu; chưa có phê duyệt giáo án từ tổ chức này"
+        ],
+        "requestedParameters": {
+          "energy": "Thặng dư 250-500 kcal/ngày so với TDEE; tăng 0.25-0.5 kg/tuần.",
+          "fast_gain": "Tăng trên 1 kg/tuần thường là tích nước và tích mỡ.",
+          "volume": "10-20 set mỗi nhóm cơ/tuần; mỗi nhóm cơ kích thích 2 lần/tuần.",
+          "reps_effort": "6-15 lần, RIR 1-3.",
+          "rest": "Bài lớn nghỉ 60-90 giây.",
+          "progression": "Kỹ thuật, số lần rồi tải; tăng 2.5-5% sau 2 buổi liên tiếp đạt số lần.",
+          "cardio": "Chỉ 10-15 phút, 4.0-5.0 km/h sau kháng lực; không HIIT, không chạy bền trên 20 phút.",
+          "sleep": "Ngủ 7-9 tiếng.",
+          "recovery": "Nghỉ tối thiểu 48 giờ giữa hai buổi cùng nhóm cơ lớn.",
+          "deload": "Deload mỗi 6-8 tuần, giảm 40-50% khối lượng.",
+          "protein": "Đạm 1.6-2.2 g/kg/ngày; 4-5 bữa, 20-40 g/bữa.",
+          "carb_fat_water": "Tinh bột 4-7 g/kg; chất béo 0.8-1.2 g/kg; nước 35-40 ml/kg.",
+          "meal_strategy": "Tăng mật độ năng lượng, đồ uống giàu năng lượng, 5-6 bữa nhỏ; trước tập 1.5-2 giờ, sau tập trong 2 giờ; không bỏ bữa sáng.",
+          "bmi": "Nhóm BMI dưới 20 tự động phù hợp; hồ sơ BMI khoảng 18.7 là thấp."
+        },
+        "reviewFile": "data/training-pathways/weight-gain/scientific-claims.review.json",
+        "automaticCalculationAllowed": false,
+        "cardioPolicy": "Nguồn có 10-15 phút treadmill cuối buổi và treadmill khởi động buổi 13. Không suy lệnh cấm HIIT/chạy trên 20 phút cho mọi người."
+      },
+      "sessionStructure": [
+        {
+          "order": 1,
+          "block": "WARM_UP",
+          "blockNameVi": "Khởi động",
+          "note": "Buổi 1,2,3,12 ghi khởi động động; buổi 13 ghi treadmill, không có thời gian."
+        },
+        {
+          "order": 2,
+          "block": "CORE_TRAIN",
+          "blockNameVi": "Cơ lõi",
+          "note": "Có ghi ở 1,2,3,12; không ghi thành khối riêng ở 13."
+        },
+        {
+          "order": 3,
+          "block": "BALANCE",
+          "blockNameVi": "Thăng bằng",
+          "note": "Có ghi ở 1-3, không ghi thành khối riêng ở 12-13; không chứng minh khách đã hoàn thành một tiêu chí."
+        },
+        {
+          "order": 4,
+          "block": "RESISTANCE",
+          "blockNameVi": "Kháng lực",
+          "note": "Giữ thứ tự, ký hiệu tải và cặp liên hoàn ở 12-13."
+        },
+        {
+          "order": 5,
+          "block": "COOL_DOWN",
+          "blockNameVi": "Thả lỏng theo nhãn nguồn",
+          "note": "Giữ nguyên nhãn COOL DOWN; không diễn giải tốc độ hoặc cường độ thiếu."
+        }
+      ],
+      "phases": [
+        {
+          "id": "phase_wg_01_foundation",
+          "order": 1,
+          "name": "Nền tảng kiểm soát vận động",
+          "sessionRange": "1-12",
+          "evidenceStatus": "proposed_framework",
+          "sourceSessionNumbers": [
+            1,
+            2,
+            3
+          ],
+          "note": "Phân kỳ do yêu cầu đề xuất, không phải giai đoạn đã được HLV xác nhận."
+        },
+        {
+          "id": "phase_wg_02_transition",
+          "order": 2,
+          "name": "Chuyển tiếp sang khối lượng và cặp liên hoàn",
+          "sessionRange": "13-26",
+          "transitionReferenceSessionNumbers": [
+            12,
+            13
+          ],
+          "evidenceStatus": "proposed_framework",
+          "note": "Buổi 12 là mốc tham chiếu chuyển tiếp theo yêu cầu, không đổi buổi 12 thành buổi 13. Chưa có nguồn 14-26."
+        },
+        {
+          "id": "phase_wg_03_progression",
+          "order": 3,
+          "name": "Định hướng tăng tiến tải trọng",
+          "sessionRange": "27-40",
+          "evidenceStatus": "proposal_only",
+          "sourceSessionNumbers": [],
+          "note": "Không tạo buổi, tải hoặc tỷ lệ tăng tự động."
+        },
+        {
+          "id": "phase_wg_04_maintenance",
+          "order": 4,
+          "name": "Định hướng củng cố và duy trì",
+          "sessionRange": "41-50",
+          "evidenceStatus": "proposal_only",
+          "sourceSessionNumbers": [],
+          "note": "Không khẳng định có thành quả nếu chưa có đo theo dõi."
+        }
+      ],
+      "progressTracking": [
+        {
+          "metric": "Cân nặng",
+          "frequency": "Hằng tuần theo yêu cầu",
+          "method": "Điều kiện đo nhất quán; sáng trước ăn là phương án ghi trong yêu cầu, không cần ép nhịn khi khó chịu.",
+          "goodRange": null,
+          "requestedRange": "0.25-0.5 kg/tuần, chưa duyệt cho cá nhân",
+          "alert": "Sụt cân không rõ nguyên nhân hoặc chán ăn kéo dài cần chuyển chuyên môn."
+        },
+        {
+          "metric": "Vòng tay và vòng đùi",
+          "frequency": "Mỗi 4 tuần theo đề xuất",
+          "method": "Cùng vị trí, thước và điều kiện đo.",
+          "goodRange": null,
+          "alert": "Không dùng thay cho đo khối cơ hoặc bằng chứng phì đại."
+        },
+        {
+          "metric": "Thành tích bài chính",
+          "frequency": "Sau buổi đã xác nhận",
+          "method": "Ghi dụng cụ, đơn vị, tải theo bên/tổng, số hiệp/lần và kỹ thuật.",
+          "goodRange": null,
+          "alert": "Không so ký hiệu máy khác nhau hoặc bỏ qua ô trống."
+        },
+        {
+          "metric": "Giấc ngủ",
+          "frequency": "Tự báo hằng ngày nếu đồng ý",
+          "method": "Ghi thời lượng và chất lượng, không tự chẩn đoán.",
+          "goodRange": null,
+          "alert": "Mệt mỏi kéo dài cần đánh giá."
+        },
+        {
+          "metric": "Đau cơ xuất hiện muộn",
+          "frequency": "Tự báo sau buổi",
+          "method": "Mức độ, vị trí và diễn tiến; không mặc định đau là tập hiệu quả.",
+          "goodRange": null,
+          "alert": "Đau bất thường hoặc chấn thương cần chuyên gia."
+        }
+      ],
+      "plateauProtocol": {
+        "status": "needs_review",
+        "steps": [
+          "Xác minh số đo và xu hướng thay vì một lần cân.",
+          "Hỏi lượng ăn thực tế, giấc ngủ, mức vận động và triệu chứng; không tính kcal cá nhân.",
+          "HLV và chuyên gia dinh dưỡng cân nhắc thay đổi phù hợp sau rà soát."
+        ],
+        "requestedConstraint": "Tuyệt đối không tăng thêm cardio.",
+        "scopeNote": "Giữ yêu cầu để review, không khẳng định là quy tắc y khoa chung. Chatbot không tự tăng cardio hay khối lượng để sửa chững cân."
+      },
+      "aiAssistantGuardrails": {
+        "allowed": [
+          "Mô tả nguồn và giới hạn.",
+          "Giải thích thay đổi quan sát được mà không khẳng định hiệu quả.",
+          "Hướng dẫn liên hệ bộ phận chuyên môn."
+        ],
+        "forbidden": [
+          "Tự kê giáo án từ hồ sơ lịch sử.",
+          "Tính TDEE/kcal, thực đơn hay liều thực phẩm bổ sung cho cá nhân.",
+          "Áp mẫu người lớn cho trẻ.",
+          "Đổi số tải máy thành kg.",
+          "Khôi phục định danh đã loại.",
+          "Tự xác nhận buổi hoàn thành hoặc mẫu đã duyệt."
+        ],
+        "handoverTag": "HEALTH_RISK",
+        "handoverTriggers": [
+          "bệnh lý nền",
+          "chấn thương đang điều trị",
+          "tiền sử phẫu thuật xương khớp",
+          "mang thai",
+          "cho con bú",
+          "thuốc dài hạn",
+          "dưới 18 tuổi",
+          "thực phẩm bổ sung",
+          "thuốc tăng cân",
+          "sụt cân không rõ nguyên nhân",
+          "chán ăn kéo dài",
+          "rối loạn ăn uống",
+          "bệnh tiêu hóa"
+        ]
+      },
+      "sourceIssues": [
+        {
+          "id": "wg_hip_abduction_load",
+          "status": "open",
+          "source": "A6, a2",
+          "note": "26 (chữ mờ, cần HLV xác nhận). Chỉ giữ candidateValue, không cho làm tải đã đọc chắc."
+        },
+        {
+          "id": "wg_side_kick_alias",
+          "status": "open",
+          "source": "A6, a1",
+          "note": "Side Kick rất có thể tương ứng Side Band Kick theo người dùng; tái sử dụng ID như liên kết đề xuất, chưa xác nhận có dây."
+        },
+        {
+          "id": "wg_single_d1",
+          "status": "open",
+          "source": "A6, d1",
+          "note": "Chỉ có Cross Crunch d1; không có d2. Không tự tạo cặp hoặc định lượng."
+        },
+        {
+          "id": "wg_ambiguous_load_units",
+          "status": "open",
+          "source": "A4/A6/A7",
+          "note": "Rear Delt Fly, Hip Thrust và Standing OH SD không xác định dụng cụ trong tên. Không suy kg."
+        },
+        {
+          "id": "wg_cable_row_comparison",
+          "status": "open",
+          "source": "A5/A6",
+          "note": "Nguồn: Cable Row 15 rồi 12.5, đều mức máy; diễn giải yêu cầu nói tăng tải và kg không được nguồn hỗ trợ."
+        },
+        {
+          "id": "wg_missing_middle",
+          "status": "open",
+          "source": "A3-A7",
+          "note": "Thiếu 4-11 và 14-50; không biết lần đầu superset xuất hiện, mức hồi phục hoặc kết quả thật."
+        },
+        {
+          "id": "wg_generalization",
+          "status": "open",
+          "source": "D1",
+          "note": "Phân kỳ, dinh dưỡng và giả thuyết động cơ HLV cần duyệt độc lập."
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "eligibleForPlanner": false,
+      "ragRetrievalAllowed": false,
+      "recordKind": "historical_program_reference",
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z",
+      "referenceSessions": [
+        {
+          "sessionNumber": 1,
+          "phaseId": "phase_wg_01_foundation",
+          "sourceSection": "A3",
+          "sessionType": "MIXED",
+          "fullBodyHeading": null,
+          "recordKind": "historical_plan",
+          "completionConfirmed": false,
+          "eligibleForPlanner": false,
+          "sourceNote": "Bản chép tự chứa do người dùng cung cấp; chưa đối chiếu ảnh gốc, chưa xác nhận kết quả thực hiện.",
+          "blocks": {
+            "WARM_UP": [
+              {
+                "sourceRowId": "wg_s1_r1",
+                "sourceSection": "A3",
+                "exerciseId": "ex_dynamic_warmup",
+                "sourceExerciseName": "Dynamic Warm Up",
+                "nameVi": "Khởi động động",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "CORE_TRAIN": [
+              {
+                "sourceRowId": "wg_s1_r2",
+                "sourceSection": "A3",
+                "exerciseId": "ex_bracing_core",
+                "sourceExerciseName": "Bracing Core",
+                "nameVi": "Kiểm soát gồng cơ lõi",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s1_r3",
+                "sourceSection": "A3",
+                "exerciseId": "ex_plank",
+                "sourceExerciseName": "Plank",
+                "nameVi": "Giữ tư thế Plank",
+                "volume": {
+                  "raw": "2 x 60s",
+                  "sets": 2,
+                  "repetitions": null,
+                  "holdSeconds": 60
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed"
+                },
+                "restRaw": "60",
+                "restSeconds": 60,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s1_r4",
+                "sourceSection": "A3",
+                "exerciseId": "ex_dead_bug",
+                "sourceExerciseName": "Dead Bug",
+                "nameVi": "Duỗi tay chân đối bên nằm ngửa",
+                "volume": {
+                  "raw": "2 x 12",
+                  "sets": 2,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "BALANCE": [
+              {
+                "sourceRowId": "wg_s1_r5",
+                "sourceSection": "A3",
+                "exerciseId": "ex_sl_step_box",
+                "sourceExerciseName": "SL Step Box",
+                "nameVi": "Bước bục một chân",
+                "volume": {
+                  "raw": "2 x 12",
+                  "sets": 2,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed"
+                },
+                "restRaw": "70",
+                "restSeconds": 70,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s1_r6",
+                "sourceSection": "A3",
+                "exerciseId": "ex_sa_kb_shoulder_press",
+                "sourceExerciseName": "SA KB Shoulder Press",
+                "nameVi": "Đẩy vai một tay với tạ ấm",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "4",
+                  "kind": "external_mass",
+                  "value": 4,
+                  "unit": "kg",
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": "per_implement_or_total_unconfirmed"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "RESISTANCE": [
+              {
+                "sourceRowId": "wg_s1_r7",
+                "sourceSection": "A3",
+                "exerciseId": "ex_squat",
+                "sourceExerciseName": "Squat",
+                "nameVi": "Ngồi xuống và đứng lên",
+                "volume": {
+                  "raw": "2 x 15",
+                  "sets": 2,
+                  "repetitions": 15,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed"
+                },
+                "restRaw": "80",
+                "restSeconds": 80,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s1_r8",
+                "sourceSection": "A3",
+                "exerciseId": "ex_cable_row",
+                "sourceExerciseName": "Cable Row",
+                "nameVi": "Kéo cáp về thân",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s1_r9",
+                "sourceSection": "A3",
+                "exerciseId": "ex_wall_squat",
+                "sourceExerciseName": "Wall Squat",
+                "nameVi": "Giữ tư thế ngồi tựa tường",
+                "volume": {
+                  "raw": "2 x 40s",
+                  "sets": 2,
+                  "repetitions": null,
+                  "holdSeconds": 40
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "COOL_DOWN": [
+              {
+                "sourceRowId": "wg_s1_r10",
+                "sourceSection": "A3",
+                "exerciseId": "ex_treadmill_walk",
+                "sourceExerciseName": "Treadmill 10 phút",
+                "nameVi": "Đi bộ trên máy 10 phút",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": 600,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ]
+          },
+          "supersets": []
+        },
+        {
+          "sessionNumber": 2,
+          "phaseId": "phase_wg_01_foundation",
+          "sourceSection": "A4",
+          "sessionType": "MIXED",
+          "fullBodyHeading": null,
+          "recordKind": "historical_plan",
+          "completionConfirmed": false,
+          "eligibleForPlanner": false,
+          "sourceNote": "Bản chép tự chứa do người dùng cung cấp; chưa đối chiếu ảnh gốc, chưa xác nhận kết quả thực hiện.",
+          "blocks": {
+            "WARM_UP": [
+              {
+                "sourceRowId": "wg_s2_r1",
+                "sourceSection": "A4",
+                "exerciseId": "ex_dynamic_warmup",
+                "sourceExerciseName": "Dynamic Warm Up",
+                "nameVi": "Khởi động động",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "CORE_TRAIN": [
+              {
+                "sourceRowId": "wg_s2_r2",
+                "sourceSection": "A4",
+                "exerciseId": "ex_side_plank",
+                "sourceExerciseName": "Side Plank",
+                "nameVi": "Giữ tư thế Plank nghiêng",
+                "volume": {
+                  "raw": "2 x 40s",
+                  "sets": 2,
+                  "repetitions": null,
+                  "holdSeconds": 40
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed"
+                },
+                "restRaw": "70",
+                "restSeconds": 70,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s2_r3",
+                "sourceSection": "A4",
+                "exerciseId": "ex_bird_dog",
+                "sourceExerciseName": "Bird Dog",
+                "nameVi": "Duỗi tay chân đối bên",
+                "volume": {
+                  "raw": "2 x 12",
+                  "sets": 2,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "BALANCE": [
+              {
+                "sourceRowId": "wg_s2_r4",
+                "sourceSection": "A4",
+                "exerciseId": "ex_sl_flexion_db_raise",
+                "sourceExerciseName": "SL Flexion + DB Raises",
+                "nameVi": "Gập một chân kết hợp nâng tạ đơn",
+                "volume": {
+                  "raw": "2 x 12",
+                  "sets": 2,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "1",
+                  "kind": "external_mass",
+                  "value": 1,
+                  "unit": "kg",
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": "per_implement_or_total_unconfirmed"
+                },
+                "restRaw": "80",
+                "restSeconds": 80,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s2_r5",
+                "sourceSection": "A4",
+                "exerciseId": "ex_side_band_kick",
+                "sourceExerciseName": "Side Band Kick",
+                "nameVi": "Đá chân sang bên với dây",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "RESISTANCE": [
+              {
+                "sourceRowId": "wg_s2_r6",
+                "sourceSection": "A4",
+                "exerciseId": "ex_hip_hinge",
+                "sourceExerciseName": "1. Hip Hinge",
+                "nameVi": "Gập tại khớp hông",
+                "volume": {
+                  "raw": "2 x 15",
+                  "sets": 2,
+                  "repetitions": 15,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed"
+                },
+                "restRaw": "80",
+                "restSeconds": 80,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s2_r7",
+                "sourceSection": "A4",
+                "exerciseId": "ex_knee_push_up",
+                "sourceExerciseName": "2. Knee Push Up",
+                "nameVi": "Chống đẩy chống gối",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s2_r8",
+                "sourceSection": "A4",
+                "exerciseId": "ex_lunge",
+                "sourceExerciseName": "3. Lunge",
+                "nameVi": "Chùng chân",
+                "volume": {
+                  "raw": "2 x 15",
+                  "sets": 2,
+                  "repetitions": 15,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": "80",
+                "restSeconds": 80,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s2_r9",
+                "sourceSection": "A4",
+                "exerciseId": "ex_rear_delt_fly",
+                "sourceExerciseName": "4. Rear Delt Fly",
+                "nameVi": "Dang tay tập vai sau, chưa rõ dụng cụ",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "5",
+                  "kind": "numeric_unit_unconfirmed",
+                  "value": 5,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": null
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s2_r10",
+                "sourceSection": "A4",
+                "exerciseId": "ex_db_tricep_extension",
+                "sourceExerciseName": "5. DB Tricep Extension",
+                "nameVi": "Duỗi khuỷu với tạ đơn",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "2",
+                  "kind": "external_mass",
+                  "value": 2,
+                  "unit": "kg",
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": "per_implement_or_total_unconfirmed"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "COOL_DOWN": [
+              {
+                "sourceRowId": "wg_s2_r11",
+                "sourceSection": "A4",
+                "exerciseId": "ex_treadmill_walk",
+                "sourceExerciseName": "Treadmill 10 phút",
+                "nameVi": "Đi bộ trên máy 10 phút",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": 600,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ]
+          },
+          "supersets": []
+        },
+        {
+          "sessionNumber": 3,
+          "phaseId": "phase_wg_01_foundation",
+          "sourceSection": "A5",
+          "sessionType": "MIXED",
+          "fullBodyHeading": null,
+          "recordKind": "historical_plan",
+          "completionConfirmed": false,
+          "eligibleForPlanner": false,
+          "sourceNote": "Bản chép tự chứa do người dùng cung cấp; chưa đối chiếu ảnh gốc, chưa xác nhận kết quả thực hiện.",
+          "blocks": {
+            "WARM_UP": [
+              {
+                "sourceRowId": "wg_s3_r1",
+                "sourceSection": "A5",
+                "exerciseId": "ex_dynamic_warmup",
+                "sourceExerciseName": "Dynamic Warm Up",
+                "nameVi": "Khởi động động",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "CORE_TRAIN": [
+              {
+                "sourceRowId": "wg_s3_r2",
+                "sourceSection": "A5",
+                "exerciseId": "ex_plank",
+                "sourceExerciseName": "Plank",
+                "nameVi": "Giữ tư thế Plank",
+                "volume": {
+                  "raw": "3 x 50s",
+                  "sets": 3,
+                  "repetitions": null,
+                  "holdSeconds": 50
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed"
+                },
+                "restRaw": "60",
+                "restSeconds": 60,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "BALANCE": [
+              {
+                "sourceRowId": "wg_s3_r3",
+                "sourceSection": "A5",
+                "exerciseId": "ex_pistol_squat",
+                "sourceExerciseName": "Pistol Squat",
+                "nameVi": "Ngồi xuống một chân kiểu Pistol Squat",
+                "volume": {
+                  "raw": "2 x 15",
+                  "sets": 2,
+                  "repetitions": 15,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": "70",
+                "restSeconds": 70,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s3_r4",
+                "sourceSection": "A5",
+                "exerciseId": "ex_sa_kb_shoulder_press",
+                "sourceExerciseName": "SA Kettlebell Shoulder Press",
+                "nameVi": "Đẩy vai một tay với tạ ấm",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "RESISTANCE": [
+              {
+                "sourceRowId": "wg_s3_r5",
+                "sourceSection": "A5",
+                "exerciseId": "ex_kb_romanian_deadlift",
+                "sourceExerciseName": "a. Kettlebell Romanian Deadlift",
+                "nameVi": "Gập hông Romanian Deadlift với tạ ấm",
+                "volume": {
+                  "raw": "3 x 12",
+                  "sets": 3,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "6",
+                  "kind": "external_mass",
+                  "value": 6,
+                  "unit": "kg",
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": "per_implement_or_total_unconfirmed"
+                },
+                "restRaw": "80",
+                "restSeconds": 80,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s3_r6",
+                "sourceSection": "A5",
+                "exerciseId": "ex_leg_extension",
+                "sourceExerciseName": "b. Leg Extension",
+                "nameVi": "Duỗi gối trên máy",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "10",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 10,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": null
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s3_r7",
+                "sourceSection": "A5",
+                "exerciseId": "ex_cable_row",
+                "sourceExerciseName": "c. Cable Row",
+                "nameVi": "Kéo cáp về thân",
+                "volume": {
+                  "raw": "3 x 12",
+                  "sets": 3,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "15",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 15,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": null
+                },
+                "restRaw": "80",
+                "restSeconds": 80,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s3_r8",
+                "sourceSection": "A5",
+                "exerciseId": "ex_cable_tricep_pushdown",
+                "sourceExerciseName": "d. Cable Tricep Push Down",
+                "nameVi": "Duỗi khuỷu kéo cáp xuống",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s3_r9",
+                "sourceSection": "A5",
+                "exerciseId": "ex_superman",
+                "sourceExerciseName": "e. Superman",
+                "nameVi": "Duỗi thân nằm sấp kiểu Superman",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "COOL_DOWN": [
+              {
+                "sourceRowId": "wg_s3_r10",
+                "sourceSection": "A5",
+                "exerciseId": "ex_treadmill_walk",
+                "sourceExerciseName": "Treadmill 15 phút, tốc độ 4.5",
+                "nameVi": "Đi bộ trên máy 15 phút, tốc độ ghi 4.5",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": 900,
+                "treadmillSpeed": {
+                  "raw": "4.5",
+                  "value": 4.5,
+                  "unit": null
+                },
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ]
+          },
+          "supersets": []
+        },
+        {
+          "sessionNumber": 12,
+          "phaseId": "phase_wg_02_transition",
+          "sourceSection": "A6",
+          "sessionType": "FULL_BODY_SUPERSET_REFERENCE",
+          "fullBodyHeading": "Full Body",
+          "recordKind": "historical_plan",
+          "completionConfirmed": false,
+          "eligibleForPlanner": false,
+          "sourceNote": "Bản chép tự chứa do người dùng cung cấp; chưa đối chiếu ảnh gốc, chưa xác nhận kết quả thực hiện.",
+          "blocks": {
+            "WARM_UP": [
+              {
+                "sourceRowId": "wg_s12_r1",
+                "sourceSection": "A6",
+                "exerciseId": "ex_dynamic_warmup",
+                "sourceExerciseName": "Dynamic Warm Up",
+                "nameVi": "Khởi động động",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "CORE_TRAIN": [
+              {
+                "sourceRowId": "wg_s12_r2",
+                "sourceSection": "A6",
+                "exerciseId": "ex_side_plank",
+                "sourceExerciseName": "Side Plank",
+                "nameVi": "Giữ tư thế Plank nghiêng",
+                "volume": {
+                  "raw": "2 x 40s",
+                  "sets": 2,
+                  "repetitions": null,
+                  "holdSeconds": 40
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed"
+                },
+                "restRaw": "60",
+                "restSeconds": 60,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "BALANCE": [],
+            "RESISTANCE": [
+              {
+                "sourceRowId": "wg_s12_r3",
+                "sourceSection": "A6",
+                "exerciseId": "ex_side_band_kick",
+                "sourceExerciseName": "a1. Side Kick",
+                "nameVi": "Đá chân sang bên, chờ xác nhận biến thể",
+                "volume": {
+                  "raw": "3 x 15",
+                  "sets": 3,
+                  "repetitions": 15,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed"
+                },
+                "restRaw": "80",
+                "restSeconds": 80,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "proposed_alias_needs_review",
+                "supersetGroup": "a",
+                "supersetOrder": 1,
+                "sourceLabel": "a1",
+                "note": "Tái sử dụng ID Side Band Kick theo đề nghị, chưa xác nhận cùng biến thể hoặc có dây."
+              },
+              {
+                "sourceRowId": "wg_s12_r4",
+                "sourceSection": "A6",
+                "exerciseId": "ex_hip_abduction",
+                "sourceExerciseName": "a2. Hip Abduction",
+                "nameVi": "Dạng hông trên máy",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "26 (chữ mờ, cần HLV xác nhận)",
+                  "kind": "uncertain_machine_marker",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": 26,
+                  "certainty": "uncertain",
+                  "reviewStatus": "needs_review"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "a",
+                "supersetOrder": 2,
+                "sourceLabel": "a2",
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s12_r5",
+                "sourceSection": "A6",
+                "exerciseId": "ex_cable_row",
+                "sourceExerciseName": "b1. Cable Row",
+                "nameVi": "Kéo cáp về thân",
+                "volume": {
+                  "raw": "4 x 12",
+                  "sets": 4,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "12.5",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 12.5,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": null
+                },
+                "restRaw": "80",
+                "restSeconds": 80,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "b",
+                "supersetOrder": 1,
+                "sourceLabel": "b1",
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s12_r6",
+                "sourceSection": "A6",
+                "exerciseId": "ex_straight_arm_pushdown",
+                "sourceExerciseName": "b2. Straight Arm Pushdown",
+                "nameVi": "Kéo cáp xuống với tay thẳng",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "5",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 5,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": null
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "b",
+                "supersetOrder": 2,
+                "sourceLabel": "b2",
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s12_r7",
+                "sourceSection": "A6",
+                "exerciseId": "ex_hip_thrust",
+                "sourceExerciseName": "c1. Hip Thrust",
+                "nameVi": "Đẩy hông, chưa xác định dụng cụ",
+                "volume": {
+                  "raw": "3 x 12",
+                  "sets": 3,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "16",
+                  "kind": "numeric_unit_unconfirmed",
+                  "value": 16,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": null
+                },
+                "restRaw": "80",
+                "restSeconds": 80,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "c",
+                "supersetOrder": 1,
+                "sourceLabel": "c1",
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s12_r8",
+                "sourceSection": "A6",
+                "exerciseId": "ex_standing_overhead_shoulder_press",
+                "sourceExerciseName": "c2. Standing OH SD",
+                "nameVi": "Đẩy vai qua đầu ở tư thế đứng",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "3",
+                  "kind": "numeric_unit_unconfirmed",
+                  "value": 3,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": null
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "c",
+                "supersetOrder": 2,
+                "sourceLabel": "c2",
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s12_r9",
+                "sourceSection": "A6",
+                "exerciseId": "ex_cross_crunch",
+                "sourceExerciseName": "d1. Cross Crunch",
+                "nameVi": "Gập bụng chéo",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "d",
+                "supersetOrder": 1,
+                "sourceLabel": "d1",
+                "note": null
+              }
+            ],
+            "COOL_DOWN": [
+              {
+                "sourceRowId": "wg_s12_r10",
+                "sourceSection": "A6",
+                "exerciseId": "ex_treadmill_walk",
+                "sourceExerciseName": "Treadmill 15 phút",
+                "nameVi": "Đi bộ trên máy 15 phút",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": 900,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ]
+          },
+          "supersets": [
+            {
+              "group": "a",
+              "memberRowIds": [
+                "wg_s12_r3",
+                "wg_s12_r4"
+              ],
+              "status": "pair_as_reported",
+              "volumeAnchorRowId": "wg_s12_r3",
+              "volumeRawAsRecorded": "3 x 15",
+              "restAfterGroupSeconds": 80,
+              "restAnchorRowId": "wg_s12_r3",
+              "restPosition": "after_group",
+              "interpretationSource": "A2, quy ước do người dùng cung cấp",
+              "secondExerciseVolumeConfirmed": false,
+              "note": "Nghỉ sau cặp theo A2. Không tự điền volume/rest trống ở bài thứ hai."
+            },
+            {
+              "group": "b",
+              "memberRowIds": [
+                "wg_s12_r5",
+                "wg_s12_r6"
+              ],
+              "status": "pair_as_reported",
+              "volumeAnchorRowId": "wg_s12_r5",
+              "volumeRawAsRecorded": "4 x 12",
+              "restAfterGroupSeconds": 80,
+              "restAnchorRowId": "wg_s12_r5",
+              "restPosition": "after_group",
+              "interpretationSource": "A2, quy ước do người dùng cung cấp",
+              "secondExerciseVolumeConfirmed": false,
+              "note": "Nghỉ sau cặp theo A2. Không tự điền volume/rest trống ở bài thứ hai."
+            },
+            {
+              "group": "c",
+              "memberRowIds": [
+                "wg_s12_r7",
+                "wg_s12_r8"
+              ],
+              "status": "pair_as_reported",
+              "volumeAnchorRowId": "wg_s12_r7",
+              "volumeRawAsRecorded": "3 x 12",
+              "restAfterGroupSeconds": 80,
+              "restAnchorRowId": "wg_s12_r7",
+              "restPosition": "after_group",
+              "interpretationSource": "A2, quy ước do người dùng cung cấp",
+              "secondExerciseVolumeConfirmed": false,
+              "note": "Nghỉ sau cặp theo A2. Không tự điền volume/rest trống ở bài thứ hai."
+            },
+            {
+              "group": "d",
+              "memberRowIds": [
+                "wg_s12_r9"
+              ],
+              "status": "incomplete_source_group",
+              "volumeAnchorRowId": "wg_s12_r9",
+              "volumeRawAsRecorded": null,
+              "restAfterGroupSeconds": null,
+              "restAnchorRowId": "wg_s12_r9",
+              "restPosition": "after_group",
+              "interpretationSource": "A2, quy ước do người dùng cung cấp",
+              "secondExerciseVolumeConfirmed": false,
+              "note": "Nguồn chỉ ghi d1, chưa có d2 hoặc định lượng; không tạo bài bổ sung."
+            }
+          ]
+        },
+        {
+          "sessionNumber": 13,
+          "phaseId": "phase_wg_02_transition",
+          "sourceSection": "A7",
+          "sessionType": "FULL_BODY_SUPERSET_REFERENCE",
+          "fullBodyHeading": "FB",
+          "recordKind": "historical_plan",
+          "completionConfirmed": false,
+          "eligibleForPlanner": false,
+          "sourceNote": "Bản chép tự chứa do người dùng cung cấp; chưa đối chiếu ảnh gốc, chưa xác nhận kết quả thực hiện.",
+          "blocks": {
+            "WARM_UP": [
+              {
+                "sourceRowId": "wg_s13_r1",
+                "sourceSection": "A7",
+                "exerciseId": "ex_treadmill_walk",
+                "sourceExerciseName": "Treadmill (khởi động trên máy chạy)",
+                "nameVi": "Khởi động trên máy chạy",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ],
+            "CORE_TRAIN": [],
+            "BALANCE": [],
+            "RESISTANCE": [
+              {
+                "sourceRowId": "wg_s13_r2",
+                "sourceSection": "A7",
+                "exerciseId": "ex_db_sumo_deadlift",
+                "sourceExerciseName": "a1. Dumbbell Sumo Deadlift",
+                "nameVi": "Deadlift tư thế Sumo với tạ đơn",
+                "volume": {
+                  "raw": "4 x 12",
+                  "sets": 4,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "17.5",
+                  "kind": "external_mass",
+                  "value": 17.5,
+                  "unit": "kg",
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": "per_implement_or_total_unconfirmed"
+                },
+                "restRaw": "80",
+                "restSeconds": 80,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "a",
+                "supersetOrder": 1,
+                "sourceLabel": "a1",
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s13_r3",
+                "sourceSection": "A7",
+                "exerciseId": "ex_db_row",
+                "sourceExerciseName": "a2. Dumbbell Row",
+                "nameVi": "Kéo tạ đơn",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "4",
+                  "kind": "external_mass",
+                  "value": 4,
+                  "unit": "kg",
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": "per_implement_or_total_unconfirmed"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "a",
+                "supersetOrder": 2,
+                "sourceLabel": "a2",
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s13_r4",
+                "sourceSection": "A7",
+                "exerciseId": "ex_standing_overhead_shoulder_press",
+                "sourceExerciseName": "b1. Standing OH Shoulder Press",
+                "nameVi": "Đẩy vai qua đầu ở tư thế đứng",
+                "volume": {
+                  "raw": "4 x 12",
+                  "sets": 4,
+                  "repetitions": 12,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "3",
+                  "kind": "numeric_unit_unconfirmed",
+                  "value": 3,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": null
+                },
+                "restRaw": "80",
+                "restSeconds": 80,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "b",
+                "supersetOrder": 1,
+                "sourceLabel": "b1",
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s13_r5",
+                "sourceSection": "A7",
+                "exerciseId": "ex_db_romanian_deadlift",
+                "sourceExerciseName": "b2. DB Romanian Deadlift",
+                "nameVi": "Gập hông Romanian Deadlift với tạ đơn",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "6",
+                  "kind": "external_mass",
+                  "value": 6,
+                  "unit": "kg",
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": "per_implement_or_total_unconfirmed"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "b",
+                "supersetOrder": 2,
+                "sourceLabel": "b2",
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s13_r6",
+                "sourceSection": "A7",
+                "exerciseId": "ex_lat_pulldown",
+                "sourceExerciseName": "c1. Lat Pulldown",
+                "nameVi": "Kéo xô trên máy",
+                "volume": {
+                  "raw": "3 x 15",
+                  "sets": 3,
+                  "repetitions": 15,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "26",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 26,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": null
+                },
+                "restRaw": "80",
+                "restSeconds": 80,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "c",
+                "supersetOrder": 1,
+                "sourceLabel": "c1",
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s13_r7",
+                "sourceSection": "A7",
+                "exerciseId": "ex_face_pull",
+                "sourceExerciseName": "c2. Face Pull",
+                "nameVi": "Kéo cáp về ngang mặt",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "10",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 10,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": null
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "c",
+                "supersetOrder": 2,
+                "sourceLabel": "c2",
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s13_r8",
+                "sourceSection": "A7",
+                "exerciseId": "ex_rope_tricep_extension",
+                "sourceExerciseName": "d1. Rope Tricep Extension",
+                "nameVi": "Duỗi khuỷu với dây kéo cáp",
+                "volume": {
+                  "raw": "3 x 15",
+                  "sets": 3,
+                  "repetitions": 15,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "10",
+                  "kind": "machine_marker_as_supplied",
+                  "value": 10,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed",
+                  "measurementScope": null
+                },
+                "restRaw": "80",
+                "restSeconds": 80,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "d",
+                "supersetOrder": 1,
+                "sourceLabel": "d1",
+                "note": null
+              },
+              {
+                "sourceRowId": "wg_s13_r9",
+                "sourceSection": "A7",
+                "exerciseId": "ex_crunch",
+                "sourceExerciseName": "d2. Crunch",
+                "nameVi": "Gập bụng ngắn",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": "bw",
+                  "kind": "bodyweight",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "as_transcribed"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": null,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": "d",
+                "supersetOrder": 2,
+                "sourceLabel": "d2",
+                "note": null
+              }
+            ],
+            "COOL_DOWN": [
+              {
+                "sourceRowId": "wg_s13_r10",
+                "sourceSection": "A7",
+                "exerciseId": "ex_treadmill_walk",
+                "sourceExerciseName": "Treadmill 15 phút",
+                "nameVi": "Đi bộ trên máy 15 phút",
+                "volume": {
+                  "raw": null,
+                  "sets": null,
+                  "repetitions": null,
+                  "holdSeconds": null
+                },
+                "load": {
+                  "raw": null,
+                  "kind": "not_recorded",
+                  "value": null,
+                  "unit": null,
+                  "candidateValue": null,
+                  "certainty": "not_recorded"
+                },
+                "restRaw": null,
+                "restSeconds": null,
+                "durationSeconds": 900,
+                "treadmillSpeed": null,
+                "sourceStatus": "user_transcription",
+                "reviewStatus": "needs_review",
+                "verified": false,
+                "eligibleForPlanner": false,
+                "mappingStatus": "name_reference",
+                "supersetGroup": null,
+                "supersetOrder": null,
+                "sourceLabel": null,
+                "note": null
+              }
+            ]
+          },
+          "supersets": [
+            {
+              "group": "a",
+              "memberRowIds": [
+                "wg_s13_r2",
+                "wg_s13_r3"
+              ],
+              "status": "pair_as_reported",
+              "volumeAnchorRowId": "wg_s13_r2",
+              "volumeRawAsRecorded": "4 x 12",
+              "restAfterGroupSeconds": 80,
+              "restAnchorRowId": "wg_s13_r2",
+              "restPosition": "after_group",
+              "interpretationSource": "A2, quy ước do người dùng cung cấp",
+              "secondExerciseVolumeConfirmed": false,
+              "note": "Nghỉ sau cặp theo A2. Không tự điền volume/rest trống ở bài thứ hai."
+            },
+            {
+              "group": "b",
+              "memberRowIds": [
+                "wg_s13_r4",
+                "wg_s13_r5"
+              ],
+              "status": "pair_as_reported",
+              "volumeAnchorRowId": "wg_s13_r4",
+              "volumeRawAsRecorded": "4 x 12",
+              "restAfterGroupSeconds": 80,
+              "restAnchorRowId": "wg_s13_r4",
+              "restPosition": "after_group",
+              "interpretationSource": "A2, quy ước do người dùng cung cấp",
+              "secondExerciseVolumeConfirmed": false,
+              "note": "Nghỉ sau cặp theo A2. Không tự điền volume/rest trống ở bài thứ hai."
+            },
+            {
+              "group": "c",
+              "memberRowIds": [
+                "wg_s13_r6",
+                "wg_s13_r7"
+              ],
+              "status": "pair_as_reported",
+              "volumeAnchorRowId": "wg_s13_r6",
+              "volumeRawAsRecorded": "3 x 15",
+              "restAfterGroupSeconds": 80,
+              "restAnchorRowId": "wg_s13_r6",
+              "restPosition": "after_group",
+              "interpretationSource": "A2, quy ước do người dùng cung cấp",
+              "secondExerciseVolumeConfirmed": false,
+              "note": "Nghỉ sau cặp theo A2. Không tự điền volume/rest trống ở bài thứ hai."
+            },
+            {
+              "group": "d",
+              "memberRowIds": [
+                "wg_s13_r8",
+                "wg_s13_r9"
+              ],
+              "status": "pair_as_reported",
+              "volumeAnchorRowId": "wg_s13_r8",
+              "volumeRawAsRecorded": "3 x 15",
+              "restAfterGroupSeconds": 80,
+              "restAnchorRowId": "wg_s13_r8",
+              "restPosition": "after_group",
+              "interpretationSource": "A2, quy ước do người dùng cung cấp",
+              "secondExerciseVolumeConfirmed": false,
+              "note": "Nghỉ sau cặp theo A2. Không tự điền volume/rest trống ở bài thứ hai."
+            }
+          ]
+        }
+      ]
     }
   ],
   "exercises": [
@@ -1474,6 +3751,74 @@
           "restSeconds": null,
           "durationSeconds": null,
           "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 1,
+          "block": "WARM_UP",
+          "sourceRowId": "wg_s1_r1",
+          "sourceExerciseName": "Dynamic Warm Up",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 2,
+          "block": "WARM_UP",
+          "sourceRowId": "wg_s2_r1",
+          "sourceExerciseName": "Dynamic Warm Up",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 3,
+          "block": "WARM_UP",
+          "sourceRowId": "wg_s3_r1",
+          "sourceExerciseName": "Dynamic Warm Up",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 12,
+          "block": "WARM_UP",
+          "sourceRowId": "wg_s12_r1",
+          "sourceExerciseName": "Dynamic Warm Up",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
         }
       ],
       "reviewStatus": "needs_review",
@@ -1510,6 +3855,23 @@
           "restSeconds": null,
           "durationSeconds": null,
           "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 1,
+          "block": "CORE_TRAIN",
+          "sourceRowId": "wg_s1_r2",
+          "sourceExerciseName": "Bracing Core",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
         }
       ],
       "reviewStatus": "needs_review",
@@ -1545,6 +3907,23 @@
           "sourceLoad": "bw",
           "restSeconds": 60,
           "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 2,
+          "block": "CORE_TRAIN",
+          "sourceRowId": "wg_s2_r3",
+          "sourceExerciseName": "Bird Dog",
+          "sourceVolume": "2 x 12",
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
           "prescription": false
         }
       ],
@@ -1602,6 +3981,40 @@
           "restSeconds": 60,
           "durationSeconds": null,
           "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 1,
+          "block": "CORE_TRAIN",
+          "sourceRowId": "wg_s1_r3",
+          "sourceExerciseName": "Plank",
+          "sourceVolume": "2 x 60s",
+          "sourceLoad": "bw",
+          "loadUnit": null,
+          "restSeconds": 60,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 3,
+          "block": "CORE_TRAIN",
+          "sourceRowId": "wg_s3_r2",
+          "sourceExerciseName": "Plank",
+          "sourceVolume": "3 x 50s",
+          "sourceLoad": "bw",
+          "loadUnit": null,
+          "restSeconds": 60,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
         }
       ],
       "reviewStatus": "needs_review",
@@ -1637,6 +4050,40 @@
           "sourceLoad": "bw",
           "restSeconds": 60,
           "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 2,
+          "block": "CORE_TRAIN",
+          "sourceRowId": "wg_s2_r2",
+          "sourceExerciseName": "Side Plank",
+          "sourceVolume": "2 x 40s",
+          "sourceLoad": "bw",
+          "loadUnit": null,
+          "restSeconds": 70,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 12,
+          "block": "CORE_TRAIN",
+          "sourceRowId": "wg_s12_r2",
+          "sourceExerciseName": "Side Plank",
+          "sourceVolume": "2 x 40s",
+          "sourceLoad": "bw",
+          "loadUnit": null,
+          "restSeconds": 60,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
           "prescription": false
         }
       ],
@@ -1732,6 +4179,23 @@
           "restSeconds": 80,
           "durationSeconds": null,
           "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 1,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s1_r7",
+          "sourceExerciseName": "Squat",
+          "sourceVolume": "2 x 15",
+          "sourceLoad": "bw",
+          "loadUnit": null,
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
         }
       ],
       "reviewStatus": "needs_review",
@@ -1767,6 +4231,23 @@
           "sourceLoad": null,
           "restSeconds": null,
           "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 13,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s13_r9",
+          "sourceExerciseName": "d2. Crunch",
+          "sourceVolume": null,
+          "sourceLoad": "bw",
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": "d",
+          "supersetOrder": 2,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
           "prescription": false
         }
       ],
@@ -1877,6 +4358,108 @@
           "restSeconds": null,
           "durationSeconds": 1200,
           "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 1,
+          "block": "COOL_DOWN",
+          "sourceRowId": "wg_s1_r10",
+          "sourceExerciseName": "Treadmill 10 phút",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": 600,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 2,
+          "block": "COOL_DOWN",
+          "sourceRowId": "wg_s2_r11",
+          "sourceExerciseName": "Treadmill 10 phút",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": 600,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 3,
+          "block": "COOL_DOWN",
+          "sourceRowId": "wg_s3_r10",
+          "sourceExerciseName": "Treadmill 15 phút, tốc độ 4.5",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": 900,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 12,
+          "block": "COOL_DOWN",
+          "sourceRowId": "wg_s12_r10",
+          "sourceExerciseName": "Treadmill 15 phút",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": 900,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 13,
+          "block": "WARM_UP",
+          "sourceRowId": "wg_s13_r1",
+          "sourceExerciseName": "Treadmill (khởi động trên máy chạy)",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 13,
+          "block": "COOL_DOWN",
+          "sourceRowId": "wg_s13_r10",
+          "sourceExerciseName": "Treadmill 15 phút",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": 900,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
         }
       ],
       "reviewStatus": "needs_review",
@@ -1936,6 +4519,23 @@
           "restSeconds": null,
           "durationSeconds": 60,
           "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 1,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s1_r9",
+          "sourceExerciseName": "Wall Squat",
+          "sourceVolume": "2 x 40s",
+          "sourceLoad": "bw",
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
         }
       ],
       "reviewStatus": "needs_review",
@@ -1985,6 +4585,23 @@
           "restSeconds": null,
           "durationSeconds": null,
           "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 1,
+          "block": "BALANCE",
+          "sourceRowId": "wg_s1_r5",
+          "sourceExerciseName": "SL Step Box",
+          "sourceVolume": "2 x 12",
+          "sourceLoad": "bw",
+          "loadUnit": null,
+          "restSeconds": 70,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
         }
       ],
       "reviewStatus": "needs_review",
@@ -2022,6 +4639,40 @@
           "sourceLoad": "4",
           "restSeconds": 80,
           "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 12,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s12_r8",
+          "sourceExerciseName": "c2. Standing OH SD",
+          "sourceVolume": null,
+          "sourceLoad": "3",
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": "c",
+          "supersetOrder": 2,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 13,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s13_r4",
+          "sourceExerciseName": "b1. Standing OH Shoulder Press",
+          "sourceVolume": "4 x 12",
+          "sourceLoad": "3",
+          "loadUnit": null,
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "supersetGroup": "b",
+          "supersetOrder": 1,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
           "prescription": false
         }
       ],
@@ -2109,6 +4760,23 @@
           "sourceLoad": "10",
           "restSeconds": 80,
           "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 3,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s3_r6",
+          "sourceExerciseName": "b. Leg Extension",
+          "sourceVolume": null,
+          "sourceLoad": "10",
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
           "prescription": false
         }
       ],
@@ -2269,6 +4937,57 @@
           "restSeconds": null,
           "durationSeconds": null,
           "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 1,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s1_r8",
+          "sourceExerciseName": "Cable Row",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 3,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s3_r7",
+          "sourceExerciseName": "c. Cable Row",
+          "sourceVolume": "3 x 12",
+          "sourceLoad": "15",
+          "loadUnit": null,
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 12,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s12_r5",
+          "sourceExerciseName": "b1. Cable Row",
+          "sourceVolume": "4 x 12",
+          "sourceLoad": "12.5",
+          "loadUnit": null,
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "supersetGroup": "b",
+          "supersetOrder": 1,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
         }
       ],
       "reviewStatus": "needs_review",
@@ -2383,6 +5102,40 @@
           "restSeconds": null,
           "durationSeconds": null,
           "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 1,
+          "block": "BALANCE",
+          "sourceRowId": "wg_s1_r6",
+          "sourceExerciseName": "SA KB Shoulder Press",
+          "sourceVolume": null,
+          "sourceLoad": "4",
+          "loadUnit": "kg",
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 3,
+          "block": "BALANCE",
+          "sourceRowId": "wg_s3_r4",
+          "sourceExerciseName": "SA Kettlebell Shoulder Press",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
         }
       ],
       "reviewStatus": "needs_review",
@@ -2418,6 +5171,23 @@
           "sourceLoad": "bw",
           "restSeconds": null,
           "durationSeconds": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 3,
+          "block": "BALANCE",
+          "sourceRowId": "wg_s3_r3",
+          "sourceExerciseName": "Pistol Squat",
+          "sourceVolume": "2 x 15",
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": 70,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
           "prescription": false
         }
       ],
@@ -2571,6 +5341,23 @@
           "restSeconds": null,
           "durationSeconds": null,
           "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 3,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s3_r8",
+          "sourceExerciseName": "d. Cable Tricep Push Down",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
         }
       ],
       "reviewStatus": "needs_review",
@@ -2716,6 +5503,911 @@
           "sourceLoad": null,
           "restSeconds": null,
           "durationSeconds": 60,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_dead_bug",
+      "name": "Duỗi tay chân đối bên nằm ngửa (Dead Bug)",
+      "nameEn": "Dead Bug",
+      "aliases": [
+        "Dead Bug"
+      ],
+      "category": "Cơ lõi",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 1,
+          "block": "CORE_TRAIN",
+          "sourceRowId": "wg_s1_r4",
+          "sourceExerciseName": "Dead Bug",
+          "sourceVolume": "2 x 12",
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_sl_flexion_db_raise",
+      "name": "Gập một chân kết hợp nâng tạ đơn (SL Flexion + DB Raises)",
+      "nameEn": "SL Flexion + DB Raises",
+      "aliases": [
+        "SL Flexion + DB Raises"
+      ],
+      "category": "Thăng bằng",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_dumbbell_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 2,
+          "block": "BALANCE",
+          "sourceRowId": "wg_s2_r4",
+          "sourceExerciseName": "SL Flexion + DB Raises",
+          "sourceVolume": "2 x 12",
+          "sourceLoad": "1",
+          "loadUnit": "kg",
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_side_band_kick",
+      "name": "Đá chân sang bên với dây (Side Band Kick)",
+      "nameEn": "Side Band Kick",
+      "aliases": [
+        "Side Band Kick"
+      ],
+      "category": "Thăng bằng",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_band_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 2,
+          "block": "BALANCE",
+          "sourceRowId": "wg_s2_r5",
+          "sourceExerciseName": "Side Band Kick",
+          "sourceVolume": null,
+          "sourceLoad": "bw",
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        },
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 12,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s12_r3",
+          "sourceExerciseName": "a1. Side Kick",
+          "sourceVolume": "3 x 15",
+          "sourceLoad": "bw",
+          "loadUnit": null,
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "supersetGroup": "a",
+          "supersetOrder": 1,
+          "mappingStatus": "proposed_alias_needs_review",
+          "proposedAlias": "side kick",
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_hip_hinge",
+      "name": "Gập tại khớp hông (Hip Hinge)",
+      "nameEn": "Hip Hinge",
+      "aliases": [
+        "Hip Hinge"
+      ],
+      "category": "Chân",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 2,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s2_r6",
+          "sourceExerciseName": "1. Hip Hinge",
+          "sourceVolume": "2 x 15",
+          "sourceLoad": "bw",
+          "loadUnit": null,
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_knee_push_up",
+      "name": "Chống đẩy chống gối (Knee Push Up)",
+      "nameEn": "Knee Push Up",
+      "aliases": [
+        "Knee Push Up"
+      ],
+      "category": "Ngực",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 2,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s2_r7",
+          "sourceExerciseName": "2. Knee Push Up",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_lunge",
+      "name": "Chùng chân (Lunge)",
+      "nameEn": "Lunge",
+      "aliases": [
+        "Lunge"
+      ],
+      "category": "Chân",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 2,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s2_r8",
+          "sourceExerciseName": "3. Lunge",
+          "sourceVolume": "2 x 15",
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_rear_delt_fly",
+      "name": "Dang tay tập vai sau, chưa rõ dụng cụ (Rear Delt Fly)",
+      "nameEn": "Rear Delt Fly",
+      "aliases": [
+        "Rear Delt Fly"
+      ],
+      "category": "Vai",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_rear_delt_implement_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 2,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s2_r9",
+          "sourceExerciseName": "4. Rear Delt Fly",
+          "sourceVolume": null,
+          "sourceLoad": "5",
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_db_tricep_extension",
+      "name": "Duỗi khuỷu với tạ đơn (DB Tricep Extension)",
+      "nameEn": "DB Tricep Extension",
+      "aliases": [
+        "DB Tricep Extension"
+      ],
+      "category": "Tay",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_dumbbell_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 2,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s2_r10",
+          "sourceExerciseName": "5. DB Tricep Extension",
+          "sourceVolume": null,
+          "sourceLoad": "2",
+          "loadUnit": "kg",
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_kb_romanian_deadlift",
+      "name": "Gập hông Romanian Deadlift với tạ ấm (Kettlebell Romanian Deadlift)",
+      "nameEn": "Kettlebell Romanian Deadlift",
+      "aliases": [
+        "Kettlebell Romanian Deadlift"
+      ],
+      "category": "Chân",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_kettlebell_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 3,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s3_r5",
+          "sourceExerciseName": "a. Kettlebell Romanian Deadlift",
+          "sourceVolume": "3 x 12",
+          "sourceLoad": "6",
+          "loadUnit": "kg",
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_superman",
+      "name": "Duỗi thân nằm sấp kiểu Superman (Superman)",
+      "nameEn": "Superman",
+      "aliases": [
+        "Superman"
+      ],
+      "category": "Lưng",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 3,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s3_r9",
+          "sourceExerciseName": "e. Superman",
+          "sourceVolume": null,
+          "sourceLoad": null,
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": null,
+          "supersetOrder": null,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_hip_abduction",
+      "name": "Dạng hông trên máy (Hip Abduction)",
+      "nameEn": "Hip Abduction",
+      "aliases": [
+        "Hip Abduction"
+      ],
+      "category": "Chân",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_hip_abduction_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 12,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s12_r4",
+          "sourceExerciseName": "a2. Hip Abduction",
+          "sourceVolume": null,
+          "sourceLoad": "26 (chữ mờ, cần HLV xác nhận)",
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": "a",
+          "supersetOrder": 2,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_straight_arm_pushdown",
+      "name": "Kéo cáp xuống với tay thẳng (Straight Arm Pushdown)",
+      "nameEn": "Straight Arm Pushdown",
+      "aliases": [
+        "Straight Arm Pushdown"
+      ],
+      "category": "Lưng",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_cable_straight_arm_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 12,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s12_r6",
+          "sourceExerciseName": "b2. Straight Arm Pushdown",
+          "sourceVolume": null,
+          "sourceLoad": "5",
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": "b",
+          "supersetOrder": 2,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_hip_thrust",
+      "name": "Đẩy hông, chưa xác định dụng cụ (Hip Thrust)",
+      "nameEn": "Hip Thrust",
+      "aliases": [
+        "Hip Thrust"
+      ],
+      "category": "Chân",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_hip_thrust_implement_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 12,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s12_r7",
+          "sourceExerciseName": "c1. Hip Thrust",
+          "sourceVolume": "3 x 12",
+          "sourceLoad": "16",
+          "loadUnit": null,
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "supersetGroup": "c",
+          "supersetOrder": 1,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_cross_crunch",
+      "name": "Gập bụng chéo (Cross Crunch)",
+      "nameEn": "Cross Crunch",
+      "aliases": [
+        "Cross Crunch"
+      ],
+      "category": "Cơ lõi",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 12,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s12_r9",
+          "sourceExerciseName": "d1. Cross Crunch",
+          "sourceVolume": null,
+          "sourceLoad": "bw",
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": "d",
+          "supersetOrder": 1,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_db_sumo_deadlift",
+      "name": "Deadlift tư thế Sumo với tạ đơn (Dumbbell Sumo Deadlift)",
+      "nameEn": "Dumbbell Sumo Deadlift",
+      "aliases": [
+        "Dumbbell Sumo Deadlift"
+      ],
+      "category": "Chân",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_dumbbell_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 13,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s13_r2",
+          "sourceExerciseName": "a1. Dumbbell Sumo Deadlift",
+          "sourceVolume": "4 x 12",
+          "sourceLoad": "17.5",
+          "loadUnit": "kg",
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "supersetGroup": "a",
+          "supersetOrder": 1,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_db_row",
+      "name": "Kéo tạ đơn (Dumbbell Row)",
+      "nameEn": "Dumbbell Row",
+      "aliases": [
+        "Dumbbell Row"
+      ],
+      "category": "Lưng",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_dumbbell_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 13,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s13_r3",
+          "sourceExerciseName": "a2. Dumbbell Row",
+          "sourceVolume": null,
+          "sourceLoad": "4",
+          "loadUnit": "kg",
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": "a",
+          "supersetOrder": 2,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_db_romanian_deadlift",
+      "name": "Gập hông Romanian Deadlift với tạ đơn (DB Romanian Deadlift)",
+      "nameEn": "DB Romanian Deadlift",
+      "aliases": [
+        "DB Romanian Deadlift"
+      ],
+      "category": "Chân",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_dumbbell_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 13,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s13_r5",
+          "sourceExerciseName": "b2. DB Romanian Deadlift",
+          "sourceVolume": null,
+          "sourceLoad": "6",
+          "loadUnit": "kg",
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": "b",
+          "supersetOrder": 2,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_lat_pulldown",
+      "name": "Kéo xô trên máy (Lat Pulldown)",
+      "nameEn": "Lat Pulldown",
+      "aliases": [
+        "Lat Pulldown"
+      ],
+      "category": "Lưng",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_lat_pulldown_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 13,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s13_r6",
+          "sourceExerciseName": "c1. Lat Pulldown",
+          "sourceVolume": "3 x 15",
+          "sourceLoad": "26",
+          "loadUnit": null,
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "supersetGroup": "c",
+          "supersetOrder": 1,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_face_pull",
+      "name": "Kéo cáp về ngang mặt (Face Pull)",
+      "nameEn": "Face Pull",
+      "aliases": [
+        "Face Pull"
+      ],
+      "category": "Vai",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_cable_rope_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 13,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s13_r7",
+          "sourceExerciseName": "c2. Face Pull",
+          "sourceVolume": null,
+          "sourceLoad": "10",
+          "loadUnit": null,
+          "restSeconds": null,
+          "durationSeconds": null,
+          "supersetGroup": "c",
+          "supersetOrder": 2,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
+          "prescription": false
+        }
+      ],
+      "reviewStatus": "needs_review",
+      "verified": false,
+      "revision": 1,
+      "createdAt": "2026-09-22T00:00:00Z",
+      "updatedAt": "2026-09-22T00:00:00Z"
+    },
+    {
+      "id": "ex_rope_tricep_extension",
+      "name": "Duỗi khuỷu với dây kéo cáp (Rope Tricep Extension)",
+      "nameEn": "Rope Tricep Extension",
+      "aliases": [
+        "Rope Tricep Extension"
+      ],
+      "category": "Tay",
+      "targetMuscles": [],
+      "primaryMuscle": "Chưa được huấn luyện viên xác minh",
+      "secondaryMuscles": [],
+      "requiredEquipmentIds": [
+        "eq_cable_rope_review"
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null,
+      "instructions": [],
+      "trainerCues": [],
+      "contraindications": [],
+      "reviewNotes": "Nguồn chỉ có tên bài và định lượng từng dòng. Chưa có hướng dẫn kỹ thuật hoặc chống chỉ định được HLV duyệt; mảng rỗng không có nghĩa an toàn.",
+      "programUsage": [
+        {
+          "programId": "prog_weight_gain_pt50",
+          "sessionNumber": 13,
+          "block": "RESISTANCE",
+          "sourceRowId": "wg_s13_r8",
+          "sourceExerciseName": "d1. Rope Tricep Extension",
+          "sourceVolume": "3 x 15",
+          "sourceLoad": "10",
+          "loadUnit": null,
+          "restSeconds": 80,
+          "durationSeconds": null,
+          "supersetGroup": "d",
+          "supersetOrder": 1,
+          "mappingStatus": "name_reference",
+          "proposedAlias": null,
           "prescription": false
         }
       ],
@@ -2873,6 +6565,69 @@
       "isPhysicalAsset": false,
       "candidateAssetIds": [],
       "note": "Mã nhu cầu thiết bị, không khẳng định máy tồn tại, phù hợp kích thước trẻ hoặc đang hoạt động."
+    },
+    {
+      "id": "eq_band_review",
+      "name": "Dây kháng lực, cần xác nhận loại dây",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Nhu cầu dụng cụ từ tên bài, chưa đối chiếu khả năng thực hiện với máy thật; không phải tài sản mới đã kiểm kê."
+    },
+    {
+      "id": "eq_rear_delt_implement_review",
+      "name": "Dụng cụ tập vai sau chưa xác định",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Nhu cầu dụng cụ từ tên bài, chưa đối chiếu khả năng thực hiện với máy thật; không phải tài sản mới đã kiểm kê."
+    },
+    {
+      "id": "eq_hip_abduction_review",
+      "name": "Máy dạng hông, chưa xác nhận trạm sử dụng",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Nhu cầu dụng cụ từ tên bài, chưa đối chiếu khả năng thực hiện với máy thật; không phải tài sản mới đã kiểm kê."
+    },
+    {
+      "id": "eq_cable_straight_arm_review",
+      "name": "Trạm cáp và tay cầm cho kéo tay thẳng",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Nhu cầu dụng cụ từ tên bài, chưa đối chiếu khả năng thực hiện với máy thật; không phải tài sản mới đã kiểm kê."
+    },
+    {
+      "id": "eq_hip_thrust_implement_review",
+      "name": "Bố trí dụng cụ đẩy hông chưa xác định",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Nhu cầu dụng cụ từ tên bài, chưa đối chiếu khả năng thực hiện với máy thật; không phải tài sản mới đã kiểm kê."
+    },
+    {
+      "id": "eq_lat_pulldown_review",
+      "name": "Máy kéo xô, chưa đối chiếu trạm",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Nhu cầu dụng cụ từ tên bài, chưa đối chiếu khả năng thực hiện với máy thật; không phải tài sản mới đã kiểm kê."
+    },
+    {
+      "id": "eq_cable_rope_review",
+      "name": "Trạm cáp và dây thừng phù hợp",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Nhu cầu dụng cụ từ tên bài, chưa đối chiếu khả năng thực hiện với máy thật; không phải tài sản mới đã kiểm kê."
     }
   ],
   "compatibility": {

@@ -10,7 +10,15 @@ import {parseTrainingIntent} from '../server/src/companion/training/intent';
 import {parseFrontmatter,chunkDocument,programRagAllowed} from '../shared/ragDocument';
 import {validateTrainingPrograms,mergeTrainingPrograms,referenceRows} from '../shared/trainingPrograms';
 import {loadIndex,retrieve,buildContextBlock} from '../server/src/ragEngine';
-const library=JSON.parse(fs.readFileSync('data/companion/training_programs.json','utf8'));
+const combinedLibrary=JSON.parse(fs.readFileSync('data/companion/training_programs.json','utf8'));
+// Kiểm thử cũ giữ phạm vi nguồn thể lực, dù thư viện có thêm chương trình khác.
+const flexibilityId='prog_fitness_flexibility_pt30';
+const flexibilityExercises=combinedLibrary.exercises
+  .filter((e:any)=>(e.programUsage??[]).some((u:any)=>u.programId===flexibilityId))
+  .map((e:any)=>({...e,programUsage:e.programUsage.filter((u:any)=>u.programId===flexibilityId)}));
+const flexibilityEquipment=new Set(flexibilityExercises.flatMap((e:any)=>e.requiredEquipmentIds));
+const library={...combinedLibrary,programs:combinedLibrary.programs.filter((p:any)=>p.id===flexibilityId),
+  exercises:flexibilityExercises,equipmentReferences:combinedLibrary.equipmentReferences.filter((e:any)=>flexibilityEquipment.has(e.id))};
 const markdown=fs.readFileSync('data/knowledge/08_program_fitness_flexibility.md','utf8');
 const prog=library.programs[0];
 const clone=()=>structuredClone(library);
@@ -118,7 +126,7 @@ test('Nguồn công khai không có số đo/ngày riêng của trẻ hoặc đ�
  const fields=(x:any):string[]=>Array.isArray(x)?x.flatMap(fields):x&&typeof x==='object'?Object.entries(x).flatMap(([k,v])=>[k,...fields(v)]):[];
  for(const k of ['fullName','phone','email','birthDate','address','signature','heightCm','weightKg','birthYear','bodyMeasurements','date'])assert(!fields(library).includes(k));
 });
-test('Khởi tạo thư viện không tạo giả program tăng cân',()=>{
+test('Khởi tạo từ riêng nguồn thể lực không tự tạo chương trình khác',()=>{
  const next=mergeTrainingPrograms(null,library);assert.equal(next.version,1);assert.equal(next.programs.length,1);
  assert(!next.programs.some((p:any)=>p.id==='prog_weight_gain_pt50'));
 });

@@ -1,0 +1,39 @@
+{
+  "sourceId": "weight_gain_user_transcription_v1",
+  "reviewStatus": "needs_review",
+  "verified": false,
+  "sourceSessionNumbers": [
+    1,
+    2,
+    3,
+    12,
+    13
+  ],
+  "sourceRowCount": 51,
+  "completionConfirmed": false,
+  "directIdentifiersIncluded": false,
+  "detailedPersonalProfileInRepository": false,
+  "rawImagesProvidedThisTurn": false,
+  "sourceIndependentlyVerified": false,
+  "uncertainFields": [
+    {
+      "session": 12,
+      "row": "a2. Hip Abduction",
+      "field": "load",
+      "candidateValue": 26,
+      "confirmedValue": null,
+      "note": "Cần huấn luyện viên xác nhận."
+    }
+  ],
+  "openAssociationIssues": [
+    "Side Kick và Side Band Kick chưa xác nhận cùng biến thể.",
+    "Dụng cụ của Rear Delt Fly, Hip Thrust và Standing OH SD chưa rõ.",
+    "Thiếu d2 của buổi 12."
+  ],
+  "dataAccess": {
+    "publicRagEligible": false,
+    "plannerEligible": false,
+    "requiresQualifiedReview": true
+  },
+  "privateSourceNote": "Bản số đo và ngày cá nhân được bàn giao riêng, không commit; không được phục hồi định danh."
+}

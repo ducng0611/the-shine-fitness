@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 1,
+  "reviewStatus": "needs_review",
+  "mayDriveRecommendations": false,
+  "description": "Tách nguyên văn các khoảng đề xuất trong yêu cầu khỏi kết quả đối chiếu nguồn ngoài. Không phải phê duyệt chuyên môn hay công thức cá nhân.",
+  "claims": [
+    {
+      "id": "energy",
+      "requestedText": "Thặng dư 250-500 kcal/ngày so với TDEE; tăng 0.25-0.5 kg/tuần.",
+      "assessment": "partially_supported",
+      "reviewNote": "Đây là khoảng đề xuất trong prompt, chưa phải mức áp dụng của HLV hay đích cá nhân. NHS nêu khoảng tham khảo khác phần cận dưới; thử nghiệm thặng dư không xác lập một mức tối ưu cho mọi người. Không tính TDEE hoặc nhân theo hồ sơ.",
+      "referenceIds": [
+        "R3",
+        "R7"
+      ],
+      "applicationStatus": "not_approved"
+    },
+    {
+      "id": "fast_gain",
+      "requestedText": "Tăng trên 1 kg/tuần thường là tích nước và tích mỡ.",
+      "assessment": "not_established_as_threshold",
+      "reviewNote": "Cân nặng đơn lẻ không phân biệt thành phần cơ thể. Không dùng mốc này để tự kết luận tăng mỡ; cần đối chiếu xu hướng và điều kiện đo.",
+      "referenceIds": [
+        "R3"
+      ],
+      "applicationStatus": "not_approved"
+    },
+    {
+      "id": "volume",
+      "requestedText": "10-20 set mỗi nhóm cơ/tuần; mỗi nhóm cơ kích thích 2 lần/tuần.",
+      "assessment": "context_required",
+      "reviewNote": "ACSM 2026 mô tả khối lượng tuần khoảng 10 hiệp cho mục tiêu phì đại và sự đều đặn. Không xác nhận 20 là trần cứng hoặc mọi người mới phải bắt đầu tại khoảng này.",
+      "referenceIds": [
+        "R1"
+      ],
+      "applicationStatus": "not_approved"
+    },
+    {
+      "id": "reps_effort",
+      "requestedText": "6-15 lần, RIR 1-3.",
+      "assessment": "proposal_not_source",
+      "reviewNote": "Nguồn giáo án không ghi RIR. Không suy RIR từ số lần hay tải. ACSM không bắt buộc tập tới thất bại; khoảng được yêu cầu chỉ để HLV cân nhắc.",
+      "referenceIds": [
+        "R1"
+      ],
+      "applicationStatus": "not_approved"
+    },
+    {
+      "id": "rest",
+      "requestedText": "Bài lớn nghỉ 60-90 giây.",
+      "assessment": "not_universal",
+      "reviewNote": "Giữ các mốc 60/70/80 giây trong giáo án như dữ liệu nguồn. Thử nghiệm nghỉ cho thấy không thể gọi 60-90 giây là chuẩn tối ưu chung; bài nặng hoặc cặp liên hoàn cần đánh giá riêng.",
+      "referenceIds": [
+        "R5"
+      ],
+      "applicationStatus": "not_approved"
+    },
+    {
+      "id": "progression",
+      "requestedText": "Kỹ thuật, số lần rồi tải; tăng 2.5-5% sau 2 buổi liên tiếp đạt số lần.",
+      "assessment": "review_required",
+      "reviewNote": "Đây là quy tắc double progression được yêu cầu, không có trong năm giáo án và chưa được HLV xác nhận. Không tự tăng tải; cần biết bước tải thiết bị và chất lượng động tác.",
+      "referenceIds": [],
+      "applicationStatus": "not_approved"
+    },
+    {
+      "id": "cardio",
+      "requestedText": "Chỉ 10-15 phút, 4.0-5.0 km/h sau kháng lực; không HIIT, không chạy bền trên 20 phút.",
+      "assessment": "overgeneralized",
+      "reviewNote": "Giữ nguyên giới hạn được đề xuất để review, không biến thành cấm phổ quát. Tổng hợp concurrent training không hỗ trợ việc mọi cardio đều cản tăng cơ; cách phối hợp phụ thuộc mục tiêu.",
+      "referenceIds": [
+        "R4"
+      ],
+      "applicationStatus": "not_approved"
+    },
+    {
+      "id": "sleep",
+      "requestedText": "Ngủ 7-9 tiếng.",
+      "assessment": "context_required",
+      "reviewNote": "AASM/SRS khuyến nghị người trưởng thành ngủ đều ít nhất 7 giờ; nhu cầu có khác biệt, có trường hợp cần hơn 9 giờ. Đây không phải số giờ ngủ đã đo ở khách.",
+      "referenceIds": [
+        "R6"
+      ],
+      "applicationStatus": "not_approved"
+    },
+    {
+      "id": "recovery",
+      "requestedText": "Nghỉ tối thiểu 48 giờ giữa hai buổi cùng nhóm cơ lớn.",
+      "assessment": "proposal_not_recovery_measurement",
+      "reviewNote": "Lưu như định hướng sắp lịch được yêu cầu, không phải bằng chứng cơ đã hồi phục. Ngày lịch và thể trạng phải được đánh giá riêng.",
+      "referenceIds": [],
+      "applicationStatus": "not_approved"
+    },
+    {
+      "id": "deload",
+      "requestedText": "Deload mỗi 6-8 tuần, giảm 40-50% khối lượng.",
+      "assessment": "review_required",
+      "reviewNote": "Không có lịch giảm tải trong nguồn; chưa xác minh chuẩn bắt buộc cho mọi người mới. Các con số giữ để HLV duyệt, không kích hoạt tự động.",
+      "referenceIds": [],
+      "applicationStatus": "not_approved"
+    },
+    {
+      "id": "protein",
+      "requestedText": "Đạm 1.6-2.2 g/kg/ngày; 4-5 bữa, 20-40 g/bữa.",
+      "assessment": "context_required",
+      "reviewNote": "ISSN nêu mức ngày và mỗi lần ăn cho người khỏe mạnh tập luyện, không xác nhận mọi tổ hợp khoảng này đồng thời phù hợp. Không nhân với cân nặng khách hoặc biến thành thực đơn.",
+      "referenceIds": [
+        "R2"
+      ],
+      "applicationStatus": "not_approved"
+    },
+    {
+      "id": "carb_fat_water",
+      "requestedText": "Tinh bột 4-7 g/kg; chất béo 0.8-1.2 g/kg; nước 35-40 ml/kg.",
+      "assessment": "review_required",
+      "reviewNote": "Giữ như yêu cầu chưa duyệt. Nhu cầu phụ thuộc tổng năng lượng, hoạt động, thời tiết và bệnh lý; chưa có nguồn trong hồ sơ để áp các dải này cho cá nhân.",
+      "referenceIds": [],
+      "applicationStatus": "not_approved"
+    },
+    {
+      "id": "meal_strategy",
+      "requestedText": "Tăng mật độ năng lượng, đồ uống giàu năng lượng, 5-6 bữa nhỏ; trước tập 1.5-2 giờ, sau tập trong 2 giờ; không bỏ bữa sáng.",
+      "assessment": "partially_supported",
+      "reviewNote": "NHS có gợi ý ăn ít một và thêm bữa, tăng mật độ năng lượng. Không xem số bữa và khung 2 giờ là bắt buộc sinh lý; thời điểm ăn còn tùy dung nạp. Đây không phải thực đơn đã dùng.",
+      "referenceIds": [
+        "R7",
+        "R2"
+      ],
+      "applicationStatus": "not_approved"
+    },
+    {
+      "id": "bmi",
+      "requestedText": "Nhóm BMI dưới 20 tự động phù hợp; hồ sơ BMI khoảng 18.7 là thấp.",
+      "assessment": "not_an_eligibility_rule",
+      "reviewNote": "CDC dùng dưới 18.5 cho nhóm thiếu cân ở người lớn và nhấn mạnh BMI chỉ để sàng lọc. Không tự gán bệnh hoặc đối tượng áp dụng chỉ từ BMI dưới 20.",
+      "referenceIds": [
+        "R8"
+      ],
+      "applicationStatus": "not_approved"
+    }
+  ],
+  "references": [
+    {
+      "id": "R1",
+      "title": "ACSM 2026: Resistance training guidelines",
+      "url": "https://acsm.org/resistance-training-guidelines-update-2026/",
+      "checkedAt": "2026-09-22",
+      "scope": "Khuyến nghị tổng quan cho người trưởng thành khỏe mạnh; không phải quy trình duyệt từng giáo án."
+    },
+    {
+      "id": "R2",
+      "title": "ISSN 2017: Protein and exercise",
+      "url": "https://doi.org/10.1186/s12970-017-0177-8",
+      "checkedAt": "2026-09-22",
+      "scope": "Dinh dưỡng cho người khỏe mạnh có tập luyện; không thay tư vấn bệnh lý."
+    },
+    {
+      "id": "R3",
+      "title": "Helms và cộng sự, 2023: Small and large energy surpluses",
+      "url": "https://doi.org/10.1186/s40798-023-00651-y",
+      "checkedAt": "2026-09-22",
+      "scope": "Nghiên cứu trên người đã tập kháng lực; không chứng minh một tốc độ tăng cân tối ưu cho mọi người."
+    },
+    {
+      "id": "R4",
+      "title": "Schumann và cộng sự, 2022: Concurrent aerobic and strength training",
+      "url": "https://doi.org/10.1007/s40279-021-01587-7",
+      "checkedAt": "2026-09-22",
+      "scope": "Tổng hợp nghiên cứu tập sức bền kết hợp kháng lực; không phải lệnh cấm cardio khi tăng cân."
+    },
+    {
+      "id": "R5",
+      "title": "Schoenfeld và cộng sự, 2016: Longer interset rest",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26605807/",
+      "checkedAt": "2026-09-22",
+      "scope": "Thử nghiệm 1 phút và 3 phút nghỉ trên nam đã tập; không áp trực tiếp cho hồ sơ nữ này."
+    },
+    {
+      "id": "R6",
+      "title": "AASM/SRS: Adult sleep duration consensus",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4442216/",
+      "checkedAt": "2026-09-22",
+      "scope": "Khuyến nghị giấc ngủ cho người lớn, khác với khẳng định phục hồi đủ sau một số giờ cố định."
+    },
+    {
+      "id": "R7",
+      "title": "NHS: Healthy ways to gain weight",
+      "url": "https://www.nhs.uk/live-well/healthy-weight/managing-your-weight/healthy-ways-to-gain-weight/",
+      "checkedAt": "2026-09-22",
+      "scope": "Thông tin phổ thông; cần khám khi sụt cân không chủ đích hoặc có vấn đề với kiểm soát ăn uống."
+    },
+    {
+      "id": "R8",
+      "title": "CDC: Adult BMI categories",
+      "url": "https://www.cdc.gov/bmi/adult-calculator/bmi-categories.html",
+      "checkedAt": "2026-09-22",
+      "scope": "BMI là công cụ sàng lọc, không phải chẩn đoán hoặc điều kiện tự cấp giáo án."
+    }
+  ]
+}

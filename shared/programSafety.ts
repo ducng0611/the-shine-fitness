@@ -19,6 +19,8 @@ const HEALTH_TERMS_VI = [
   'rối loạn ăn uống', 'chán ăn tâm thần', 'cuồng ăn', 'sữa tăng cân', 'thực phẩm chức năng',
   'thực phẩm bổ sung', 'thuốc giảm cân', 'kê đơn', 'liều thuốc', 'chấn thương',
   'đang điều trị', 'phẫu thuật', 'tim mạch', 'huyết áp', 'mang thai',
+  'thuốc tăng cân', 'chán ăn', 'sụt cân', 'nội tiết', 'đĩa đệm', 'thoát vị',
+  'bệnh tiêu hóa',
 ];
 const MINOR_TERMS_VI = [
   'dưới 18 tuổi', 'chưa đủ 18', 'con tôi', 'con em', 'bé nhà', 'học sinh',
@@ -31,11 +33,11 @@ export const HEALTH_RISK_KEYWORDS = [...new Set([
   ...HEALTH_TERMS_VI.map(normalizeSafetyText), ...MINOR_TERMS_VI.map(normalizeSafetyText),
   'mass gainer', 'whey', 'creatine', 'supplement', 'supplements',
   'diabetes', 'asthma', 'epilepsy', 'hypertension', 'pregnant', 'breastfeeding',
-  'eating disorder', 'under 18', 'underage', 'minor', 'my child', 'my son', 'my daughter'
+  'eating disorder', 'unintentional weight loss', 'unexplained weight loss', 'loss of appetite', 'weight gain pills', 'under 18', 'underage', 'minor', 'my child', 'my son', 'my daughter'
 ])];
 const health = [...HEALTH_TERMS_VI.map(normalizeSafetyText),
   'mass gainer', 'whey', 'creatine', 'supplement', 'supplements', 'diabetes', 'asthma',
-  'epilepsy', 'hypertension', 'pregnant', 'breastfeeding', 'eating disorder'];
+  'epilepsy', 'hypertension', 'pregnant', 'breastfeeding', 'eating disorder', 'unintentional weight loss', 'unexplained weight loss', 'loss of appetite', 'weight gain pills'];
 const youth = ['duoi 18 tuoi','chua du 18','hoc sinh','hoc lop','cap 1','cap 2','cap 3',
   'tieu hoc','trung hoc','vi thanh nien','tre em','under 18','underage','minor','middle school','high school'];
 function containsPhrase(text: string, phrase: string): boolean {

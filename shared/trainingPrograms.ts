@@ -1,3 +1,4 @@
+import { validateWeightGainProgram } from './weightGainProgram';
 /** Thư viện nguồn tham chiếu; module này không tạo giáo án hoặc ghi dữ liệu hội viên. */
 export type DataObject = Record<string, any>;
 function record(value:unknown, name:string):DataObject {
@@ -26,6 +27,7 @@ export function validateTrainingPrograms(value:unknown) {
   const programs=entities(root.programs,'programs'),exercises=entities(root.exercises,'exercises'),equipment=entities(root.equipmentReferences,'equipmentReferences');
   const exerciseIds=new Set(exercises.map(e=>e.id)),programIds=new Set(programs.map(e=>e.id)),equipmentIds=new Set(equipment.map(e=>e.id));
   for(const p of programs) {
+    validateWeightGainProgram(p);
     if(!Array.isArray(p.referenceSessions))throw new Error('Thiếu mảng buổi tham chiếu.');
     const sessionIds=new Set<number>();
     for(const s of p.referenceSessions) {

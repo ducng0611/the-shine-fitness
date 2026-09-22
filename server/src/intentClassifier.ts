@@ -44,10 +44,16 @@ export function fallbackKeywordClassifier(message: string): ClassificationResult
     };
   }
   // "giáo án" không phải từ "giá"; ưu tiên PRICE chỉ khi có từ giá/gói thực sự.
-  if (/\b(the luc|linh hoat|deo dai|suc ben|lo trinh|giao an|bai tap|tap nhu the nao|fitness|flexibility)\b/.test(normalized)) {
+  if (/\b(the luc|linh hoat|deo dai|suc ben|lo trinh|giao an|bai tap|tap nhu the nao|tap bao lau|tang can|tang co|nguoi gay|kho tang can|lean bulk|fitness|flexibility)\b/.test(normalized)) {
+    const fitness = /\b(the luc|linh hoat|deo dai|suc ben|fitness|flexibility)\b/.test(normalized);
+    const weight = /\b(tang can|kho tang can|nguoi gay|lean bulk)\b/.test(normalized);
+    const muscle = /\btang co\b/.test(normalized);
+    // Từ khóa xác định chủ đề; không ép nhiều mục tiêu hoặc câu phủ định thành một mục tiêu đã xác nhận.
+    const negated = /\b(khong|chua)\s+(?:muon\s+)?(?:tang can|tang co)\b/.test(normalized);
+    const goal = negated || (fitness && (weight || muscle)) ? null :
+      weight ? 'Tăng cân' : muscle ? 'Tăng cơ' : fitness ? 'Tăng thể lực và linh hoạt' : null;
     return { intent:'PROGRAM', confidence:0.85, pkSegment:null,
-      slots:{goal:/\b(the luc|linh hoat|deo dai|suc ben|fitness|flexibility)\b/.test(normalized) ? 'Tăng thể lực và linh hoạt' : null, experience:null, schedule:null, budget:null},
-      nextQuestion:'Q1' };
+      slots:{goal, experience:null, schedule:null, budget:null}, nextQuestion:'Q1' };
   }
   if (/giờ|lịch|mở cửa|đóng cửa|mấy giờ|thời gian|hoạt động|ca tập/.test(lower)) {
     return {
@@ -132,7 +138,7 @@ DANH SÁCH INTENT HỢP LỆ (CHỈ CHỌN 1):
 - FACILITY: Cơ sở vật chất, địa chỉ, vị trí, phòng tắm, locker, máy tập, gửi xe
 - POLICY: Chính sách bảo lưu, chuyển nhượng, đóng tiền, hợp đồng
 - TRIAL: Đăng ký tập thử, trải nghiệm 0đ, vé tập thử
-- PROGRAM: Lộ trình, giáo án, bài tập, tăng thể lực, sức bền và linh hoạt
+- PROGRAM: Lộ trình, giáo án, bài tập, tăng cân, tăng cơ, thể lực, sức bền và linh hoạt
 - GREETING: Chào hỏi, cảm ơn, xã giao
 - OTHER: Khác hoặc ngoài phạm vi
 
