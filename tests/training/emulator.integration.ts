@@ -63,6 +63,19 @@ test('emulator: recorded pain blocks planner through the real HTTP API',async()=
   const r=await call('/readiness','PUT',{readiness:readinessInput({currentPain:true}),expectedProfileRevision:1});assert.equal(r.status,200);
   const result=await call('/plans','POST',{readinessId:r.body.readiness.id,requestId:randomUUID(),gymOnly:false});assert.equal(result.body.status,'needs_review');
 });
+test('emulator: safety chat atomically invalidates own readiness and blocks starting the old plan',async()=>{
+  const otherBefore=(await db.doc(`training_members/${a.uid}`).get()).data();
+  const ready=await call('/readiness','PUT',{readiness:readinessInput(),expectedProfileRevision:1},b.token);
+  assert.equal(ready.status,200);
+  const result=await call('/plans','POST',{readinessId:ready.body.readiness.id,requestId:randomUUID(),gymOnly:false},b.token);
+  assert.equal(result.body.status,'ready');
+  const report=await call('/chat','POST',{message:'Toi bi dau lung'},b.token);
+  assert.equal(report.status,200);assert.equal(report.body.readinessInvalidated,true);assert.equal(report.body.saved,false);
+  assert.equal((await db.doc(`training_members/${b.uid}`).get()).get('readiness'),null);
+  assert.equal((await call(`/plans/${result.body.plan.id}/start`,'POST',{confirmed:true},b.token)).status,409);
+  assert.equal((await db.collection(`training_members/${b.uid}/sessions`).get()).size,0);
+  assert.deepEqual((await db.doc(`training_members/${a.uid}`).get()).data(),otherBefore);
+});
 test('emulator: reviewed catalogue is used and changed machine is rechecked at start',async()=>{
   const cat=catalogue();for(const [collection,rows] of [['gym_zones',cat.zones],['gym_equipment',cat.equipment],['gym_exercises',cat.exercises]] as const) for(const row of rows) await db.collection(collection).doc(String(row.id)).set(row);
   const ready=await call('/readiness','PUT',{readiness:readinessInput(),expectedProfileRevision:1});
