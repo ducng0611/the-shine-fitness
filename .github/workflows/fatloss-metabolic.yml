@@ -1,0 +1,68 @@
+name: Fatloss metabolic program verification
+on:
+  push:
+    branches: [feat/fatloss-metabolic-program]
+    paths:
+      - 'data/**'
+      - 'shared/**'
+      - 'server/src/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'docs/test-checklist.md'
+      - '.github/workflows/fatloss-metabolic.yml'
+  pull_request:
+    paths:
+      - 'data/**'
+      - 'shared/**'
+      - 'server/src/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'docs/test-checklist.md'
+      - '.github/workflows/fatloss-metabolic.yml'
+permissions:
+  contents: read
+concurrency:
+  group: metabolic-check-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Source preservation, clinical handover and existing program tests
+        run: |
+          set -o pipefail
+          mkdir -p test-results/fatloss-metabolic
+          node --import tsx --test tests/fatloss-metabolic.test.ts tests/height-posture.test.ts tests/weight-gain.test.ts tests/fitness-flexibility.test.ts | tee test-results/fatloss-metabolic/tests.tap
+      - name: Validate JSON and all new chunks without embedding or database calls
+        run: |
+          npx --no-install tsx scripts/prepare-fatloss-metabolic.ts
+          npx --no-install tsx scripts/validate-fatloss-metabolic.ts --report
+          npx --no-install tsx scripts/prepare-height-posture.ts
+          npx --no-install tsx scripts/prepare-weight-gain.ts
+          npm run build:index -- --check
+      - name: Existing training, assets and private intake regression
+        run: |
+          npm run test:training
+          node --import tsx --test tests/gym-assets.test.ts tests/pathways/domain.test.ts tests/pathways/router.test.ts
+      - name: Strict and full-project type checks
+        run: |
+          npm run typecheck:training
+          npx --no-install tsc -p tsconfig.pathways.json --noEmit
+          npm run lint
+      - name: Build frontend and backend
+        run: npm run build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fatloss-metabolic-verification
+          path: test-results/fatloss-metabolic
+          retention-days: 7
