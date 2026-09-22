@@ -69,7 +69,20 @@ export function createTrainingRouter(options: TrainingRouterOptions): Router {
     const lexical = parseTrainingIntent(message);
     const intent = lexical.intent === 'safety' || lexical.intent === 'past_report' ? lexical : await (options.parseIntent ?? (async m => parseTrainingIntent(m)))(message);
     const replyCode = intent.intent === 'plan' ? 'confirm_readiness_to_plan' : intent.intent === 'past_report' ? 'past_report_not_saved' : intent.intent === 'history' ? 'show_confirmed_history' : intent.intent === 'safety' ? 'professional_review_required' : 'training_actions_help';
-    res.json({ intent, replyCode, saved: false }); // No chat log or implicit memory mutation.
+    // A safety concern invalidates consent to use OLD readiness; it does not
+    // diagnose pain, confirm new readiness, or create medical/workout history.
+    // Atomic root updates serialize against plan creation/start and deletion.
+    // Started-session actuals remain recordable: observation is not prescription.
+    const readinessInvalidated = intent.intent === 'safety' ? await options.store.atomic(async tx => {
+      const path = service.root(account(req));
+      const root = await tx.get(path);
+      if (!root || root.state !== 'active' || !root.profile) return false;
+      if (object(root.profile).uid !== account(req)) fail('identity_mismatch', 'Training profile ownership is invalid.', 403);
+      if (!root.readiness) return false;
+      tx.set(path, { ...root, readiness: null });
+      return true;
+    }) : false;
+    res.json({ intent, replyCode, saved: false, readinessInvalidated }); // saved refers to workout/chat history, not the explicit readiness invalidation.
   }));
   router.get('/export', handle(async (req, res) => {
     const root = service.root(account(req));
