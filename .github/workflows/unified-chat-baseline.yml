@@ -1,0 +1,38 @@
+name: Unified chat baseline (read only)
+on:
+  push:
+    branches: [feat/gym-buddy-unified-chat]
+    paths: ['.github/workflows/unified-chat-baseline.yml']
+permissions:
+  contents: read
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Capture baseline tests and source (no customer data or credentials)
+        run: |
+          mkdir -p test-results/unified-baseline
+          npm run test:training > test-results/unified-baseline/training.txt 2>&1
+          npm run lint > test-results/unified-baseline/typecheck.txt 2>&1
+          python3 - <<'PY'
+          import pathlib, subprocess, tarfile
+          paths = subprocess.check_output(['git','ls-files','server','src','shared','scripts','tests','package.json','package-lock.json','tsconfig.json','tsconfig.training.json','vite.config.ts','index.html','firebase-applet-config.json'], text=True).splitlines()
+          paths = [p for p in paths if pathlib.Path(p).suffix in {'.ts','.tsx','.css','.json','.html','.py'} and 'PRIVATE' not in p and not p.startswith('src/data/')]
+          with tarfile.open('test-results/unified-baseline/source.tar.gz','w:gz') as out:
+              for p in paths: out.add(p,arcname=p,recursive=False)
+          pathlib.Path('test-results/unified-baseline/commit.txt').write_text(subprocess.check_output(['git','rev-parse','HEAD'],text=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unified-baseline
+          path: test-results/unified-baseline
+          retention-days: 3
