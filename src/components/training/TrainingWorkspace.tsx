@@ -16,9 +16,16 @@ export function TrainingWorkspace({ uid, lang = 'vi', api: suppliedApi }: Props)
   const [tab, setTab] = useState<'overview' | 'profile' | 'history'>('overview');
   const [busy, setBusy] = useState(false), [error, setError] = useState(''), [notice, setNotice] = useState('');
   const [draft, setDraft] = useState<ReadinessDraft>(initialReadiness());
+  const [readinessChanged, setReadinessChanged] = useState(false);
   const [plan, setPlan] = useState<AdaptivePlan | null>(null), [message, setMessage] = useState('');
   const planAttempt = useRef<{ readinessId: string; requestId: string; gymOnly: boolean } | null>(null);
   const requestVersion = useRef(0);
+  // An old plan is a snapshot, not authorization to train after changing today's
+  // answers. The backend remains authoritative and independently checks start.
+  const startBlocked = Boolean(plan?.status === 'proposed' && (
+    readinessChanged || context?.readiness?.id !== plan.readinessId ||
+    context?.profileRevision !== plan.profileRevision || context?.historyRevision !== plan.historyRevision
+  ));
   const load = useCallback(async () => {
     const version = ++requestVersion.current;
     const next = await api.request<TrainingContextResponse>('/context');
@@ -40,7 +47,7 @@ export function TrainingWorkspace({ uid, lang = 'vi', api: suppliedApi }: Props)
   };
   const saveProfile = async (profile: TrainingProfileInput) => run(async () => {
     await api.request('/profile', 'PUT', { profile, expectedRevision: context?.profileRevision ?? 0 });
-    setNotice('saved'); planAttempt.current = null;
+    setNotice('saved'); planAttempt.current = null; setReadinessChanged(true);
     setDraft(initialReadiness(profile.preferredMinutes));
     // A read failure after a successful write is not a failed write.
     try { await load(); setTab('overview'); } catch (e) { setError(errorCode(e)); }
@@ -50,12 +57,13 @@ export function TrainingWorkspace({ uid, lang = 'vi', api: suppliedApi }: Props)
     if (!planAttempt.current) {
       const saved = await api.request<{ readiness: Readiness }>('/readiness', 'PUT', { readiness: input, expectedProfileRevision: context.profile.revision });
       planAttempt.current = { readinessId: saved.readiness.id, requestId: uuid(), gymOnly: draft.gymOnly };
+      setContext(prev => prev ? { ...prev, readiness: saved.readiness } : prev);
     }
     try {
       const result = await api.request<PlanningResult>('/plans', 'POST', planAttempt.current);
       planAttempt.current = null;
       if (result.status !== 'ready') { setError(result.code); return; }
-      setPlan(result.plan); setTab('overview');
+      setPlan(result.plan); setTab('overview'); setReadinessChanged(false);
       try { await load(); setPlan(result.plan); } catch (e) { setError(errorCode(e)); }
     } catch (e) {
       if (!(e instanceof TrainingApiError) || !['connection_uncertain', 'service_unavailable'].includes(e.code)) planAttempt.current = null;
@@ -68,25 +76,34 @@ export function TrainingWorkspace({ uid, lang = 'vi', api: suppliedApi }: Props)
     try {
       const result = await api.request<{ session: TrainingSession; replay: boolean }>(`/plans/${plan.id}/complete`, 'POST', input);
       setNotice(result.replay ? 'replay' : 'recorded'); setPlan(null); setTab('history'); planAttempt.current = null;
-      setDraft(initialReadiness(context?.profile?.preferredMinutes ?? 35));
+      setDraft(initialReadiness(context?.profile?.preferredMinutes ?? 35)); setReadinessChanged(true);
       // Keep successful completion successful even when the subsequent refresh is unavailable.
       try { await load(); } catch (e) { setError(errorCode(e)); }
     } finally { if (alive.current) setBusy(false); }
   };
   const understand = async (event: React.FormEvent) => {
     event.preventDefault(); await run(async () => {
-      const result = await api.request<{ intent: IntentResult; replyCode: string }>('/chat', 'POST', { message });
+      let result: { intent: IntentResult; replyCode: string; readinessInvalidated?: boolean };
+      try {
+        result = await api.request('/chat', 'POST', { message });
+      } catch (e) {
+        // The message may have invalidated readiness before the response was lost.
+        // Do not offer to start the old plan while that outcome is uncertain.
+        setReadinessChanged(true); planAttempt.current = null; throw e;
+      }
       setNotice(result.replyCode);
       if (result.intent.intent === 'history') { await load(); setTab('history'); }
       if (result.intent.intent === 'plan') {
-        planAttempt.current = null;
+        planAttempt.current = null; setReadinessChanged(true);
         setDraft(prev => ({ ...prev, ...(result.intent.availableMinutes === undefined ? {} : { minutes: String(result.intent.availableMinutes) }),
           ...(result.intent.desiredMuscles === undefined ? {} : { desired: result.intent.desiredMuscles }), confirmed: false }));
       }
       if (result.intent.intent === 'safety') {
-        planAttempt.current = null;
-        // This is an input requiring review, never an automatic "pain free" determination.
-        setDraft(prev => ({ ...prev, pain: 'true', confirmed: false }));
+        planAttempt.current = null; setReadinessChanged(true);
+        setContext(prev => prev ? { ...prev, readiness: null } : prev);
+        // A conservative lexical match is not a diagnosis or a confirmed pain
+        // answer. Ask the member to answer again instead of auto-selecting Yes.
+        setDraft(prev => ({ ...prev, pain: '', confirmed: false }));
         setError('professional_review_required');
       }
     });
@@ -99,7 +116,7 @@ export function TrainingWorkspace({ uid, lang = 'vi', api: suppliedApi }: Props)
   });
   const erase = () => { if (window.confirm(t('eraseConfirm'))) void run(async () => {
     await api.request('/data', 'DELETE', { confirmed: true }); setPlan(null); setContext(null); planAttempt.current = null;
-    setNotice('saved'); await load();
+    setReadinessChanged(true); setNotice('saved'); await load();
   }); };
   return <section className="shine-training" aria-label={t('title')}>
     <header className="training-heading"><div><span className="training-badge">{t('pilot')}</span><h2>{t('title')}</h2><p>{t('subtitle')}</p></div><button type="button" disabled={busy} onClick={() => void run(load)}>{t('refresh')}</button></header>
@@ -110,11 +127,12 @@ export function TrainingWorkspace({ uid, lang = 'vi', api: suppliedApi }: Props)
       {tab === 'profile' && <ProfileForm key={context.profileRevision} profile={context.profile} revision={context.profileRevision} lang={lang} busy={busy} onSave={saveProfile} />}
       {context.profile && tab === 'overview' && <>
         <form className="training-chat" onSubmit={understand}><label>{t('ask')}<input value={message} maxLength={600} required placeholder={t('askHint')} onChange={e => setMessage(e.target.value)} /></label><button disabled={busy || !message.trim()}>{t('send')}</button></form>
-        <ReadinessForm draft={draft} setDraft={next => { planAttempt.current = null; setDraft(next); }} lang={lang} busy={busy} onPlan={generate} />
+        <ReadinessForm draft={draft} setDraft={next => { planAttempt.current = null; setReadinessChanged(true); setDraft(next); }} lang={lang} busy={busy} onPlan={generate} />
         {context.openPlans.length > 1 && <label>{t('openPlans')}<select value={plan?.id ?? ''} disabled={busy} onChange={e => setPlan(context.openPlans.find(p => p.id === e.target.value) ?? null)}><option value="">{t('select')}</option>{context.openPlans.map(p => <option value={p.id} key={p.id}>{new Date(p.generatedAt).toLocaleString(lang, { timeZone: context.profile!.timezone })} - {p.targetMuscleGroups.map(t).join(', ')} - {p.status}</option>)}</select></label>}
         {plan ? <>
           <PlanView plan={plan} lang={lang} style={context.profile.style} />
-          {plan.status === 'proposed' && <div className="training-actions"><button disabled={busy} onClick={() => void run(async () => { const result = await api.request<{ plan: AdaptivePlan }>(`/plans/${plan.id}/start`, 'POST', { confirmed: true }); setPlan(result.plan); })}>{t('start')}</button><button disabled={busy} onClick={() => void run(async () => { await api.request(`/plans/${plan.id}/cancel`, 'POST', { confirmed: true }); setPlan(null); await load(); })}>{t('cancel')}</button></div>}
+          {startBlocked && <p role="status" className="training-alert">{t('stale')}</p>}
+          {plan.status === 'proposed' && <div className="training-actions"><button disabled={busy || startBlocked} onClick={() => { if (!startBlocked) void run(async () => { const result = await api.request<{ plan: AdaptivePlan }>(`/plans/${plan.id}/start`, 'POST', { confirmed: true }); setPlan(result.plan); }); }}>{t('start')}</button><button disabled={busy} onClick={() => void run(async () => { await api.request(`/plans/${plan.id}/cancel`, 'POST', { confirmed: true }); setPlan(null); await load(); })}>{t('cancel')}</button></div>}
           {plan.status === 'started' && <CompletionForm key={plan.id} plan={plan} historyRevision={context.historyRevision} profileRevision={context.profileRevision} lang={lang} busy={busy} onComplete={complete} />}
         </> : <p className="training-muted">{t('noPlan')}</p>}
       </>}
