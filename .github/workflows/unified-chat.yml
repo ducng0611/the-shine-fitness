@@ -41,6 +41,8 @@ jobs:
           node --import tsx --test tests/nutrition/*.test.ts tests/pathways/*.test.ts tests/gym-assets.test.ts | tee test-results/buddy/sources.tap
           npm run build:index -- --check > test-results/buddy/index-check.txt 2>&1
           npm run build > test-results/buddy/build.txt 2>&1
+      - name: Measure source-card path without model calls
+        run: node --import tsx tests/buddy/benchmark.ts > test-results/buddy/benchmark-output.txt
       - name: Export reviewed source and patch even when checks fail
         if: always()
         run: |
@@ -61,4 +63,38 @@ jobs:
         with:
           name: buddy-verification
           path: test-results/buddy
+          retention-days: 7
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Real React and HTTP harness with synthetic identity/provider
+        run: |
+          mkdir -p test-results/buddy-browser
+          NODE_ENV=test node --import tsx tests/buddy/ui-server.ts > test-results/buddy-browser/server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          for i in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:4175/__test/status > /dev/null; then break; fi
+            sleep 1
+          done
+          python tests/buddy/browser_test.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: buddy-browser
+          path: test-results/buddy-browser
           retention-days: 7
