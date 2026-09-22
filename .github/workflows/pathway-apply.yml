@@ -18,7 +18,7 @@ jobs:
         with:
           ref: feat/training-pathway-intake
           fetch-depth: 0
-      - name: Validate exact patch bytes and touched paths
+      - name: Validate exact source patch bytes and touched paths
         shell: bash
         run: |
           test "$(git branch --show-current)" = 'feat/training-pathway-intake'
@@ -32,15 +32,17 @@ jobs:
           expected = {'.gitignore','.env.example','firestore.rules','server/src/index.ts','src/components/admin/AdminGymKnowledgeTab.tsx','vite.config.ts','shared/pathwayIntake.ts','scripts/extract-pathway-tracker.py','tsconfig.pathways.json','.github/workflows/pathway-verification.yml','docs/training-pathway-intake.md','server/src/companion/pathways/router.ts','src/components/pathways/PathwayIntakeModal.tsx','src/components/pathways/pathways.css','src/components/pathways/api.ts','tests/pathways/fixtures.ts','tests/pathways/tracker_test.py','tests/pathways/ui.html','tests/pathways/domain.test.ts','tests/pathways/router.test.ts','tests/pathways/ui.tsx','tests/pathways/emulator.integration.ts','tests/pathways/browser_test.py','tests/pathways/ui-server.ts','data/training-pathways/learning-contract.json','data/training-pathways/README.md','data/training-pathways/templates/source-bundle.template.json','data/training-pathways/templates/source-rows.template.csv'}
           actual = {line[6:] for line in patch.decode().splitlines() if line.startswith('+++ b/')}
           assert actual == expected, 'Unexpected patch paths'
-          Path('/tmp/pathway-paths').write_text('\n'.join(sorted(expected))+'\n')
+          source_paths = sorted(p for p in expected if not p.startswith('.github/workflows/'))
+          Path('/tmp/pathway-paths').write_text('\n'.join(source_paths)+'\n')
           PY
-          git apply --check /tmp/pathway.patch
-          git apply /tmp/pathway.patch
-      - name: Commit implementation and remove transfer helpers
+          git apply --exclude='.github/workflows/*' --check /tmp/pathway.patch
+          git apply --exclude='.github/workflows/*' /tmp/pathway.patch
+      - name: Commit only permitted source files on feature branch
         shell: bash
         run: |
           while IFS= read -r path; do git add -- "$path"; done < /tmp/pathway-paths
-          git rm -- scripts/pathway-patch.part1 scripts/pathway-patch.part2 scripts/pathway-patch.part3 scripts/pathway-patch.part4 .github/workflows/pathway-context.yml .github/workflows/pathway-apply.yml
+          git rm -- scripts/pathway-patch.part1 scripts/pathway-patch.part2 scripts/pathway-patch.part3 scripts/pathway-patch.part4
+          test -z "$(git diff --cached --name-only -- .github/workflows/)"
           git diff --cached --check
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
