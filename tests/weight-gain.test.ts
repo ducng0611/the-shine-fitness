@@ -145,9 +145,13 @@ test('ID trùng không được tạo; Side Kick chỉ là liên kết đề xu�
  assert.equal(row(12,'c2. Standing OH SD').exerciseId,'ex_standing_overhead_shoulder_press');
  assert(!lib.exercises.some((e:any)=>e.id==='ex_standing_overhead_press'));
 });
-test('Nguồn còn thiếu hướng dẫn chuyên môn thì không tạo instructions giả',()=>{
+test('Các định nghĩa mới của nguồn tăng cân không tự tạo hướng dẫn chuyên môn',()=>{
  const ids=new Set(fingerprints.exercises.map((e:any)=>e.id));
- for(const e of lib.exercises.filter((e:any)=>!ids.has(e.id))) {
+ const added=lib.exercises.filter((e:any)=>!ids.has(e.id)&&e.programUsage.some((u:any)=>u.programId===p.id));
+ // Kiểm tra đúng 20 bài được bổ sung bởi nguồn tăng cân, không áp ngược
+ // yêu cầu instructions rỗng lên phần ghi nhận nguyên văn của nguồn khác.
+ assert.equal(added.length,20);
+ for(const e of added) {
   assert.equal(e.verified,false);assert.equal(e.reviewStatus,'needs_review');
   assert.deepEqual(e.instructions,[]);assert.deepEqual(e.trainerCues,[]);assert.deepEqual(e.contraindications,[]);
  }
