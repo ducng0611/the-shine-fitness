@@ -32,6 +32,26 @@ Không dán mật khẩu ứng dụng vào khung chat, vào code, hay vào `.env
 - [ ] Ghi vị trí thực tế từng máy (tầng/khu, cách tìm) trong Shine Companion → **Quản trị gym**. Hiện trợ lý ghi "hỏi lễ tân hoặc HLV" thay cho vị trí.
 - [ ] Nếu đăng nhập báo `auth/unauthorized-domain`: Firebase Console → Authentication → Settings → Authorized domains → thêm tên miền web.
 
+## E. Nạp hồ sơ khách đã thu thập (bệnh lý, mục tiêu, ghi chú PT, lộ trình)
+
+Dữ liệu y tế **không** đưa lên GitHub. Nó đi từ Local Pilot trên máy bạn → trang quản trị → Firestore.
+
+- [ ] **Bật đăng nhập bằng email/mật khẩu** (một lần): Firebase Console → project `golden-ether-p6pck` → Authentication → Sign-in method → Email/Password → Enable → Save.
+- [ ] **Xuất file hồ sơ** trên máy có repo và database Local Pilot (`shine-pilot.sqlite` trong gói chạy sẵn đã giải nén). Mở terminal ở thư mục repo, chạy (thay đường dẫn; nên lưu file ra **ngoài** thư mục repo):
+
+  ```
+  npm run local:export-members -- --db "D:\duong-dan\shine-pilot.sqlite" --out "D:\ngoai-repo\members.PRIVATE.json"
+  ```
+- [ ] Mở website → **Đăng nhập bằng Google** với email quản trị → nút **Shine Companion** → tab **Quản trị gym** → mục **Nạp hồ sơ khách đã thu thập**:
+  1. *Hộp thư gốc*: hộp Gmail của phòng tập, ví dụ `ducnh.hindu@gmail.com`. Mỗi khách có email đăng nhập dạng `ducnh.hindu+kh-<mã>@gmail.com`; mọi thư gửi tới đều về hộp gốc.
+  2. Mở file `members.PRIVATE.json` bằng Notepad → chọn tất cả → dán vào ô lớn.
+  3. Bấm **Kiểm tra (chưa ghi)** → xem danh sách khách đúng chưa.
+  4. Bấm **Nhập vào hệ thống** → **chép ngay bảng email và mật khẩu** (chỉ hiện một lần).
+- [ ] **Xóa file `members.PRIVATE.json`** sau khi nhập xong (file chứa dữ liệu sức khỏe).
+- [ ] Kiểm tra: đăng xuất → **Đăng nhập** → chọn **Mật khẩu** → nhập email ảo và mật khẩu vừa chép → **Shine Companion** → tab **Hồ sơ** thấy khung *Thông tin phòng tập đã ghi nhận*; tab **Hỏi đáp** hỏi "Trong hồ sơ của tôi ghi bệnh lý nào?" → trả lời đúng hồ sơ.
+
+Nhập lại cùng file: hệ thống báo "Không có gì thay đổi", không tạo trùng tài khoản. Sửa dữ liệu trong Local Pilot rồi xuất và nhập lại: hồ sơ được cập nhật, mật khẩu cũ giữ nguyên.
+
 ## Kiểm tra nhanh sau khi publish
 
 1. Chưa đăng nhập: mở chatbot, hỏi "Giá gói tập 1 tháng?" → có câu trả lời.
