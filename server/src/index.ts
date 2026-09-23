@@ -291,7 +291,8 @@ async function dispatchEmailNotification({
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  // Cloud Run (AI Studio deploy) injects PORT; local and AI Studio preview default to 3000.
+  const PORT = Number(process.env.PORT) || 3000;
 
   // Initialize storage
   initCsvStorage();

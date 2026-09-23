@@ -6,6 +6,8 @@ coverage/
 *.log
 .env*
 !.env.example
+# Build-time VITE_* feature flags only; never secrets (see docs/deploy-ai-studio.vi.md).
+!.env.production
 
 # Step 3 test outputs (synthetic data only)
 test-results/
@@ -28,3 +30,8 @@ local-pilot-private/
 
 # Facebook page exports contain private customer messages. Never commit them.
 data/facebook-*/
+
+# Runtime CSV storage created by the server (STORAGE_BACKEND=csv). Never commit.
+data/chat_logs.csv
+data/chat_feedback.csv
+data/handover_queue.csv

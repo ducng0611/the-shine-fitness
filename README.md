@@ -2,6 +2,8 @@
 
 A full-stack application built with React 19 (Vite) and Express (Node.js/TypeScript).
 
+**Publish on Google AI Studio:** see [docs/deploy-ai-studio.vi.md](docs/deploy-ai-studio.vi.md) (secrets, feature flags, Firestore rules, Cloud Run settings, rollback).
+
 ## Getting Started
 
 1. **Install Dependencies**
