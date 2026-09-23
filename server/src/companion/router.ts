@@ -6,6 +6,7 @@ import { requireAuth, requireAdmin, type AuthRequest } from '../middleware/auth.
 import { DomainError, ensure, obj, text, num, id, validateProfile, validateCatalogue, planWorkout,
   completeWorkout, calculateMeal, mealSummary, dayBounds, safetyIssue, nutritionAdvice, personality } from './core.mjs';
 import { classifyMessage, analyzeFood, searchFoods, foodEnergy, nearbyFood } from './providers.ts';
+import bundledCatalogueSource from '../../../data/companion/the-shine-catalogue.json';
 
 type Handler = (req: AuthRequest, res: Response) => Promise<any>;
 const wrap = (fn: Handler) => (req: AuthRequest, res: Response, next: NextFunction) => { Promise.resolve(fn(req, res)).catch(next); };
@@ -22,7 +23,11 @@ async function activeInTransaction(tx: any, ref: any, revision: string) {
   const snap = await tx.get(ref);
   ensure(snap.data()?.state === 'active' && snap.data()?.profile?.revision === revision, 'CONTEXT_CHANGED', 'Hồ sơ đã thay đổi hoặc đang xóa. Tải lại trước khi tiếp tục.', 409);
 }
-async function catalogue() { return (await catalogRef().get()).data() ?? null; }
+// Owner-approved default (gym inventory + matching exercises), validated at start-up. Used
+// until an admin saves a catalogue in Firestore; it has no revision so that first save
+// passes the expectedRevision === null check.
+const bundledCatalogue = validateCatalogue(bundledCatalogueSource);
+async function catalogue(): Promise<Record<string, any>> { return (await catalogRef().get()).data() ?? bundledCatalogue; }
 async function history(req: AuthRequest) {
   const snap = await root(req).collection('workouts').orderBy('occurredAt', 'desc').limit(80).get();
   const workouts = snap.docs.map(d => ({ id: d.id, ...d.data() }));

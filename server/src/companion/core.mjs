@@ -96,11 +96,15 @@ export function planWorkout(profile, request, catalogue, history = [], now = new
   const candidates = catalogue.exercises.filter(e => e.verified && stations.has(e.stationId)
     && LEVELS.indexOf(e.minLevel) <= LEVELS.indexOf(profile.experience) && !e.groups.some(g => excluded.has(g))
     && (['auto', 'full_body'].includes(q.focus) || e.groups.includes(q.focus)));
-  const score = e => e.groups.reduce((sum, g) => sum + weekly[g], 0);
-  candidates.sort((a, b) => score(a) - score(b) || a.id.localeCompare(b.id));
-  let seconds = 480; const chosen = [], patterns = new Set();
-  for (const e of candidates) {
-    if (chosen.length >= 6 || patterns.has(e.pattern)) continue;
+  // Groups already picked for this session weigh like recent sessions, so a full-body
+  // plan rotates legs/push/pull/core instead of following exercise ids.
+  const inPlan = Object.fromEntries(GROUPS.map(g => [g, 0]));
+  const score = e => e.groups.reduce((sum, g) => sum + weekly[g] + inPlan[g], 0);
+  let seconds = 480; const chosen = [], patterns = new Set(), remaining = [...candidates];
+  while (remaining.length && chosen.length < 6) {
+    remaining.sort((a, b) => score(a) - score(b) || a.id.localeCompare(b.id));
+    const e = remaining.shift();
+    if (patterns.has(e.pattern)) continue;
     let sets = Math.min(e.sets, profile.experience === 'beginner' || q.energy === 2 ? 2 : profile.goal === 'build_muscle' ? 3 : 2);
     const duration = n => n * e.workSeconds + Math.max(0, n - 1) * e.restSeconds + e.transitionSeconds;
     while (sets > 1 && seconds + duration(sets) > q.durationMinutes * 60) sets--;
@@ -111,7 +115,7 @@ export function planWorkout(profile, request, catalogue, history = [], now = new
       restSeconds: e.restSeconds, estimatedSeconds: duration(sets), stationId: station.id, stationName: station.name,
       zone: station.zone, directions: station.directions, cues: e.cues,
       lastPerformance: previousLog ? { date: previousLog.occurredAt, sets: previousLog.sets.filter(s => s.exerciseId === e.id).map(s => ({ reps: s.reps, loadKg: s.loadKg, effort: s.effort ?? null })) } : null });
-    seconds += duration(sets); patterns.add(e.pattern);
+    seconds += duration(sets); patterns.add(e.pattern); e.groups.forEach(g => { inPlan[g] += 1; });
   }
   ensure(chosen.length, 'NO_SUITABLE_WORKOUT', 'Không đủ bài đã xác minh phù hợp thời gian, nhóm cơ và lịch sử hiện tại. Đổi nhóm cơ hoặc hỏi HLV.', 422);
   chosen.sort((a, b) => a.zone.localeCompare(b.zone));

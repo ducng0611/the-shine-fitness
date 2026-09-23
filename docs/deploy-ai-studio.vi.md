@@ -36,7 +36,9 @@ Thiếu các key này, phần tương ứng báo chưa khả dụng; phần còn
 
 ## 4. Xếp buổi tập theo máy của phòng tập
 
-Chức năng "Tạo buổi tập cho tôi" chỉ dùng danh mục máy và bài tập đã được quản trị nạp trong tab **Quản trị gym**. Giáo án PT trong repo mới có **tên** bài tập; để trợ lý tự xếp buổi cần thêm cho mỗi máy: khu vực/tầng và cách tìm; cho mỗi bài: nhóm cơ, hướng dẫn kỹ thuật ngắn, số hiệp/lần. Khi chưa có, trợ lý nói rõ là chưa có danh mục thay vì tự bịa máy hoặc bài.
+"Tạo buổi tập cho tôi" dùng sẵn danh mục `data/companion/the-shine-catalogue.json`: 25 thiết bị theo danh sách kiểm kê của phòng tập và 35 bài tập phổ biến tương ứng (mỗi máy có bài tương tự để thay khi máy bận). Trợ lý chọn tối đa 6 bài, cân bằng chân/đẩy/kéo/bụng, theo trình độ và thời gian hội viên có. Danh mục chưa ghi vị trí từng máy nên trợ lý nói "hỏi lễ tân hoặc HLV". Quản trị sửa hoặc thay danh mục trong tab **Quản trị gym**; bản đã lưu trên Firestore luôn được ưu tiên hơn file mặc định.
+
+Danh sách việc còn lại và prompt dán sẵn cho AI Studio: [viec-can-lam.vi.md](viec-can-lam.vi.md).
 
 ## 5. Nếu có lỗi sau khi publish
 

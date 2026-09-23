@@ -8,6 +8,9 @@ on:
       - 'server/src/companion/**'
       - 'src/components/companion/**'
       - 'tests/companion.test.mjs'
+      - 'tests/companion-catalogue.test.mjs'
+      - 'data/companion/the-shine-catalogue.json'
+      - 'data/companion/the-shine-gym-assets.draft.json'
       - 'server/src/index.ts'
       - 'src/App.tsx'
       - 'firestore.rules'
@@ -34,7 +37,7 @@ jobs:
       - name: Domain tests
         run: |
           set -o pipefail
-          node --test tests/companion.test.mjs | tee companion-tests.txt
+          node --test tests/companion.test.mjs tests/companion-catalogue.test.mjs | tee companion-tests.txt
       - name: Install locked dependencies without lifecycle scripts
         id: install
         run: npm ci --ignore-scripts --no-audit --no-fund
