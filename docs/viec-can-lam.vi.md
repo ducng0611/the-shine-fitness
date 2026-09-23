@@ -53,6 +53,14 @@ Yêu cầu:
 - GEMINI_API_KEY chỉ dùng phía máy chủ; không đưa vào biến VITE_* hay code phía trình duyệt.
 - Nếu build lỗi, báo lỗi và file liên quan cho tôi trước khi sửa; chỉ sửa tối thiểu để build chạy.
 - Không cần bật hay tắt tính năng nào: cấu hình mặc định nằm trong .env.production.
+
+Email (SMTP) — BẮT BUỘC NHẮC TÔI:
+- Website gửi email (form Liên hệ, đăng ký tập thử, email từ trang admin) qua hàm getEmailTransporter trong server/src/index.ts. Khi thiếu thông tin SMTP, máy chủ KHÔNG gửi thư thật mà chỉ ghi log (nodemailer jsonTransport).
+- Sau khi import và sau mỗi lần publish, kiểm tra Settings → Secrets đã có một trong hai bộ sau chưa (chỉ báo "có/không có", không in giá trị):
+  (1) ADMIN_EMAIL + GMAIL_APP_PASSWORD, hoặc
+  (2) SMTP_HOST + SMTP_PORT + SMTP_USER + SMTP_PASS.
+- Nếu chưa có, hiển thị rõ cho tôi lời nhắc: "Chưa cấu hình SMTP: email sẽ không được gửi. Hãy thêm ADMIN_EMAIL và GMAIL_APP_PASSWORD vào Settings → Secrets." kèm các bước: bật xác minh 2 bước cho Gmail gửi thư → tạo mật khẩu ứng dụng tại https://myaccount.google.com/apppasswords → dán 16 ký tự (bỏ dấu cách) vào GMAIL_APP_PASSWORD → publish lại.
+- Không yêu cầu tôi dán mật khẩu vào khung chat; không ghi Secrets vào code hoặc .env.production.
 ```
 
 ## Prompt 2 — dán khi đã thêm Secrets email
