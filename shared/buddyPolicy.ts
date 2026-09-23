@@ -1,7 +1,8 @@
+import { ownSourceQuery, newPersonalAction } from './buddySourceQuery';
 import { normalizeSafetyText, detectAcuteMetabolicWarning } from './programSafety';
 import { detectAcutePostureWarning } from './postureSafety';
 import type { BuddyTask } from './buddyChat';
-export const BUDDY_POLICY_VERSION = 'context-policy-v4';
+export const BUDDY_POLICY_VERSION = 'context-policy-v5-member-sources';
 export interface BuddyMemory { minorConcern:boolean; healthConcern:boolean; allergyConcern:boolean; lastTopic:string|null }
 export const newBuddyMemory=():BuddyMemory=>({minorConcern:false,healthConcern:false,allergyConcern:false,lastTopic:null});
 export interface BuddyDecision { task:BuddyTask; topic:string|null; reason:string; memory:BuddyMemory; privateRequest:boolean; generationAllowed:boolean }
@@ -19,6 +20,10 @@ const negate=/\b(khong|chua|khong con|no|not|without|don't|dont|do not)\s*(?:(?:
 export function nonQuotedSpeech(message:string):string {return message.replace(/```[\s\S]*?```|`[^`]*`|"[^"]*"|“[^”]*”/g,' ').replace(/<[^>]*>/g,' ');}
 export function hasAffirmed(text:string,pattern:RegExp):boolean {for(const m of text.matchAll(new RegExp(pattern.source,'g'))){const start=m.index??0;if(!negate.test(text.slice(Math.max(0,start-55),start)))return true;}return false;}
 function topicOf(text:string,last:string|null):string|null {
+  if(/\b(superset)\b/.test(text))return 'superset';
+  if(/\b(lat\s*pulldown|lat\s*pull\s*down)\b/.test(text))return 'lat_pulldown';
+  if(/\b(decline.*press)\b/.test(text))return 'decline_press';
+  if(/\b(rpe|cam nhan gang suc)\b/.test(text))return 'rpe';
   if(/\b(tdee|bmr)\b/.test(text))return 'energy_terms';
   if(/\b(whey|protein|chat dam)\b/.test(text))return 'protein';
   if(/\b(tieu duong|dai thao duong|type 2|diabetes)\b/.test(text))return 'diabetes_concept';
@@ -58,7 +63,9 @@ export function routeBuddy(message:string,prior:BuddyMemory=newBuddyMemory()):Bu
   const acuteCombination=detectAcuteMetabolicWarning(speech)||detectAcutePostureWarning(speech)||(hasAffirmed(speech,/\b(sung moi|sung mieng|swollen lips)\b/)&&hasAffirmed(speech,/\b(kho tho|kho nuot|difficulty breathing)\b/));
   if(!hypothetical&&!pastOnly&&(!concept||directSymptomReport||/\b(dang|bay gio|now|toi bi|em bi|i have)\b/.test(speech))&&(hasAffirmed(speech,acute)||acuteCombination)){memory.healthConcern=true;return result('URGENT_SAFETY','possible_acute_warning');}
   if(/\b(ignore.*instructions|bo qua.*quy tac|bo qua.*huong dan|system prompt|api key|firebase token|show.*private|xem ho so nguoi khac|lay ho so.*nguoi khac)\b/.test(text))return result('OUT_OF_SCOPE','untrusted_instruction');
-  const wantsPlan=personalPattern.test(text)||(/\b(tap gi|an gi|ke hoach|meal plan|thuc don)\b/.test(text)&&!concept);
+  const sourceQuery=ownSourceQuery(message,prior.lastTopic);
+  if(sourceQuery)return {...result('MEMBER_CONTEXT_QA','own_source_read_not_prescription',true),topic:`own_source:${sourceQuery}`,memory:{...memory,lastTopic:`own_source:${sourceQuery}`}};
+  const wantsPlan=newPersonalAction(text)||personalPattern.test(text)||(/\b(tap gi|an gi|ke hoach|meal plan|thuc don)\b/.test(text)&&!concept);
   const actionableMedication=/\b(lieu bao nhieu|lieu dung cho|nen uong|uong truoc|uong sau|doi lieu|ngung thuoc|bo thuoc|may muong|take before|take after|should i take|my dose|dose for me)\b/.test(text);
   const directClinical=clinicalPattern.test(text)&&((!concept&&/\b(thuoc|lieu|bao nhieu|uong|truoc|sau|take|dose|should|how much|prescribe)\b/.test(text))||actionableMedication);
   const thresholds=/\b(duong huyet|huyet ap|blood sugar|blood pressure)\b/.test(text)&&/\b(nguong|bao nhieu|muc nao|threshold|allowed|can i)\b/.test(text);
@@ -81,8 +88,9 @@ export function routeBuddy(message:string,prior:BuddyMemory=newBuddyMemory()):Bu
   if(/\b(tuan nay|tuan truoc|lich su|thanh tich|tien do|ho so|muc tieu cua|pt giao|pt ghi|this week|my history|my progress|my profile)\b/.test(text)&&self)return result('MEMBER_CONTEXT_QA','own_context',true);
   if(/\b(da an|vua an|an xong|vua tap|ghi lai|luu buoi|luu bua|i ate|i just trained|log my|save my)\b/.test(text))return result('LOGGING_REQUEST','confirmation_workflow_required',true);
   if(wantsPlan&&!concept&&(fitnessPattern.test(text)||nutritionPattern.test(text)))return result('PERSONAL_PLAN_REQUEST','personal_context_required',true);
+  if(/\b(ben minh|phong tap|the shine)\b/.test(text)&&/\b(nhan khach|benh nen|quy trinh tiep nhan)\b/.test(text))return result('BUSINESS_QA','medical_service_scope');
   if(/\b(gio mo cua|mo cua|dong cua|dia chi|o dau|lich lop|bao luu|hoan tien|tap thu|huan luyen vien|gym co|phong co|the shine|opening|address|trial|refund|locker)\b/.test(text))return result('BUSINESS_QA','business_information');
-  if(healthPattern.test(text)||(concept&&clinicalPattern.test(text)&&!nutritionPattern.test(text)))return result('HEALTH_EDUCATION','general_health_education',false,concept&&!healthSelf&&!allergy);
+  if(hasAffirmed(speech,healthPattern)||topic==='diabetes_concept'||(concept&&clinicalPattern.test(text)&&!nutritionPattern.test(text)))return result('HEALTH_EDUCATION','general_health_education',false,concept&&!healthSelf&&!allergy);
   if(nutritionPattern.test(text)||topic==='protein'||topic?.startsWith('meal'))return result('NUTRITION_EDUCATION','general_nutrition_education',false,!wantsPlan||concept);
   if(fitnessPattern.test(text)||topic)return result('FITNESS_EDUCATION','general_fitness_education',false,true);
   if(/^(chao|xin chao|hello|hi|cam on|thanks|thank you)[!.\s]*$/.test(text))return result('FITNESS_EDUCATION','greeting');

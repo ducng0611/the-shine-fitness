@@ -63,6 +63,7 @@ jobs:
           trap 'if [ -n "${SERVER_PID:-}" ]; then kill "$SERVER_PID" 2>/dev/null || true; fi; rm -rf "$QA_DIR"' EXIT
           node --import tsx scripts/local/write-ci-fixture.mjs "$QA_DIR/input.json"
           node dist-local/seed.mjs --local --manifest "$QA_DIR/input.json" --db "$QA_DIR/pilot.sqlite" --out "$QA_DIR/accounts.json"
+          node dist-local/import-memory.mjs --local --db "$QA_DIR/pilot.sqlite" --out "$QA_DIR/import-receipt.json"
           export SHINE_LOCAL_DB="$QA_DIR/pilot.sqlite"
           export SHINE_LOCAL_ALLOW_MODEL=false
           export SHINE_LOCAL_ACCOUNTS="$QA_DIR/accounts.json"

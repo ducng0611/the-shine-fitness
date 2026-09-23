@@ -14,6 +14,10 @@ export interface BuddyRouterOptions {
   // Explicit server injection for a separate local entrypoint. Never read from body.
   resolveIdentity?:(request:Request)=>Promise<BuddyIdentity>;
   safetyContext?:(identity:BuddyIdentity,request:Request)=>Partial<BuddyMemory>;
+  // Optional owner-scoped source reader. Separate from permission to use adult training.
+  readOwnSources?:(uid:string,message:string,lang:BuddyLanguage,topic?:string|null)=>Promise<{text:string;citations:BuddyReply['citations'];missingFields:string[]}|null>;
+  readReviewContext?:(uid:string,lang:BuddyLanguage)=>Promise<{text:string;citations:BuddyReply['citations'];missingFields:string[]}|null>;
+  sourceReadAllowed?:(uid:string)=>Promise<boolean>;
   describeContext?:(context:TrainingContextResponse,message:string,lang:BuddyLanguage,now:number)=>Promise<string>;
   verifyToken:(token:string)=>Promise<{uid:string;email?:string;email_verified?:boolean}>;
   enabled:()=>boolean; memberContextEnabled:()=>boolean; adminEmails:()=>string[];
@@ -113,15 +117,30 @@ export function createBuddyRouter(options:BuddyRouterOptions):Router {
         reply.handover=true;reply.handoverTag='HEALTH_RISK';reply.handoverStatus='suggested';
         reply.text=choose('Nếu dấu hiệu cảnh báo bạn mô tả đang xảy ra, hãy dừng tập, nhờ người gần đó hỗ trợ và liên hệ cấp cứu địa phương ngay. Đừng chờ phòng tập phản hồi hoặc tự tập tiếp để kiểm tra. Em không chẩn đoán nguyên nhân và chưa gọi cấp cứu thay bạn.',
           'If the warning signs you describe are happening now, stop exercising, ask someone nearby for help and contact local emergency services immediately. Do not wait for the gym or continue exercising to test the symptoms. I have not diagnosed the cause or called on your behalf.');
+        if(/\b(bat tinh|khong nuot|unconscious|cannot swallow)\b/.test(normalizeSafetyText(input.message))) {
+          reply.text=choose('Kh\u00f4ng cho ng\u01b0\u1eddi b\u1ea5t t\u1ec9nh ho\u1eb7c kh\u00f4ng nu\u1ed1t an to\u00e0n \u0103n hay u\u1ed1ng, k\u1ec3 c\u1ea3 n\u01b0\u1edbc \u0111\u01b0\u1eddng. H\u00e3y li\u00ean h\u1ec7 c\u1ea5p c\u1ee9u \u0111\u1ecba ph\u01b0\u01a1ng ngay v\u00e0 l\u00e0m theo h\u01b0\u1edbng d\u1eabn c\u1ee7a nh\u00e2n vi\u00ean c\u1ea5p c\u1ee9u. Em ch\u01b0a g\u1ecdi c\u1ea5p c\u1ee9u thay b\u1ea1n.', 'Do not give food or drink, including sugar water, to an unconscious person or someone unable to swallow safely. Contact local emergency services now and follow their instructions. I have not called on your behalf.');
+          reply.citations=[{id:'urgent-swallow-safety',title:'Mayo Clinic: hypoglycemia emergency treatment',url:'https://www.mayoclinic.org/diseases-conditions/hypoglycemia/diagnosis-treatment/drc-20373689',scope:'education',checkedAt:'2026-09-23'}];
+        }
       } else if(decision.task==='PROFESSIONAL_REVIEW') {
         reply.handover=true;reply.handoverTag='HEALTH_RISK';reply.handoverStatus='suggested';
         reply.text=choose('Yêu cầu này cần được chuyên gia y tế hoặc người phụ trách phù hợp xem xét riêng. Em không chọn thuốc, liều dùng, mục tiêu ăn kiêng hay giáo án điều trị từ các mẫu tham chiếu. Với người dưới 18 tuổi, cần người giám hộ phối hợp. Đây mới là đề nghị chuyển giao; chưa tạo lịch hẹn hoặc gửi hồ sơ.',
           'This personal request needs review by an appropriate healthcare or qualified professional. I will not select medication, doses, dietary targets or therapeutic workouts from sample records. A guardian should be involved for under-18s. This is a suggested referral, not a booking or a transmitted record.');
+        if(who.uid&&(who.privateCredentialVerified===true||who.emailVerified)&&options.memberContextEnabled()&&options.readReviewContext&&options.sourceReadAllowed&&await nextWithSignal(options.sourceReadAllowed(who.uid),controller.signal)) {
+          const at=performance.now(),context=await nextWithSignal(options.readReviewContext(who.uid,lang),controller.signal);
+          if(context){reply.text+='\n\n'+context.text;reply.citations=context.citations;reply.missingFields=context.missingFields;reply.reasonCodes.push('review_context_from_own_source');}
+          timings.contextMs+=performance.now()-at;
+        }
       } else if(decision.privateRequest) {
-        if(!who.uid){reply.missingFields=['verified_sign_in'];reply.text=choose('Bạn vẫn có thể hỏi kiến thức chung. Để xem hồ sơ hoặc nhật ký riêng, cần đăng nhập đúng phương thức của ứng dụng; thông tin tên hay hạng thẻ từ trình duyệt không cấp quyền truy cập.','General questions remain available. An authenticated sign-in is needed for private records; browser names or membership labels do not grant access.');}
+        if(!who.uid&&decision.topic==='own_source:equipment'){reply.task='BUSINESS_QA';reply.missingFields=['verified_equipment_location','live_occupancy'];reply.text=choose('Em ch\u01b0a c\u00f3 x\u00e1c nh\u1eadn v\u1ecb tr\u00ed hay t\u00ecnh tr\u1ea1ng m\u00e1y \u0111ang tr\u1ed1ng cho c\u00e2u h\u1ecfi n\u00e0y. Danh s\u00e1ch t\u00e0i s\u1ea3n \u0111\u00e3 thu th\u1eadp kh\u00f4ng ph\u1ea3i d\u1eef li\u1ec7u v\u1ecb tr\u00ed ho\u1eb7c c\u1ea3m bi\u1ebfn th\u1eddi gian th\u1ef1c. C\u1ea7n nh\u00e2n s\u1ef1 ph\u00f2ng t\u1eadp x\u00e1c nh\u1eadn; em kh\u00f4ng t\u1ef1 ch\u1ec9 t\u1ea7ng hay n\u00f3i m\u00e1y \u0111ang r\u1ea3nh.','I cannot verify the machine location or current occupancy for this question. A collected inventory is not a location or live occupancy sensor. Gym staff need to confirm this.');}
+        else if(!who.uid){reply.missingFields=['verified_sign_in'];reply.text=choose('Bạn vẫn có thể hỏi kiến thức chung. Để xem hồ sơ hoặc nhật ký riêng, cần đăng nhập đúng phương thức của ứng dụng; thông tin tên hay hạng thẻ từ trình duyệt không cấp quyền truy cập.','General questions remain available. An authenticated sign-in is needed for private records; browser names or membership labels do not grant access.');}
         else if(!options.memberContextEnabled()){reply.reasonCodes.push('member_context_disabled');reply.text=choose('Bạn đã đăng nhập, nhưng khả năng đọc ngữ cảnh hội viên qua chat chưa được mở tại môi trường này. Hỏi đáp kiến thức chung vẫn hoạt động.','You are signed in, but member-context access is not enabled here. General education remains available.');}
         else {
           const contextStart=performance.now();
+          const sourceAnswer=decision.task==='MEMBER_CONTEXT_QA' && options.readOwnSources && options.sourceReadAllowed && (who.privateCredentialVerified===true||who.emailVerified) && await nextWithSignal(options.sourceReadAllowed(who.uid),controller.signal) ? await nextWithSignal(options.readOwnSources(who.uid,input.message,lang,decision.topic),controller.signal) : null;
+          if(sourceAnswer){
+            reply.text=sourceAnswer.text;reply.citations=sourceAnswer.citations;reply.missingFields=sourceAnswer.missingFields;reply.reasonCodes.push('owner_scoped_source_read');
+            if(await nextWithSignal(options.entitled(who.uid),controller.signal))reply.mode='authorized_member';
+          } else {
           const admitted=(who.privateCredentialVerified===true||who.emailVerified)&&await nextWithSignal(options.entitled(who.uid),controller.signal);
           if(!admitted){reply.reasonCodes.push('member_access_required');reply.text=choose('Tài khoản đã đăng nhập nhưng chưa có quyền đọc dữ liệu tập qua AI Gym Buddy. Hãy nhờ quản trị xác nhận quyền pilot; bạn vẫn hỏi kiến thức chung bình thường.','Your account is signed in but not admitted to member-context access. Ask an administrator about pilot access; general questions remain available.');}
           else {
@@ -141,6 +160,7 @@ export function createBuddyRouter(options:BuddyRouterOptions):Router {
                 reply.text=choose('Em chưa tạo giáo án hoặc meal plan mới trong cuộc chat này. Mở Training để xác nhận thể trạng hiện tại và dùng planner đã có; máy, bài và định lượng phải qua xác minh. Các mẫu dinh dưỡng vẫn chờ duyệt, không phải thực đơn được gán cho bạn.','No new workout or meal plan has been created in this chat. Open Training to confirm readiness and use the existing planner with verified equipment and prescriptions. Nutrition samples remain unapproved, not your assigned diet.');reply.action='open_training';
               }
             }
+          }
           }
           timings.contextMs=performance.now()-contextStart;
         }

@@ -22,7 +22,8 @@
     "local:build": "node scripts/local/build.mjs",
     "local:start": "node dist-local/server.cjs --local",
     "local:seed": "node --import tsx scripts/local/seed.ts --local",
-    "local:test": "node --import tsx --test tests/local/*.test.ts"
+    "local:test": "node --import tsx --test tests/local/*.test.ts",
+    "local:memory": "node --import tsx scripts/local/import-memory.ts --local"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

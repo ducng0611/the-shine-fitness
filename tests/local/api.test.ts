@@ -1,3 +1,4 @@
+import { importSourceMemory } from '../../server/src/local/sourceMemory';
 /** Synthetic fixtures only. Real local passwords/cookies/SQLite/HTTP, no Firebase or model mocks. */
 import test,{before,after} from 'node:test';
 import assert from 'node:assert/strict';
@@ -31,7 +32,7 @@ class Client{
 }
 before(async()=>{
   dir=mkdtempSync(join(tmpdir(),'shine-local-api-'));db=new PilotDatabase(join(dir,'pilot.sqlite'));
-  report=await seedQA(db,manifest,password,process.cwd());app=createLocalApp({database:db,root:process.cwd(),allowedOrigins:()=>[base],loginLimit:200});
+  report=await seedQA(db,manifest,password,process.cwd());await importSourceMemory(db,process.cwd());app=createLocalApp({database:db,root:process.cwd(),allowedOrigins:()=>[base],loginLimit:200});
   server=app.app.listen(0,'127.0.0.1');await new Promise<void>(r=>server.once('listening',r));base=`http://127.0.0.1:${(server.address() as AddressInfo).port}`;
 });
 after(async()=>{server?.closeAllConnections();await new Promise<void>(r=>server.close(()=>r()));await db.close();rmSync(dir,{recursive:true,force:true});});

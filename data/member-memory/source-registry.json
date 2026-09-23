@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Tra cứu nguồn theo đúng chủ tài khoản, không huấn luyện lại trọng số mô hình",
+  "sources": {
+    "programs": "data/companion/training_programs.json",
+    "meals": "data/nutrition/meal-plan-library.json",
+    "assets": "data/companion/the-shine-gym-assets.draft.json"
+  },
+  "privateInput": "source-facts.PRIVATE.json (ngoài repository)",
+  "factFields": [
+    "trainingGoal",
+    "medicalHistory",
+    "medications",
+    "medicalClearance",
+    "ptNotes"
+  ],
+  "factStatuses": [
+    "recorded",
+    "not_recorded",
+    "not_disclosed",
+    "reported_none"
+  ],
+  "databaseCollections": [
+    "member_source_programs",
+    "member_source_exercises",
+    "member_source_meals",
+    "member_source_assets",
+    "member_source_memory",
+    "member_source_imports"
+  ],
+  "ownership": "Firebase không tham gia. UID lấy từ phiên local đã xác thực, không từ tin nhắn.",
+  "importPolicy": {
+    "atomic": true,
+    "idempotent": true,
+    "expectedRevisionRequiredOnChange": true,
+    "mutatesAccounts": false,
+    "mutatesEntitlements": false,
+    "createsCompletedWorkouts": false,
+    "autoAssignsMeals": false,
+    "approvesArchives": false
+  },
+  "retrievalPolicy": {
+    "serverOwnerOnly": true,
+    "sharedCache": false,
+    "sendsPrivateSourceToModel": false,
+    "sourceReadIsPrescription": false,
+    "maxComparedSessions": 2
+  },
+  "status": "Nguồn vẫn chờ duyệt chuyên môn. Nhập DB không đồng nghĩa gán hoặc duyệt kế hoạch."
+}

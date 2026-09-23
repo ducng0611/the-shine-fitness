@@ -16,8 +16,9 @@ export function educationCardMatches(topic:string|null,message:string):boolean {
     if(/\b(benh|gout|than|ung thu|cancer|kidney|harm|co hai|gay|tac dung phu|bao nhieu|how much|lieu|dose)\b/.test(q))return false;
     return definition||/^(protein|whey)[?.!\s]*$/.test(q)||/\b(nguon|thuc pham giau dam|food sources|protein foods|whey khac|difference.*whey)\b/.test(q);
   }
+  if(['superset','lat_pulldown','decline_press','rpe'].includes(topic??''))return definition&&!/\b(co nen|cho toi|for me|can i|nen tap|how much|bao nhieu|an toan|safe for)\b/.test(q);
   if(topic==='energy_terms')return definition||(/\b(tdee)\b/.test(q)&&/\b(bmr)\b/.test(q));
-  if(topic==='diabetes_concept')return definition&&!/\b(type 1|bien chung|symptoms|trieu chung|complications|chua|dieu tri|treatment)\b/.test(q);
+  if(topic==='diabetes_concept'||topic==='diabetes_general')return (definition||/\b(day la benh gi|what disease is this)\b/.test(q))&&!/\b(type 1|bien chung|symptoms|trieu chung|complications|chua|dieu tri|treatment)\b/.test(q);
   if(topic==='creatine_concept')return definition&&!/\b(lieu|dose|bao nhieu|kidney|benh|than)\b/.test(q);
   if(topic==='progressive_overload')return definition||/\b(nguyen tac|principle|giai thich)\b/.test(q);
   if(topic==='warmup')return definition||/\b(tai sao|vi sao|muc dich|why|purpose)\b/.test(q);
@@ -37,7 +38,7 @@ export class BuddyKnowledge {
   }
   education(topic:string|null,message:string,lang:BuddyLanguage):KnowledgeAnswer|null {
     const file=this.educationFile();if(!file)return null;
-    const key=topic==='protein'&&/\bwhey\b/i.test(message)?'whey':topic;
+    const key=topic==='protein'&&/\bwhey\b/i.test(message)?'whey':topic==='diabetes_concept'&&!/\b(type\s*2|tuyp\s*2|typ\s*2)\b/.test(normalizeSafetyText(message))?'diabetes_general':topic;
     if(!educationCardMatches(key,message))return null;
     const c=file.cards.find(c=>c.id===key);
     if(!c||typeof c[lang]!=='string'||!/^https:\/\//.test(c.url))return null;
@@ -46,7 +47,8 @@ export class BuddyKnowledge {
   /** Local retrieval needs no query embedding. It never reads historical/private archives. */
   business(message:string,lang:BuddyLanguage):KnowledgeAnswer|null {
     const text=normalizeSafetyText(message),today=new Date(this.now()).toISOString().slice(0,10);
-    const category=/\b(gia|bao nhieu tien|chi phi|goi|price|cost|fee)\b/.test(text)?'PRICE':
+    const medicalService=/\b(benh nen|medical condition|nhan khach.*benh|quy trinh tiep nhan)\b/.test(text);
+    const category=medicalService?'POLICY':/\b(gia|bao nhieu tien|chi phi|goi|price|cost|fee)\b/.test(text)?'PRICE':
       /\b(lich|gio|mo cua|dong cua|opening|schedule|hours)\b/.test(text)?'SCHEDULE':
       /\b(bao luu|hoan tien|chinh sach|refund|policy)\b/.test(text)?'POLICY':
       /\b(tap thu|trial)\b/.test(text)?'TRIAL':/\b(huan luyen vien|trainer|pt)\b/.test(text)?'TRAINER':'FACILITY';
@@ -60,7 +62,9 @@ export class BuddyKnowledge {
         if(metadata.category!==category||!programRagAllowed(metadata)||metadata.expiry_date<=today||metadata.effective_date>today||metadata.content_scope==='historical_reference'||metadata.review_status==='needs_review')continue;
         for(const chunk of chunkDocument(body)){
           if(chunk.length<80||chunk.length>2000)continue;
-          const normalized=normalizeSafetyText(chunk),score=tokens.reduce((s,t)=>s+(normalized.includes(t)?1:0),0);
+          const normalized=normalizeSafetyText(chunk);
+          if(medicalService&&!/\b(benh nen|tiep nhan.*benh|medical condition|medical clearance)\b/.test(normalized))continue;
+          const score=tokens.reduce((s,t)=>s+(normalized.includes(t)?1:0),0);
           candidates.push({text:chunk,citation:{id:metadata.id,title:metadata.title,scope:'business'},score,fingerprint:digest(raw)});
         }
       }catch{}

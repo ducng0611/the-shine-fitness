@@ -1,3 +1,4 @@
+import { MemberSourceReader } from './sourceMemory';
 import express, { type Request, type Response, type NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
 import { timingSafeEqual } from 'node:crypto';
@@ -21,6 +22,7 @@ const same=(a:string,b:string)=>Buffer.byteLength(a)===Buffer.byteLength(b)&&tim
 export function createLocalApp(options:LocalAppOptions) {
   const app=express(),now=options.now??Date.now,store=new SQLiteTrainingStore(options.database);
   const auth=new LocalAuth(options.database,now),training=new TrainingService(store,now),sessions=new ConversationStore(now);
+  const sourceReader=new MemberSourceReader(options.database);
   const identities=new WeakMap<Request,LocalSession|null>();
   app.disable('x-powered-by');app.set('trust proxy',false);
   app.use((req,res,next)=>{
@@ -77,9 +79,10 @@ export function createLocalApp(options:LocalAppOptions) {
     res.clearCookie(COOKIE,{path:'/',httpOnly:true,sameSite:'strict'});res.json({signedOut:true});
   }));
   app.get('/api/local/source',handler(async(req,res)=>{
-    const u=requireUser(req),library=JSON.parse(readFileSync(join(options.root,'data/companion/training_programs.json'),'utf8'));
-    const p=library.programs.find((p:{id:string})=>p.id===u.source.programId);
+    const u=requireUser(req),snap=await sourceReader.snapshot(u.uid);
+    const p=snap?.program;
     res.json({source:u.source,reference:p?{id:p.id,name:p.name,reviewStatus:p.reviewStatus,verified:p.verified,referenceSessionCount:p.referenceSessions.length}:null,
+      sourceMemory:snap?{revision:snap.receipt.revision,importedAt:snap.receipt.importedAt,fields:snap.memory.fields,counts:snap.receipt.counts}:null,
       assignedProgramId:null,mealPlanAssignment:null,readOnly:true,confirmedHistoryIsSeparate:true});
   }));
   app.use(LOCAL_BUDDY_BASE,(req,res,next)=>{const s=state(req);if(s&&req.method==='POST'&&req.path.startsWith('/chat'))auth.watch(s,res);next();});
@@ -88,6 +91,9 @@ export function createLocalApp(options:LocalAppOptions) {
     verifyToken:async()=>{throw new Error('Firebase token verifier must never be invoked in local mode');},
     enabled:()=>true,memberContextEnabled:()=>true,adminEmails:()=>[],entitled,
     safetyContext:(_who,req)=>({minorConcern:state(req)?.user.minor===true,healthConcern:state(req)?.user.needsReview===true}),
+    sourceReadAllowed:uid=>options.database.access(sql=>!!sql.prepare('SELECT uid FROM local_users WHERE uid=? AND disabled=0').get(uid)),
+    readReviewContext:(uid,lang)=>sourceReader.reviewContext(uid,lang),
+    readOwnSources:(uid,message,lang,topic)=>sourceReader.answer(uid,message,lang,topic),
     readContext:uid=>training.context(uid),
     describeContext:async(context,message,lang,timestamp)=>{
       const basic=contextText(context,message,lang,timestamp);
