@@ -1,5 +1,6 @@
 import { createNutritionRouter } from "./nutrition/router";
 import { nutritionChatDecision } from "../../shared/nutritionRouting";
+import { registerCompanionRoutes } from "./companion/router.ts";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import path from "path";
@@ -327,6 +328,8 @@ async function startServer() {
   }));
 
   // Built-in middleware to parse JSON bodies
+  // Companion has its own authenticated parser and food-photo size limit.
+  registerCompanionRoutes(app);
   app.use(express.json());
 
   // Step 3 is isolated from public RAG/cache/logs and defaults to disabled.
