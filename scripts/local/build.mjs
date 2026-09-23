@@ -1,0 +1,10 @@
+import { build } from 'esbuild';
+import { build as viteBuild } from 'vite';
+import { writeFile, mkdir } from 'node:fs/promises';
+const result=await build({entryPoints:['server/src/local/main.ts'],bundle:true,platform:'node',format:'cjs',target:'node22',outfile:'dist-local/server.cjs',metafile:true,external:['vite'],logLevel:'info'});
+if(Object.keys(result.metafile.inputs).some(p=>/(^|\/)firebase(?:-admin)?\//.test(p)||p.includes('lib/firebase')))throw new Error('Firebase entered the local server dependency graph');
+await build({entryPoints:['scripts/local/seed.ts'],bundle:true,platform:'node',format:'esm',target:'node22',outfile:'dist-local/seed.mjs',logLevel:'info'});
+const client=await viteBuild({configFile:'vite.local.config.ts',plugins:[{name:'assert-no-firebase-local',generateBundle(){const ids=[...this.getModuleIds()];if(ids.some(p=>/(?:^|\/)@?firebase(?:-admin)?\//.test(p)||p.includes('lib/firebase')))throw new Error('Firebase entered the local client graph');}}]});
+await mkdir('test-results/local',{recursive:true});
+await writeFile('test-results/local/server-imports.json',JSON.stringify({firebaseRuntimeImports:0,modules:Object.keys(result.metafile.inputs)},null,2));
+console.log('Local build complete. Firebase runtime imports: 0.');

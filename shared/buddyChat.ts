@@ -5,7 +5,7 @@ export const BUDDY_TASKS = ['BUSINESS_QA','FITNESS_EDUCATION','HEALTH_EDUCATION'
 export type BuddyTask = typeof BUDDY_TASKS[number];
 export type BuddyMode = 'guest' | 'authenticated_user' | 'authorized_member';
 export type BuddyLanguage = 'vi' | 'en';
-export interface BuddyIdentity { uid: string | null; emailVerified: boolean; admin: boolean }
+export interface BuddyIdentity { uid: string | null; emailVerified: boolean; admin: boolean; privateCredentialVerified?: boolean; authProvider?: 'firebase' | 'local' }
 export interface BuddyCitation { id: string; title: string; url?: string; checkedAt?: string; scope: 'education' | 'business' | 'own_record' }
 export interface BuddyTimings { authMs: number; routeMs: number; contextMs: number; retrievalMs: number; modelMs: number; firstContentMs: number | null; totalMs: number; modelCalls: number; cacheHit: boolean; fallback: boolean }
 export interface BuddyReply {

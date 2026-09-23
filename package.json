@@ -18,7 +18,11 @@
     "test:training": "node --import tsx --test tests/training/domain.test.ts tests/training/service.test.ts tests/training/router.test.ts",
     "typecheck:training": "tsc -p tsconfig.training.json --noEmit",
     "test:training:emulator": "node --import tsx --test tests/training/emulator.integration.ts",
-    "test:training:ui:server": "NODE_ENV=test node --import tsx tests/training/ui-server.ts"
+    "test:training:ui:server": "NODE_ENV=test node --import tsx tests/training/ui-server.ts",
+    "local:build": "node scripts/local/build.mjs",
+    "local:start": "node dist-local/server.cjs --local",
+    "local:seed": "node --import tsx scripts/local/seed.ts --local",
+    "local:test": "node --import tsx --test tests/local/*.test.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

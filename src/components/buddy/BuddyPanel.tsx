@@ -3,9 +3,9 @@ import Markdown from 'react-markdown';
 import type { BuddyEvent, BuddyLanguage, BuddyReply } from '../../../shared/buddyChat';
 import { BuddyClient } from './client';
 import './buddy.css';
-export interface BuddyPanelProps { identityKey:string; signedIn:boolean; getToken:()=>Promise<string|null>; lang?:BuddyLanguage; onOpenTraining?:()=>void; clientFactory?:(options:ConstructorParameters<typeof BuddyClient>[0])=>BuddyClient }
+export interface BuddyPanelProps { identityKey:string; signedIn:boolean; getToken:()=>Promise<string|null>; lang?:BuddyLanguage; onOpenTraining?:()=>void; trainingActionLabel?:string; clientFactory?:(options:ConstructorParameters<typeof BuddyClient>[0])=>BuddyClient }
 interface Message { id:string; role:'user'|'assistant'; text:string; reply?:BuddyReply; incomplete?:boolean }
-export function BuddyPanel({identityKey,signedIn,getToken,lang='vi',onOpenTraining,clientFactory}:BuddyPanelProps) {
+export function BuddyPanel({identityKey,signedIn,getToken,lang='vi',onOpenTraining,trainingActionLabel,clientFactory}:BuddyPanelProps) {
   const [messages,setMessages]=useState<Message[]>([]),[input,setInput]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState('');
   const [epoch,setEpoch]=useState(0),client=useRef<BuddyClient|null>(null),generation=useRef(0),scroll=useRef<HTMLDivElement>(null);
   const t=(vi:string,en:string)=>lang==='vi'?vi:en;
@@ -40,7 +40,7 @@ export function BuddyPanel({identityKey,signedIn,getToken,lang='vi',onOpenTraini
         {!!m.reply?.citations.length&&<details className="buddy-sources"><summary>{t('Nguồn được sử dụng','Sources used')}</summary>{m.reply.citations.map(c=><p key={c.id}>{c.url?.startsWith('https://')?<a href={c.url} target="_blank" rel="noopener noreferrer">{c.title}</a>:c.title}{c.checkedAt&&<small> · {c.checkedAt}</small>}</p>)}</details>}
         {m.reply?.reasonCodes.includes('general_model_knowledge_not_source_verified')&&<small className="buddy-source-note">{t('Giải thích kiến thức chung từ mô hình; chưa có nguồn riêng xác minh cho chi tiết này.','General model explanation; no matched source verifies this specific detail.')}</small>}
         {m.reply?.handoverStatus==='suggested'&&<small className="buddy-source-note">{t('Đề nghị hỗ trợ chuyên môn, chưa tạo lịch hẹn hoặc gửi hồ sơ.','Professional review suggested; no booking or record transmission has occurred.')}</small>}
-        {m.reply?.action==='open_training'&&onOpenTraining&&<button className="buddy-primary" type="button" onClick={onOpenTraining}>{t('Mở Training để xác nhận','Open Training to confirm')}</button>}
+        {m.reply?.action==='open_training'&&onOpenTraining&&<button className="buddy-primary" type="button" onClick={onOpenTraining}>{trainingActionLabel??t('Mở Training để xác nhận','Open Training to confirm')}</button>}
       </article>)}
       <div ref={scroll}/>
     </div>

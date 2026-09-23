@@ -3,7 +3,7 @@ on:
   push:
     branches: [feat/local-pilot-sqlite]
   pull_request:
-    paths: ['server/src/local/**','src/local/**','scripts/local/**','tests/local/**','local.html','vite.local.config.ts','tsconfig.local.json','.github/workflows/local-pilot.yml']
+    paths: ['server/src/local/**','src/local/**','scripts/local/**','tests/local/**','shared/buddy*.ts','server/src/buddy/router.ts','src/components/buddy/BuddyPanel.tsx','local.html','vite.local.config.ts','tsconfig.local.json','.github/workflows/local-pilot.yml']
 permissions:
   contents: read
 concurrency:
@@ -22,19 +22,68 @@ jobs:
         with:
           node-version: '22.16.0'
       - run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Baseline type check
-        run: npm run lint
-      - name: Local Pilot tests when implementation is present
+      - name: Local auth, SQLite, policy, existing regression and builds
+        run: bash scripts/local/verify.sh
+      - name: Export public patch and source only
+        if: always()
         run: |
-          if [ -f scripts/local/verify.sh ]; then bash scripts/local/verify.sh; fi
-      - name: Export isolated verification workspace (no credentials)
-        run: |
-          mkdir -p test-results/local-workspace
-          git archive --format=tar.gz HEAD > test-results/local-workspace/source.tar.gz
-          tar -czf test-results/local-workspace/dependencies.tar.gz node_modules
-          git rev-parse HEAD > test-results/local-workspace/commit.txt
+          mkdir -p test-results/local
+          git diff --binary 176ac2f8be90d2c2c4378d03722dc49f7315683b HEAD > test-results/local/local-pilot.patch
+          git rev-parse HEAD > test-results/local/commit.txt
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: local-pilot-workspace
-          path: test-results/local-workspace
-          retention-days: 1
+          name: local-pilot-verification
+          path: test-results/local
+          retention-days: 7
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run local:build
+      - run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Real local password, cookie, SQLite and browser (synthetic CI cases)
+        run: |
+          set -euo pipefail
+          export SHINE_LOCAL_QA_PASSWORD=$(node -e 'console.log(require("crypto").randomBytes(24).toString("base64url"))')
+          echo "::add-mask::$SHINE_LOCAL_QA_PASSWORD"
+          QA_DIR=$(mktemp -d)
+          trap 'kill ${SERVER_PID:-0} 2>/dev/null || true; rm -rf "$QA_DIR"' EXIT
+          node --import tsx scripts/local/write-ci-fixture.mjs "$QA_DIR/input.json"
+          node dist-local/seed.mjs --local --manifest "$QA_DIR/input.json" --db "$QA_DIR/pilot.sqlite" --out "$QA_DIR/accounts.json"
+          export SHINE_LOCAL_DB="$QA_DIR/pilot.sqlite"
+          export SHINE_LOCAL_ALLOW_MODEL=false
+          export SHINE_LOCAL_ACCOUNTS="$QA_DIR/accounts.json"
+          export SHINE_LOCAL_TEST_OUT=test-results/local-browser
+          mkdir -p test-results/local-browser
+          node dist-local/server.cjs --local > test-results/local-browser/server.log 2>&1 &
+          SERVER_PID=$!
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4176/api/local/status >/dev/null; then break; fi
+            sleep 1
+          done
+          python tests/local/browser.py
+          node scripts/local/acceptance.mjs --local --accounts "$QA_DIR/accounts.json" --out test-results/local-browser/http-acceptance.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: local-pilot-browser
+          path: |
+            test-results/local-browser/result.json
+            test-results/local-browser/http-acceptance.json
+            test-results/local-browser/desktop-local.png
+            test-results/local-browser/mobile-local.png
+            test-results/local-browser/server.log
+          retention-days: 7

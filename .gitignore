@@ -15,3 +15,13 @@ __pycache__/
 # Sensitive source intake: NEVER commit these folders.
 data/training-pathways-private/
 private-training-sources/
+
+# Local pilot private runtime and credentials
+.local-data/
+dist-local/
+local-pilot-private/
+*.PRIVATE.json
+*.PRIVATE.txt
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

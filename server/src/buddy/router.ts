@@ -2,7 +2,7 @@ import { Router, json, type Request, type Response, type NextFunction } from 'ex
 import rateLimit from 'express-rate-limit';
 import { performance } from 'node:perf_hooks';
 import { BuddyError, BUDDY_VERSION, parseBuddyRequest, emptyTimings, type BuddyIdentity, type BuddyReply, type BuddyEvent, type BuddyRequest, type BuddyTimings, type BuddyLanguage } from '../../../shared/buddyChat';
-import { routeBuddy, BUDDY_POLICY_VERSION, type BuddyDecision } from '../../../shared/buddyPolicy';
+import { routeBuddy, BUDDY_POLICY_VERSION, type BuddyDecision, type BuddyMemory } from '../../../shared/buddyPolicy';
 import { normalizeSafetyText } from '../../../shared/programSafety';
 import type { TrainingContextResponse } from '../../../shared/training';
 import { ConversationStore, PublicAnswerCache, BuddyMetrics, digest, type Conversation } from './state';
@@ -11,6 +11,10 @@ import { acceptableEducationOutput, nextWithSignal, transientProviderError, type
 import { isOwnSafetyReport } from './freshness';
 
 export interface BuddyRouterOptions {
+  // Explicit server injection for a separate local entrypoint. Never read from body.
+  resolveIdentity?:(request:Request)=>Promise<BuddyIdentity>;
+  safetyContext?:(identity:BuddyIdentity,request:Request)=>Partial<BuddyMemory>;
+  describeContext?:(context:TrainingContextResponse,message:string,lang:BuddyLanguage,now:number)=>Promise<string>;
   verifyToken:(token:string)=>Promise<{uid:string;email?:string;email_verified?:boolean}>;
   enabled:()=>boolean; memberContextEnabled:()=>boolean; adminEmails:()=>string[];
   entitled:(uid:string)=>Promise<boolean>;
@@ -59,6 +63,7 @@ export function createBuddyRouter(options:BuddyRouterOptions):Router {
   router.use(rateLimit({windowMs:60_000,limit:options.rateLimit??40,standardHeaders:true,legacyHeaders:false}));
   router.use(json({limit:'16kb'}));
   const identity=async(req:Request):Promise<BuddyIdentity>=>{
+    if(options.resolveIdentity)return options.resolveIdentity(req);
     const h=req.headers.authorization;
     if(h===undefined)return {uid:null,emailVerified:false,admin:false};
     if(typeof h!=='string'||!/^Bearer [^\s]+$/.test(h)||h.length>16_500)throw new BuddyError('invalid_token','Phiên đăng nhập không hợp lệ. Hãy đăng nhập lại.',401);
@@ -97,7 +102,10 @@ export function createBuddyRouter(options:BuddyRouterOptions):Router {
       enabled();input=parseBuddyRequest(req.body);
       const authStart=performance.now(),who=await nextWithSignal(identity(req),controller.signal);timings.authMs=performance.now()-authStart;
       row=sessions.get(input.conversationId,who.uid,guest(req));sessions.begin(row,input.requestId,input.expectedRevision);locked=true;
-      const routeStart=performance.now(),decision=routeBuddy(input.message,row.memory);row.memory=decision.memory;timings.routeMs=performance.now()-routeStart;
+      const routeStart=performance.now();
+      const constrained=options.safetyContext?.(who,req);
+      if(constrained){row.memory.minorConcern ||= constrained.minorConcern===true;row.memory.healthConcern ||= constrained.healthConcern===true;row.memory.allergyConcern ||= constrained.allergyConcern===true;}
+      const decision=routeBuddy(input.message,row.memory);row.memory=decision.memory;timings.routeMs=performance.now()-routeStart;
       reply=replyFor(input,row,who,decision,timings);
       if(stream){res.status(200).setHeader('Content-Type','text/event-stream; charset=utf-8');res.setHeader('X-Accel-Buffering','no');res.flushHeaders();await send({type:'meta',requestId:input.requestId,conversationId:row.id});}
       const lang=input.lang,choose=(vi:string,en:string)=>words(lang,vi,en);
@@ -110,11 +118,11 @@ export function createBuddyRouter(options:BuddyRouterOptions):Router {
         reply.text=choose('Yêu cầu này cần được chuyên gia y tế hoặc người phụ trách phù hợp xem xét riêng. Em không chọn thuốc, liều dùng, mục tiêu ăn kiêng hay giáo án điều trị từ các mẫu tham chiếu. Với người dưới 18 tuổi, cần người giám hộ phối hợp. Đây mới là đề nghị chuyển giao; chưa tạo lịch hẹn hoặc gửi hồ sơ.',
           'This personal request needs review by an appropriate healthcare or qualified professional. I will not select medication, doses, dietary targets or therapeutic workouts from sample records. A guardian should be involved for under-18s. This is a suggested referral, not a booking or a transmitted record.');
       } else if(decision.privateRequest) {
-        if(!who.uid){reply.missingFields=['verified_sign_in'];reply.text=choose('Bạn vẫn có thể hỏi kiến thức chung. Để xem hồ sơ hoặc nhật ký riêng, cần đăng nhập Firebase thật; thông tin tên hay hạng thẻ từ trình duyệt không cấp quyền truy cập.','General questions remain available. A verified Firebase sign-in is needed for private records; browser names or membership labels do not grant access.');}
+        if(!who.uid){reply.missingFields=['verified_sign_in'];reply.text=choose('Bạn vẫn có thể hỏi kiến thức chung. Để xem hồ sơ hoặc nhật ký riêng, cần đăng nhập đúng phương thức của ứng dụng; thông tin tên hay hạng thẻ từ trình duyệt không cấp quyền truy cập.','General questions remain available. An authenticated sign-in is needed for private records; browser names or membership labels do not grant access.');}
         else if(!options.memberContextEnabled()){reply.reasonCodes.push('member_context_disabled');reply.text=choose('Bạn đã đăng nhập, nhưng khả năng đọc ngữ cảnh hội viên qua chat chưa được mở tại môi trường này. Hỏi đáp kiến thức chung vẫn hoạt động.','You are signed in, but member-context access is not enabled here. General education remains available.');}
         else {
           const contextStart=performance.now();
-          const admitted=who.emailVerified&&await nextWithSignal(options.entitled(who.uid),controller.signal);
+          const admitted=(who.privateCredentialVerified===true||who.emailVerified)&&await nextWithSignal(options.entitled(who.uid),controller.signal);
           if(!admitted){reply.reasonCodes.push('member_access_required');reply.text=choose('Tài khoản đã đăng nhập nhưng chưa có quyền đọc dữ liệu tập qua AI Gym Buddy. Hãy nhờ quản trị xác nhận quyền pilot; bạn vẫn hỏi kiến thức chung bình thường.','Your account is signed in but not admitted to member-context access. Ask an administrator about pilot access; general questions remain available.');}
           else {
             const context=await nextWithSignal(options.readContext(who.uid),controller.signal);
@@ -123,7 +131,7 @@ export function createBuddyRouter(options:BuddyRouterOptions):Router {
               reply.mode='authorized_member';
               if(decision.task==='MEMBER_CONTEXT_QA') {
                 if(/meal|thuc don|ghi chu|pt giao|pt ghi/i.test(normalizeSafetyText(input.message)))reply.text=choose('Luồng này chưa có bộ đọc meal plan hoặc ghi chú PT được gán cho bạn. Em không lấy mẫu của người khác để thay thế. Hiện có thể xem hồ sơ tập và nhật ký đã xác nhận.','Assigned meal plans and PT notes are not connected to this reader. I will not substitute another person’s sample. Confirmed training records are available.');
-                else {reply.text=contextText(context,input.message,lang,now());reply.citations=[{id:'own-confirmed-training',title:choose('Hồ sơ và nhật ký training của chính tài khoản','Your own confirmed training records'),scope:'own_record'}];}
+                else {reply.text=options.describeContext?await nextWithSignal(options.describeContext(context,input.message,lang,now()),controller.signal):contextText(context,input.message,lang,now());reply.citations=[{id:'own-confirmed-training',title:choose('Hồ sơ và nhật ký training của chính tài khoản','Your own confirmed training records'),scope:'own_record'}];}
               } else if(decision.task==='LOGGING_REQUEST') {
                 reply.text=choose('Em chưa lưu nội dung này. Phần tập thực tế cần xác nhận trong Training; nhật ký bữa ăn chưa được triển khai. Một câu kể đã tập hoặc đã ăn không tự trở thành dữ liệu hoàn thành.','I have not saved this. Actual training requires confirmation in Training; meal logging is not implemented. A chat statement is not automatically a completed record.');reply.action='open_training';
               } else if(context.profile.healthReviewNeeded||context.profile.age<18||context.readiness?.currentPain) {
@@ -176,7 +184,7 @@ export function createBuddyRouter(options:BuddyRouterOptions):Router {
       // Preserve the existing Training safety invariant across the new chat entrypoint.
       // This only removes old readiness; it never confirms symptoms, creates readiness
       // or records a workout. Emit controlled urgent guidance before any storage wait.
-      if(options.onOwnSafetyReport&&who.uid&&who.emailVerified&&options.memberContextEnabled()&&isOwnSafetyReport(input.message)){
+      if(options.onOwnSafetyReport&&who.uid&&(who.privateCredentialVerified===true||who.emailVerified)&&options.memberContextEnabled()&&isOwnSafetyReport(input.message)){
         if(timings.firstContentMs===null)await emit(reply.text);
         const safetyStart=performance.now();
         if(await nextWithSignal(options.entitled(who.uid),controller.signal)){

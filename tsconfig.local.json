@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "strict": true, "noEmit": true },
+  "include": ["server/src/local/**/*.ts", "src/local/**/*.ts", "src/local/**/*.tsx", "scripts/local/**/*.ts", "tests/local/**/*.ts", "vite.local.config.ts"]
+}

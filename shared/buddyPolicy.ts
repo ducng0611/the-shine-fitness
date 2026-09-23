@@ -1,7 +1,7 @@
 import { normalizeSafetyText, detectAcuteMetabolicWarning } from './programSafety';
 import { detectAcutePostureWarning } from './postureSafety';
 import type { BuddyTask } from './buddyChat';
-export const BUDDY_POLICY_VERSION = 'context-policy-v3';
+export const BUDDY_POLICY_VERSION = 'context-policy-v4';
 export interface BuddyMemory { minorConcern:boolean; healthConcern:boolean; allergyConcern:boolean; lastTopic:string|null }
 export const newBuddyMemory=():BuddyMemory=>({minorConcern:false,healthConcern:false,allergyConcern:false,lastTopic:null});
 export interface BuddyDecision { task:BuddyTask; topic:string|null; reason:string; memory:BuddyMemory; privateRequest:boolean; generationAllowed:boolean }
@@ -63,6 +63,14 @@ export function routeBuddy(message:string,prior:BuddyMemory=newBuddyMemory()):Bu
   const directClinical=clinicalPattern.test(text)&&((!concept&&/\b(thuoc|lieu|bao nhieu|uong|truoc|sau|take|dose|should|how much|prescribe)\b/.test(text))||actionableMedication);
   const thresholds=/\b(duong huyet|huyet ap|blood sugar|blood pressure)\b/.test(text)&&/\b(nguong|bao nhieu|muc nao|threshold|allowed|can i)\b/.test(text);
   if(directClinical||thresholds)return result('PROFESSIONAL_REVIEW','individual_medical_or_dose_request');
+  // Reading one's confirmed records is not a new prescription. A prior
+  // review flag must not deny access to one's own facts. Clinical, acute and
+  // mixed read+recommend requests keep their stronger gates above/below.
+  const ownRecordWords=/\b(ho so|lich su|thanh tich|tien do|muc tieu cua|tuan nay|tuan truoc|my profile|my history|my progress|this week|last week)\b/.test(text);
+  const requestWithoutPastActivity=text.replace(/\b(?:da tap|have trained|did i train)\b/g,'recorded_activity');
+  const asksNewAction=/\b(ke thuc don|len thuc don|thuc don cho|thiet ke|lap lich|ke hoach|goi y|de xuat|dieu chinh|chinh lieu|tang lieu|tinh giup|tinh cho|tap gi|an gi|nen tap|nen an|toi nen|em nen|should i|prescribe|recommend|plan for|adjust|dose)\b/.test(requestWithoutPastActivity);
+  if(self&&ownRecordWords&&!asksNewAction&&!symptomSelf&&!healthSelf&&!allergy)
+    return result('MEMBER_CONTEXT_QA','own_record_read_not_prescription',true);
   if(memory.minorConcern&&(wantsPlan||dietPattern.test(text))&&!concept)return result('PROFESSIONAL_REVIEW','minor_personal_request');
   if((memory.healthConcern||memory.allergyConcern)&&wantsPlan)return result('PROFESSIONAL_REVIEW','contextual_health_restriction');
   if(symptomSelf&&!hypothetical)return result('PROFESSIONAL_REVIEW','explicit_symptom_question');
