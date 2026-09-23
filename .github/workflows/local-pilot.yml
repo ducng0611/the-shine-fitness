@@ -60,7 +60,7 @@ jobs:
           export SHINE_LOCAL_QA_PASSWORD=$(node -e 'console.log(require("crypto").randomBytes(24).toString("base64url"))')
           echo "::add-mask::$SHINE_LOCAL_QA_PASSWORD"
           QA_DIR=$(mktemp -d)
-          trap 'kill ${SERVER_PID:-0} 2>/dev/null || true; rm -rf "$QA_DIR"' EXIT
+          trap 'if [ -n "${SERVER_PID:-}" ]; then kill "$SERVER_PID" 2>/dev/null || true; fi; rm -rf "$QA_DIR"' EXIT
           node --import tsx scripts/local/write-ci-fixture.mjs "$QA_DIR/input.json"
           node dist-local/seed.mjs --local --manifest "$QA_DIR/input.json" --db "$QA_DIR/pilot.sqlite" --out "$QA_DIR/accounts.json"
           export SHINE_LOCAL_DB="$QA_DIR/pilot.sqlite"
