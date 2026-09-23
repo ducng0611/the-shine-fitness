@@ -1,84 +1,52 @@
 # Publish website The Shine Fitness bằng Google AI Studio
 
-Tài liệu này dành cho người vận hành, không cần biết lập trình. Làm theo thứ tự từ trên xuống.
+Mục tiêu: **Import từ GitHub → Publish → dùng được ngay**, không phải khai báo biến nào. Cấu hình mặc định không bí mật nằm sẵn trong file `.env.production` của repo.
 
-## 0. Trước khi bắt đầu
+## 1. Import và publish
 
-1. **Chuyển repo GitHub sang Private**: GitHub → repo `the-shine-fitness` → Settings → General → Danger Zone → Change visibility → Private. Lịch sử cũ của repo vẫn còn tin nhắn Facebook đã gỡ, vì vậy repo không được để Public.
-2. **Merge code vào `main`**: toàn bộ tính năng nằm trên nhánh `integration/all-features`. Merge Pull Request của nhánh này vào `main` sau khi CI xanh. AI Studio sẽ lấy code từ `main`.
-3. Chuẩn bị danh sách **email quản trị** (người được vào trang admin và tab "Quản trị gym").
+1. Repo GitHub phải là **Private** (lịch sử cũ còn tin nhắn Facebook đã gỡ). Code nằm ở nhánh `main`.
+2. Mở [Google AI Studio](https://aistudio.google.com) → **Build** → nút **+** → **Import from GitHub** → chọn `the-shine-fitness` → **Import repository**.
+3. Bấm **Publish / Deploy** → Cloud Run.
 
-## 1. Nhập repo vào AI Studio
+`GEMINI_API_KEY` do AI Studio tự cấp. App dùng sẵn Firebase project `golden-ether-p6pck` (file `firebase-applet-config.json`); nếu AI Studio hỏi, giữ project này để không mất dữ liệu hội viên.
 
-1. Mở [Google AI Studio](https://aistudio.google.com) → **Build**.
-2. Ở ô nhập prompt, bấm **+** (Add files) → **Import from GitHub**.
-3. Cho phép AI Studio truy cập GitHub (repo private cần bước này), chọn `the-shine-fitness`, nhánh `main` → **Import repository**.
-4. AI Studio tự nhận dạng dự án React + máy chủ Node (Express). Không cần sửa code.
+## 2. Những gì chạy ngay sau khi publish
 
-App dùng Firebase project `golden-ether-p6pck` (file `firebase-applet-config.json`). Nếu AI Studio đề nghị tạo Firebase mới, giữ project hiện tại để không mất dữ liệu hội viên đang có.
+| Người dùng | Có ngay |
+|---|---|
+| Khách | Website, chatbot tư vấn dịch vụ (giá, lịch, đăng ký tập thử, chuyển nhân viên) |
+| Hội viên đăng nhập (email đã xác minh) | Nút **Shine Companion**: Hỏi đáp (AI Gym Buddy, kiến thức và dữ liệu của chính mình), Hồ sơ, Nhật ký, ghi bữa ăn, phân tích ảnh món ăn, không gian Training |
+| Quản trị (email trong `ADMIN_EMAILS`) | Trang admin, tab **Quản trị gym** |
 
-## 2. Khai báo biến môi trường (AI Studio → Settings → Secrets)
+Cấu hình đang bật trong `.env.production`: trợ lý hội viên, Hỏi đáp đọc dữ liệu riêng, Training cho **mọi** hội viên đã xác minh email (`SHINE_TRAINING_PILOT_UIDS=*`), lưu nhật ký chat trên Firestore, RAG. Quản trị: `ducnguyen06112002@gmail.com`, `theshinefitness.cskh@gmail.com`.
 
-`GEMINI_API_KEY` được AI Studio tự cấp. Không bao giờ dán key vào code hoặc vào biến bắt đầu bằng `VITE_`.
+Muốn đổi một giá trị: khai báo cùng tên trong AI Studio → Settings → Secrets (ưu tiên hơn file), hoặc sửa `.env.production`. Cờ bắt đầu bằng `VITE_` cần publish lại mới có hiệu lực.
 
-| Biến | Giá trị | Ghi chú |
-|---|---|---|
-| `ADMIN_EMAILS` | `a@x.com,b@y.com` | Email quản trị, cách nhau dấu phẩy |
-| `STORAGE_BACKEND` | `firestore` | Bắt buộc khi chạy trên cloud; `csv` sẽ mất dữ liệu khi máy chủ khởi động lại |
-| `RAG_ENABLED` | `true` hoặc `false` | Chatbot tư vấn đọc tài liệu nội bộ |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` hoặc `GMAIL_APP_PASSWORD` | theo hộp thư gửi | Chỉ cần nếu dùng gửi email |
-| `USDA_FDC_API_KEY` | key USDA | Tra năng lượng món ăn (Companion) |
-| `GOOGLE_PLACES_API_KEY` | key Google Places | Tìm quán gần đây (Companion) |
+## 3. Không bắt buộc (bật khi cần)
 
-## 3. Bật tính năng theo 2 giai đoạn
+Thêm vào AI Studio → Settings → Secrets, **không** ghi vào `.env.production`:
 
-Mọi cờ mặc định `false`. Cờ bắt đầu bằng `VITE_` được gắn vào giao diện **lúc build**: đổi xong phải build/deploy lại. Cờ không có `VITE_` là của máy chủ: đổi xong phải khởi động lại. Mỗi tính năng cần **cả hai** cờ cùng `true`.
+| Biến | Dùng cho |
+|---|---|
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` hoặc `ADMIN_EMAIL` + `GMAIL_APP_PASSWORD` | Gửi email từ trang admin |
+| `USDA_FDC_API_KEY` | Tra năng lượng món ăn theo cơ sở dữ liệu USDA |
+| `GOOGLE_PLACES_API_KEY` | Nút "Quán gần đây" |
 
-**Giai đoạn 1: website + chatbot khách** — giữ mọi cờ `false`. Khách dùng chatbot tư vấn dịch vụ như hiện nay.
+Thiếu các key này, phần tương ứng báo chưa khả dụng; phần còn lại vẫn chạy.
 
-**Giai đoạn 2: trợ lý hội viên** (khách vẫn dùng chatbot tư vấn; hội viên đăng nhập thấy "Shine Companion" gồm Hỏi đáp, Đồng hành, Hồ sơ, Nhật ký):
+## 4. Xếp buổi tập theo máy của phòng tập
 
-```dotenv
-SHINE_COMPANION_ENABLED=true
-VITE_SHINE_COMPANION_ENABLED=true
-SHINE_CHAT_ENABLED=true
-VITE_SHINE_CHAT_ENABLED=true
-SHINE_CHAT_MEMBER_CONTEXT_ENABLED=true
-SHINE_TRAINING_ENABLED=true
-VITE_SHINE_TRAINING_ENABLED=true
-SHINE_TRAINING_PILOT_UIDS=<Firebase UID của hội viên được dùng thử, cách nhau dấu phẩy>
-```
+Chức năng "Tạo buổi tập cho tôi" chỉ dùng danh mục máy và bài tập đã được quản trị nạp trong tab **Quản trị gym**. Giáo án PT trong repo mới có **tên** bài tập; để trợ lý tự xếp buổi cần thêm cho mỗi máy: khu vực/tầng và cách tìm; cho mỗi bài: nhóm cơ, hướng dẫn kỹ thuật ngắn, số hiệp/lần. Khi chưa có, trợ lý nói rõ là chưa có danh mục thay vì tự bịa máy hoặc bài.
 
-Nếu AI Studio không truyền biến `VITE_` vào bước build, tạo file `.env.production` ở thư mục gốc (trong AI Studio) chỉ chứa các dòng `VITE_...=true`. Các cờ này không phải bí mật; key và mật khẩu vẫn chỉ nằm trong Secrets.
+## 5. Nếu có lỗi sau khi publish
 
-## 4. Firestore: rules và index
+- **Đăng nhập báo `auth/unauthorized-domain`**: Firebase Console → Authentication → Settings → Authorized domains → thêm tên miền web vừa publish.
+- **Hội viên đang chat bị mất phiên**: Cloud Run → service → Edit → Maximum instances = 1 (phiên chat Buddy lưu trong bộ nhớ một máy chủ).
+- **Muốn tắt trợ lý hội viên**: đặt `VITE_SHINE_COMPANION_ENABLED=false` và `SHINE_COMPANION_ENABLED=false` rồi publish lại; khách và hội viên đều quay về chatbot tư vấn.
+- **Quay về bản trước**: Cloud Run → Revisions → chuyển 100% traffic về revision cũ.
 
-Làm một lần sau khi import, và mỗi khi `firestore.rules` thay đổi. Người có quyền Owner của Firebase project thực hiện theo [docs/firestore-deploy.md](firestore-deploy.md) (sao lưu → backfill → deploy rules → kiểm tra). Index cần tạo: `firestore.indexes.json` và `firestore.training.indexes.json`.
-
-## 5. Deploy
-
-Trong AI Studio bấm **Deploy** → **Cloud Run**. Sau khi có đường dẫn, gắn tên miền riêng trong Cloud Run nếu cần.
-
-Cấu hình Cloud Run cần giữ:
-
-- **Max instances = 1**. Phiên chat của AI Gym Buddy lưu trong bộ nhớ một máy chủ; nhiều máy chủ sẽ làm hội viên mất phiên giữa chừng.
-- **Request timeout ≥ 60 giây**: câu trả lời chat được truyền dần (streaming).
-
-## 6. Danh mục máy và giáo án cho trợ lý hội viên
-
-Trợ lý chỉ xếp buổi tập từ danh mục máy/bài tập trong **Firestore** đã được đánh dấu duyệt, có tên người duyệt và ngày duyệt. Các file trong `data/companion`, `data/nutrition`, `data/training-pathways` là bản lưu trữ nguồn số hóa, không tự nạp lên website. Quản trị viên đăng nhập → Shine Companion → **Quản trị gym** để nạp và duyệt danh mục.
-
-## 7. Kiểm tra sau khi publish
-
-- Khách chưa đăng nhập: mở chatbot, hỏi giá gói tập → trả lời được, không thấy dữ liệu hội viên.
-- Hội viên đăng nhập (giai đoạn 2): thấy nút "Shine Companion"; tab Hỏi đáp trả lời "Protein là gì?"; hỏi "Tôi đã tập gì tuần này?" chỉ đọc dữ liệu của chính mình.
-- Đăng xuất: chatbot quay về chế độ khách, không còn nội dung hội viên.
-- Trang admin chỉ mở với email trong `ADMIN_EMAILS`.
-
-## 8. Quay lui khi có sự cố
-
-Tắt cờ tính năng (đặt về `false`) rồi deploy lại: website trở về chatbot khách như trước. Muốn về hẳn bản cũ: Cloud Run → Revisions → chuyển 100% traffic về revision trước.
+Firestore rules (`firestore.rules`) chỉ ảnh hưởng truy cập trực tiếp từ trình duyệt; dữ liệu trợ lý hội viên đi qua máy chủ. Khi cần cập nhật rules, xem [firestore-deploy.md](firestore-deploy.md).
 
 ## Không deploy
 
-`Local Pilot` (SQLite, `npm run local:*`, `start-local.*`) chỉ để kiểm thử trên máy tin cậy với tài khoản QA. Không đưa database SQLite hoặc file `*.PRIVATE.*` lên GitHub hay cloud.
+`Local Pilot` (SQLite, `npm run local:*`) chỉ để kiểm thử trên máy tin cậy với tài khoản QA. Không đưa database SQLite hoặc file `*.PRIVATE.*` lên GitHub hay cloud.

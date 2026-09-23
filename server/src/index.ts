@@ -70,6 +70,20 @@ import {
   GymEquipment,
   ExerciseCatalogueEntry
 } from "./companion/catalogueService";
+import dotenv from "dotenv";
+
+// Committed, non-secret production defaults (feature flags, storage backend, admin
+// emails) so an imported repo works without manual setup. Variables already set by
+// the platform (AI Studio Secrets / Cloud Run) always win; keys never live in this file.
+dotenv.config({ path: path.resolve(process.cwd(), ".env.production"), quiet: true });
+
+// SHINE_TRAINING_PILOT_UIDS="*" admits every signed-in member. The training and Buddy
+// routers still require a verified Firebase email, the member's own profile and consent.
+function trainingPilotUids(): string[] {
+  const uids = (process.env.SHINE_TRAINING_PILOT_UIDS || '').split(',').map(s => s.trim()).filter(Boolean);
+  if (!uids.includes('*')) return uids;
+  return Object.assign([...uids], { includes: () => true });
+}
 
 const chatCache = new Map<string, string>();
 
@@ -338,7 +352,7 @@ async function startServer() {
     store: new FirestoreTrainingStore(adminDb),
     verifyToken: token => adminAuth.verifyIdToken(token, true),
     enabled: () => process.env.SHINE_TRAINING_ENABLED === 'true',
-    pilotUids: () => (process.env.SHINE_TRAINING_PILOT_UIDS || '').split(',').map(s => s.trim()).filter(Boolean),
+    pilotUids: trainingPilotUids,
     adminEmails: () => (process.env.ADMIN_EMAILS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean),
     parseIntent: createIntentParser({ apiKey: process.env.GEMINI_API_KEY, model: process.env.SHINE_TRAINING_INTENT_MODEL })
   }));
