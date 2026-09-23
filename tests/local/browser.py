@@ -16,7 +16,8 @@ def ask(page,text):
     page.locator('.buddy-compose textarea').fill(text)
     page.locator('.buddy-compose button[type=submit]').click()
     expect(page.locator('.buddy-message.assistant').last).not_to_contain_text('Responding')
-    page.wait_for_function("!document.querySelector('.buddy-compose button[type=button]')")
+    # Locator assertions do not eval a string inside the page CSP.
+    expect(page.locator('.buddy-compose button[type=button]')).to_have_count(0)
     return page.locator('.buddy-message.assistant').last.inner_text()
 with sync_playwright() as p:
     browser=p.chromium.launch(executable_path='/usr/bin/chromium' if Path('/usr/bin/chromium').exists() else None,headless=True,args=['--no-sandbox'])
