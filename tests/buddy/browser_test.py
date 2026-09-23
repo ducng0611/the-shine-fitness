@@ -52,7 +52,7 @@ with sync_playwright() as p:
         page.get_by_role('button',name='Guest / Logout',exact=True).click()
         expect(page.locator('.buddy-welcome')).to_be_visible()
         ask(page,'Tôi đã tập gì tuần này?')
-        expect(page.locator('.buddy-message.assistant')).to_contain_text('đăng nhập Firebase thật')
+        expect(page.locator('.buddy-message.assistant')).to_contain_text('đăng nhập đúng phương thức của ứng dụng')
         results.append({'name':'A to B to guest clears private UI and enforces context permissions','passed':True})
 
         new_chat(page)
