@@ -5,15 +5,15 @@
 ## 1. Thiết lập
 
 ```bash
-git checkout feat/shine-ai-companion
-node scripts/integrate_companion.mjs
+git checkout main
 node --test tests/companion.test.mjs
-npm install
+npm ci --ignore-scripts
+node --import tsx --test tests/integration/*.test.ts
 npm run lint
 npm run build
 ```
 
-Script tích hợp chạy lại được, không chèn lặp import/route/README. Nếu cấu trúc file gốc thay đổi ngoài dấu mốc đã kiểm tra, script dừng thay vì sửa nhầm vị trí. Với bản checkout đã được workflow tích hợp, chạy lại chỉ xác nhận trạng thái.
+Companion đã được gộp sẵn vào mã nguồn (API dưới `/api/companion/member`); không còn script tích hợp riêng.
 
 Biến máy chủ:
 

@@ -234,6 +234,6 @@ A separate member experience now accompanies the existing guest service chatbot.
 - [Setup, demo flows and acceptance checks (Vietnamese)](docs/shine-companion-rollout.md)
 - [Unverified catalogue template](data/companion/companion-catalogue.template.json)
 - Domain tests: `node --test tests/companion.test.mjs`
-- Integration: `node scripts/integrate_companion.mjs` (idempotent)
+- Route isolation: `node --import tsx --test tests/integration/*.test.ts` (Companion API lives under `/api/companion/member`)
 
 Both `SHINE_COMPANION_ENABLED` and the frontend build flag `VITE_SHINE_COMPANION_ENABLED` default to false. API credentials remain server-side. Existing service RAG is preserved; the companion uses structured personal retrieval, JSON-schema extraction and deterministic domain rules rather than claiming a new autonomous multi-agent system.

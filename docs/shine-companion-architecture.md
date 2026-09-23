@@ -78,8 +78,8 @@ server/src/companion/
   router.ts            API, phân quyền, dispatch, transaction và xuất/xóa dữ liệu
   core.mjs             Hàm nghiệp vụ thuần, không model/network/database
   providers.ts         Gemini, USDA FoodData Central và Google Places
-scripts/integrate_companion.mjs
-  Tích hợp có kiểm tra dấu mốc; chạy lại không nhân đôi thay đổi
+tests/integration/route-isolation.test.ts
+  Bảo vệ việc API Companion nằm dưới /api/companion/member, không che Training/Buddy và catalogue
  tests/companion.test.mjs
   Unit tests độc lập dependency và dữ liệu thật
  data/companion/companion-catalogue.template.json
