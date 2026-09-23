@@ -17,7 +17,7 @@ import {
   Smartphone
 } from 'lucide-react';
 import { Language, translations } from '../translations';
-import { signInWithPopup } from 'firebase/auth';
+import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, googleProvider, saveOrUpdateMemberInFirebase, findMemberInFirebase } from '../lib/firebase';
 import { inferGenderFromName } from '../utils/gender';
 import { validatePassword } from '../utils/passwordValidation';
@@ -317,6 +317,52 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
 
     try {
+      // Accounts that exist in Firebase Authentication (e.g. imported member profiles) get a real
+      // Firebase session, which the member assistant requires. Other accounts keep the legacy login.
+      try {
+        const fbUser = (await signInWithEmailAndPassword(auth, loginEmail.trim(), loginPassword)).user;
+        const fbEmail = (fbUser.email || loginEmail).trim().toLowerCase();
+        const existing = await findMemberInFirebase({ uid: fbUser.uid, email: fbEmail });
+        const now = new Date();
+        const memberCode = existing?.membershipCode || `TS-${Math.floor(1000 + Math.random() * 9000)}`;
+        const resolvedName = existing?.fullName || fbUser.displayName || fbEmail.split('@')[0];
+        const memberUser: MemberUser = {
+          id: fbUser.uid,
+          uid: fbUser.uid,
+          createdAt: existing?.joinedDate ? new Date(existing.joinedDate).toISOString() : now.toISOString(),
+          fullName: resolvedName,
+          email: fbEmail,
+          phone: existing?.phone || '',
+          memberCode,
+          membershipCode: memberCode,
+          membershipTier: existing?.membershipTier || 'Standard',
+          startDate: existing?.joinedDate || now.toISOString().split('T')[0],
+          expiryDate: existing?.expiryDate || new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          status: existing?.status || 'Active',
+          gender: existing?.gender || inferGenderFromName(resolvedName) || 'Nam'
+        };
+        await saveOrUpdateMemberInFirebase({
+          uid: fbUser.uid,
+          fullName: memberUser.fullName,
+          phone: memberUser.phone,
+          email: memberUser.email,
+          membershipTier: memberUser.membershipTier,
+          membershipCode: memberUser.memberCode,
+          authProvider: 'password',
+          joinedDate: memberUser.startDate,
+          expiryDate: memberUser.expiryDate,
+          gender: memberUser.gender,
+          status: memberUser.status
+        });
+        onAuthSuccess(memberUser);
+        onClose();
+        return;
+      } catch (fbErr: any) {
+        const tryLegacy = ['auth/invalid-credential', 'auth/invalid-login-credentials', 'auth/user-not-found',
+          'auth/wrong-password', 'auth/operation-not-allowed', 'auth/invalid-email'].includes(fbErr?.code);
+        if (!tryLegacy) throw fbErr;
+      }
+
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

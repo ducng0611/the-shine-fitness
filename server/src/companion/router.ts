@@ -1,7 +1,9 @@
 import express, { type Express, type Response, type NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
 import { createHash, randomUUID } from 'node:crypto';
-import { adminDb } from '../lib/firebase-admin.ts';
+import { adminDb, adminAuth } from '../lib/firebase-admin.ts';
+import { CloudMemberSourceReader, importMemberSources } from '../memberSources/cloud.ts';
+import { firestoreSourceStore, firebaseAuthAdmin } from '../memberSources/firebase.ts';
 import { requireAuth, requireAdmin, type AuthRequest } from '../middleware/auth.ts';
 import { DomainError, ensure, obj, text, num, id, validateProfile, validateCatalogue, planWorkout,
   completeWorkout, calculateMeal, mealSummary, dayBounds, safetyIssue, nutritionAdvice, personality } from './core.mjs';
@@ -195,6 +197,22 @@ export function registerCompanionRoutes(app: Express) {
     // Root tombstone blocks writes and profile recreation until all child collections are deleted.
     for (const name of ['plans', 'workouts', 'meals', 'measurements', 'handover']) await adminDb.recursiveDelete(ref.collection(name));
     await ref.delete(); res.json({ deleted: true, scope: 'Dữ liệu Companion; không xóa hội viên hoặc dữ liệu legacy.' });
+  }));
+  // Member source records imported from the Local Pilot: the owner reads only their own card.
+  const sourceStore = firestoreSourceStore(adminDb), sources = new CloudMemberSourceReader(sourceStore, process.cwd());
+  r.get('/source-profile', wrap(async (req, res) => { res.json({ sourceProfile: await sources.profileCard(req.user!.uid) }); }));
+  // Admin import: dry run by default; apply creates virtual accounts (plus-addressed mailbox)
+  // and writes the records in one batch. New passwords are returned once and never stored.
+  r.post('/admin/member-sources/import', requireAdmin, wrap(async (req, res) => {
+    const body = obj(req.body);
+    try {
+      res.json(await importMemberSources({ payload: body.document, emailBase: text(body.emailBase, 120), apply: body.apply === true,
+        store: sourceStore, auth: firebaseAuthAdmin(adminAuth), root: process.cwd() }));
+    } catch (e: any) {
+      // Validation and conflict messages help the admin fix the document; Firebase errors (with a code) stay generic.
+      if (e instanceof Error && !(e as any).code) throw new DomainError('MEMBER_IMPORT', e.message, 400);
+      throw e;
+    }
   }));
   r.get('/admin/catalogue', requireAdmin, wrap(async (_req, res) => { res.json(await catalogue() ?? { verified: false, equipment: [], exercises: [], nutritionTemplates: [] }); }));
   r.put('/admin/catalogue', requireAdmin, wrap(async (req, res) => {

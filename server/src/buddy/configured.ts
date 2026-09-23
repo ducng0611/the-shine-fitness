@@ -3,6 +3,7 @@ import { TrainingService } from '../companion/training/service';
 import { createBuddyRouter } from './router';
 import { createGeminiBuddyProvider } from './provider';
 import { invalidateOwnTrainingReadiness } from './freshness';
+import { CloudMemberSourceReader } from '../memberSources/cloud';
 
 /** Mounted before the existing training-auth middleware; each buddy request resolves identity itself.
  * Public chat does not require training enrollment. Private access rechecks it on every request.
@@ -12,7 +13,12 @@ import { invalidateOwnTrainingReadiness } from './freshness';
  */
 export function createConfiguredBuddyRouter(options:TrainingRouterOptions) {
   const service=new TrainingService(options.store,options.clock), now=options.clock??Date.now;
+  // Imported member source records (goal, health notes, PT notes, linked programme), owner-only.
+  const sources=new CloudMemberSourceReader(options.store,process.cwd());
   return createBuddyRouter({
+    sourceReadAllowed:uid=>sources.hasSource(uid),
+    readReviewContext:(uid,lang)=>sources.reviewContext(uid,lang),
+    readOwnSources:(uid,message,lang,topic)=>sources.answer(uid,message,lang,topic),
     verifyToken:options.verifyToken,
     enabled:()=>process.env.SHINE_CHAT_ENABLED==='true',
     memberContextEnabled:()=>process.env.SHINE_CHAT_MEMBER_CONTEXT_ENABLED==='true' && options.enabled(),
