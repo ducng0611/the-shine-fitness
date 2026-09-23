@@ -1,0 +1,5 @@
+﻿issueId,topic,userStatement,quotationObservation,status,intakeDecision
+Q01,treadmill_quantity,3,4,unresolved,Retain 3 separate treadmill records from current user list; do not create a fourth record. This does not resolve the discrepancy.
+Q02,dumbbell_range_and_counts,"One Dumbbell area, 1-30 kg.",Separate dumbbell/mini-dumbbell/rack lines; weight units and exact inventory correspondence not confirmed.,unresolved,"One area record with weight range 1-30 kg. Do not infer pairs, increments or asset counts from quotation totals."
+Q03,quotation_only_items,,"Visible separate entries include racks, weight plates, kettlebells, step platforms, mats, rope, sled and ab roller.",unconfirmed_as_current_assets,Do not add quotation-only items to current inventory without confirmation of existence and quantity.
+Q04,bench_and_machine_mapping,,Quotation labels include flat/incline pressing equipment and multi-purpose benches.,mapping_not_confirmed,"Keep Barbell Bench Press, Incline Barbell Bench Press and Incline Chest Machine as separate user-specified assets. Do not assign quotation model codes by visual similarity."

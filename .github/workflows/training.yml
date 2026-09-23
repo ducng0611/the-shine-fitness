@@ -1,0 +1,98 @@
+name: Step 3 training verification
+on:
+  push:
+    branches: [feat/member-memory-adaptive-workout]
+    paths:
+      - 'server/**'
+      - 'src/**'
+      - 'shared/**'
+      - 'tests/training/**'
+      - '*training*'
+      - 'firestore.rules'
+      - 'package*.json'
+      - '.github/workflows/training.yml'
+  pull_request:
+    paths:
+      - 'server/**'
+      - 'src/**'
+      - 'shared/**'
+      - 'tests/training/**'
+      - '*training*'
+      - 'firestore.rules'
+      - 'package*.json'
+      - '.github/workflows/training.yml'
+permissions:
+  contents: read
+concurrency:
+  group: training-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  unit-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run test:training
+      - run: npm run typecheck:training
+      - run: npm run lint
+      - run: npm run build
+  firebase-emulator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '21' }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Auth, Firestore transactions, and deployed emulator rules
+        env:
+          CI: 'true'
+        run: |
+          set -o pipefail
+          mkdir -p test-results
+          npx --yes firebase-tools@15.30.2 emulators:exec --project demo-shine-training --config firebase.training-test.json --only auth,firestore 'npm run test:training:emulator' 2>&1 | tee test-results/training-emulator.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: training-emulator-results
+          path: test-results/training-emulator.txt
+          retention-days: 7
+  browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: pip install playwright==1.57.0
+      - run: python -m playwright install --with-deps chromium
+      - name: Actual React forms, HTTP API, lost-response retry, responsive viewport
+        env:
+          CHROMIUM_PATH: /use-playwright-managed-browser
+        run: |
+          mkdir -p test-results/training-ui
+          npm run test:training:ui:server >test-results/training-ui/server.txt 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4173/tests/training/ui.html >/dev/null; then break; fi
+            sleep 1
+          done
+          python tests/training/browser_test.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: training-browser-results
+          path: test-results/training-ui
+          retention-days: 7

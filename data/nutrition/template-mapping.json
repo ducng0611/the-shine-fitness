@@ -1,0 +1,671 @@
+{
+  "schemaVersion": 1,
+  "note": "Ánh xạ biên tập theo đoạn DOCX; chưa duyệt chuyên môn. Thời gian là giờ trong mẫu, không phải giờ của hội viên hiện tại.",
+  "templates": [
+    {
+      "id": "meal_coach_example_01",
+      "sourceId": "nutrition_guide_01",
+      "sourceRange": [
+        34,
+        77
+      ],
+      "name": "Mẫu meal plan do PT thiết lập, đã tách định danh",
+      "goal": "fat_loss",
+      "population": "not_stated",
+      "sourceKind": "coach_example_deidentified",
+      "targetStatementParagraph": 36,
+      "declaredEnergy": [
+        2300,
+        2300
+      ],
+      "bmrParagraph": 38,
+      "bmrValue": 1850,
+      "weighingConventionParagraph": 41,
+      "notes": [
+        42,
+        43,
+        44,
+        45,
+        74,
+        75,
+        77
+      ],
+      "meals": [
+        {
+          "key": "breakfast",
+          "label": "Meal 1",
+          "headingParagraph": 47,
+          "itemParagraphs": [
+            49,
+            50,
+            51
+          ],
+          "optionParagraphs": [
+            49,
+            50,
+            51
+          ],
+          "additionalParagraphs": [
+            52
+          ],
+          "timing": {
+            "kind": "clock_window",
+            "start": "08:00",
+            "end": "09:00"
+          }
+        },
+        {
+          "key": "lunch",
+          "label": "Meal 2",
+          "headingParagraph": 54,
+          "itemParagraphs": [
+            55,
+            56,
+            57
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "13:00",
+            "end": "14:00"
+          }
+        },
+        {
+          "key": "afternoon",
+          "label": "Meal phụ chiều",
+          "headingParagraph": 59,
+          "itemParagraphs": [
+            60,
+            61,
+            62,
+            63
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "unspecified"
+          }
+        },
+        {
+          "key": "dinner",
+          "label": "Meal 3",
+          "headingParagraph": 65,
+          "itemParagraphs": [
+            67,
+            68,
+            69
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "18:00",
+            "end": "19:00"
+          }
+        },
+        {
+          "key": "pre_sleep",
+          "label": "Trước khi ngủ",
+          "headingParagraph": 71,
+          "itemParagraphs": [
+            71
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "relative",
+            "anchor": "sleep",
+            "offsetMinutes": -30
+          }
+        }
+      ]
+    },
+    {
+      "id": "meal_weight_gain_example_01",
+      "sourceId": "nutrition_cases_01",
+      "sourceRange": [
+        2,
+        31
+      ],
+      "name": "Meal Plan: Tăng cân",
+      "goal": "weight_gain",
+      "population": "not_stated",
+      "sourceKind": "illustrative_template",
+      "targetStatementParagraph": 5,
+      "declaredEnergy": [
+        2700,
+        2700
+      ],
+      "bmrParagraph": 6,
+      "bmrValue": 1750,
+      "weighingConventionParagraph": 8,
+      "notes": [
+        3,
+        4,
+        9,
+        10,
+        11,
+        30,
+        31
+      ],
+      "meals": [
+        {
+          "key": "breakfast",
+          "label": "Meal 1",
+          "headingParagraph": 12,
+          "itemParagraphs": [
+            13,
+            14,
+            15
+          ],
+          "optionParagraphs": [
+            13,
+            14,
+            15
+          ],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "07:30",
+            "end": "08:30"
+          }
+        },
+        {
+          "key": "lunch",
+          "label": "Meal 2",
+          "headingParagraph": 16,
+          "itemParagraphs": [
+            17,
+            18,
+            19
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "12:00",
+            "end": "13:00"
+          }
+        },
+        {
+          "key": "pre_workout",
+          "label": "Meal phụ chiều",
+          "headingParagraph": 20,
+          "itemParagraphs": [
+            21,
+            22
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_and_relative",
+            "start": "15:30",
+            "end": "16:00",
+            "anchor": "workout_start",
+            "offsetMinutes": -60
+          }
+        },
+        {
+          "key": "dinner",
+          "label": "Meal 3",
+          "headingParagraph": 23,
+          "itemParagraphs": [
+            24,
+            25,
+            26
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "19:00",
+            "end": "20:00"
+          }
+        },
+        {
+          "key": "pre_sleep",
+          "label": "Trước khi ngủ",
+          "headingParagraph": 27,
+          "itemParagraphs": [
+            28
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "relative",
+            "anchor": "sleep",
+            "offsetMinutes": -60
+          }
+        }
+      ]
+    },
+    {
+      "id": "meal_fat_loss_example_01",
+      "sourceId": "nutrition_cases_01",
+      "sourceRange": [
+        32,
+        57
+      ],
+      "name": "Meal Plan: Giảm mỡ",
+      "goal": "fat_loss",
+      "population": "not_stated",
+      "sourceKind": "illustrative_template",
+      "targetStatementParagraph": 35,
+      "declaredEnergy": [
+        1450,
+        1450
+      ],
+      "bmrParagraph": 36,
+      "bmrValue": 1250,
+      "weighingConventionParagraph": null,
+      "notes": [
+        33,
+        34,
+        38,
+        39,
+        40,
+        56,
+        57
+      ],
+      "meals": [
+        {
+          "key": "breakfast",
+          "label": "Meal 1",
+          "headingParagraph": 41,
+          "itemParagraphs": [
+            42,
+            43
+          ],
+          "optionParagraphs": [
+            42,
+            43
+          ],
+          "additionalParagraphs": [
+            44
+          ],
+          "timing": {
+            "kind": "clock_window",
+            "start": "07:00",
+            "end": "08:00"
+          }
+        },
+        {
+          "key": "lunch",
+          "label": "Meal 2",
+          "headingParagraph": 45,
+          "itemParagraphs": [
+            46,
+            47,
+            48
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "12:00",
+            "end": "13:00"
+          }
+        },
+        {
+          "key": "pre_workout",
+          "label": "Meal phụ chiều",
+          "headingParagraph": 49,
+          "itemParagraphs": [
+            50
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_and_relative",
+            "start": "15:30",
+            "end": null,
+            "anchor": "workout_start",
+            "offsetMinutes": -45
+          }
+        },
+        {
+          "key": "dinner",
+          "label": "Meal 3",
+          "headingParagraph": 51,
+          "itemParagraphs": [
+            52,
+            53,
+            54
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "18:30",
+            "end": "19:30"
+          }
+        }
+      ]
+    },
+    {
+      "id": "meal_fitness_flexibility_example_01",
+      "sourceId": "nutrition_cases_01",
+      "sourceRange": [
+        58,
+        80
+      ],
+      "name": "Meal Plan: Tăng thể lực & linh hoạt",
+      "goal": "fitness_flexibility",
+      "population": "not_stated",
+      "sourceKind": "illustrative_template",
+      "targetStatementParagraph": 61,
+      "declaredEnergy": [
+        2200,
+        2200
+      ],
+      "bmrParagraph": null,
+      "bmrValue": null,
+      "weighingConventionParagraph": null,
+      "notes": [
+        59,
+        60,
+        63,
+        64,
+        65
+      ],
+      "meals": [
+        {
+          "key": "breakfast",
+          "label": "Meal 1",
+          "headingParagraph": 66,
+          "itemParagraphs": [
+            67,
+            68
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "07:30",
+            "end": "08:00"
+          }
+        },
+        {
+          "key": "lunch",
+          "label": "Meal 2",
+          "headingParagraph": 69,
+          "itemParagraphs": [
+            70,
+            71,
+            72
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "12:00",
+            "end": "13:00"
+          }
+        },
+        {
+          "key": "pre_workout",
+          "label": "Meal phụ chiều",
+          "headingParagraph": 73,
+          "itemParagraphs": [
+            74
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_and_relative",
+            "start": "16:00",
+            "end": null,
+            "anchor": "workout_start",
+            "offsetMinutes": null
+          }
+        },
+        {
+          "key": "post_workout",
+          "label": "Meal 3 (Post-workout)",
+          "headingParagraph": 75,
+          "itemParagraphs": [
+            76
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "relative",
+            "anchor": "workout_end",
+            "offsetMinutes": 0
+          }
+        },
+        {
+          "key": "dinner",
+          "label": "Meal 4",
+          "headingParagraph": 77,
+          "itemParagraphs": [
+            78,
+            79,
+            80
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "19:30",
+            "end": null
+          }
+        }
+      ]
+    },
+    {
+      "id": "meal_height_growth_example_01",
+      "sourceId": "nutrition_cases_01",
+      "sourceRange": [
+        81,
+        105
+      ],
+      "name": "Meal Plan: Tăng chiều cao",
+      "goal": "height_growth",
+      "population": "includes_minors",
+      "sourceKind": "illustrative_template",
+      "targetStatementParagraph": 84,
+      "declaredEnergy": [
+        2000,
+        2400
+      ],
+      "bmrParagraph": null,
+      "bmrValue": null,
+      "weighingConventionParagraph": null,
+      "notes": [
+        82,
+        83,
+        86,
+        87,
+        88
+      ],
+      "meals": [
+        {
+          "key": "breakfast",
+          "label": "Meal 1",
+          "headingParagraph": 89,
+          "itemParagraphs": [
+            90,
+            91,
+            92
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "06:30",
+            "end": "07:00"
+          }
+        },
+        {
+          "key": "lunch",
+          "label": "Meal 2",
+          "headingParagraph": 93,
+          "itemParagraphs": [
+            94,
+            95,
+            96,
+            97
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "11:30",
+            "end": "12:30"
+          }
+        },
+        {
+          "key": "afternoon",
+          "label": "Meal phụ chiều",
+          "headingParagraph": 98,
+          "itemParagraphs": [
+            99
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "15:30",
+            "end": null
+          }
+        },
+        {
+          "key": "dinner",
+          "label": "Meal 3",
+          "headingParagraph": 100,
+          "itemParagraphs": [
+            101,
+            102,
+            103
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "18:30",
+            "end": "19:30"
+          }
+        },
+        {
+          "key": "pre_sleep",
+          "label": "Trước khi ngủ",
+          "headingParagraph": 104,
+          "itemParagraphs": [
+            105
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "relative",
+            "anchor": "sleep",
+            "offsetMinutes": -60
+          }
+        }
+      ]
+    },
+    {
+      "id": "meal_metabolic_example_01",
+      "sourceId": "nutrition_cases_01",
+      "sourceRange": [
+        106,
+        131
+      ],
+      "name": "Meal Plan: Cải thiện bệnh lý (tên trong nguồn)",
+      "goal": "medical_nutrition",
+      "population": "medical",
+      "sourceKind": "illustrative_template",
+      "targetStatementParagraph": 109,
+      "declaredEnergy": [
+        1600,
+        1800
+      ],
+      "bmrParagraph": null,
+      "bmrValue": null,
+      "weighingConventionParagraph": null,
+      "notes": [
+        107,
+        108,
+        111,
+        112,
+        113,
+        114,
+        131
+      ],
+      "meals": [
+        {
+          "key": "breakfast",
+          "label": "Meal 1",
+          "headingParagraph": 115,
+          "itemParagraphs": [
+            116,
+            117
+          ],
+          "optionParagraphs": [
+            116,
+            117
+          ],
+          "additionalParagraphs": [
+            118
+          ],
+          "timing": {
+            "kind": "clock_window",
+            "start": "07:00",
+            "end": "08:00"
+          }
+        },
+        {
+          "key": "lunch",
+          "label": "Meal 2",
+          "headingParagraph": 119,
+          "itemParagraphs": [
+            120,
+            121,
+            122
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "12:00",
+            "end": "13:00"
+          }
+        },
+        {
+          "key": "afternoon",
+          "label": "Meal phụ chiều",
+          "headingParagraph": 123,
+          "itemParagraphs": [
+            124,
+            125
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "15:30",
+            "end": "16:00"
+          }
+        },
+        {
+          "key": "dinner",
+          "label": "Meal 3",
+          "headingParagraph": 126,
+          "itemParagraphs": [
+            127,
+            128,
+            129
+          ],
+          "optionParagraphs": [],
+          "additionalParagraphs": [],
+          "timing": {
+            "kind": "clock_window",
+            "start": "18:30",
+            "end": "19:00"
+          }
+        }
+      ]
+    }
+  ]
+}

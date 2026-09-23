@@ -1,0 +1,66 @@
+name: Posture correction program verification
+on:
+  push:
+    branches: [feat/posture-correction-program]
+    paths:
+      - 'data/knowledge/**'
+      - 'data/companion/**'
+      - 'data/training-pathways/**'
+      - 'shared/**'
+      - 'server/src/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - '.github/workflows/posture-correction.yml'
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: posture-verification-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Source, preservation and safety tests
+        run: |
+          set -o pipefail
+          mkdir -p test-results/posture-correction
+          node --import tsx --test tests/posture-correction.test.ts tests/fatloss-metabolic.test.ts tests/height-posture.test.ts tests/weight-gain.test.ts tests/fitness-flexibility.test.ts | tee test-results/posture-correction/tests.tap
+      - name: Validate both sources and index policy offline
+        run: |
+          npx --no-install tsx scripts/prepare-posture-correction.ts
+          npx --no-install tsx scripts/validate-posture-correction.ts --report
+          npx --no-install tsx scripts/validate-fatloss-metabolic.ts --report
+          npm run build:index -- --check
+      - name: Existing training and intake regression
+        run: |
+          npm run test:training
+          node --import tsx --test tests/pathways/domain.test.ts tests/pathways/router.test.ts tests/gym-assets.test.ts
+      - name: Type checks
+        run: |
+          npm run typecheck:training
+          npx --no-install tsc -p tsconfig.pathways.json --noEmit
+          npm run lint
+      - name: Frontend and backend build
+        run: npm run build
+      - name: Export reviewed metabolic base patch for delivery
+        run: |
+          git diff --binary aa1e57951a42f97065ce8e9421078e88ec17ea3a 86aeef946c6f50661b49c086327511d02882e355 -- data shared server scripts tests docs .github/workflows > test-results/posture-correction/metabolic-base.patch
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: posture-correction-verification
+          path: |
+            test-results/posture-correction
+            test-results/fatloss-metabolic
+          retention-days: 7

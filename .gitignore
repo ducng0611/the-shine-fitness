@@ -6,3 +6,32 @@ coverage/
 *.log
 .env*
 !.env.example
+# Build-time VITE_* feature flags only; never secrets (see docs/deploy-ai-studio.vi.md).
+!.env.production
+
+# Step 3 test outputs (synthetic data only)
+test-results/
+*-debug.log
+__pycache__/
+
+# Sensitive source intake: NEVER commit these folders.
+data/training-pathways-private/
+private-training-sources/
+
+# Local pilot private runtime and credentials
+.local-data/
+dist-local/
+local-pilot-private/
+*.PRIVATE.json
+*.PRIVATE.txt
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+# Facebook page exports contain private customer messages. Never commit them.
+data/facebook-*/
+
+# Runtime CSV storage created by the server (STORAGE_BACKEND=csv). Never commit.
+data/chat_logs.csv
+data/chat_feedback.csv
+data/handover_queue.csv

@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true
+  },
+  "include": ["shared/training.ts", "server/src/companion/training/**/*.ts", "tests/training/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,76 @@
+{
+  "sourceId": "fatloss_metabolic_user_transcription_v1",
+  "status": "needs_review",
+  "expectedSourceRows": 41,
+  "sourceDocuments": 6,
+  "rawImagesInspected": false,
+  "rawProfilePublished": false,
+  "conditionsAreSelfReported": true,
+  "sessionNumbersResolved": false,
+  "programmeCountBefore": 3,
+  "programCountAfterExpected": 4,
+  "reviewIssues": [
+    {
+      "id": "medications_missing",
+      "status": "needs_review",
+      "note": "Nguồn tự khai có bệnh lý nhưng để trống thuốc; không suy là không dùng thuốc."
+    },
+    {
+      "id": "clearance_missing",
+      "status": "needs_review",
+      "note": "Không có xác nhận bác sĩ trong dữ liệu cung cấp; không suy có giấy từ số buổi đã ghi."
+    },
+    {
+      "id": "source_number_a7",
+      "status": "needs_review",
+      "note": "Số buổi 19/29, giữ null và hai ứng viên."
+    },
+    {
+      "id": "source_number_a8",
+      "status": "needs_review",
+      "note": "Số buổi 20/30, giữ null và hai ứng viên."
+    },
+    {
+      "id": "source_year_a7",
+      "status": "needs_review",
+      "note": "2025 trên sổ theo bản chép; 2026 là đề nghị đính chính, chưa được xác nhận."
+    },
+    {
+      "id": "incline_load_annotation",
+      "status": "needs_review",
+      "note": "Tải 10 kèm ghi chú 7.5, chưa biết quan hệ giữa hai số."
+    },
+    {
+      "id": "unknown_machine",
+      "status": "needs_review",
+      "note": "Dòng A7 c2 không có tên máy đọc chắc chắn; bw không chứng minh loại máy."
+    },
+    {
+      "id": "unknown_circuit",
+      "status": "needs_review",
+      "note": "Trạm thứ hai A8 chưa rõ tên; không thêm bài thay thế."
+    },
+    {
+      "id": "superset_scope",
+      "status": "needs_review",
+      "note": "Quy ước volume của A2 không khớp hoàn toàn bảng nguồn; d1 không có d2."
+    },
+    {
+      "id": "load_scope",
+      "status": "needs_review",
+      "note": "Tải tạ chưa rõ mỗi bên, mỗi quả, bánh cộng thêm hay tổng; không so sánh trực tiếp tạ đòn và Smith."
+    },
+    {
+      "id": "clinical_exercises",
+      "status": "needs_review",
+      "note": "Rà soát Decline Kettlebell Press và Hanging Leg Raises; không tự chẩn đoán chống chỉ định."
+    },
+    {
+      "id": "frequency",
+      "status": "needs_review",
+      "note": "Bốn buổi đầu có ngày liên tiếp trong bản riêng; không coi là khuyến nghị hoặc chứng minh hồi phục."
+    }
+  ],
+  "RAG": "Không đưa giáo án lịch sử vào trả lời công khai",
+  "note": "Ngày phiên bản là ngày số hóa, không backdate ngày có hiệu lực chuyên môn."
+}

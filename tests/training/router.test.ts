@@ -1,0 +1,108 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import express from 'express';
+import type { AddressInfo } from 'node:net';
+import { createTrainingRouter, type TrainingRouterOptions } from '../../server/src/companion/training/router';
+import { MemoryStore, NOW, profileInput, readinessInput, seedCatalogue, setup } from './helpers';
+async function withApi(fn: (call: (path:string,method?:string,body?:unknown,token?:string|null)=>Promise<{status:number;body:any;cache:string|null}>, store:MemoryStore)=>Promise<void>, options:Partial<TrainingRouterOptions>={}) {
+  const store=options.store as MemoryStore ?? new MemoryStore(); const app=express(); app.use(express.json({limit:'100kb'}));
+  app.use('/api/companion/training',createTrainingRouter({ store, enabled:()=>true, pilotUids:()=>['member-a','member-b'], adminEmails:()=>['admin@example.invalid'],clock:()=>NOW,rateLimit:1000,
+    verifyToken:async token=> { if(token==='invalid') throw new Error('invalid'); return {uid:token,email:token==='admin'?'admin@example.invalid':`${token}@example.invalid`,email_verified:token!=='unverified'}; }, ...options }));
+  const server=app.listen(0,'127.0.0.1'); await new Promise<void>(resolve=>server.once('listening',resolve));
+  const base=`http://127.0.0.1:${(server.address() as AddressInfo).port}/api/companion/training`;
+  const call=async(path:string,method='GET',body?:unknown,token:string|null='member-a')=>{const res=await fetch(base+path,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:`Bearer ${token}`}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})});return {status:res.status,body:await res.json(),cache:res.headers.get('cache-control')};};
+  try { await fn(call,store); } finally { server.closeAllConnections(); await new Promise<void>(resolve=>server.close(()=>resolve())); }
+}
+test('HTTP requires a valid verified Firebase identity',()=>withApi(async call=>{ assert.equal((await call('/context','GET',undefined,null)).status,401); assert.equal((await call('/context','GET',undefined,'invalid')).status,401); assert.equal((await call('/context','GET',undefined,'unverified')).status,403); }));
+test('HTTP feature off does not expose context but retains own export/delete rights',()=>withApi(async call=>{ assert.equal((await call('/context')).status,503); assert.equal((await call('/export')).status,200); assert.equal((await call('/data','DELETE',{confirmed:true})).status,200); },{enabled:()=>false}));
+test('HTTP user-editable membership does not grant pilot entitlement',()=>withApi(async(call,store)=>{store.seed('members/unadmitted',{membershipTier:'VIP',status:'Active'}); const result=await call('/context','GET',undefined,'unadmitted');assert.equal(result.status,403);assert.equal(result.body.code,'pilot_access_required');}));
+test('HTTP server-owned explicit admission works and expired admission is denied',()=>withApi(async(call,store)=>{store.seed('training_access/approved',{enabled:true});assert.equal((await call('/context','GET',undefined,'approved')).status,200);store.seed('training_access/approved',{enabled:true,expiresAt:new Date(NOW-1).toISOString()});assert.equal((await call('/context','GET',undefined,'approved')).status,403);}));
+test('HTTP identity in body cannot override token owner and responses are not cached',()=>withApi(async call=>{const created=await call('/profile','PUT',{profile:profileInput(),expectedRevision:0});assert.equal(created.status,200);assert.equal(created.cache,'no-store');const forged=await call('/profile','PUT',{profile:{...profileInput(),uid:'member-b'},expectedRevision:1});assert.equal(forged.status,400);const b=await call('/context?uid=member-a','GET',undefined,'member-b');assert.equal(b.body.profile,null);}));
+test('HTTP chat does not implicitly save a past workout or generate a plan',()=>withApi(async(call,store)=>{const before=store.records.size;let r=await call('/chat','POST',{message:'Hom qua toi da tap chan'});assert.equal(r.body.intent.intent,'past_report');assert.equal(r.body.saved,false);r=await call('/chat','POST',{message:'Toi co 35 phut muon tap chan'});assert.equal(r.body.intent.availableMinutes,35);assert.equal(store.records.size,before);}));
+test('HTTP safety lexical gate cannot be overridden by model plan response',()=>withApi(async call=>{const r=await call('/chat','POST',{message:'Toi bi dau lung'});assert.equal(r.body.intent.intent,'safety');},{parseIntent:async()=>({intent:'plan',source:'gemini'})}));
+test('HTTP member cannot approve exercise prescription',()=>withApi(async(call,store)=>{seedCatalogue(store);const r=await call('/admin/exercises/test-exercise-a/prescription','PUT',{expectedRevision:1,reviewConfirmed:true,prescription:{sets:3,repsMin:8,repsMax:12,restSeconds:90,secondsPerRep:4,setupSeconds:30,goals:['hypertrophy']}});assert.equal(r.status,403);}));
+test('HTTP admin prescription stamps server reviewer and rejects stale revision',()=>withApi(async(call,store)=>{seedCatalogue(store);const body={expectedRevision:1,reviewConfirmed:true,prescription:{sets:3,repsMin:8,repsMax:12,restSeconds:90,secondsPerRep:4,setupSeconds:30,goals:['hypertrophy']}};assert.equal((await call('/admin/exercises/test-exercise-a/prescription','PUT',body,'admin')).status,200);const ex=await store.get('gym_exercises/test-exercise-a');assert.equal((ex!.trainingPrescription as any).reviewedBy,'admin');assert.equal((ex!.trainingPrescription as any).reviewedAgainstRevision,2);assert.equal((await call('/admin/exercises/test-exercise-a/prescription','PUT',body,'admin')).status,409);}));
+test('HTTP admin cannot make sample exercise production eligible',()=>withApi(async(call,store)=>{seedCatalogue(store);store.seed('gym_exercises/test-exercise-a',{...await store.get('gym_exercises/test-exercise-a'),SAMPLE_DATA_ONLY:true});assert.equal((await call('/admin/exercises/test-exercise-a/prescription','PUT',{expectedRevision:1,reviewConfirmed:true,prescription:{sets:3,repsMin:8,repsMax:12,restSeconds:90,secondsPerRep:4,setupSeconds:30,goals:['hypertrophy']}},'admin')).status,400);}));
+test('HTTP requests referencing another member plan are not found',async()=>{const a=await setup();await a.service.saveProfile('member-b',{profile:profileInput(),expectedRevision:0});await withApi(async call=>{assert.equal((await call(`/plans/${a.plan.id}`,'GET',undefined,'member-b')).status,404);assert.equal((await call(`/plans/${a.plan.id}/complete`,'POST',a.payload,'member-b')).status,404);},{store:a.store});});
+test('HTTP duplicate completion is one write, conflicting payload is 409',async()=>{const a=await setup();await withApi(async call=>{const r=await Promise.all([call(`/plans/${a.plan.id}/complete`,'POST',a.payload),call(`/plans/${a.plan.id}/complete`,'POST',a.payload)]);assert(r.every(x=>x.status===200));assert.equal(r.filter(x=>x.body.replay===false).length,1);assert.equal((await call(`/plans/${a.plan.id}/complete`,'POST',{...a.payload,actualMinutes:60})).status,409);},{store:a.store});});
+test('HTTP internal storage details are not exposed as successful responses',()=>withApi(async(call,store)=>{store.failReads=true;const r=await call('/context');assert.equal(r.status,503);assert.equal(r.body.code,'service_unavailable');assert(!JSON.stringify(r.body).includes('synthetic storage failure'));}));
+test('HTTP malformed profile is rejected without any data writes',()=>withApi(async(call,store)=>{const r=await call('/profile','PUT',{profile:profileInput({age:16}),expectedRevision:0});assert.equal(r.status,400);assert.equal(store.records.size,0);}));
+test('HTTP unsupported UID parameter on mutating request is rejected',()=>withApi(async call=>{assert.equal((await call('/readiness','PUT',{uid:'member-b',readiness:readinessInput(),expectedProfileRevision:1})).status,400);}));
+
+// Regression: a safety message is not a workout log, but it must invalidate the
+// previous readiness used to authorize starting a proposed plan.
+async function proposedPlan(call: Parameters<Parameters<typeof withApi>[0]>[0], token = 'member-a') {
+  assert.equal((await call('/profile', 'PUT', { profile: profileInput(), expectedRevision: 0 }, token)).status, 200);
+  const ready = await call('/readiness', 'PUT', { readiness: readinessInput(), expectedProfileRevision: 1 }, token);
+  assert.equal(ready.status, 200);
+  const result = await call('/plans', 'POST', { readinessId: ready.body.readiness.id, requestId: 'safety-regression', gymOnly: false }, token);
+  assert.equal(result.body.status, 'ready');
+  return { plan: result.body.plan, readiness: ready.body.readiness };
+}
+test('HTTP safety chat invalidates old readiness without inventing profile or workout facts', () => withApi(async (call, store) => {
+  await proposedPlan(call);
+  const before = await store.get('training_members/member-a');
+  const result = await call('/chat', 'POST', { message: 'Toi bi dau lung' });
+  assert.equal(result.status, 200);
+  assert.equal(result.body.intent.intent, 'safety');
+  assert.equal(result.body.saved, false);
+  assert.equal(result.body.readinessInvalidated, true);
+  const after = await store.get('training_members/member-a');
+  assert.equal(after!.readiness, null);
+  assert.deepEqual(after!.profile, before!.profile);
+  assert.equal(after!.profileRevision, before!.profileRevision);
+  assert.equal(after!.historyRevision, before!.historyRevision);
+  assert.equal([...store.records.keys()].filter(k => k.includes('/sessions/')).length, 0);
+}));
+test('HTTP old proposed plan cannot start after safety chat, even via direct API', () => withApi(async call => {
+  const { plan } = await proposedPlan(call);
+  await call('/chat', 'POST', { message: 'Toi bi dau lung' });
+  const start = await call(`/plans/${plan.id}/start`, 'POST', { confirmed: true });
+  assert.equal(start.status, 409);
+  assert.equal(start.body.code, 'context_changed');
+}));
+test('HTTP old readiness cannot generate another plan after safety chat', () => withApi(async call => {
+  const { readiness } = await proposedPlan(call);
+  await call('/chat', 'POST', { message: 'Toi bi dau lung' });
+  const next = await call('/plans', 'POST', { readinessId: readiness.id, requestId: 'after-safety', gymOnly: false });
+  assert.equal(next.body.status, 'needs_input');
+  assert.equal(next.body.code, 'readiness_stale');
+}));
+test('HTTP safety invalidation is owner-only and persists through context reload', () => withApi(async (call, store) => {
+  await proposedPlan(call, 'member-a');
+  await proposedPlan(call, 'member-b');
+  const bBefore = await store.get('training_members/member-b');
+  await call('/chat', 'POST', { message: 'Toi bi dau lung' });
+  assert.equal((await call('/context')).body.readiness, null);
+  assert.deepEqual(await store.get('training_members/member-b'), bBefore);
+}));
+test('HTTP safety chat with no profile does not create a medical or training record', () => withApi(async (call, store) => {
+  const result = await call('/chat', 'POST', { message: 'Toi bi dau lung' });
+  assert.equal(result.status, 200);
+  assert.equal(result.body.readinessInvalidated, false);
+  assert.equal(store.records.size, 0);
+}));
+test('HTTP casual past-report chat does not invalidate confirmed readiness', () => withApi(async (call, store) => {
+  await proposedPlan(call);
+  const before = await store.get('training_members/member-a');
+  const result = await call('/chat', 'POST', { message: 'Hom qua toi da tap chan' });
+  assert.equal(result.body.intent.intent, 'past_report');
+  assert.equal(result.body.readinessInvalidated, false);
+  assert.deepEqual(await store.get('training_members/member-a'), before);
+}));
+test('HTTP safety invalidation fails closed if storage is unavailable', () => withApi(async (call, store) => {
+  await proposedPlan(call);
+  store.failReads = true;
+  const result = await call('/chat', 'POST', { message: 'Toi bi dau lung' });
+  assert.equal(result.status, 503);
+  assert.equal(result.body.code, 'service_unavailable');
+}));
+test('HTTP safety invalidation still permits recording actual activity from an already started session', async () => {
+  const a = await setup();
+  await withApi(async call => {
+    assert.equal((await call('/chat', 'POST', { message: 'Toi bi dau lung' })).status, 200);
+    const completion = await call(`/plans/${a.plan.id}/complete`, 'POST', a.payload);
+    assert.equal(completion.status, 200);
+    assert.equal(completion.body.session.confirmed, true);
+  }, { store: a.store });
+});

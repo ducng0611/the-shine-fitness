@@ -1,0 +1,1112 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "posture_correction_user_handover_v1",
+  "language": "vi",
+  "sourceDescription": "Bản bàn giao tự chứa do người dùng cung cấp, mô tả ba buổi thực chiến; chưa có hồ sơ gốc hoặc chữ ký duyệt để đối chiếu.",
+  "privacy": {
+    "containsDirectIdentifiers": false,
+    "containsIndividualMeasurements": false,
+    "publicCaseLinkAllowed": false
+  },
+  "columns": [
+    "Tên bài nguồn",
+    "Định lượng nguồn",
+    "Tải nguồn",
+    "Nghỉ nguồn",
+    "Mô tả nguồn",
+    "Nhịp nguồn"
+  ],
+  "program": {
+    "id": "prog_posture_correction_pt36",
+    "name": "Lộ trình chỉnh sửa tư thế và tăng tính vận động cho dân văn phòng (nguồn tham chiếu PT 1:1, 36 buổi)",
+    "nameEn": "Desk-worker Postural Correction and Mobility Reference",
+    "goal": "POSTURE_MOBILITY",
+    "goalAliases": [
+      "chỉnh sửa tư thế",
+      "cải thiện tư thế dân văn phòng",
+      "cổ rùa",
+      "rụt vai",
+      "vai tròn",
+      "ngồi nhiều",
+      "vận động văn phòng",
+      "postural correction",
+      "desk worker mobility"
+    ],
+    "sourceType": "user_supplied_plan",
+    "sourceClinicalClaimsVerified": false,
+    "targetProfile": {
+      "primaryAudience": "Người trưởng thành làm việc bàn giấy theo hồ sơ do người dùng cung cấp",
+      "minimumAge": 18,
+      "containsMinors": false,
+      "experienceLevel": "unassessed",
+      "diagnosedUpperCrossedSyndrome": null,
+      "diagnosedLowerCrossedSyndrome": null,
+      "sourceFrequencyPerWeek": 3,
+      "recommendedFrequencyPerWeek": null,
+      "totalSessions": 36,
+      "clinicalEligibilityEstablished": false
+    },
+    "aiRecommendable": false,
+    "eligibleForPlanner": false,
+    "ragRetrievalAllowed": false,
+    "aiRecommendableReason": "Nguồn chưa được duyệt lâm sàng hoặc duyệt kê bài. Chatbot không chẩn đoán hội chứng cột sống và không sao chép tải từ hồ sơ.",
+    "methodFramework": {
+      "name": "NASM Corrective Exercise Continuum",
+      "stages": [
+        {
+          "id": "INHIBIT",
+          "name": "Ức chế",
+          "descriptionAsSupplied": "Tự tác động mô mềm trên nhóm cơ được nguồn xem là co ngắn."
+        },
+        {
+          "id": "LENGTHEN",
+          "name": "Kéo giãn",
+          "descriptionAsSupplied": "Kéo giãn tĩnh hoặc thần kinh cơ theo khung nguồn."
+        },
+        {
+          "id": "ACTIVATE",
+          "name": "Kích hoạt",
+          "descriptionAsSupplied": "Tăng khả năng kiểm soát nhóm cơ được nguồn cho là bị ức chế."
+        },
+        {
+          "id": "INTEGRATE",
+          "name": "Tích hợp",
+          "descriptionAsSupplied": "Chuyển động đa khớp có kiểm soát."
+        }
+      ],
+      "modelIsDiagnosis": false,
+      "sourceFrameworkIsReviewedPrescription": false
+    },
+    "scientificBasis": {
+      "sourceFrameworks": [
+        "NASM-CES",
+        "Janda",
+        "ACSM theo mô tả nguồn, chưa có ấn bản/trang được cung cấp"
+      ],
+      "claimsReviewPath": "data/training-pathways/posture-correction/scientific-claims.review.json",
+      "automaticClinicalInferenceAllowed": false,
+      "painCauseEstablished": false
+    },
+    "phases": [
+      {
+        "id": "phase_posture_01",
+        "order": 1,
+        "sessionRange": "1-12",
+        "name": "Ức chế và kích hoạt",
+        "sourceStatus": "Khung do prompt đề nghị; chỉ có ba buổi 1-3.",
+        "eligibleForPlanner": false
+      },
+      {
+        "id": "phase_posture_02",
+        "order": 2,
+        "sessionRange": "13-24",
+        "name": "Tăng cường sức mạnh tư thế và phức hợp",
+        "sourceStatus": "Định hướng đề xuất, chưa có giáo án hoặc kết quả nguồn.",
+        "eligibleForPlanner": false
+      },
+      {
+        "id": "phase_posture_03",
+        "order": 3,
+        "sessionRange": "25-36",
+        "name": "Tích hợp kỹ thuật vào vận động",
+        "sourceName": "Tự động hóa phản xạ và tích hợp tạ",
+        "sourceStatus": "Định hướng đề xuất; chưa có bằng chứng tự động hóa phản xạ.",
+        "eligibleForPlanner": false
+      }
+    ],
+    "sessionStructure": [
+      {
+        "block": "WARM_UP_SMR",
+        "nameVi": "Khởi động và tự tác động mô mềm"
+      },
+      {
+        "block": "MOBILITY_ACTIVATE",
+        "nameVi": "Tính vận động và kích hoạt",
+        "optionalAsSource": true
+      },
+      {
+        "block": "CORRECTIVE_STRENGTH_INTEGRATION",
+        "nameVi": "Sức mạnh có kiểm soát và tích hợp",
+        "alternativeBlock": "CORRECTIVE_RESISTANCE_FUNCTIONAL"
+      },
+      {
+        "block": "COOL_DOWN",
+        "nameVi": "Thả lỏng"
+      }
+    ],
+    "progressTracking": [
+      {
+        "metric": "Khả năng thực hiện vận động và mức dễ chịu tự báo",
+        "baseline": null,
+        "outcome": null,
+        "sourceStatus": "Đề xuất theo dõi, chưa có kết quả nguồn"
+      },
+      {
+        "metric": "Mức đau/mỏi và dấu hiệu thần kinh tự báo",
+        "baseline": null,
+        "outcome": null,
+        "sourceStatus": "Không tự quy nguyên nhân, chuyển chuyên môn khi có dấu hiệu"
+      },
+      {
+        "metric": "Kiểm soát kỹ thuật ở cùng một bài/biến thể",
+        "baseline": null,
+        "outcome": null,
+        "sourceStatus": "Cần quy trình quan sát và người đánh giá"
+      },
+      {
+        "metric": "Tầm vận động được đo nhất quán",
+        "baseline": null,
+        "outcome": null,
+        "sourceStatus": "Chưa có phép đo, không suy từ ảnh hoặc nghề nghiệp"
+      },
+      {
+        "metric": "Sự tham gia và khả năng duy trì hoạt động",
+        "baseline": null,
+        "outcome": null,
+        "sourceStatus": "Không đặt mục tiêu hình thể hoặc kết quả điều trị"
+      }
+    ],
+    "aiAssistantGuardrails": {
+      "handoverTag": "HEALTH_RISK",
+      "urgentSymptomsOverrideRoutineHandover": true,
+      "allowed": [
+        "Nhận diện nhu cầu tư thế ở mức chủ đề, không suy là chẩn đoán.",
+        "Giải thích quy trình đánh giá nếu có bản dịch vụ đã duyệt.",
+        "Phân biệt bản nguồn, khung phương pháp và đánh giá lâm sàng."
+      ],
+      "forbidden": [
+        "Chẩn đoán Upper Crossed Syndrome hoặc Lower Crossed Syndrome từ nghề nghiệp/tư thế tự khai.",
+        "Tư vấn điều trị thoát vị, trượt đốt sống, vẹo cột sống hoặc triệu chứng thần kinh.",
+        "Tự cấp bài, tải hoặc bài tự tác động mô mềm khi đang đau.",
+        "Cam kết hết đau, chỉnh thẳng cột sống hoặc thay thế vật lý trị liệu.",
+        "Dùng ngưỡng Cobb để cho phép tư vấn trường hợp dưới ngưỡng."
+      ],
+      "handoverTriggers": [
+        "thoát vị đĩa đệm",
+        "tê bì chân tay",
+        "đau thần kinh tọa",
+        "trượt đốt sống",
+        "vẹo cột sống",
+        "viêm cột sống dính khớp",
+        "đau lan xuống chân",
+        "tê bàn tay"
+      ],
+      "urgentSignals": [
+        "Tê vùng yên ngựa mới xuất hiện",
+        "Rối loạn tiểu tiện/đại tiện mới xuất hiện cùng đau lưng",
+        "Yếu/tê cả hai chân nặng hoặc tăng dần"
+      ],
+      "clinicalDiagnosisAllowed": false,
+      "automaticPainRehabilitationAllowed": false
+    },
+    "reviewStatus": "needs_review",
+    "verified": false,
+    "revision": 1,
+    "createdAt": "2026-09-22T00:00:00.000Z",
+    "updatedAt": "2026-09-22T00:00:00.000Z"
+  },
+  "sessions": [
+    {
+      "sourceId": "posture_s01",
+      "sessionNumber": 1,
+      "packageCycle": "initial",
+      "title": "Đánh giá vận động & Giải phóng khớp cổ - vai - lồng ngực (Upper Focus)",
+      "sourceDate": null,
+      "recordKind": "user_supplied_plan",
+      "completionConfirmed": false,
+      "blocks": [
+        {
+          "key": "WARM_UP_SMR",
+          "label": "Warm-up & SMR",
+          "allocatedMinutes": 10,
+          "durationMeaning": "Thời lượng khối ghi trong bản bàn giao, chưa đo thực tế.",
+          "rows": [
+            [
+              "Foam rolling lưng trên (Thoracic Spine Extension)",
+              "2 x 45s",
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              "SMR bóng Lacrosse cơ ngực bé (Pec Minor Release)",
+              "2 x 30s mỗi bên",
+              null,
+              null,
+              null,
+              null
+            ]
+          ]
+        },
+        {
+          "key": "MOBILITY_ACTIVATE",
+          "label": "Mobility & Activate",
+          "allocatedMinutes": 15,
+          "durationMeaning": "Thời lượng khối ghi trong bản bàn giao, chưa đo thực tế.",
+          "rows": [
+            [
+              "Cat-Cow kết hợp thở cơ hoành (Diaphragmatic Breathing)",
+              "2 x 10 reps",
+              null,
+              null,
+              "Nhịp chậm 3-1-3.",
+              "3-1-3"
+            ],
+            [
+              "Chin Tucks",
+              "3 x 12 reps",
+              null,
+              null,
+              "Thu cằm kích hoạt nhóm gập cổ sâu; giữ 3s ở đỉnh.",
+              null
+            ],
+            [
+              "Prone Y-T-W Raises",
+              "3 x 10 reps",
+              "không tạ",
+              null,
+              "Nằm sấp kích hoạt cơ thang giữa/dưới.",
+              null
+            ]
+          ]
+        },
+        {
+          "key": "CORRECTIVE_STRENGTH_INTEGRATION",
+          "label": "Corrective Strength & Integration",
+          "allocatedMinutes": 20,
+          "durationMeaning": "Thời lượng khối ghi trong bản bàn giao, chưa đo thực tế.",
+          "rows": [
+            [
+              "Banded Wall Slide",
+              "3 x 12 reps",
+              null,
+              "60s",
+              "Trượt tường có dây kháng lực kích hoạt Serratus Anterior.",
+              null
+            ],
+            [
+              "Seated Cable Row",
+              "3 x 12 reps",
+              "15 kg",
+              "75s",
+              "Tay cầm trung tính, tập trung hạ đè và khép xương bả vai.",
+              null
+            ],
+            [
+              "Half-Kneeling Cable Pallof Press",
+              "3 x 10 reps/bên",
+              "7.5 kg",
+              "60s",
+              "Chống xoay thân, ổn định đai hông - cột sống.",
+              null
+            ]
+          ]
+        },
+        {
+          "key": "COOL_DOWN",
+          "label": "Cool-down",
+          "allocatedMinutes": 10,
+          "durationMeaning": "Thời lượng khối ghi trong bản bàn giao, chưa đo thực tế.",
+          "rows": [
+            [
+              "Doorway Chest Stretch",
+              "2 x 30s",
+              null,
+              null,
+              "Kéo giãn tĩnh cơ ngực qua khung cửa.",
+              null
+            ],
+            [
+              "Levator Scapulae Stretch",
+              "2 x 30s/bên",
+              null,
+              null,
+              "Kéo giãn cơ nâng vai.",
+              null
+            ],
+            [
+              "Đi bộ thả lỏng TM",
+              "5p",
+              null,
+              null,
+              "Độ dốc 0.",
+              null
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "sourceId": "posture_s02",
+      "sessionNumber": 2,
+      "packageCycle": "initial",
+      "title": "Giải phóng khung chậu & Đánh thức cơ mông (Lower Pelvic Focus)",
+      "sourceDate": null,
+      "recordKind": "user_supplied_plan",
+      "completionConfirmed": false,
+      "blocks": [
+        {
+          "key": "WARM_UP_SMR",
+          "label": "Warm-up & SMR",
+          "allocatedMinutes": 10,
+          "durationMeaning": "Thời lượng khối ghi trong bản bàn giao, chưa đo thực tế.",
+          "rows": [
+            [
+              "Foam rolling dải chậu chày (IT Band) và cơ đùi trước (Quadriceps)",
+              "2 x 45s/bên",
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              "SMR bóng giải mạc cơ mông nhỡ và cơ hình lê (Piriformis)",
+              "2 x 30s/bên",
+              null,
+              null,
+              null,
+              null
+            ]
+          ]
+        },
+        {
+          "key": "MOBILITY_ACTIVATE",
+          "label": "Mobility & Activate",
+          "allocatedMinutes": 15,
+          "durationMeaning": "Thời lượng khối ghi trong bản bàn giao, chưa đo thực tế.",
+          "rows": [
+            [
+              "90/90 Hip Mobility Flow",
+              "2 x 8 reps/bên",
+              null,
+              null,
+              "Mở tầm vận động xoay trong/ngoài khớp hông.",
+              null
+            ],
+            [
+              "Half-Kneeling Hip Flexor Stretch",
+              "3 x 30s/bên",
+              null,
+              null,
+              "Kéo giãn cơ gập hông kết hợp siết mông cùng bên.",
+              null
+            ],
+            [
+              "Clamshell with Mini-band",
+              "3 x 15 reps/bên",
+              null,
+              null,
+              "Kích hoạt mông nhỡ chống sụp gối; giữ đỉnh 1s.",
+              null
+            ]
+          ]
+        },
+        {
+          "key": "CORRECTIVE_STRENGTH_INTEGRATION",
+          "label": "Corrective Strength & Integration",
+          "allocatedMinutes": 20,
+          "durationMeaning": "Thời lượng khối ghi trong bản bàn giao, chưa đo thực tế.",
+          "rows": [
+            [
+              "Glute Bridge with Band",
+              "3 x 15 reps",
+              null,
+              "60s",
+              "Cầu mông có dây chun quanh gối; giữ co thắt mông 2s đỉnh.",
+              null
+            ],
+            [
+              "Romanian Deadlift với Dumbbell",
+              "3 x 10 reps",
+              "2 DB 6 kg",
+              "75s",
+              "Dạy bản lề hông Hip-Hinge, giữ thắt lưng trung tính; nhịp 3-0-1.",
+              "3-0-1"
+            ],
+            [
+              "Bird-Dog",
+              "3 x 10 reps/bên",
+              null,
+              "45s",
+              "Ổn định chéo cơ lõi - thắt lưng; tay đối chân.",
+              null
+            ]
+          ]
+        },
+        {
+          "key": "COOL_DOWN",
+          "label": "Cool-down",
+          "allocatedMinutes": 10,
+          "durationMeaning": "Thời lượng khối ghi trong bản bàn giao, chưa đo thực tế.",
+          "rows": [
+            [
+              "Child's Pose kết hợp kéo giãn cơ lưng rộng (Latissimus Dorsi)",
+              "2 x 45s",
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              "Pigeon Stretch",
+              "2 x 30s/bên",
+              null,
+              null,
+              "Kéo giãn sâu vùng mông.",
+              null
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "sourceId": "posture_s03",
+      "sessionNumber": 3,
+      "packageCycle": "initial",
+      "title": "Tích hợp chuỗi động lực toàn thân & Kiểm soát tư thế chức năng",
+      "sourceDate": null,
+      "recordKind": "user_supplied_plan",
+      "completionConfirmed": false,
+      "blocks": [
+        {
+          "key": "WARM_UP_SMR",
+          "label": "Warm-up & SMR",
+          "allocatedMinutes": 10,
+          "durationMeaning": "Thời lượng khối ghi trong bản bàn giao, chưa đo thực tế.",
+          "rows": [
+            [
+              "Foam rolling toàn bộ lưng và bắp chân (Gastrocnemius/Soleus)",
+              "2 x 45s",
+              null,
+              null,
+              null,
+              null
+            ],
+            [
+              "T-Spine Rotation on Quadruped",
+              "2 x 10 reps/bên",
+              null,
+              null,
+              "Xoay cột sống ngực bốn điểm.",
+              null
+            ]
+          ]
+        },
+        {
+          "key": "CORRECTIVE_RESISTANCE_FUNCTIONAL",
+          "label": "Corrective Resistance & Functional Posture",
+          "allocatedMinutes": 25,
+          "durationMeaning": "Thời lượng khối ghi trong bản bàn giao, chưa đo thực tế.",
+          "rows": [
+            [
+              "Standing Cable Face Pull with External Rotation",
+              "3 x 15 reps",
+              "10 kg",
+              "60s",
+              "Kéo cáp vào mặt kết hợp xoay ngoài vai.",
+              null
+            ],
+            [
+              "Kettlebell Deadlift từ bục cao",
+              "3 x 10 reps",
+              "KB 12 kg",
+              "90s",
+              "Tối ưu biên độ cho lưng thẳng, kích hoạt chuỗi sau.",
+              null
+            ],
+            [
+              "Dumbbell Farmer's Walk",
+              "3 x 30 mét",
+              "2 DB 8 kg",
+              "75s",
+              "Đi bộ xách tạ rèn ổn định tư thế vai, cổ thẳng, gồng lõi.",
+              null
+            ],
+            [
+              "Deadbug với bóng tập",
+              "3 x 10 reps/bên",
+              null,
+              "60s",
+              "Duy trì áp lực thắt lưng sát sàn, phối hợp đối bên.",
+              null
+            ]
+          ]
+        },
+        {
+          "key": "COOL_DOWN",
+          "label": "Cool-down",
+          "allocatedMinutes": 10,
+          "durationMeaning": "Thời lượng khối ghi trong bản bàn giao, chưa đo thực tế.",
+          "rows": [
+            [
+              "Standing Hamstring & Spinal Roll Down",
+              "3 phút",
+              null,
+              null,
+              "Kéo giãn toàn thân chuỗi sau, thả lỏng từng đốt sống.",
+              null
+            ],
+            [
+              "Thở cơ hoành tư thế 90/90 gác chân lên ghế",
+              "5 phút",
+              null,
+              null,
+              "Giải tỏa thần kinh giao cảm.",
+              null
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "exerciseMappings": [
+    {
+      "sourceName": "Foam rolling lưng trên (Thoracic Spine Extension)",
+      "exerciseId": "ex_foam_thoracic_extension",
+      "nameVi": "Lăn vùng lưng trên và duỗi cột sống ngực",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [
+        "eq_foam_roller_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "SMR bóng Lacrosse cơ ngực bé (Pec Minor Release)",
+      "exerciseId": "ex_pec_minor_ball_release",
+      "nameVi": "Tự tác động mô mềm vùng ngực bé bằng bóng",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [
+        "eq_lacrosse_ball_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [],
+      "reviewNotes": [
+        "Cần xác nhận vị trí đặt bóng và áp lực; không hướng dẫn chèn ép sâu vùng cổ, ngực hoặc vùng đang đau qua chat."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Cat-Cow kết hợp thở cơ hoành (Diaphragmatic Breathing)",
+      "exerciseId": "ex_cow_cat",
+      "nameVi": "Cat-Cow kết hợp thở cơ hoành",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Nhịp chậm 3-1-3."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Chin Tucks",
+      "exerciseId": "ex_chin_tuck",
+      "nameVi": "Thu cằm",
+      "category": "Cơ lõi",
+      "equipmentReferenceIds": [],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Thu cằm kích hoạt nhóm gập cổ sâu; giữ 3s ở đỉnh."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Prone Y-T-W Raises",
+      "exerciseId": "ex_prone_ytw_raise",
+      "nameVi": "Nằm sấp nâng tay chữ Y-T-W",
+      "category": "Vai",
+      "equipmentReferenceIds": [],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Nằm sấp kích hoạt cơ thang giữa/dưới."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Banded Wall Slide",
+      "exerciseId": "ex_banded_wall_slide",
+      "nameVi": "Trượt tường với dây kháng lực",
+      "category": "Vai",
+      "equipmentReferenceIds": [
+        "eq_wall_support_review",
+        "eq_band_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Trượt tường có dây kháng lực kích hoạt Serratus Anterior."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Seated Cable Row",
+      "exerciseId": "ex_cable_row",
+      "nameVi": "Kéo cáp ngồi, tay cầm trung tính",
+      "category": "Lưng",
+      "equipmentReferenceIds": [
+        "eq_cable_row_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Tay cầm trung tính, tập trung hạ đè và khép xương bả vai."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Half-Kneeling Cable Pallof Press",
+      "exerciseId": "ex_half_kneeling_cable_pallof_press",
+      "nameVi": "Pallof Press nửa quỳ với cáp",
+      "category": "Cơ lõi",
+      "equipmentReferenceIds": [
+        "eq_cable_pallof_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Chống xoay thân, ổn định đai hông - cột sống."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Doorway Chest Stretch",
+      "exerciseId": "ex_doorway_chest_stretch",
+      "nameVi": "Giãn cơ ngực qua khung cửa",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [
+        "eq_doorway_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Kéo giãn tĩnh cơ ngực qua khung cửa."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Levator Scapulae Stretch",
+      "exerciseId": "ex_levator_scapulae_stretch",
+      "nameVi": "Giãn cơ nâng vai",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Kéo giãn cơ nâng vai."
+      ],
+      "reviewNotes": [
+        "Cần đánh giá khi có đau cổ, tê tay hoặc triệu chứng thần kinh; không ép biên độ hoặc tự chẩn đoán."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Đi bộ thả lỏng TM",
+      "exerciseId": "ex_treadmill_walk",
+      "nameVi": "Đi bộ thả lỏng trên máy chạy",
+      "category": "Thả lỏng",
+      "equipmentReferenceIds": [
+        "eq_treadmill_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Độ dốc 0; nguồn không ghi tốc độ hoặc đơn vị độ dốc."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Foam rolling dải chậu chày (IT Band) và cơ đùi trước (Quadriceps)",
+      "exerciseId": "ex_foam_itband_quadriceps_reference",
+      "nameVi": "Lăn dải chậu chày và cơ đùi trước theo nguồn",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [
+        "eq_foam_roller_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [],
+      "reviewNotes": [
+        "Cần rà soát kỹ thuật và vị trí tác động; không coi mô tả nguồn là chứng minh thay đổi chiều dài hoặc độ cứng dải chậu chày."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "SMR bóng giải mạc cơ mông nhỡ và cơ hình lê (Piriformis)",
+      "exerciseId": "ex_glute_piriformis_ball_release",
+      "nameVi": "Tự tác động vùng mông nhỡ và hình lê bằng bóng",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [
+        "eq_lacrosse_ball_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "90/90 Hip Mobility Flow",
+      "exerciseId": "ex_hip_9090_mobility",
+      "nameVi": "Vận động hông tư thế 90/90",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Mở tầm vận động xoay trong/ngoài khớp hông."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Half-Kneeling Hip Flexor Stretch",
+      "exerciseId": "ex_half_kneeling_hip_flexor_stretch",
+      "nameVi": "Giãn cơ gập hông nửa quỳ",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Kéo giãn cơ gập hông kết hợp siết mông cùng bên."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Clamshell with Mini-band",
+      "exerciseId": "ex_clamshell_band",
+      "nameVi": "Nằm nghiêng mở gối với dây kháng lực",
+      "category": "Chân",
+      "equipmentReferenceIds": [
+        "eq_band_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Kích hoạt mông nhỡ chống sụp gối; giữ đỉnh 1s."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Glute Bridge with Band",
+      "exerciseId": "ex_glute_bridge_band",
+      "nameVi": "Cầu mông với dây quanh gối",
+      "category": "Chân",
+      "equipmentReferenceIds": [
+        "eq_band_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Cầu mông có dây chun quanh gối; giữ co thắt mông 2s đỉnh."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Romanian Deadlift với Dumbbell",
+      "exerciseId": "ex_db_romanian_deadlift",
+      "nameVi": "Romanian Deadlift với tạ đơn",
+      "category": "Chân",
+      "equipmentReferenceIds": [
+        "eq_dumbbell_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Dạy bản lề hông Hip-Hinge, giữ thắt lưng trung tính; nhịp 3-0-1."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Bird-Dog",
+      "exerciseId": "ex_bird_dog",
+      "nameVi": "Bird-Dog đối bên",
+      "category": "Cơ lõi",
+      "equipmentReferenceIds": [],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Ổn định chéo cơ lõi - thắt lưng; tay đối chân."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Child's Pose kết hợp kéo giãn cơ lưng rộng (Latissimus Dorsi)",
+      "exerciseId": "ex_child_pose_lat_stretch",
+      "nameVi": "Tư thế em bé kết hợp giãn cơ lưng rộng",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Pigeon Stretch",
+      "exerciseId": "ex_pigeon_pose",
+      "nameVi": "Giãn vùng mông tư thế bồ câu",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Kéo giãn sâu vùng mông."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Foam rolling toàn bộ lưng và bắp chân (Gastrocnemius/Soleus)",
+      "exerciseId": "ex_foam_back_calves_reference",
+      "nameVi": "Lăn lưng và bắp chân theo nguồn, cần xác định phạm vi",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [
+        "eq_foam_roller_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [],
+      "reviewNotes": [
+        "Cụm 'toàn bộ lưng' chưa xác định phạm vi; không tự cấp hướng dẫn lăn trực tiếp cột sống cổ hoặc thắt lưng. Cần người có chuyên môn xem lại."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "T-Spine Rotation on Quadruped",
+      "exerciseId": "ex_quadruped_tspine_rotation",
+      "nameVi": "Xoay cột sống ngực bốn điểm",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Xoay cột sống ngực bốn điểm."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Standing Cable Face Pull with External Rotation",
+      "exerciseId": "ex_standing_cable_face_pull",
+      "nameVi": "Kéo cáp mặt kết hợp xoay ngoài vai",
+      "category": "Vai",
+      "equipmentReferenceIds": [
+        "eq_cable_rope_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Kéo cáp vào mặt kết hợp xoay ngoài vai."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Kettlebell Deadlift từ bục cao",
+      "exerciseId": "ex_elevated_kb_deadlift",
+      "nameVi": "Deadlift tạ ấm từ bục cao",
+      "category": "Chân",
+      "equipmentReferenceIds": [
+        "eq_kettlebell_review",
+        "eq_step_box_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Tối ưu biên độ cho lưng thẳng, kích hoạt chuỗi sau."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Dumbbell Farmer's Walk",
+      "exerciseId": "ex_farmers_walk",
+      "nameVi": "Đi bộ xách hai tạ đơn",
+      "category": "Toàn thân",
+      "equipmentReferenceIds": [
+        "eq_dumbbell_review",
+        "eq_carry_route_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Đi bộ xách tạ rèn ổn định tư thế vai, cổ thẳng, gồng lõi."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Deadbug với bóng tập",
+      "exerciseId": "ex_deadbug_ball",
+      "nameVi": "Deadbug với bóng tập",
+      "category": "Cơ lõi",
+      "equipmentReferenceIds": [
+        "eq_exercise_ball_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Duy trì áp lực thắt lưng sát sàn, phối hợp đối bên."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Standing Hamstring & Spinal Roll Down",
+      "exerciseId": "ex_standing_hamstring_roll_down_reference",
+      "nameVi": "Giãn chuỗi sau kết hợp cuộn thân theo nguồn",
+      "category": "Linh hoạt",
+      "equipmentReferenceIds": [],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Kéo giãn toàn thân chuỗi sau, thả lỏng từng đốt sống."
+      ],
+      "reviewNotes": [
+        "Cần đánh giá khả năng chịu động tác gập/cuộn thân nếu có đau lan hoặc bệnh cột sống; không suy là trị liệu giải nén."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": null
+    },
+    {
+      "sourceName": "Thở cơ hoành tư thế 90/90 gác chân lên ghế",
+      "exerciseId": "ex_9090_diaphragmatic_breathing",
+      "nameVi": "Thở cơ hoành tư thế 90/90 gác chân",
+      "category": "Thả lỏng",
+      "equipmentReferenceIds": [
+        "eq_seat_review"
+      ],
+      "mappingStatus": "source_variant_requires_review",
+      "sourceInstructions": [
+        "Giải tỏa thần kinh giao cảm."
+      ],
+      "reviewNotes": [
+        "Nguồn chưa kèm đánh giá cá nhân và duyệt kỹ thuật; có đau hoặc dấu hiệu thần kinh phải chuyển chuyên môn."
+      ],
+      "difficulty": "unassessed",
+      "movementPattern": "breathing"
+    }
+  ],
+  "equipmentAdditions": [
+    {
+      "id": "eq_foam_roller_review",
+      "name": "Ống lăn mô mềm, chưa kiểm kê loại và tình trạng",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn; không xác nhận tồn tại, vị trí hoặc sẵn sàng sử dụng."
+    },
+    {
+      "id": "eq_lacrosse_ball_review",
+      "name": "Bóng tác động mô mềm, chưa xác minh loại",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn; không xác nhận tồn tại, vị trí hoặc sẵn sàng sử dụng."
+    },
+    {
+      "id": "eq_cable_pallof_review",
+      "name": "Trạm cáp phù hợp Pallof Press, chưa ghép máy thật",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn; không xác nhận tồn tại, vị trí hoặc sẵn sàng sử dụng."
+    },
+    {
+      "id": "eq_doorway_review",
+      "name": "Khung cửa hoặc điểm tựa an toàn, chưa khảo sát",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn; không xác nhận tồn tại, vị trí hoặc sẵn sàng sử dụng."
+    },
+    {
+      "id": "eq_carry_route_review",
+      "name": "Lối đi tập xách tạ, chưa xác minh chiều dài và an toàn",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn; không xác nhận tồn tại, vị trí hoặc sẵn sàng sử dụng."
+    },
+    {
+      "id": "eq_exercise_ball_review",
+      "name": "Bóng tập cho Deadbug, chưa kiểm kê",
+      "referenceStatus": "unresolved",
+      "verified": false,
+      "isPhysicalAsset": false,
+      "candidateAssetIds": [],
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn; không xác nhận tồn tại, vị trí hoặc sẵn sàng sử dụng."
+    }
+  ]
+}

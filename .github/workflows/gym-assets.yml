@@ -1,0 +1,49 @@
+name: Gym asset source intake
+on:
+  push:
+    branches: [feat/gym-assets-onboarding]
+    paths:
+      - 'data/the-shine-gym-assets.*'
+      - 'shared/collectedGymAssets.ts'
+      - 'scripts/prepare-gym-assets.ts'
+      - 'tests/gym-assets.test.ts'
+      - '.github/workflows/gym-assets.yml'
+  pull_request:
+    paths:
+      - 'data/the-shine-gym-assets.*'
+      - 'shared/collectedGymAssets.ts'
+      - 'scripts/prepare-gym-assets.ts'
+      - 'tests/gym-assets.test.ts'
+      - '.github/workflows/gym-assets.yml'
+permissions:
+  contents: read
+concurrency:
+  group: gym-assets-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify-intake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npx --no-install tsx scripts/prepare-gym-assets.ts --check
+      - run: node --import tsx --test tests/gym-assets.test.ts
+      - run: npm run test:training
+      - run: npm run typecheck:training
+      - run: npm run lint
+      - run: npm run build
+      - name: Generate source-derived draft for review only
+        run: npx --no-install tsx scripts/prepare-gym-assets.ts --write-draft
+      - uses: actions/upload-artifact@v4
+        with:
+          name: the-shine-gym-assets-draft
+          path: |
+            data/the-shine-gym-assets.collected.csv
+            data/the-shine-gym-assets.source-review.csv
+            data/the-shine-gym-assets.sources.json
+            data/companion/the-shine-gym-assets.draft.json
+          retention-days: 7

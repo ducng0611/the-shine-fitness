@@ -1,0 +1,129 @@
+{
+  "version": "education-2026-09-23-v4",
+  "scope": "general_education_only",
+  "editorialStatus": "source_checked_not_clinical_review",
+  "checkedAt": "2026-09-23",
+  "expiresAt": "2027-03-23",
+  "note": "Nội dung giáo dục mới, tách khỏi hồ sơ PT, meal plan và archive. Không phải chỉ định cá nhân; không xác nhận đã được bác sĩ hoặc PT của doanh nghiệp duyệt.",
+  "cards": [
+    {
+      "id": "protein",
+      "title": "Protein và nguồn đạm",
+      "url": "https://medlineplus.gov/dietaryproteins.html",
+      "vi": "Protein là chất đạm, cung cấp nguyên liệu để cơ thể xây dựng và duy trì cơ, xương và da. Nguồn đạm có trong thịt, cá, trứng, sữa, đậu và các loại hạt. Nhu cầu của mỗi người khác nhau; giải thích khái niệm này không cần đăng nhập hoặc tự động gán một thực đơn.",
+      "en": "Protein provides building material for muscles, bones and skin. Foods such as meat, fish, eggs, dairy, beans and nuts provide protein. Explaining the concept does not require an account or automatically assign you a diet."
+    },
+    {
+      "id": "whey",
+      "title": "Whey và thực phẩm giàu đạm",
+      "url": "https://ods.od.nih.gov/factsheets/ExerciseAndAthleticPerformance-Consumer/",
+      "vi": "Whey là một loại protein từ sữa, thường được dùng trong bột hoặc đồ uống bổ sung. Nó không thay thế toàn bộ giá trị của chế độ ăn đa dạng; nhiều người có thể đáp ứng nhu cầu đạm bằng thực phẩm. Đây là giải thích tổng quát, không phải liều dùng hoặc xác nhận sản phẩm phù hợp với riêng bạn.",
+      "en": "Whey is a milk protein commonly used in protein powders and drinks. Many people can obtain enough protein from food. This explains the ingredient, not a personal dose or confirmation that a supplement suits you."
+    },
+    {
+      "id": "creatine_concept",
+      "title": "Creatine là gì",
+      "url": "https://ods.od.nih.gov/factsheets/ExerciseAndAthleticPerformance-Consumer/",
+      "vi": "Creatine là hợp chất có trong cơ thể, liên quan đến cung cấp năng lượng cho các hoạt động ngắn và mạnh. Nó không phải protein và không phải thuốc giảm cân. Việc giải thích khái niệm khác với chọn sản phẩm hoặc liều dùng cho một người cụ thể.",
+      "en": "Creatine is a compound in the body involved in energy for short, intense efforts. It is not protein or a weight-loss medicine. A general explanation is different from choosing a product or dose for an individual."
+    },
+    {
+      "id": "energy_terms",
+      "title": "Phân biệt BMR và TDEE",
+      "url": "https://www.fao.org/4/y5686e/y5686e04.htm",
+      "vi": "BMR là mức tiêu hao năng lượng nền trong điều kiện nghỉ được chuẩn hóa. TDEE là tổng tiêu hao trong ngày, gồm chuyển hóa nền, hoạt động và năng lượng dùng để xử lý thức ăn. Vì vậy hai con số không thể dùng thay nhau; hiểu chúng chưa đồng nghĩa đã tính được mức ăn phù hợp cho bạn.",
+      "en": "BMR is basal energy expenditure under standardized resting conditions. TDEE is the total for a day, including basal metabolism, activity and processing food. They are not interchangeable, and defining them is not a personal intake calculation."
+    },
+    {
+      "id": "diabetes_concept",
+      "title": "Khái niệm đái tháo đường type 2",
+      "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes/type-2-diabetes",
+      "vi": "Đái tháo đường type 2 là tình trạng đường huyết cao khi cơ thể sử dụng insulin kém hiệu quả hoặc không tạo đủ insulin. Insulin giúp glucose đi vào tế bào để được sử dụng. Câu hỏi về khái niệm không có nghĩa bạn đang mắc bệnh; chẩn đoán và điều trị cần nhân viên y tế đánh giá.",
+      "en": "Type 2 diabetes involves high blood glucose when the body does not use insulin well or does not make enough. Insulin helps glucose enter cells. Asking for this definition does not establish a diagnosis; diagnosis and treatment require a healthcare professional."
+    },
+    {
+      "id": "meal_before",
+      "title": "Nguyên tắc ăn trước vận động",
+      "url": "https://www.bhf.org.uk/informationsupport/heart-matters-magazine/nutrition/food-for-fitness",
+      "vi": "Trước vận động, khoảng cách tới buổi tập và mức dễ tiêu của bữa ăn là hai điểm cần xem xét. Càng gần giờ tập, một phần nhỏ dễ tiêu thường phù hợp hơn bữa lớn; thức ăn nhiều chất béo hoặc chất xơ có thể gây khó chịu khi ăn sát buổi tập. Đây là nguyên tắc chung, chưa chọn món hay khẩu phần cá nhân.",
+      "en": "Before exercise, consider the time available and how easily you digest the meal. A smaller, easy-to-digest snack is usually more practical close to training than a large meal. Fat or fibre may cause discomfort when eaten close to exercise. This is not a personal menu."
+    },
+    {
+      "id": "meal_after",
+      "title": "Nguyên tắc ăn sau vận động",
+      "url": "https://newsnetwork.mayoclinic.org/discussion/5-nutrition-tips-to-maximize-your-workouts/",
+      "vi": "Sau vận động, thực phẩm cung cấp carbohydrate, protein và chất lỏng có vai trò hỗ trợ bổ sung năng lượng và phục hồi. Bữa phù hợp còn phụ thuộc thời gian, cường độ và việc bạn đã ăn trước đó. Không cần lấy mức calo hay món của một khách mẫu làm thực đơn của bạn.",
+      "en": "After activity, carbohydrate, protein and fluids support refuelling and recovery. Appropriate food also depends on timing, intensity and earlier meals. Another person's sample calories or menu are not automatically your plan."
+    },
+    {
+      "id": "hydration",
+      "title": "Nước và vận động",
+      "url": "https://www.heart.org/en/healthy-living/exercise-and-physical-activity/fitness-basics/how-to-keep-cool-during-warm-weather-workouts",
+      "vi": "Nước là một phần của việc chuẩn bị và phục hồi sau vận động, đặc biệt khi trời nóng. Thời gian tập và mức ra mồ hôi làm nhu cầu khác nhau; không nên tự biến một lượng nước mẫu thành chỉ tiêu cho mọi người. Khi có hạn chế dịch do bệnh lý, hãy theo hướng dẫn của người điều trị.",
+      "en": "Fluids matter before and after activity, especially in heat. Duration and sweating vary, so a sample volume is not a universal target. Medical fluid restrictions should follow the treating professional's guidance."
+    },
+    {
+      "id": "progressive_overload",
+      "title": "Khái niệm tăng tiến trong tập luyện, nguồn ACSM 2009",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19204579/",
+      "vi": "Tăng tiến là điều chỉnh dần yêu cầu tập luyện theo khả năng thích nghi, chẳng hạn số lần lặp hoặc mức tải. Không đồng nghĩa phải tăng tạ ở mọi buổi. Trong AI Gym Buddy, thành tích trước chỉ là dữ kiện tham khảo; hệ thống không tự tăng tải hoặc xem lịch sử là phép đo khả năng hồi phục.",
+      "en": "Progression means gradually adjusting training demands, for example repetitions or resistance. It does not mean adding weight at every session. Gym Buddy treats past performance as a reference, not permission to raise loads automatically."
+    },
+    {
+      "id": "warmup",
+      "title": "Khởi động và thả lỏng",
+      "url": "https://www.heart.org/en/healthy-living/exercise-and-physical-activity/fitness-basics/warm-up-cool-down",
+      "vi": "Khởi động giúp chuyển dần từ trạng thái nghỉ sang hoạt động; thả lỏng là quá trình giảm cường độ sau buổi tập. Hai phần có mục đích khác nhau và không nên chỉ được coi là thời gian thừa. Mức độ và hình thức cần phù hợp với hoạt động sắp thực hiện, không sao chép một giáo án bất kỳ.",
+      "en": "A warm-up gradually prepares the body for activity; a cool-down gradually reduces intensity afterward. Their purposes differ. The appropriate form depends on the activity rather than an arbitrary copied workout."
+    },
+    {
+      "id": "sleep",
+      "title": "Giấc ngủ và phục hồi",
+      "url": "https://www.cdc.gov/sleep/about/",
+      "vi": "Giấc ngủ tốt gồm cả thời lượng lẫn chất lượng, và nhu cầu thay đổi theo tuổi. Thói quen ngủ đều đặn, không gian nghỉ phù hợp và việc xem xét các vấn đề ngủ kéo dài đều quan trọng. AI không suy ra bạn đã hồi phục chỉ từ số buổi tập hoặc một ghi chú ngủ cũ.",
+      "en": "Healthy sleep involves both duration and quality, and needs change with age. Regular routines and addressing persistent sleep problems matter. AI cannot infer recovery from workout counts or an old sleep note."
+    },
+    {
+      "id": "fitness_general",
+      "title": "Vận động và rèn sức mạnh",
+      "url": "https://www.cdc.gov/physical-activity-basics/guidelines/adults.html",
+      "vi": "Vận động cho sức khỏe có thể gồm cả hoạt động aerobic và rèn sức mạnh cơ. Có thể tích lũy hoạt động qua các khoảng thời gian nhỏ thay vì làm tất cả cùng lúc. Đây là định hướng giáo dục, không phải giáo án hoặc bằng chứng một máy cụ thể có tại The Shine.",
+      "en": "Activity for health can include aerobic movement and muscle strengthening. Activity can be accumulated in smaller periods. This is educational guidance, not a workout prescription or proof of equipment at The Shine."
+    },
+    {
+      "id": "superset",
+      "title": "Superset: cặp bài liên hoàn",
+      "url": "https://www.acefitness.org/continuing-education/certified/june-2024/8648/short-on-time-try-reciprocal-superset-training/",
+      "vi": "Superset là cách ghép hai bài thực hiện nối tiếp, với ít hoặc không nghỉ giữa hai bài, rồi mới nghỉ sau cặp. Đây là cách tổ chức buổi tập, không tự chứng minh cường độ nhẹ hay an toàn cho mọi người. Giải thích thuật ngữ không phải chỉ định ghép bài cho bạn.",
+      "en": "A superset pairs two exercises in sequence with little or no rest between them, followed by rest after the pair. It describes organization, not proof of low intensity or safety for every person. This definition does not prescribe a pairing for you."
+    },
+    {
+      "id": "lat_pulldown",
+      "title": "Lat Pulldown: kéo xô từ trên xuống",
+      "url": "https://www.acefitness.org/resources/everyone/exercise-library/158/seated-lat-pulldown/",
+      "vi": "Lat Pulldown, thường gọi là kéo xô, là bài kéo thanh hoặc tay cầm từ phía trên xuống trước thân trên máy, tập trung nhóm cơ lưng. Tên bài không xác nhận máy cụ thể ở The Shine, vị trí, mức tạ hay sự phù hợp với hồ sơ bệnh lý. Phần này chỉ giải thích khái niệm.",
+      "en": "A lat pulldown is a machine-based pulling exercise in which an overhead bar or handle is brought down in front of the torso, targeting the back. This description does not confirm a particular gym machine, location, load or individual suitability."
+    },
+    {
+      "id": "decline_press",
+      "title": "Decline Press: đẩy ngực trên ghế dốc xuống",
+      "url": "https://repfitness.com/blogs/training/how-to-dumbell-bench-press-correctly",
+      "vi": "Decline Press là biến thể đẩy ngực trên ghế dốc xuống, phần đầu thấp hơn hông. Cụm Kettlebell Press trong tên nguồn nói đến tạ ấm; mô tả tên không xác nhận góc ghế hay mức tải. Đây không phải khuyến nghị thực hiện cho người có bệnh nền; sự phù hợp cần được xem xét riêng.",
+      "en": "A decline press is a chest-press variation using a downward-sloping bench, with the head below the hips. The source label specifies kettlebells but does not establish the angle or load. This terminology explanation is not an individual exercise recommendation."
+    },
+    {
+      "id": "rpe",
+      "title": "RPE: cảm nhận gắng sức",
+      "url": "https://www.mayoclinic.org/healthy-lifestyle/fitness/in-depth/exercise-intensity/art-20046887",
+      "vi": "RPE là mức cảm nhận gắng sức: bạn tự đánh giá bài tập cảm thấy khó hoặc nặng đến đâu. Cùng một hoạt động có thể cho cảm nhận khác nhau ở từng người. Cần ghi rõ thang đo khi theo dõi; RPE không phải số đo huyết áp hay giấy xác nhận đủ điều kiện tập. Em chưa chọn mức mục tiêu cá nhân cho bạn.",
+      "en": "RPE means rating of perceived exertion: your assessment of how hard an activity feels. The same activity can feel different to different people. Record which scale is being used. RPE is not a blood-pressure measurement or medical clearance; no personal target is set here."
+    },
+    {
+      "id": "diabetes_general",
+      "title": "Đái tháo đường: khái niệm chung",
+      "url": "https://www.niddk.nih.gov/health-information/diabetes/overview/what-is-diabetes",
+      "vi": "Tiểu đường, còn gọi là đái tháo đường, là bệnh có lượng glucose trong máu cao. Cơ thể có thể không tạo đủ insulin hoặc không sử dụng insulin hiệu quả. Thuật ngữ chung chưa cho biết là type 1, type 2 hay loại khác. Câu trích dẫn không xác nhận người hỏi mắc bệnh; phân loại và chẩn đoán cần nhân viên y tế.",
+      "en": "Diabetes is a disease involving high blood glucose. The body may not make enough insulin or may not use it effectively. The general term alone does not identify type 1, type 2 or another type. A quoted sentence does not establish that the person asking has diabetes; diagnosis and classification require healthcare assessment."
+    }
+  ]
+}

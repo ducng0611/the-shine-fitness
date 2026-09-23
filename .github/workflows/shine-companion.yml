@@ -1,0 +1,67 @@
+name: Shine Companion checks
+on:
+  push:
+    branches: ['**']
+    paths:
+      - '.github/workflows/shine-companion.yml'
+      - 'tests/integration/**'
+      - 'server/src/companion/**'
+      - 'src/components/companion/**'
+      - 'tests/companion.test.mjs'
+      - 'tests/companion-catalogue.test.mjs'
+      - 'data/companion/the-shine-catalogue.json'
+      - 'data/companion/the-shine-gym-assets.draft.json'
+      - 'server/src/index.ts'
+      - 'src/App.tsx'
+      - 'firestore.rules'
+      - '.env.example'
+      - 'package.json'
+      - 'package-lock.json'
+permissions:
+  contents: read
+concurrency:
+  group: shine-companion-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Domain tests
+        run: |
+          set -o pipefail
+          node --test tests/companion.test.mjs tests/companion-catalogue.test.mjs | tee companion-tests.txt
+      - name: Install locked dependencies without lifecycle scripts
+        id: install
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Route isolation (Companion must not shadow Training/Buddy or catalogue)
+        run: |
+          set -o pipefail
+          node --import tsx --test tests/integration/*.test.ts | tee companion-routes.txt
+      - name: Type check
+        run: |
+          set -o pipefail
+          npm run lint 2>&1 | tee companion-types.txt
+      - name: Production build
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          npm run build 2>&1 | tee companion-build.txt
+      - name: Save verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: companion-verification
+          path: |
+            companion-tests.txt
+            companion-routes.txt
+            companion-types.txt
+            companion-build.txt
+          retention-days: 7

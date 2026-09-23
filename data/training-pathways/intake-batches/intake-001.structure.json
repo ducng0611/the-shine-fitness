@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "kind": "pathway_structure_summary",
+  "sourceKinds": ["intake_form", "workout_log", "tracker"],
+  "sourceCount": 3,
+  "observationCount": 90,
+  "uncertainFieldCount": 9,
+  "repeatedGroupCount": 3,
+  "containsSourceValues": false,
+  "eligibleForPlanner": false
+}

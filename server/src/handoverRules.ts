@@ -1,3 +1,6 @@
+import { detectNutritionSafety } from '../../shared/nutritionRouting';
+import { detectProgramSafety } from '../../shared/programSafety';
+export { HEALTH_RISK_KEYWORDS } from '../../shared/programSafety';
 import { sanitizePii } from './chatLogStorage';
 
 export type HandoverTag = 
@@ -19,7 +22,7 @@ export function removeDiacritics(str: string): string {
 }
 
 // Normalized keywords mapping for each handover tag
-const HEALTH_RISK_KEYWORDS = [
+const LEGACY_HEALTH_RISK_KEYWORDS = [
   'chan thuong', 'dau goi', 'dau lung', 'thoat vi', 'benh ly', 'mang thai', 
   'co thai', 'dang dieu tri', 'chua benh', 'phuc hoi chuc nang', 'mo khop',
   'dau vai', 'dau co', 'tim mach', 'huyet ap', 'chấn thương', 'đau gối', 
@@ -74,16 +77,19 @@ const LOW_CONFIDENCE_INDICATORS = [
 export function detectHandoverTrigger(
   message: string, 
   history: { role: string; text: string }[] = []
-): { tag: HandoverTag | null; reason: string } {
+): { tag: HandoverTag | null; reason: string; replyText?: string } {
   if (!message || typeof message !== 'string') {
     return { tag: null, reason: '' };
   }
+
+  const safety = detectNutritionSafety(message, history) ?? detectProgramSafety(message, history);
+  if (safety) return { tag: safety.tag, reason: safety.reason, replyText: safety.replyText };
 
   const rawLower = message.toLowerCase().trim();
   const normalizedMsg = removeDiacritics(message);
 
   // 1. HEALTH_RISK check
-  for (const kw of HEALTH_RISK_KEYWORDS) {
+  for (const kw of LEGACY_HEALTH_RISK_KEYWORDS) {
     const normKw = removeDiacritics(kw);
     if (normalizedMsg.includes(normKw) || rawLower.includes(kw.toLowerCase())) {
       return {

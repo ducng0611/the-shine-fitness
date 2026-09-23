@@ -23,6 +23,7 @@ import { MemberUser } from './AuthModal';
 import { Language, translations } from '../translations';
 import { MemberCheckInQR } from './MemberCheckInQR';
 import { MemberWorkoutLog } from './MemberWorkoutLog';
+import { MemberTrainingTab, trainingUiEnabled } from './training/TrainingGateway';
 import { MemberProgressTracker } from './MemberProgressTracker';
 import { MemberBadges } from './MemberBadges';
 import { findMemberInFirebase, saveOrUpdateMemberInFirebase } from '../lib/firebase';
@@ -44,7 +45,7 @@ export const MemberPortalModal: React.FC<MemberPortalModalProps> = ({
   onUpdateUser,
   lang = 'vi'
 }) => {
-  const [activeTab, setActiveTab] = useState<'qr' | 'workout' | 'progress' | 'card' | 'badges'>('qr');
+  const [activeTab, setActiveTab] = useState<'qr' | 'workout' | 'progress' | 'card' | 'badges' | 'training'>('qr');
   const [localUser, setLocalUser] = useState<MemberUser>(user);
   const [isSyncingFirebase, setIsSyncingFirebase] = useState(false);
   const [isEditingInfo, setIsEditingInfo] = useState(false);
@@ -197,7 +198,8 @@ export const MemberPortalModal: React.FC<MemberPortalModalProps> = ({
           </p>
 
           {/* Navigation Tabs - Responsive with no text truncation */}
-          <div className="mt-3.5 flex overflow-x-auto no-scrollbar sm:grid sm:grid-cols-5 gap-1 sm:gap-1.5 bg-white/10 p-1 rounded-2xl border border-white/10 text-xs">
+          <div className={`mt-3.5 flex overflow-x-auto no-scrollbar sm:grid ${trainingUiEnabled() ? 'sm:grid-cols-6' : 'sm:grid-cols-5'} gap-1 sm:gap-1.5 bg-white/10 p-1 rounded-2xl border border-white/10 text-xs`}>
+            {trainingUiEnabled() && <button type="button" onClick={() => setActiveTab('training')} className={`min-w-fit px-3 py-2.5 rounded-xl font-bold ${activeTab === 'training' ? 'bg-orange-600 text-white' : 'text-slate-300'}`}>Shine Companion</button>}
             <button
               type="button"
               onClick={() => setActiveTab('qr')}
@@ -270,6 +272,8 @@ export const MemberPortalModal: React.FC<MemberPortalModalProps> = ({
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 min-h-0 space-y-5">
           
           {/* TAB 1: DYNAMIC QR CHECK-IN AT RECEPTION */}
+          {activeTab === 'training' && <MemberTrainingTab key={user.uid || user.id} member={user} lang={lang} />}
+
           {activeTab === 'qr' && (
             <div className="animate-fadeIn">
               <MemberCheckInQR user={localUser} lang={lang} />

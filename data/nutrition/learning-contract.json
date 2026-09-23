@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Tiếp nhận mẫu dinh dưỡng có nguồn để hỗ trợ quy trình cá nhân hóa sau kiểm duyệt, không huấn luyện trọng số mô hình.",
+  "sourceBasedLearning": [
+    "Giữ mục tiêu và đối tượng được nguồn nêu, không suy tuổi từ nam/nữ.",
+    "Giữ thứ tự bữa, giờ trong mẫu và mốc tương đối trước/sau tập.",
+    "Giữ chọn một phương án và phép hoặc, không cộng tất cả lựa chọn thành một ngày ăn.",
+    "Giữ định lượng g/ml và đơn vị hộ gia đình đúng nguồn, không tự quy đổi.",
+    "Phân biệt năng lượng tác giả công bố với năng lượng tính được từ thành phần đã duyệt.",
+    "Tách ghi chú tập luyện, sản phẩm bổ sung, ảnh và theo dõi y khoa khỏi danh sách món."
+  ],
+  "notLearnedAsFacts": [
+    "Tính chính xác của những khẳng định khoa học chưa được thẩm định.",
+    "Nhu cầu năng lượng cá nhân của hội viên hiện tại.",
+    "Tính an toàn dị ứng, nguồn nguyên liệu và công thức nấu chưa được xác minh.",
+    "Dấu hiệu khách đã ăn đủ bữa hoặc đã hoàn thành cardio."
+  ],
+  "futureMemberContext": [
+    "Nhóm tuổi do hội viên xác nhận",
+    "Mục tiêu hiện tại",
+    "Giờ tập thực tế, thời gian còn lại trước tập và múi giờ",
+    "Khẩu vị, hạn chế thực phẩm, dị ứng và khả năng mua/nấu",
+    "Cờ cần chuyên môn y tế, không tự chẩn đoán",
+    "Nhật ký ăn thực tế đã xác nhận nếu có quyền truy xuất"
+  ],
+  "gates": {
+    "sourceReviewIsNutritionApproval": false,
+    "sourceCanBeAssignedToMember": false,
+    "minorDietAutomation": false,
+    "medicalDietAutomation": false,
+    "supplementDosing": false,
+    "photoKcalAutoLog": false,
+    "allergenSafeByDishName": false,
+    "generationNeedsReviewedSeparateTemplates": true
+  },
+  "acceptance": [
+    "Không tạo kcal từ số mẫu.",
+    "Không dùng BMI hoặc giới tính để tự chọn thực đơn.",
+    "Không nối dữ liệu riêng vào hồ sơ chỉ từ tên hoặc mục tiêu.",
+    "Khi nguồn thiếu/đọc lỗi phải báo thiếu dữ liệu, không thay bằng lời mô hình không có căn cứ."
+  ]
+}

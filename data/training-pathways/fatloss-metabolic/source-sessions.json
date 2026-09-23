@@ -1,0 +1,1320 @@
+{
+  "schemaVersion": 1,
+  "sourceId": "fatloss_metabolic_user_transcription_v1",
+  "sourceKind": "user_supplied_transcription",
+  "sourceAccess": "historical_reference",
+  "publicIndividualProfileIncluded": false,
+  "sourceScope": "Chỉ bản chép tự chứa hiện tại; không xác nhận chữ viết tay từ ảnh, không ghép hồ sơ trước.",
+  "notation": {
+    "bw": "Trọng lượng cơ thể, không quy đổi thành kg",
+    "volume": "Số hiệp x số lần khi ghi rõ",
+    "rest": "Không có giá trị thời gian nghỉ trong các bảng nguồn này",
+    "superset": "Cặp a1/a2, b1/b2, c1/c2 theo A2; nghỉ sau cặp nhưng không có số giây. d1 đứng riêng chưa có d2.",
+    "load": "kg chỉ theo tên/ghi chú xác định BB, DB, KB; máy là ký hiệu mức tải; không biết tổng hay mỗi dụng cụ.",
+    "sourceRuleConflict": "A2 nói chỉ bài đầu có volume, nhưng A3-A7 có bài thứ hai được ghi volume. Giữ từng ô trong bảng, không áp quy ước để xóa chúng."
+  },
+  "sessions": [
+    {
+      "sourceId": "metabolic_a3",
+      "sourceSection": "A3",
+      "sessionNumber": 24,
+      "sessionNumberRaw": "24",
+      "sessionNumberCandidates": [],
+      "split": "UPPER_PUSH",
+      "rows": [
+        [
+          "a1",
+          "Barbell Bench Press",
+          "3 x 12",
+          "5"
+        ],
+        [
+          "a2",
+          "Kettlebell Front Raises",
+          null,
+          "10"
+        ],
+        [
+          "b1",
+          "Decline Kettlebell Press",
+          "3 x 12",
+          "20"
+        ],
+        [
+          "b2",
+          "Dumbbell Lateral Raises",
+          null,
+          "7.5"
+        ],
+        [
+          "c1",
+          "Straight Arm Pullover",
+          null,
+          null
+        ],
+        [
+          "c2",
+          "Tricep Extension",
+          "3 x 12",
+          null
+        ],
+        [
+          "d1",
+          "V-up",
+          "3 x 15",
+          null
+        ]
+      ]
+    },
+    {
+      "sourceId": "metabolic_a4",
+      "sourceSection": "A4",
+      "sessionNumber": 25,
+      "sessionNumberRaw": "25",
+      "sessionNumberCandidates": [],
+      "split": "UPPER_PULL",
+      "rows": [
+        [
+          "a1",
+          "Hyper Extension",
+          "3 x 12",
+          "10"
+        ],
+        [
+          "a2",
+          "Seated Machine Row",
+          null,
+          "20"
+        ],
+        [
+          "b1",
+          "Lat Pulldown",
+          "3 x 12",
+          "35"
+        ],
+        [
+          "b2",
+          "Rear Delt Fly",
+          null,
+          "24"
+        ],
+        [
+          "c1",
+          "Face Pull",
+          "3 x 15",
+          null
+        ],
+        [
+          "c2",
+          "Cable Bicep Curl",
+          "3 x 12",
+          "10"
+        ],
+        [
+          "d1",
+          "Hanging Leg Raises",
+          "3 x 15",
+          null
+        ]
+      ]
+    },
+    {
+      "sourceId": "metabolic_a5",
+      "sourceSection": "A5",
+      "sessionNumber": 26,
+      "sessionNumberRaw": "26",
+      "sessionNumberCandidates": [],
+      "split": "LOWER",
+      "rows": [
+        [
+          "a1",
+          "Single Leg Deadlift",
+          "3 x 12",
+          "6"
+        ],
+        [
+          "a2",
+          "Single Leg Step Up",
+          "3 x 15",
+          "10"
+        ],
+        [
+          "b1",
+          "Kettlebell Good Morning",
+          "3 x 12",
+          "15"
+        ],
+        [
+          "b2",
+          "Bulgarian Split Squat",
+          "3 x 10",
+          "bw"
+        ],
+        [
+          "c1",
+          "Walking Lunge",
+          "3 x 10",
+          "10"
+        ],
+        [
+          "c2",
+          "Standing Calf Raises",
+          "3 x 15",
+          "10"
+        ],
+        [
+          "d1",
+          "Heel Touches",
+          "3 x 15",
+          null
+        ]
+      ]
+    },
+    {
+      "sourceId": "metabolic_a6",
+      "sourceSection": "A6",
+      "sessionNumber": 27,
+      "sessionNumberRaw": "27",
+      "sessionNumberCandidates": [],
+      "split": "UPPER_PUSH",
+      "rows": [
+        [
+          "a1",
+          "Smith Machine Barbell Bench Press",
+          "3 x 12",
+          "10"
+        ],
+        [
+          "a2",
+          "Kettlebell Overhead Press",
+          null,
+          "12.5"
+        ],
+        [
+          "b1",
+          "Decline Kettlebell Press",
+          "5 x 12",
+          "20"
+        ],
+        [
+          "b2",
+          "Kettlebell Halos",
+          null,
+          "15"
+        ],
+        [
+          "c1",
+          "Straight Arm Pullover",
+          "3 x 12",
+          "10"
+        ],
+        [
+          "c2",
+          "Cable Tricep Pushdown",
+          null,
+          "20"
+        ],
+        [
+          "d1",
+          "Crunch Machine",
+          "3 x 15",
+          null
+        ]
+      ]
+    },
+    {
+      "sourceId": "metabolic_a7",
+      "sourceSection": "A7",
+      "sessionNumber": null,
+      "sessionNumberRaw": "19 hoặc 29",
+      "sessionNumberCandidates": [
+        19,
+        29
+      ],
+      "split": "UPPER_PUSH",
+      "numberReviewNote": "Tiêu đề bản chép dùng 29, nhưng nguồn báo chữ đọc được 19 hoặc 29. Không dùng trình tự thời gian để tự chọn số.",
+      "yearReview": {
+        "status": "needs_review",
+        "sourceWrittenYear": 2025,
+        "proposedYear": 2026,
+        "resolvedYear": null,
+        "note": "Năm được đề nghị đính chính chưa có xác nhận; không dùng để sắp xếp lịch đã hoàn thành."
+      },
+      "rows": [
+        [
+          "a1",
+          "Barbell Incline Press",
+          "3 x 12",
+          "10 (ghi chú 7.5)"
+        ],
+        [
+          "a2",
+          "Kettlebell Halos",
+          null,
+          "26"
+        ],
+        [
+          "b1",
+          "Decline Kettlebell Press",
+          "3 x 12",
+          "20"
+        ],
+        [
+          "b2",
+          "Kettlebell Front Raises",
+          "3 x 12",
+          "10"
+        ],
+        [
+          "c1",
+          "Dumbbell Tricep Extension",
+          "3 x 12",
+          "17.5"
+        ],
+        [
+          "c2",
+          "Máy hỗ trợ (tên máy chữ mờ, cần xác nhận)",
+          null,
+          "bw"
+        ],
+        [
+          "d1",
+          "Crunch Machine",
+          "3 x 12",
+          null
+        ]
+      ]
+    },
+    {
+      "sourceId": "metabolic_a8",
+      "sourceSection": "A8",
+      "sessionNumber": null,
+      "sessionNumberRaw": "20 hoặc 30",
+      "sessionNumberCandidates": [
+        20,
+        30
+      ],
+      "split": null,
+      "sessionType": "CARDIO_CIRCUIT",
+      "rounds": 3,
+      "numberReviewNote": "Tiêu đề bản chép dùng 30, nhưng số đọc được 20 hoặc 30. Chưa xác nhận số buổi.",
+      "rows": [
+        [
+          "1",
+          "Bodyweight Squat Overhead",
+          null,
+          null
+        ],
+        [
+          "2",
+          "Trạm thứ hai chữ mờ, cần xác nhận",
+          null,
+          null
+        ],
+        [
+          "3",
+          "Thigh to Knee",
+          null,
+          null
+        ],
+        [
+          "4",
+          "Bodyweight Squat",
+          null,
+          null
+        ],
+        [
+          "5",
+          "Mountain Climber",
+          null,
+          null
+        ],
+        [
+          "6",
+          "Bicycle Crunch",
+          null,
+          null
+        ]
+      ]
+    }
+  ],
+  "exerciseMappings": [
+    {
+      "sourceName": "Barbell Bench Press",
+      "exerciseId": "ex_bb_bench_press",
+      "nameVi": "Đẩy ngực tạ đòn trên ghế",
+      "category": "Ngực",
+      "equipmentReferenceIds": [
+        "eq_barbell_review",
+        "eq_bench_review"
+      ],
+      "numericLoadInterpretation": "kg",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Kettlebell Front Raises",
+      "exerciseId": "ex_kb_front_raise",
+      "nameVi": "Nâng tạ ấm trước thân",
+      "category": "Vai",
+      "equipmentReferenceIds": [
+        "eq_kettlebell_review"
+      ],
+      "numericLoadInterpretation": "kg",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Decline Kettlebell Press",
+      "exerciseId": "ex_decline_kb_press",
+      "nameVi": "Đẩy tạ ấm trên ghế dốc xuống",
+      "category": "Ngực",
+      "equipmentReferenceIds": [
+        "eq_kettlebell_review",
+        "eq_decline_bench_review"
+      ],
+      "numericLoadInterpretation": "kg",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài.",
+        "Nguồn yêu cầu bác sĩ rà soát tư thế đầu thấp khi đẩy ghế dốc xuống ở khách tự khai tăng huyết áp; chưa xác nhận góc ghế hoặc chống chỉ định cá nhân."
+      ]
+    },
+    {
+      "sourceName": "Dumbbell Lateral Raises",
+      "exerciseId": "ex_db_lateral_raise",
+      "nameVi": "Nâng tạ đơn sang bên",
+      "category": "Vai",
+      "equipmentReferenceIds": [
+        "eq_dumbbell_review"
+      ],
+      "numericLoadInterpretation": "kg",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Straight Arm Pullover",
+      "exerciseId": "ex_straight_arm_pullover",
+      "nameVi": "Đưa tải qua đầu với tay thẳng, cần xác nhận biến thể",
+      "category": "Chưa xác minh",
+      "equipmentReferenceIds": [
+        "eq_pullover_implement_review"
+      ],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Tricep Extension",
+      "exerciseId": "ex_tricep_extension_unresolved",
+      "nameVi": "Duỗi khuỷu tay, chưa rõ dụng cụ",
+      "category": "Tay",
+      "equipmentReferenceIds": [
+        "eq_tricep_implement_review"
+      ],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "unresolved_source_name",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài.",
+        "Chưa nhận diện đủ biến thể; không tạo hướng dẫn chuyên môn cho một tên còn mơ hồ."
+      ]
+    },
+    {
+      "sourceName": "V-up",
+      "exerciseId": "ex_v_up",
+      "nameVi": "Gập thân và chân dạng chữ V",
+      "category": "Cơ lõi",
+      "equipmentReferenceIds": [],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Hyper Extension",
+      "exerciseId": "ex_hyper_extension",
+      "nameVi": "Duỗi thân, cần xác nhận biến thể",
+      "category": "Lưng",
+      "equipmentReferenceIds": [
+        "eq_hyper_extension_support_review"
+      ],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Seated Machine Row",
+      "exerciseId": "ex_seated_machine_row",
+      "nameVi": "Kéo lưng ngồi bằng máy",
+      "category": "Lưng",
+      "equipmentReferenceIds": [
+        "eq_seated_machine_row_review"
+      ],
+      "numericLoadInterpretation": "machine",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Lat Pulldown",
+      "exerciseId": "ex_lat_pulldown",
+      "nameVi": "Kéo xô bằng máy",
+      "category": "Lưng",
+      "equipmentReferenceIds": [
+        "eq_lat_pulldown_review"
+      ],
+      "numericLoadInterpretation": "machine",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Rear Delt Fly",
+      "exerciseId": "ex_rear_delt_fly",
+      "nameVi": "Mở vai sau",
+      "category": "Vai",
+      "equipmentReferenceIds": [
+        "eq_reverse_pec_fly_review"
+      ],
+      "numericLoadInterpretation": "machine",
+      "mappingStatus": "proposed_variant_needs_review",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Face Pull",
+      "exerciseId": "ex_face_pull",
+      "nameVi": "Kéo cáp về phía mặt",
+      "category": "Vai",
+      "equipmentReferenceIds": [
+        "eq_cable_rope_review"
+      ],
+      "numericLoadInterpretation": "machine",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Cable Bicep Curl",
+      "exerciseId": "ex_cable_bicep_curl",
+      "nameVi": "Gập khuỷu tay bằng cáp",
+      "category": "Tay",
+      "equipmentReferenceIds": [
+        "eq_cable_curl_review"
+      ],
+      "numericLoadInterpretation": "machine",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Hanging Leg Raises",
+      "exerciseId": "ex_hanging_leg_raises",
+      "nameVi": "Nâng chân khi treo người",
+      "category": "Cơ lõi",
+      "equipmentReferenceIds": [
+        "eq_pullup_bar_review"
+      ],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài.",
+        "Nguồn yêu cầu đánh giá khả năng chịu tải vai, tay và khả năng treo người. Không kết luận chống chỉ định chỉ từ BMI."
+      ]
+    },
+    {
+      "sourceName": "Single Leg Deadlift",
+      "exerciseId": "ex_single_leg_deadlift",
+      "nameVi": "Gập hông một chân",
+      "category": "Chân",
+      "equipmentReferenceIds": [
+        "eq_single_leg_deadlift_implement_review"
+      ],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Single Leg Step Up",
+      "exerciseId": "ex_sl_step_box",
+      "nameVi": "Bước lên bục một chân",
+      "category": "Thăng bằng",
+      "equipmentReferenceIds": [
+        "eq_step_box_review"
+      ],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "proposed_variant_needs_review",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Kettlebell Good Morning",
+      "exerciseId": "ex_kb_good_morning",
+      "nameVi": "Gập hông với tạ ấm",
+      "category": "Chân",
+      "equipmentReferenceIds": [
+        "eq_kettlebell_review"
+      ],
+      "numericLoadInterpretation": "kg",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Bulgarian Split Squat",
+      "exerciseId": "ex_bulgarian_split_squat",
+      "nameVi": "Chùng chân kê chân sau",
+      "category": "Chân",
+      "equipmentReferenceIds": [
+        "eq_rear_foot_support_review"
+      ],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Walking Lunge",
+      "exerciseId": "ex_walking_lunges",
+      "nameVi": "Chùng chân bước đi",
+      "category": "Chân",
+      "equipmentReferenceIds": [
+        "eq_lunge_implement_review"
+      ],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Standing Calf Raises",
+      "exerciseId": "ex_standing_calf_raises",
+      "nameVi": "Nhón gót đứng",
+      "category": "Chân",
+      "equipmentReferenceIds": [
+        "eq_calf_raise_implement_review"
+      ],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Heel Touches",
+      "exerciseId": "ex_heel_touches",
+      "nameVi": "Chạm gót luân phiên",
+      "category": "Cơ lõi",
+      "equipmentReferenceIds": [],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Smith Machine Barbell Bench Press",
+      "exerciseId": "ex_smith_bb_bench_press",
+      "nameVi": "Đẩy ngực với thanh dẫn hướng Smith",
+      "category": "Ngực",
+      "equipmentReferenceIds": [
+        "eq_smith_review",
+        "eq_bench_review"
+      ],
+      "numericLoadInterpretation": "kg",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Kettlebell Overhead Press",
+      "exerciseId": "ex_kb_overhead_press",
+      "nameVi": "Đẩy tạ ấm qua đầu",
+      "category": "Vai",
+      "equipmentReferenceIds": [
+        "eq_kettlebell_review"
+      ],
+      "numericLoadInterpretation": "kg",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Kettlebell Halos",
+      "exerciseId": "ex_kb_halos",
+      "nameVi": "Vòng tạ ấm quanh đầu",
+      "category": "Vai",
+      "equipmentReferenceIds": [
+        "eq_kettlebell_review"
+      ],
+      "numericLoadInterpretation": "kg",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Cable Tricep Pushdown",
+      "exerciseId": "ex_cable_tricep_pushdown",
+      "nameVi": "Đẩy cáp duỗi khuỷu tay",
+      "category": "Tay",
+      "equipmentReferenceIds": [
+        "eq_cable_pushdown_review"
+      ],
+      "numericLoadInterpretation": "machine",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Crunch Machine",
+      "exerciseId": "ex_crunch_machine",
+      "nameVi": "Gập bụng bằng máy",
+      "category": "Cơ lõi",
+      "equipmentReferenceIds": [
+        "eq_crunch_machine_review"
+      ],
+      "numericLoadInterpretation": "machine",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Barbell Incline Press",
+      "exerciseId": "ex_bb_incline_press",
+      "nameVi": "Đẩy ngực tạ đòn trên ghế dốc lên",
+      "category": "Ngực",
+      "equipmentReferenceIds": [
+        "eq_barbell_review",
+        "eq_incline_bench_review"
+      ],
+      "numericLoadInterpretation": "kg",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Dumbbell Tricep Extension",
+      "exerciseId": "ex_db_tricep_extension",
+      "nameVi": "Duỗi khuỷu tay với tạ đơn",
+      "category": "Tay",
+      "equipmentReferenceIds": [
+        "eq_dumbbell_review"
+      ],
+      "numericLoadInterpretation": "kg",
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Máy hỗ trợ (tên máy chữ mờ, cần xác nhận)",
+      "exerciseId": "ex_metabolic_unknown_machine_a7_c2",
+      "nameVi": "Dòng máy hỗ trợ chưa nhận diện",
+      "category": "Chưa xác minh",
+      "equipmentReferenceIds": [
+        "eq_metabolic_unknown_machine_review"
+      ],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "unresolved_source_name",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài.",
+        "Chưa nhận diện đủ biến thể; không tạo hướng dẫn chuyên môn cho một tên còn mơ hồ."
+      ]
+    },
+    {
+      "sourceName": "Bodyweight Squat Overhead",
+      "exerciseId": "ex_bw_squat_overhead",
+      "nameVi": "Ngồi xuống đứng lên với tay qua đầu, tên nguồn",
+      "category": "Chân",
+      "equipmentReferenceIds": [],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Trạm thứ hai chữ mờ, cần xác nhận",
+      "exerciseId": "ex_metabolic_unknown_circuit_a8_2",
+      "nameVi": "Trạm vòng tuần hoàn chưa nhận diện",
+      "category": "Chưa xác minh",
+      "equipmentReferenceIds": [],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "unresolved_source_name",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài.",
+        "Chưa nhận diện đủ biến thể; không tạo hướng dẫn chuyên môn cho một tên còn mơ hồ."
+      ]
+    },
+    {
+      "sourceName": "Thigh to Knee",
+      "exerciseId": "ex_thigh_to_knee",
+      "nameVi": "Thigh to Knee, chưa rõ động tác",
+      "category": "Chưa xác minh",
+      "equipmentReferenceIds": [],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "unresolved_source_name",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài.",
+        "Chưa nhận diện đủ biến thể; không tạo hướng dẫn chuyên môn cho một tên còn mơ hồ."
+      ]
+    },
+    {
+      "sourceName": "Bodyweight Squat",
+      "exerciseId": "ex_squat",
+      "nameVi": "Ngồi xuống đứng lên bằng trọng lượng cơ thể",
+      "category": "Chân",
+      "equipmentReferenceIds": [],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Mountain Climber",
+      "exerciseId": "ex_mountain_climber",
+      "nameVi": "Động tác leo núi tại chỗ",
+      "category": "Cardio",
+      "equipmentReferenceIds": [],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    },
+    {
+      "sourceName": "Bicycle Crunch",
+      "exerciseId": "ex_bicycle_crunch",
+      "nameVi": "Gập bụng đạp xe",
+      "category": "Cơ lõi",
+      "equipmentReferenceIds": [],
+      "numericLoadInterpretation": null,
+      "mappingStatus": "name_reference",
+      "contraindicationReviewNotes": [
+        "Bản tham chiếu có bệnh lý tự khai. Chưa đánh giá sức khỏe hoặc xác minh thuốc; không dùng bản ghi này để chọn bài hoặc mức tải cho khách.",
+        "Không tự cho phép tập khi có triệu chứng bất thường hoặc khi thiếu điều kiện đánh giá của người điều trị. Không nín thở gắng sức; đây là lưu ý kiểm duyệt, không phải chứng nhận an toàn cho bài."
+      ]
+    }
+  ],
+  "equipmentAdditions": [
+    {
+      "id": "eq_barbell_review",
+      "name": "Tạ đòn, chưa rõ thanh, bánh và tổng tải",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_bench_review",
+      "name": "Ghế và bố trí đỡ tạ cho đẩy ngực",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_decline_bench_review",
+      "name": "Ghế dốc xuống, chưa có xác minh tài sản",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_pullover_implement_review",
+      "name": "Dụng cụ pullover chưa xác định",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_tricep_implement_review",
+      "name": "Dụng cụ duỗi khuỷu chưa xác định",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_hyper_extension_support_review",
+      "name": "Điểm tựa cho Hyper Extension chưa xác định",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_seated_machine_row_review",
+      "name": "Máy kéo lưng ngồi, chưa gắn với tài sản đã kiểm duyệt",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_cable_curl_review",
+      "name": "Trạm cáp và tay cầm gập khuỷu",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_single_leg_deadlift_implement_review",
+      "name": "Dụng cụ gập hông một chân chưa xác định",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_rear_foot_support_review",
+      "name": "Điểm tựa chân sau phù hợp, cần kiểm tra",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_calf_raise_implement_review",
+      "name": "Dụng cụ hoặc kiểu tải nhón gót chưa rõ",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_smith_review",
+      "name": "Máy Smith, chưa xác minh thông số hoặc trạm",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_crunch_machine_review",
+      "name": "Máy gập bụng, chưa xác minh tài sản",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_incline_bench_review",
+      "name": "Ghế dốc lên và bố trí đỡ tạ",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    },
+    {
+      "id": "eq_metabolic_unknown_machine_review",
+      "name": "Nhu cầu máy chưa nhận diện từ dòng mờ",
+      "status": "unverified_reference",
+      "verified": false,
+      "stationId": null,
+      "note": "Chỉ nhu cầu dụng cụ trong nguồn, không chứng minh The Shine có thiết bị hoặc đã xác minh sử dụng."
+    }
+  ],
+  "reviewIssues": [
+    {
+      "id": "medications_missing",
+      "status": "needs_review",
+      "note": "Nguồn tự khai có bệnh lý nhưng để trống thuốc; không suy là không dùng thuốc."
+    },
+    {
+      "id": "clearance_missing",
+      "status": "needs_review",
+      "note": "Không có xác nhận bác sĩ trong dữ liệu cung cấp; không suy có giấy từ số buổi đã ghi."
+    },
+    {
+      "id": "source_number_a7",
+      "status": "needs_review",
+      "note": "Số buổi 19/29, giữ null và hai ứng viên."
+    },
+    {
+      "id": "source_number_a8",
+      "status": "needs_review",
+      "note": "Số buổi 20/30, giữ null và hai ứng viên."
+    },
+    {
+      "id": "source_year_a7",
+      "status": "needs_review",
+      "note": "2025 trên sổ theo bản chép; 2026 là đề nghị đính chính, chưa được xác nhận."
+    },
+    {
+      "id": "incline_load_annotation",
+      "status": "needs_review",
+      "note": "Tải 10 kèm ghi chú 7.5, chưa biết quan hệ giữa hai số."
+    },
+    {
+      "id": "unknown_machine",
+      "status": "needs_review",
+      "note": "Dòng A7 c2 không có tên máy đọc chắc chắn; bw không chứng minh loại máy."
+    },
+    {
+      "id": "unknown_circuit",
+      "status": "needs_review",
+      "note": "Trạm thứ hai A8 chưa rõ tên; không thêm bài thay thế."
+    },
+    {
+      "id": "superset_scope",
+      "status": "needs_review",
+      "note": "Quy ước volume của A2 không khớp hoàn toàn bảng nguồn; d1 không có d2."
+    },
+    {
+      "id": "load_scope",
+      "status": "needs_review",
+      "note": "Tải tạ chưa rõ mỗi bên, mỗi quả, bánh cộng thêm hay tổng; không so sánh trực tiếp tạ đòn và Smith."
+    },
+    {
+      "id": "clinical_exercises",
+      "status": "needs_review",
+      "note": "Rà soát Decline Kettlebell Press và Hanging Leg Raises; không tự chẩn đoán chống chỉ định."
+    },
+    {
+      "id": "frequency",
+      "status": "needs_review",
+      "note": "Bốn buổi đầu có ngày liên tiếp trong bản riêng; không coi là khuyến nghị hoặc chứng minh hồi phục."
+    }
+  ],
+  "program": {
+    "id": "prog_fatloss_metabolic_pt255",
+    "name": "Lộ trình giảm mỡ cho khách hàng có bệnh lý chuyển hóa (nguồn tham chiếu PT 1:1)",
+    "nameEn": "Fat Loss Program for Clients with Metabolic Conditions (historical reference)",
+    "goal": "FAT_LOSS_MEDICAL",
+    "goalAliases": [
+      "giảm mỡ",
+      "giảm cân có bệnh nền",
+      "tiểu đường tập gym",
+      "cao huyết áp tập gym"
+    ],
+    "requiresMedicalClearance": true,
+    "medicalClearanceVerified": false,
+    "aiRecommendable": false,
+    "aiRecommendableReason": "Không tự đề xuất hoặc trích giáo án cho khách. Tiếp nhận ở mức quy trình, chuyển người điều trị và nhân sự phụ trách.",
+    "eligibleForPlanner": false,
+    "ragRetrievalAllowed": false,
+    "contentScope": "historical_reference",
+    "targetProfile": {
+      "containsMinors": false,
+      "minimumAgeForAutomatedAssessment": 18,
+      "experienceLevel": "unassessed",
+      "bmiRange": null,
+      "bmiRuleAsRequested": "Trên 30, chỉ là phạm vi nguồn đề xuất, không là tiêu chí cấp giáo án",
+      "knownConditions": [
+        "Tăng huyết áp",
+        "Đái tháo đường type 2"
+      ],
+      "conditionsEvidence": "user_reported_not_medically_verified",
+      "totalSessions": 255,
+      "packageStatus": "historical_reference_not_current_price_or_offer",
+      "recommendedFrequencyPerWeek": null,
+      "observedSessionPattern": "Đẩy, kéo, thân dưới, đẩy ở bốn trang đầu; nguồn riêng có ngày liên tiếp.",
+      "clinicalEligibilityEstablished": false
+    },
+    "medicalSafetyProtocol": {
+      "standards": [
+        "ACSM 2022, cần đối chiếu phạm vi",
+        "ADA Standards of Care 2026",
+        "AHA, NIDDK và nguồn sơ cứu được dẫn"
+      ],
+      "status": "needs_review",
+      "automaticApplicationAllowed": false,
+      "intakeRequirements": [
+        "Giấy xác nhận phạm vi vận động từ người điều trị theo quy trình đề xuất",
+        "Danh sách thuốc do khách chủ động cung cấp cho đầu mối có quyền",
+        "Thông tin bác sĩ điều trị qua kênh riêng",
+        "Liên hệ khẩn cấp qua kênh riêng"
+      ],
+      "intakeEvidence": {
+        "medications": "not_recorded",
+        "clearance": "not_provided",
+        "emergencyContact": "not_provided",
+        "treatingClinician": "not_provided"
+      },
+      "clearanceRuleSource": "Chính sách lộ trình do người dùng đề nghị; không gán thành luật y khoa phổ quát.",
+      "absoluteRules": [
+        "Không tự cấp giáo án, ngưỡng y khoa, thực đơn hoặc điều chỉnh thuốc qua chatbot",
+        "Không nín thở gắng sức; không dùng bản này để kiểm tra 1RM hoặc tập tới kiệt sức",
+        "Kiểm tra bàn chân và các biến chứng liên quan theo đánh giá chuyên môn; không suy ra bệnh thần kinh từ tự khai",
+        "Không khởi động buổi tự động khi chưa có các điều kiện do người điều trị xác nhận"
+      ],
+      "stopSessionSigns": [
+        "Đau ngực",
+        "Khó thở bất thường",
+        "Choáng váng",
+        "Vã mồ hôi lạnh kèm run tay",
+        "Nhìn mờ",
+        "Đau đầu dữ dội",
+        "Buồn nôn",
+        "Tê hoặc yếu một bên người",
+        "Bất tỉnh",
+        "Co giật"
+      ],
+      "hypoglycemiaProtocol": {
+        "signs": [
+          "Run tay",
+          "Vã mồ hôi lạnh",
+          "Hoa mắt",
+          "Tim đập nhanh",
+          "Lú lẫn",
+          "Đói cồn cào"
+        ],
+        "response": [
+          "Dừng vận động và gọi người phụ trách sơ cứu; không kết luận nguyên nhân chỉ từ triệu chứng.",
+          "Khi tỉnh và nuốt an toàn, thực hiện kế hoạch xử trí hạ đường huyết cá nhân đã được chuyên gia hướng dẫn.",
+          "Không cho ăn/uống khi bất tỉnh, co giật hoặc không nuốt an toàn.",
+          "Dấu hiệu nặng cần gọi cấp cứu ngay; không chờ tư vấn viên hoặc người nhà phản hồi."
+        ],
+        "delayedRiskHours": null,
+        "delayedRiskSourceHours": 24,
+        "delayedRiskIsMaximum": false,
+        "clinicalThresholdsProvided": false,
+        "medicationAdjustmentAllowed": false
+      },
+      "exercisesNeedingMedicalReview": [
+        {
+          "exerciseId": "ex_decline_kb_press",
+          "reason": "Tư thế dốc xuống theo nguồn; đánh giá phù hợp với tình trạng huyết áp cá nhân.",
+          "status": "needs_review"
+        },
+        {
+          "exerciseId": "ex_hanging_leg_raises",
+          "reason": "Đánh giá vai/tay, khả năng treo người và biến chứng; không chống chỉ định chỉ bằng BMI.",
+          "status": "needs_review"
+        }
+      ]
+    },
+    "sessionStructure": [
+      {
+        "order": 1,
+        "block": "RESISTANCE",
+        "blockNameVi": "Kháng lực theo cặp",
+        "note": "Năm trang nguồn; không tự thêm khởi động/thả lỏng vào bảng chép."
+      },
+      {
+        "order": 2,
+        "block": "CARDIO_CIRCUIT",
+        "blockNameVi": "Buổi vòng tuần hoàn riêng",
+        "note": "A8 thay cho buổi cặp kháng lực; không cộng thành khối tiếp theo cùng buổi."
+      }
+    ],
+    "splitPattern": "Nguồn: đẩy, kéo, thân dưới, đẩy; trang đẩy chưa rõ số và trang circuit chưa rõ số nằm tiếp trong bản chép.",
+    "splitPatternIsRecommendation": false,
+    "sourceConflicts": [
+      {
+        "id": "medications_missing",
+        "status": "needs_review",
+        "note": "Nguồn tự khai có bệnh lý nhưng để trống thuốc; không suy là không dùng thuốc."
+      },
+      {
+        "id": "clearance_missing",
+        "status": "needs_review",
+        "note": "Không có xác nhận bác sĩ trong dữ liệu cung cấp; không suy có giấy từ số buổi đã ghi."
+      },
+      {
+        "id": "source_number_a7",
+        "status": "needs_review",
+        "note": "Số buổi 19/29, giữ null và hai ứng viên."
+      },
+      {
+        "id": "source_number_a8",
+        "status": "needs_review",
+        "note": "Số buổi 20/30, giữ null và hai ứng viên."
+      },
+      {
+        "id": "source_year_a7",
+        "status": "needs_review",
+        "note": "2025 trên sổ theo bản chép; 2026 là đề nghị đính chính, chưa được xác nhận."
+      },
+      {
+        "id": "incline_load_annotation",
+        "status": "needs_review",
+        "note": "Tải 10 kèm ghi chú 7.5, chưa biết quan hệ giữa hai số."
+      },
+      {
+        "id": "unknown_machine",
+        "status": "needs_review",
+        "note": "Dòng A7 c2 không có tên máy đọc chắc chắn; bw không chứng minh loại máy."
+      },
+      {
+        "id": "unknown_circuit",
+        "status": "needs_review",
+        "note": "Trạm thứ hai A8 chưa rõ tên; không thêm bài thay thế."
+      },
+      {
+        "id": "superset_scope",
+        "status": "needs_review",
+        "note": "Quy ước volume của A2 không khớp hoàn toàn bảng nguồn; d1 không có d2."
+      },
+      {
+        "id": "load_scope",
+        "status": "needs_review",
+        "note": "Tải tạ chưa rõ mỗi bên, mỗi quả, bánh cộng thêm hay tổng; không so sánh trực tiếp tạ đòn và Smith."
+      },
+      {
+        "id": "clinical_exercises",
+        "status": "needs_review",
+        "note": "Rà soát Decline Kettlebell Press và Hanging Leg Raises; không tự chẩn đoán chống chỉ định."
+      },
+      {
+        "id": "frequency",
+        "status": "needs_review",
+        "note": "Bốn buổi đầu có ngày liên tiếp trong bản riêng; không coi là khuyến nghị hoặc chứng minh hồi phục."
+      }
+    ],
+    "scientificPrinciples": {
+      "automaticCalculationAllowed": false,
+      "targetWeightGainOrLossKgPerWeek": null,
+      "medicalThresholds": null,
+      "referenceReviewFile": "data/training-pathways/fatloss-metabolic/scientific-claims.review.json",
+      "claimsAreNotMedicalApproval": true
+    },
+    "progressTracking": [
+      {
+        "metric": "Cân nặng",
+        "frequency": "Theo tuần, theo yêu cầu nguồn; cần người điều trị xác nhận",
+        "goodRange": null,
+        "targetSetter": "Người điều trị",
+        "automaticTargetAllowed": false
+      },
+      {
+        "metric": "Vòng eo",
+        "frequency": "Chưa quy định",
+        "goodRange": null,
+        "note": "Số đo theo dõi, không phải phép đo trực tiếp mỡ nội tạng."
+      },
+      {
+        "metric": "Cảm nhận gắng sức",
+        "frequency": "Trong buổi theo quy trình được duyệt",
+        "goodRange": null,
+        "note": "Chưa có thang hoặc mức mục tiêu; không tự áp thang số."
+      },
+      {
+        "metric": "Phục hồi giữa buổi",
+        "frequency": "Theo từng buổi",
+        "goodRange": null,
+        "note": "Tự báo và đánh giá trực tiếp, không suy hồi phục từ ngày tập."
+      },
+      {
+        "metric": "Đường huyết, HbA1c, huyết áp",
+        "frequency": "Do bác sĩ quyết định",
+        "goodRange": null,
+        "storagePolicy": "Chỉ tiếp nhận nếu khách chủ động chia sẻ đúng kênh và quyền; không tự triển khai thu thập ở lần số hóa này."
+      }
+    ],
+    "aiAssistantGuardrails": {
+      "allowed": [
+        "Nhận diện cần chuyển giao",
+        "Mô tả quy trình tiếp nhận ở mức dịch vụ không xác nhận đủ điều kiện",
+        "Nêu cần giấy bác sĩ và danh sách thuốc qua kênh riêng"
+      ],
+      "forbidden": [
+        "Trích giáo án hoặc gợi ý bài cho khách có bệnh nền",
+        "Tư vấn liều/giờ uống thuốc",
+        "Đặt ngưỡng đường huyết/huyết áp",
+        "Tư vấn chế độ ăn cho bệnh chuyển hóa",
+        "Cam kết kết quả giảm cân",
+        "Gọi cặp liên hoàn an toàn chỉ vì số lần lặp",
+        "Coi ô thuốc trống là không dùng thuốc",
+        "Tự xác minh năng lực HLV hoặc sự đồng ý của bác sĩ"
+      ],
+      "handoverTag": "HEALTH_RISK",
+      "urgentSymptomsOverrideRoutineHandover": true,
+      "handoverTriggers": [
+        "tiểu đường",
+        "đái tháo đường",
+        "type 2",
+        "insulin",
+        "đường huyết",
+        "hạ đường huyết",
+        "HbA1c",
+        "cao huyết áp",
+        "tăng huyết áp",
+        "huyết áp cao",
+        "mỡ máu",
+        "rối loạn lipid",
+        "gan nhiễm mỡ",
+        "gout",
+        "bệnh thận",
+        "béo phì",
+        "thuốc huyết áp",
+        "thuốc tiểu đường",
+        "uống thuốc trước khi tập",
+        "giấy khám sức khỏe",
+        "bệnh nền"
+      ]
+    },
+    "reviewStatus": "needs_review",
+    "verified": false,
+    "revision": 1,
+    "createdAt": "2026-09-22T00:00:00.000Z",
+    "updatedAt": "2026-09-22T00:00:00.000Z"
+  }
+}

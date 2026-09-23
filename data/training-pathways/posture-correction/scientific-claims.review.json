@@ -1,0 +1,115 @@
+{
+  "reviewStatus": "needs_review",
+  "automaticApplicationAllowed": false,
+  "claims": [
+    {
+      "id": "cex_four_steps",
+      "sourceClaim": "Ức chế -> Kéo giãn -> Kích hoạt -> Tích hợp theo NASM Corrective Exercise Continuum.",
+      "assessment": "Khung phương pháp của NASM; không phải xác nhận chẩn đoán hoặc bằng chứng từng cơ của khách đang bị ức chế.",
+      "references": [
+        "NASM_CEX"
+      ]
+    },
+    {
+      "id": "janda_model",
+      "sourceClaim": "Học thuyết Janda phân nhóm cơ trương lực/co ngắn và cơ pha/yếu hoặc bị ức chế.",
+      "assessment": "Giữ là khung diễn giải trong tài liệu nguồn. Chưa có kết quả đánh giá cá nhân để kết luận hội chứng chéo trên hoặc chéo dưới.",
+      "references": [
+        "JANDA_PUBLISHER"
+      ]
+    },
+    {
+      "id": "it_band_release",
+      "sourceClaim": "Foam rolling dải chậu chày và cơ đùi trước; tự tác động mô mềm giúp giải phóng co thắt.",
+      "assessment": "Không đồng nhất cảm giác dễ chịu, tăng tầm vận động với thay đổi cấu trúc mô. Nghiên cứu thử nghiệm ngắn hạn về dải chậu chày không tìm thấy thay đổi độ cứng sau can thiệp một lần.",
+      "references": [
+        "ITB_RCT"
+      ]
+    },
+    {
+      "id": "optimal_length",
+      "sourceClaim": "Kéo giãn 20-30 giây đưa sợi cơ về chiều dài tối ưu.",
+      "assessment": "Khoảng thời gian là nội dung khung nguồn, không phải định lượng thống nhất của 29 dòng. Chưa có đo chiều dài cơ để xác nhận cơ chế hoặc kết quả cho khách.",
+      "references": [
+        "NASM_CEX"
+      ]
+    },
+    {
+      "id": "motor_reeducation",
+      "sourceClaim": "Bài tích hợp lập trình lại phản xạ vận động vỏ não.",
+      "assessment": "Giữ mục tiêu kiểm soát kỹ thuật, không tuyên bố tái lập phản xạ hoặc biến đổi thần kinh đã đo được.",
+      "references": []
+    },
+    {
+      "id": "pain_posture_causation",
+      "sourceClaim": "Đau mỏi thắt lưng cuối ngày do ngồi nhiều; hội chứng chéo trên/chéo dưới.",
+      "assessment": "Đây là mô tả trong hồ sơ bàn giao, không phải kết luận lâm sàng. Nhu cầu và khả năng cá nhân phải được xem xét trước lựa chọn vận động.",
+      "references": [
+        "NICE_NG59",
+        "NASM_CEX"
+      ]
+    },
+    {
+      "id": "manual_and_exercise",
+      "sourceClaim": "Lộ trình phục hồi chức năng vận động và chỉnh sửa tư thế cột sống.",
+      "assessment": "Không xác nhận đây là dịch vụ phục hồi chức năng y tế hoặc thay thế vật lý trị liệu. Nguồn không chứng minh năng lực/chứng chỉ nhân sự The Shine.",
+      "references": [
+        "NICE_NG59"
+      ]
+    },
+    {
+      "id": "breathing_autonomic",
+      "sourceClaim": "Thở cơ hoành năm phút giải tỏa thần kinh giao cảm.",
+      "assessment": "Giữ thời lượng và mô tả của nguồn, không coi là thay đổi sinh lý được xác minh hoặc công cụ điều trị bệnh.",
+      "references": []
+    },
+    {
+      "id": "spinal_redflags",
+      "sourceClaim": "Chuyển giao khi đau lan, tê bì, thoát vị, trượt đốt sống hoặc vẹo cột sống nặng.",
+      "assessment": "Chính sách sản phẩm chuyển chuyên môn không chẩn đoán; dấu hiệu nguy cấp không được chờ hàng đợi huấn luyện viên. Không dùng ngưỡng Cobb để cho phép chatbot tư vấn các trường hợp dưới ngưỡng.",
+      "references": [
+        "NHS_SCIATICA"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "id": "NASM_CEX",
+      "title": "NASM: The Corrective Exercise Continuum",
+      "url": "https://www.nasm.org/resource-center/blog/recovery/a-guide-to-nasms-corrective-exercise-continuum",
+      "kind": "Nguồn trực tiếp của phương pháp, không phải thử nghiệm hiệu quả tại The Shine",
+      "checkedOn": "2026-09-22"
+    },
+    {
+      "id": "JANDA_PUBLISHER",
+      "title": "Assessment and Treatment of Muscle Imbalance, nội dung nhà xuất bản Human Kinetics",
+      "url": "https://www.human-kinetics.co.uk/9780736074001/assessment-and-treatment-of-muscle-imbalance/",
+      "kind": "Nguồn nhà xuất bản về khung Janda, không phải đánh giá hồ sơ này",
+      "checkedOn": "2026-09-22"
+    },
+    {
+      "id": "ITB_RCT",
+      "title": "Pepper và cộng sự (2021): The Immediate Effects of Foam Rolling and Stretching on Iliotibial Band Stiffness",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34123517/",
+      "doi": "10.26603/001c.23606",
+      "kind": "Thử nghiệm ngẫu nhiên, không phải nghiên cứu chương trình The Shine",
+      "checkedOn": "2026-09-22"
+    },
+    {
+      "id": "NICE_NG59",
+      "title": "NICE NG59: Low back pain and sciatica in over 16s",
+      "url": "https://www.nice.org.uk/guidance/ng59/chapter/recommendations",
+      "kind": "Hướng dẫn lâm sàng; không tự mở quyền điều trị cho chatbot",
+      "checkedOn": "2026-09-22",
+      "accessNote": "Đối chiếu trích xuất trang chính thức mục 1.1.1 và 1.2.2 qua tìm kiếm; mở trực tiếp bị HTTP 403. Không xác nhận đã đọc toàn bộ hướng dẫn hoặc mọi cập nhật."
+    },
+    {
+      "id": "NHS_SCIATICA",
+      "title": "NHS: Sciatica, dấu hiệu cần cấp cứu",
+      "url": "https://www.nhs.uk/conditions/sciatica/",
+      "kind": "Hướng dẫn y tế công cộng; số cấp cứu trong nguồn là của Anh, ứng dụng dùng địa phương",
+      "checkedOn": "2026-09-22"
+    }
+  ],
+  "verificationScope": "Đối chiếu có giới hạn với nguồn trực tiếp. Không xác nhận hiệu quả chương trình hoặc thay thẩm định lâm sàng."
+}

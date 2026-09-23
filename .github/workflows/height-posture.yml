@@ -1,0 +1,66 @@
+name: Height posture program verification
+on:
+  push:
+    branches: [feat/height-posture-program]
+    paths:
+      - 'shared/**'
+      - 'server/src/**'
+      - 'data/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - '.github/workflows/height-posture.yml'
+  pull_request:
+    paths:
+      - 'shared/**'
+      - 'server/src/**'
+      - 'data/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - '.github/workflows/height-posture.yml'
+permissions:
+  contents: read
+concurrency:
+  group: height-posture-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Source, preservation, cycle and routing tests
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p test-results/height-posture
+          node --import tsx --test tests/height-posture.test.ts tests/weight-gain.test.ts tests/fitness-flexibility.test.ts | tee test-results/height-posture/tests.tap
+      - name: Validate library and chunks without provider or database calls
+        run: |
+          npx --no-install tsx scripts/prepare-height-posture.ts
+          npx --no-install tsx scripts/validate-height-posture.ts --report
+          npx --no-install tsx scripts/prepare-weight-gain.ts
+          npm run build:index -- --check
+      - name: Existing training and intake regression
+        run: |
+          npm run test:training
+          node --import tsx --test tests/pathways/domain.test.ts tests/pathways/router.test.ts tests/gym-assets.test.ts
+      - name: Type checks
+        run: |
+          npm run typecheck:training
+          npx --no-install tsc -p tsconfig.pathways.json --noEmit
+          npm run lint
+      - name: Frontend and backend build
+        run: npm run build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: height-posture-verification
+          path: test-results/height-posture
+          retention-days: 7

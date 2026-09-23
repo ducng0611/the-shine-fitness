@@ -1,8 +1,10 @@
+import { isNutritionRequest } from '../../shared/nutritionRouting';
+import { normalizeSafetyText } from '../../shared/programSafety';
 import { GoogleGenAI } from '@google/genai';
 import { PK_SEGMENTS_LIST } from '../../src/data/pkSegmentsData';
 
 export interface ClassificationResult {
-  intent: 'PRICE' | 'SCHEDULE' | 'TRAINER' | 'FACILITY' | 'POLICY' | 'TRIAL' | 'GREETING' | 'OTHER' | string;
+  intent: 'PRICE' | 'SCHEDULE' | 'TRAINER' | 'FACILITY' | 'POLICY' | 'TRIAL' | 'PROGRAM' | 'GREETING' | 'OTHER' | string;
   confidence: number; // 0 đến 1
   pkSegment: 'PK01' | 'PK02' | 'PK03' | 'PK04' | null;
   slots: {
@@ -29,10 +31,11 @@ const DEFAULT_FALLBACK_RESULT: ClassificationResult = {
 
 const MODEL_CLASSIFIER = 'gemini-3.5-flash-lite';
 
-function fallbackKeywordClassifier(message: string): ClassificationResult {
+export function fallbackKeywordClassifier(message: string): ClassificationResult {
   const lower = (message || '').toLowerCase();
+  const normalized = normalizeSafetyText(message || '');
   
-  if (/giá|bao nhiêu|chi phí|học phí|ưu đãi|khuyến mãi|tiền|bảng giá|combo|gói/.test(lower)) {
+  if (/\b(gia|bao nhieu tien|chi phi|hoc phi|uu dai|khuyen mai|tien|bang gia|combo|goi)\b/.test(normalized)) {
     return {
       intent: 'PRICE',
       confidence: 0.85,
@@ -40,6 +43,28 @@ function fallbackKeywordClassifier(message: string): ClassificationResult {
       slots: { goal: null, experience: null, schedule: null, budget: null },
       nextQuestion: 'Q1'
     };
+  }
+  if (isNutritionRequest(message)) {
+    return { intent: 'NUTRITION', confidence: 0.85, pkSegment: null,
+      slots: {goal: null, experience: null, schedule: null, budget: null}, nextQuestion: null };
+  }
+  // "giáo án" không phải từ "giá"; ưu tiên PRICE chỉ khi có từ giá/gói thực sự.
+  if (/\b(the luc|linh hoat|deo dai|suc ben|lo trinh|giao an|bai tap|tap nhu the nao|tap bao lau|tang can|tang co|nguoi gay|kho tang can|lean bulk|fitness|flexibility|tang chieu cao|cai thien tu the|gu lung|tu the|plyometrics?|treo xa|height|posture|giam mo|giam can|giam beo|dot mo|fat loss|weight loss|chinh sua tu the|co rua|rut vai|vai tron|ngoi nhieu|van dong van phong|postural correction|desk worker mobility|upper crossed|lower crossed)\b/.test(normalized)) {
+    const fitness = /\b(the luc|linh hoat|deo dai|suc ben|fitness|flexibility)\b/.test(normalized);
+    const weight = /\b(tang can|kho tang can|nguoi gay|lean bulk)\b/.test(normalized);
+    const fat = /\b(giam mo|giam can|giam beo|dot mo|fat loss|weight loss)\b/.test(normalized);
+    const muscle = /\btang co\b/.test(normalized);
+    const height = /\b(tang chieu cao|height|grow taller)\b/.test(normalized);
+    const posture = /\b(cai thien tu the|chinh sua tu the|gu lung|tu the|posture|co rua|rut vai|vai tron|ngoi nhieu|van dong van phong|postural correction|desk worker mobility|upper crossed|lower crossed)\b/.test(normalized);
+    // Từ khóa xác định chủ đề; không ép nhiều mục tiêu hoặc câu phủ định thành một mục tiêu đã xác nhận.
+    const negated = /\b(khong|chua)\s+(?:muon\s+)?(?:tang can|tang co|tang chieu cao|cai thien tu the|chinh sua tu the|giam mo|giam can|giam beo|dot mo)\b/.test(normalized);
+    const topics = [fat, weight, muscle, height, posture, fitness].filter(Boolean).length;
+    const goal = negated || topics > 1 ? null :
+      fat ? 'Giảm mỡ' : height ? 'Chiều cao và tư thế, cần đánh giá chuyên môn' :
+      posture ? 'Tư thế và tính vận động, cần đánh giá trực tiếp' :
+      weight ? 'Tăng cân' : muscle ? 'Tăng cơ' : fitness ? 'Tăng thể lực và linh hoạt' : null;
+    return { intent:'PROGRAM', confidence:0.85, pkSegment:null,
+      slots:{goal, experience:null, schedule:null, budget:null}, nextQuestion:'Q1' };
   }
   if (/giờ|lịch|mở cửa|đóng cửa|mấy giờ|thời gian|hoạt động|ca tập/.test(lower)) {
     return {
@@ -124,6 +149,8 @@ DANH SÁCH INTENT HỢP LỆ (CHỈ CHỌN 1):
 - FACILITY: Cơ sở vật chất, địa chỉ, vị trí, phòng tắm, locker, máy tập, gửi xe
 - POLICY: Chính sách bảo lưu, chuyển nhượng, đóng tiền, hợp đồng
 - TRIAL: Đăng ký tập thử, trải nghiệm 0đ, vé tập thử
+- PROGRAM: Lộ trình, giáo án, bài tập, tăng cân, tăng cơ, thể lực, linh hoạt, chiều cao/tư thế và giảm mỡ; từ khóa không xác nhận bệnh lý
+- NUTRITION: Nhu cầu bữa ăn và dinh dưỡng; cần kiểm tra dữ liệu đã duyệt, không tự kê thực đơn từ mẫu
 - GREETING: Chào hỏi, cảm ơn, xã giao
 - OTHER: Khác hoặc ngoài phạm vi
 
@@ -160,6 +187,9 @@ export async function classify(
     return { ...DEFAULT_FALLBACK_RESULT };
   }
 
+  const keyword = fallbackKeywordClassifier(message);
+  if (keyword.intent === 'PRICE' || keyword.intent === 'PROGRAM' || keyword.intent === 'NUTRITION') return keyword;
+
   const promptText = buildClassifierPrompt(message, history);
 
   const classifierSchema = {
@@ -174,6 +204,8 @@ export async function classify(
           'FACILITY',
           'POLICY',
           'TRIAL',
+          'PROGRAM',
+          'NUTRITION',
           'GREETING',
           'OTHER',
         ],
@@ -217,6 +249,8 @@ export async function classify(
       'FACILITY',
       'POLICY',
       'TRIAL',
+      'PROGRAM',
+      'NUTRITION',
       'GREETING',
       'OTHER',
     ];
