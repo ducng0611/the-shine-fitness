@@ -25,3 +25,6 @@ local-pilot-private/
 *.sqlite
 *.sqlite-wal
 *.sqlite-shm
+
+# Facebook page exports contain private customer messages. Never commit them.
+data/facebook-*/
