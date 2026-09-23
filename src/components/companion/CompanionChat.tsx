@@ -1,17 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { auth } from '../../lib/firebase';
 import type { Language } from '../../translations';
 import { type Data, companionApi as api, prepareFoodPhoto, fieldClass, buttonClass, secondaryClass, groupNames } from './client';
 import ProfileForm from './ProfileForm';
 import WorkoutCard from './WorkoutCard';
 import MealDraft from './MealDraft';
+import { BuddyPanel } from '../buddy/BuddyPanel';
 
-type Props = { lang?: Language; onToggle?: (open: boolean) => void; onService: () => void };
+type Props = { lang?: Language; onToggle?: (open: boolean) => void; onService: () => void; onOpenTraining?: () => void };
 const initialReadiness = { durationMinutes: 35, focus: 'auto', energy: 3, pain: false, soreGroups: [] as string[], unavailableStationIds: [] as string[], confirmed: false };
+// AI Gym Buddy Q&A (knowledge + the member's own records) is one tab of the member assistant.
+const buddyEnabled = () => import.meta.env.VITE_SHINE_CHAT_ENABLED === 'true';
 
 /** Vietnamese pilot UI. No sensitive state is written to localStorage or shared sales-chat caches. */
-export default function CompanionChat({ onToggle, onService }: Props) {
-  const [open, setOpen] = useState(false), [tab, setTab] = useState('chat');
+export default function CompanionChat({ lang, onToggle, onService, onOpenTraining }: Props) {
+  const [open, setOpen] = useState(false), [tab, setTab] = useState(buddyEnabled() ? 'ask' : 'chat');
   const [context, setContext] = useState<Data | null>(null), [error, setError] = useState(''), [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false), [message, setMessage] = useState(''), [conversation, setConversation] = useState<Data[]>([]);
   const [result, setResult] = useState<Data | null>(null), [plan, setPlan] = useState<Data | null>(null), [draft, setDraft] = useState<Data | null>(null);
@@ -21,6 +24,12 @@ export default function CompanionChat({ onToggle, onService }: Props) {
   const actor = useRef(auth.currentUser?.uid);
   const current = () => alive.current && auth.currentUser?.uid === actor.current;
   useEffect(() => { alive.current = true; return () => { alive.current = false; }; }, []);
+  const buddyToken = useCallback(async () => {
+    if (!current()) throw new Error('identity_changed');
+    const token = await auth.currentUser!.getIdToken();
+    if (!current()) throw new Error('identity_changed');
+    return token;
+  }, []);
   const task = async (fn: () => Promise<void>) => {
     if (lock.current || !current()) return;
     lock.current = true; setBusy(true); setError(''); setNotice('');
@@ -30,7 +39,7 @@ export default function CompanionChat({ onToggle, onService }: Props) {
   const refresh = async (restorePlan = false) => {
     const data = await api('/context'); if (!current()) return;
     setContext(data);
-    if (!data.profile) setTab('profile');
+    if (!data.profile) setTab(t => t === 'ask' ? t : 'profile');
     if (restorePlan && data.pendingPlan) setPlan(data.pendingPlan);
   };
   const refreshAfterSaved = async (savedMessage: string) => {
@@ -67,10 +76,13 @@ export default function CompanionChat({ onToggle, onService }: Props) {
     {open && <section id="shine-companion" role="dialog" aria-label="Shine AI Companion" aria-modal="false" className="fixed bottom-24 right-3 z-50 flex h-[78dvh] max-h-[880px] w-[calc(100vw-24px)] max-w-xl flex-col overflow-hidden rounded-3xl border border-slate-700 bg-slate-950 text-white shadow-2xl">
       <header className="flex items-start justify-between gap-3 border-b border-slate-700 bg-slate-900 p-4"><div><p className="text-xs font-bold uppercase tracking-widest text-orange-300">The Shine · AI Pilot</p><h2 className="text-xl font-bold">Companion của bạn</h2><p className="mt-1 text-xs text-slate-300">Shine on. Sweat on. Tập có mục tiêu, không bằng mọi giá.</p></div><button className={secondaryClass} onClick={toggle} aria-label="Đóng cửa sổ trợ lý">Đóng</button></header>
       <nav className="flex shrink-0 gap-2 overflow-x-auto border-b border-slate-700 p-2" aria-label="Chức năng trợ lý">
-        {[['chat', 'Đồng hành'], ['profile', 'Hồ sơ'], ['diary', 'Nhật ký'], ...(context?.isAdmin ? [['gym', 'Quản trị gym']] : [])].map(([key, name]) => <button key={key} onClick={() => setTab(key)} className={tab === key ? buttonClass : secondaryClass} aria-pressed={tab === key}>{name}</button>)}
+        {[...(buddyEnabled() ? [['ask', 'Hỏi đáp']] : []), ['chat', 'Đồng hành'], ['profile', 'Hồ sơ'], ['diary', 'Nhật ký'], ...(context?.isAdmin ? [['gym', 'Quản trị gym']] : [])].map(([key, name]) => <button key={key} onClick={() => setTab(key)} className={tab === key ? buttonClass : secondaryClass} aria-pressed={tab === key}>{name}</button>)}
         <button className={secondaryClass} onClick={() => { onToggle?.(false); onService(); }}>Tư vấn dịch vụ</button>
       </nav>
-      <main className="flex-1 space-y-4 overflow-y-auto overscroll-contain p-4">
+      {tab === 'ask' && actor.current && <div className="flex min-h-0 flex-1 flex-col">
+        <BuddyPanel identityKey={actor.current} signedIn getToken={buddyToken} lang={lang === 'en' ? 'en' : 'vi'} onOpenTraining={onOpenTraining} />
+      </div>}
+      {tab !== 'ask' && <main className="flex-1 space-y-4 overflow-y-auto overscroll-contain p-4">
         {busy && <p role="status" className="text-sm text-orange-300">Đang xử lý yêu cầu…</p>}
         {notice && <p role="status" className="rounded-xl border border-emerald-700 p-3 text-sm text-emerald-200">{notice}</p>}
         {error && <p role="alert" className="rounded-xl border border-red-500/60 p-3 text-sm text-red-200">{error}</p>}
@@ -126,7 +138,7 @@ export default function CompanionChat({ onToggle, onService }: Props) {
           <h4 className="font-bold">Các buổi tập đã xác nhận</h4>{context.history?.workouts.map((w: Data) => <article key={w.id} className="rounded-xl bg-slate-900 p-3"><p className="font-semibold">{new Date(w.occurredAt).toLocaleString('vi-VN', { timeZone: context.profile.timezone })}</p><p className="text-sm">{w.sets.length} hiệp · {w.durationMinutes} phút · {w.status === 'completed' ? 'Hoàn thành các hiệp dự kiến' : 'Hoàn thành một phần'}</p><p className="mt-1 text-xs text-slate-300">Tổng tải ngoài: {w.externalLoadVolumeKg} kg (số lần × tạ), không phải kcal tiêu hao.</p></article>)}<p className="text-xs text-slate-400">{context.history?.note}</p>
         </section>}
         {tab === 'gym' && context?.isAdmin && <section className="space-y-3"><h3 className="text-xl font-bold">Danh mục gym đã kiểm chứng</h3><p className="text-sm text-slate-300">Tải mẫu trong data/companion, thay toàn bộ chỗ chưa xác minh bằng máy và vị trí thực tế. Chỉ đặt verified=true sau khi quản lý/HLV kiểm tra. Mẫu không được tự kích hoạt.</p><button className={secondaryClass} disabled={busy} onClick={() => void task(async () => { const c = await api('/admin/catalogue'); setCatalogueText(JSON.stringify(c, null, 2)); setCatalogueRevision(c.revision ?? null); })}>Tải danh mục hiện tại</button><textarea className={fieldClass + ' h-96 font-mono text-xs'} aria-label="JSON danh mục máy, bài tập và mẫu ăn đã duyệt" spellCheck={false} value={catalogueText} onChange={e => setCatalogueText(e.target.value)} /><button className={buttonClass} disabled={busy || !catalogueText} onClick={() => void task(async () => { const saved = await api('/admin/catalogue', { catalogue: JSON.parse(catalogueText), expectedRevision: catalogueRevision }, 'PUT'); setCatalogueText(JSON.stringify(saved, null, 2)); setCatalogueRevision(saved.revision); await refreshAfterSaved('Đã kiểm tra cấu trúc và lưu danh mục. Độ đúng thực tế do người duyệt chịu trách nhiệm.'); })}>Kiểm tra cấu trúc và lưu</button></section>}
-      </main>
+      </main>}
       {tab === 'chat' && context?.profile && <form className="flex shrink-0 gap-2 border-t border-slate-700 bg-slate-950 p-3" onSubmit={e => { e.preventDefault(); void send(); }}><input ref={messageInput} className={fieldClass} aria-label="Tin nhắn cho Shine Companion" maxLength={2000} value={message} onChange={e => setMessage(e.target.value)} placeholder="Tôi có 35 phút, muốn tập chân…" /><button className={buttonClass} disabled={busy || !message.trim()}>Gửi</button></form>}
     </section>}
   </>;

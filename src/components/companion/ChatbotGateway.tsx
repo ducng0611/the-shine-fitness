@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../lib/firebase';
-import LegacyChatbot from '../Chatbot';
+import LegacyChatbot from '../ChatbotLegacy';
 import CompanionChat from './CompanionChat';
 
-/** Drop-in replacement: legacy props and guest experience remain intact. */
+/** Guests keep the public service chatbot; a signed-in member whose Firebase session
+ *  matches the displayed account gets the member assistant instead. */
 export default function ChatbotGateway(props: React.ComponentProps<typeof LegacyChatbot>) {
   const [user, setUser] = useState(auth.currentUser);
   const [services, setServices] = useState(false);
@@ -17,5 +18,5 @@ export default function ChatbotGateway(props: React.ComponentProps<typeof Legacy
     {eligible && services && <button className="fixed bottom-24 right-5 z-50 min-h-11 rounded-full bg-orange-500 px-4 py-3 text-sm font-bold text-slate-950" onClick={() => setServices(false)}>Về Shine Companion</button>}
   </>;
   // An account change unmounts all previous member drafts and conversation state.
-  return <CompanionChat key={user!.uid} lang={props.lang} onToggle={props.onToggle} onService={() => setServices(true)} />;
+  return <CompanionChat key={user!.uid} lang={props.lang} onToggle={props.onToggle} onService={() => setServices(true)} onOpenTraining={props.onOpenTraining} />;
 }
