@@ -6,6 +6,8 @@ import ProfileForm from './ProfileForm';
 import WorkoutCard from './WorkoutCard';
 import MealDraft from './MealDraft';
 import { BuddyPanel } from '../buddy/BuddyPanel';
+import SourceProfileCard from './SourceProfileCard';
+import MemberImportPanel from './MemberImportPanel';
 
 type Props = { lang?: Language; onToggle?: (open: boolean) => void; onService: () => void; onOpenTraining?: () => void };
 const initialReadiness = { durationMinutes: 35, focus: 'auto', energy: 3, pain: false, soreGroups: [] as string[], unavailableStationIds: [] as string[], confirmed: false };
@@ -16,6 +18,7 @@ const buddyEnabled = () => import.meta.env.VITE_SHINE_CHAT_ENABLED === 'true';
 export default function CompanionChat({ lang, onToggle, onService, onOpenTraining }: Props) {
   const [open, setOpen] = useState(false), [tab, setTab] = useState(buddyEnabled() ? 'ask' : 'chat');
   const [context, setContext] = useState<Data | null>(null), [error, setError] = useState(''), [notice, setNotice] = useState('');
+  const [sourceProfile, setSourceProfile] = useState<Data | null>(null);
   const [busy, setBusy] = useState(false), [message, setMessage] = useState(''), [conversation, setConversation] = useState<Data[]>([]);
   const [result, setResult] = useState<Data | null>(null), [plan, setPlan] = useState<Data | null>(null), [draft, setDraft] = useState<Data | null>(null);
   const [readiness, setReadiness] = useState(initialReadiness), [preMinutes, setPreMinutes] = useState(60);
@@ -37,8 +40,9 @@ export default function CompanionChat({ lang, onToggle, onService, onOpenTrainin
     finally { lock.current = false; if (current()) setBusy(false); }
   };
   const refresh = async (restorePlan = false) => {
-    const data = await api('/context'); if (!current()) return;
-    setContext(data);
+    // The gym's recorded profile is optional; failing to load it must not block the assistant.
+    const [data, source] = await Promise.all([api('/context'), api('/source-profile').catch(() => null)]); if (!current()) return;
+    setContext(data); setSourceProfile(source?.sourceProfile ?? null);
     if (!data.profile) setTab(t => t === 'ask' ? t : 'profile');
     if (restorePlan && data.pendingPlan) setPlan(data.pendingPlan);
   };
@@ -88,6 +92,7 @@ export default function CompanionChat({ lang, onToggle, onService, onOpenTrainin
         {error && <p role="alert" className="rounded-xl border border-red-500/60 p-3 text-sm text-red-200">{error}</p>}
         {!context && <button className={secondaryClass} disabled={busy} onClick={() => void task(() => refresh(true))}>Tải hồ sơ</button>}
         {context && !context.profile && tab !== 'profile' && <div className="rounded-xl bg-slate-800 p-4"><p>Hoàn tất hồ sơ và quyền riêng tư để bắt đầu cá nhân hóa.</p><button className={buttonClass + ' mt-3'} onClick={() => setTab('profile')}>Tạo hồ sơ</button></div>}
+        {tab === 'profile' && sourceProfile && <SourceProfileCard profile={sourceProfile} />}
         {context && tab === 'profile' && <ProfileForm key={context.profile?.revision ?? 'new'} profile={context.profile} memberName={context.memberName} busy={busy}
           onSave={p => void task(async () => { await api('/profile', p, 'PUT'); setPlan(null); setDraft(null); await refreshAfterSaved('Đã lưu hồ sơ. Giáo án cũ cần tạo lại theo hồ sơ mới.'); setTab('chat'); })}
           onExport={() => void task(async () => {
@@ -137,6 +142,7 @@ export default function CompanionChat({ lang, onToggle, onService, onOpenTrainin
           {context.diary?.meals.map((meal: Data) => <article key={meal.id} className="rounded-xl border border-slate-700 p-3"><p className="font-semibold">{meal.items.map((i: Data) => i.name).join(', ')}</p><p className="text-sm">~{meal.kcal} kcal</p><details className="my-2 text-xs text-slate-400"><summary>Nguồn và khẩu phần</summary>{meal.items.map((i: Data, n: number) => <p key={n}>{i.grams} g · {i.kcalPer100g} kcal/100 g · {i.source}</p>)}</details><button className={secondaryClass} disabled={busy} onClick={() => { if (window.confirm('Bỏ bữa này khỏi tổng ngày? Để sửa, hãy bỏ bản ghi sai rồi nhập lại.')) void task(async () => { await api(`/meals/${meal.id}`, undefined, 'DELETE'); await refreshAfterSaved('Đã bỏ bữa khỏi tổng ngày.'); }); }}>Bỏ bản ghi sai</button></article>)}
           <h4 className="font-bold">Các buổi tập đã xác nhận</h4>{context.history?.workouts.map((w: Data) => <article key={w.id} className="rounded-xl bg-slate-900 p-3"><p className="font-semibold">{new Date(w.occurredAt).toLocaleString('vi-VN', { timeZone: context.profile.timezone })}</p><p className="text-sm">{w.sets.length} hiệp · {w.durationMinutes} phút · {w.status === 'completed' ? 'Hoàn thành các hiệp dự kiến' : 'Hoàn thành một phần'}</p><p className="mt-1 text-xs text-slate-300">Tổng tải ngoài: {w.externalLoadVolumeKg} kg (số lần × tạ), không phải kcal tiêu hao.</p></article>)}<p className="text-xs text-slate-400">{context.history?.note}</p>
         </section>}
+        {tab === 'gym' && context?.isAdmin && <MemberImportPanel />}
         {tab === 'gym' && context?.isAdmin && <section className="space-y-3"><h3 className="text-xl font-bold">Danh mục gym đã kiểm chứng</h3><p className="text-sm text-slate-300">Tải mẫu trong data/companion, thay toàn bộ chỗ chưa xác minh bằng máy và vị trí thực tế. Chỉ đặt verified=true sau khi quản lý/HLV kiểm tra. Mẫu không được tự kích hoạt.</p><button className={secondaryClass} disabled={busy} onClick={() => void task(async () => { const c = await api('/admin/catalogue'); setCatalogueText(JSON.stringify(c, null, 2)); setCatalogueRevision(c.revision ?? null); })}>Tải danh mục hiện tại</button><textarea className={fieldClass + ' h-96 font-mono text-xs'} aria-label="JSON danh mục máy, bài tập và mẫu ăn đã duyệt" spellCheck={false} value={catalogueText} onChange={e => setCatalogueText(e.target.value)} /><button className={buttonClass} disabled={busy || !catalogueText} onClick={() => void task(async () => { const saved = await api('/admin/catalogue', { catalogue: JSON.parse(catalogueText), expectedRevision: catalogueRevision }, 'PUT'); setCatalogueText(JSON.stringify(saved, null, 2)); setCatalogueRevision(saved.revision); await refreshAfterSaved('Đã kiểm tra cấu trúc và lưu danh mục. Độ đúng thực tế do người duyệt chịu trách nhiệm.'); })}>Kiểm tra cấu trúc và lưu</button></section>}
       </main>}
       {tab === 'chat' && context?.profile && <form className="flex shrink-0 gap-2 border-t border-slate-700 bg-slate-950 p-3" onSubmit={e => { e.preventDefault(); void send(); }}><input ref={messageInput} className={fieldClass} aria-label="Tin nhắn cho Shine Companion" maxLength={2000} value={message} onChange={e => setMessage(e.target.value)} placeholder="Tôi có 35 phút, muốn tập chân…" /><button className={buttonClass} disabled={busy || !message.trim()}>Gửi</button></form>}
