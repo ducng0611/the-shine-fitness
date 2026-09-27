@@ -1271,6 +1271,7 @@ async function startServer() {
       isMember,
       membershipTier: req.body?.memberInfo?.membershipTier,
       memberCode: req.body?.memberInfo?.memberCode,
+      fitnessProfile: isMember ? (req.body?.fitnessProfile || req.body?.memberInfo?.fitnessProfile) : undefined,
     };
 
     let classification: ClassificationResult | null = null;
@@ -1344,56 +1345,7 @@ async function startServer() {
       // 2. Classify intent, pkSegment, slots, nextQuestion in ONE Gemini call
       classification = await classify(message, history || [], ai);
 
-      // 3. Low confidence handover check (< 0.4)
-      if (classification.confidence < 0.4) {
-        const replyText = getHandoverReply('LOW_CONFIDENCE', pronoun);
-        const latencyMs = Date.now() - startTime;
-        const summary = buildHandoverSummary(
-          history || [],
-          message,
-          'LOW_CONFIDENCE',
-          `AI chưa tự tin nhận diện ý định (Confidence: ${classification.confidence})`
-        );
-
-        try {
-          addHandoverRecord({
-            sessionId,
-            tag: 'LOW_CONFIDENCE',
-            summary,
-            status: 'Chờ tiếp nhận'
-          });
-        } catch (hoErr) {
-          console.error("Failed to add low confidence handover record:", hoErr);
-        }
-
-        try {
-          appendChatLog({
-            sessionId,
-            lang,
-            isMember: !!isMember,
-            userMessage: message,
-            botResponse: replyText,
-            latencyMs,
-            usedFallback: false,
-            handoverTag: 'LOW_CONFIDENCE',
-            intent: classification.intent,
-            pkSegment: classification.pkSegment || '',
-            responseChars: replyText.length
-          });
-        } catch (logErr) {
-          console.error("Failed to append chat log for low confidence handover:", logErr);
-        }
-
-        return res.json({
-          text: replyText,
-          handover: true,
-          handoverTag: 'LOW_CONFIDENCE',
-          hotline: HOTLINE,
-          sessionId
-        });
-      }
-
-      // 4. RAG Retrieval (if RAG_ENABLED === 'true')
+      // 3. RAG Retrieval (if RAG_ENABLED === 'true')
       const RAG_ENABLED = process.env.RAG_ENABLED === 'true';
       let retrievedChunks: RetrievedChunk[] = [];
       let retrievedContext: string | undefined = undefined;
@@ -1402,67 +1354,20 @@ async function startServer() {
       let groundedAnswer = false;
 
       if (RAG_ENABLED && getIsRagAvailable()) {
-        retrievedChunks = await retrieve(message, ai, {
-          intent: classification.intent,
-          topK: 4
-        });
-
-        if (retrievedChunks.length > 0) {
-          retrievedChunkIds = retrievedChunks.map(r => r.chunk.id).join(';');
-          topSimilarity = retrievedChunks[0].similarity;
-          groundedAnswer = true;
-          retrievedContext = buildContextBlock(retrievedChunks);
-        } else {
-          // RAG_ENABLED=true but no chunk >= 0.55 similarity found.
-          // Fallback to handover to avoid hallucination.
-          const replyText = getHandoverReply('LOW_CONFIDENCE', pronoun);
-          const latencyMs = Date.now() - startTime;
-          const summary = buildHandoverSummary(
-            history || [],
-            message,
-            'LOW_CONFIDENCE',
-            'Không tìm thấy dữ liệu tham chiếu đạt ngưỡng'
-          );
-
-          try {
-            addHandoverRecord({
-              sessionId,
-              tag: 'LOW_CONFIDENCE',
-              summary,
-              status: 'Chờ tiếp nhận'
-            });
-          } catch (hoErr) {
-            console.error("Failed to add LOW_CONFIDENCE handover record:", hoErr);
-          }
-
-          try {
-            appendChatLog({
-              sessionId,
-              lang,
-              isMember: !!isMember,
-              userMessage: message,
-              botResponse: replyText,
-              latencyMs,
-              usedFallback: false,
-              handoverTag: 'LOW_CONFIDENCE',
-              intent: classification.intent,
-              pkSegment: classification.pkSegment || '',
-              responseChars: replyText.length,
-              retrievedChunkIds: '',
-              topSimilarity: 0,
-              groundedAnswer: false
-            });
-          } catch (logErr) {
-            console.error("Failed to append chat log for LOW_CONFIDENCE handover:", logErr);
-          }
-
-          return res.json({
-            text: replyText,
-            handover: true,
-            handoverTag: 'LOW_CONFIDENCE',
-            hotline: HOTLINE,
-            sessionId
+        try {
+          retrievedChunks = await retrieve(message, ai, {
+            intent: classification.intent,
+            topK: 4
           });
+
+          if (retrievedChunks.length > 0) {
+            retrievedChunkIds = retrievedChunks.map(r => r.chunk.id).join(';');
+            topSimilarity = retrievedChunks[0].similarity;
+            groundedAnswer = true;
+            retrievedContext = buildContextBlock(retrievedChunks);
+          }
+        } catch (ragErr) {
+          console.warn("RAG retrieval error (falling back to standard consultant knowledge):", ragErr);
         }
       }
 
@@ -2583,6 +2488,38 @@ Hãy trả về kết quả định dạng JSON thuần túy (không bọc trong
       console.error("Error storing feedback:", error);
       res.status(500).json({ error: "Không thể lưu phản hồi." });
     }
+  });
+
+  app.get("/api/download-prompt-doc", (req, res) => {
+    const filePath = path.resolve("public/Tong_Hop_Prompt_TheShineFitness.docx");
+    if (fs.existsSync(filePath)) {
+      res.setHeader('Content-Disposition', 'attachment; filename="Tong_Hop_Prompt_TheShineFitness.docx"');
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      return res.sendFile(filePath);
+    }
+    const fallbackPath = path.resolve("Tong_Hop_Prompt_TheShineFitness.docx");
+    if (fs.existsSync(fallbackPath)) {
+      res.setHeader('Content-Disposition', 'attachment; filename="Tong_Hop_Prompt_TheShineFitness.docx"');
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      return res.sendFile(fallbackPath);
+    }
+    return res.status(404).json({ error: "File not found" });
+  });
+
+  app.get("/Tong_Hop_Prompt_TheShineFitness.docx", (req, res) => {
+    const filePath = path.resolve("public/Tong_Hop_Prompt_TheShineFitness.docx");
+    if (fs.existsSync(filePath)) {
+      res.setHeader('Content-Disposition', 'attachment; filename="Tong_Hop_Prompt_TheShineFitness.docx"');
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      return res.sendFile(filePath);
+    }
+    const fallbackPath = path.resolve("Tong_Hop_Prompt_TheShineFitness.docx");
+    if (fs.existsSync(fallbackPath)) {
+      res.setHeader('Content-Disposition', 'attachment; filename="Tong_Hop_Prompt_TheShineFitness.docx"');
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      return res.sendFile(fallbackPath);
+    }
+    return res.status(404).json({ error: "File not found" });
   });
 
   // Vite middleware for development

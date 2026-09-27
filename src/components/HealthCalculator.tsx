@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   Activity, 
   Scale, 
@@ -160,6 +160,13 @@ export const HealthCalculator: React.FC<HealthCalculatorProps> = ({ lang, onOpen
       waterLiters
     };
   }, [metrics]);
+
+  // Synchronize health calculator data so AI Assistant immediately has user body metrics
+  useEffect(() => {
+    try {
+      localStorage.setItem('shine_health_data', JSON.stringify({ metrics, results }));
+    } catch (e) {}
+  }, [metrics, results]);
 
   // Handle gated form submit & store in Firebase
   const handleSubmitContact = async (e: React.FormEvent) => {
