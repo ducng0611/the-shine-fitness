@@ -1,0 +1,46 @@
+name: Sync to Google Drive
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gdrive-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install rclone
+        run: curl -fsSL https://rclone.org/install.sh | sudo bash
+
+      - name: Write rclone config
+        env:
+          GDRIVE_TOKEN: ${{ secrets.GDRIVE_TOKEN }}
+        run: |
+          if [ -z "$GDRIVE_TOKEN" ]; then echo "::error::Missing secret GDRIVE_TOKEN"; exit 1; fi
+          mkdir -p ~/.config/rclone
+          {
+            echo "[gdrive]"
+            echo "type = drive"
+            echo "scope = drive.file"
+            echo "token = $GDRIVE_TOKEN"
+          } > ~/.config/rclone/rclone.conf
+
+      - name: Sync repo -> My Drive/GitHub/the-shine-fitness
+        run: |
+          rclone sync . gdrive:GitHub/the-shine-fitness \
+            --exclude ".git/**" \
+            --exclude "node_modules/**" \
+            --checksum --fast-list --transfers 8 \
+            --drive-use-trash \
+            --stats-one-line -v
