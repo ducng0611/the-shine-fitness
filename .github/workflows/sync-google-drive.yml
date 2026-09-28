@@ -26,6 +26,8 @@ jobs:
       - name: Write rclone config
         env:
           GDRIVE_TOKEN: ${{ secrets.GDRIVE_TOKEN }}
+          # "02. Github Repository" folder on Google Drive
+          GDRIVE_FOLDER_ID: 1nPigFkzz8NeKig7Q2JA51zIQGaK_KJKP
         run: |
           if [ -z "$GDRIVE_TOKEN" ]; then echo "::error::Missing secret GDRIVE_TOKEN"; exit 1; fi
           mkdir -p ~/.config/rclone
@@ -33,12 +35,13 @@ jobs:
             echo "[gdrive]"
             echo "type = drive"
             echo "scope = drive.file"
+            echo "root_folder_id = ${GDRIVE_FOLDER_ID}"
             echo "token = $GDRIVE_TOKEN"
           } > ~/.config/rclone/rclone.conf
 
-      - name: Sync repo -> My Drive/GitHub/the-shine-fitness
+      - name: Sync repo -> 02. Github Repository/the-shine-fitness
         run: |
-          rclone sync . gdrive:GitHub/the-shine-fitness \
+          rclone sync . gdrive:the-shine-fitness \
             --exclude ".git/**" \
             --exclude "node_modules/**" \
             --checksum --fast-list --transfers 8 \
